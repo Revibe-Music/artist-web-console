@@ -14,25 +14,35 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
 
-import App from "layouts/App.jsx";
+
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
+import { sessionService, sessionReducer } from 'redux-react-session';
+import thunkMiddleware from 'redux-thunk';
+import App from './layouts/App.js';
+
 
 import "assets/css/nucleo-icons.css";
 import "assets/scss/black-dashboard-pro-react.scss?v=1.0.0";
 import "react-notification-alert/dist/animate.css";
 
-const hist = createBrowserHistory();
+// Add the sessionReducer
+const reducer = combineReducers({
+  session: sessionReducer
+});
 
-ReactDOM.render(
-  <Router history={hist}>
-    <Switch>
-      <Route path="" render={props => <App {...props} />} />
-      <Redirect from="/" to="/dashboard" />
-    </Switch>
-  </Router>,
-  document.getElementById("root")
+const store = createStore(reducer, undefined, compose(applyMiddleware(thunkMiddleware)));
+
+// Init the session service
+sessionService.initSessionService(store);
+
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );

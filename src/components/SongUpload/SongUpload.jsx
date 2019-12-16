@@ -44,6 +44,8 @@ import {
 } from "reactstrap";
 import Dropzone from 'react-dropzone';
 
+import UploadingSongs from 'components/Tables/UploadingSongs.jsx'
+
 const musicMetadata = require('music-metadata-browser');
 
 const basestyle = {
@@ -123,40 +125,7 @@ class SongUpload extends Component {
       </div>
       {this.state.songs.length > 0 ?
         <>
-        <Table responsive striped>
-          <thead className="text-primary">
-            <tr>
-              <th className="text-center">#</th>
-              <th>Name</th>
-              <th>Artist</th>
-              <th>Album</th>
-              <th>Duration</th>
-              <th>Quality</th>
-            </tr>
-          </thead>
-          <tbody>
-          {this.state.songs.map((n, i) => {
-            return (
-              <tr>
-                <td className="text-center">{i+1}</td>
-                <td>{n.common.title}</td>
-                <td>{n.common.artist}</td>
-                <td>{n.common.album}</td>
-                <td>{n.format.duration.toFixed(2)}</td>
-                <td>{n.format.bitrate /1000 } kbps</td>
-                <td className="text-right">
-                <Button className="btn-icon btn-simple" color="success" size="sm">
-                    <i className="fa fa-edit"></i>
-                </Button>{` `}
-                <Button onClick={() => this.removeUpload(i)} className="btn-icon btn-simple" color="danger" size="sm">
-                    <i className="fa fa-times" />
-                </Button>{` `}
-            </td>
-              </tr>
-            );
-            })}
-          </tbody>
-        </Table>
+
         <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
         <Button onClick={() => console.log("Uploading...")} className="btn-round" color="primary">
             Upload

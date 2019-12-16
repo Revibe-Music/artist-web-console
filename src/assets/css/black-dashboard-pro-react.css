@@ -88,7 +88,7 @@ body {
   line-height: 1.5;
   color: #525f7f;
   text-align: left;
-  background-color: black; }
+  background-color: #111111; }
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
@@ -445,7 +445,7 @@ mark,
 
 .img-thumbnail {
   padding: 0.25rem;
-  background-color: black;
+  background-color: #111111;
   border: 0.0625rem solid #e3e3e3;
   border-radius: 0.25rem;
   box-shadow: 0 1px 2px rgba(34, 42, 66, 0.075);
@@ -1099,7 +1099,7 @@ pre {
   .table tbody + tbody {
     border-top: 0.125rem solid #e3e3e3; }
   .table .table {
-    background-color: black; }
+    background-color: #111111; }
 
 .table-sm th,
 .table-sm td {
@@ -1270,7 +1270,7 @@ pre {
     background-color: rgba(25, 31, 49, 0.075); }
 
 .table .thead-dark th {
-  color: black;
+  color: #111111;
   background-color: #212529;
   border-color: #32383e; }
 
@@ -1280,7 +1280,7 @@ pre {
   border-color: #e3e3e3; }
 
 .table-dark {
-  color: black;
+  color: #111111;
   background-color: #212529; }
   .table-dark th,
   .table-dark td,
@@ -1548,7 +1548,7 @@ textarea.form-control {
   background-color: #26ffd5; }
 
 .was-validated .custom-control-input:valid:focus ~ .custom-control-label::before, .custom-control-input.is-valid:focus ~ .custom-control-label::before {
-  box-shadow: 0 0 0 1px black, 0 0 0 0 rgba(0, 242, 195, 0.25); }
+  box-shadow: 0 0 0 1px #111111, 0 0 0 0 rgba(0, 242, 195, 0.25); }
 
 .was-validated .custom-file-input:valid ~ .custom-file-label, .custom-file-input.is-valid ~ .custom-file-label {
   border-color: #00f2c3; }
@@ -1630,7 +1630,7 @@ textarea.form-control {
   background-color: #ffb6a5; }
 
 .was-validated .custom-control-input:invalid:focus ~ .custom-control-label::before, .custom-control-input.is-invalid:focus ~ .custom-control-label::before {
-  box-shadow: 0 0 0 1px black, 0 0 0 0 rgba(255, 141, 114, 0.25); }
+  box-shadow: 0 0 0 1px #111111, 0 0 0 0 rgba(255, 141, 114, 0.25); }
 
 .was-validated .custom-file-input:invalid ~ .custom-file-label, .custom-file-input.is-invalid ~ .custom-file-label {
   border-color: #ff8d72; }
@@ -2950,11 +2950,11 @@ input[type="button"].btn-block {
   .custom-range:focus {
     outline: none; }
     .custom-range:focus::-webkit-slider-thumb {
-      box-shadow: 0 0 0 1px black, none; }
+      box-shadow: 0 0 0 1px #111111, none; }
     .custom-range:focus::-moz-range-thumb {
-      box-shadow: 0 0 0 1px black, none; }
+      box-shadow: 0 0 0 1px #111111, none; }
     .custom-range:focus::-ms-thumb {
-      box-shadow: 0 0 0 1px black, none; }
+      box-shadow: 0 0 0 1px #111111, none; }
   .custom-range::-moz-focus-outer {
     border: 0; }
   .custom-range::-webkit-slider-thumb {
@@ -3080,8 +3080,8 @@ input[type="button"].btn-block {
   .nav-tabs .nav-link.active,
   .nav-tabs .nav-item.show .nav-link {
     color: #525f7f;
-    background-color: black;
-    border-color: #e3e3e3 #e3e3e3 black; }
+    background-color: #111111;
+    border-color: #e3e3e3 #e3e3e3 #111111; }
   .nav-tabs .dropdown-menu {
     margin-top: -0.0625rem;
     border-top-left-radius: 0;
@@ -7656,88 +7656,88 @@ button.bg-lighter:focus {
   background-color: #cbd3da !important; }
 
 .bg-gradient-primary {
-  background: #7248BD linear-gradient(180deg, #613da1, #7248BD) repeat-x !important; }
+  background: #7248BD linear-gradient(180deg, #6340a3, #7248BD) repeat-x !important; }
 
 .bg-gradient-secondary {
-  background: #f4f5f7 linear-gradient(180deg, #cfd0d2, #f4f5f7) repeat-x !important; }
+  background: #f4f5f7 linear-gradient(180deg, #d2d3d5, #f4f5f7) repeat-x !important; }
 
 .bg-gradient-success {
-  background: #00f2c3 linear-gradient(180deg, #00cea6, #00f2c3) repeat-x !important; }
+  background: #00f2c3 linear-gradient(180deg, #03d0a8, #00f2c3) repeat-x !important; }
 
 .bg-gradient-info {
-  background: #1d8cf8 linear-gradient(180deg, #1977d3, #1d8cf8) repeat-x !important; }
+  background: #1d8cf8 linear-gradient(180deg, #1b7ad5, #1d8cf8) repeat-x !important; }
 
 .bg-gradient-warning {
-  background: #ff8d72 linear-gradient(180deg, #d97861, #ff8d72) repeat-x !important; }
+  background: #ff8d72 linear-gradient(180deg, #db7a63, #ff8d72) repeat-x !important; }
 
 .bg-gradient-danger {
-  background: #fd5d93 linear-gradient(180deg, #d74f7d, #fd5d93) repeat-x !important; }
+  background: #fd5d93 linear-gradient(180deg, #da5280, #fd5d93) repeat-x !important; }
 
 .bg-gradient-light {
-  background: #adb5bd linear-gradient(180deg, #939aa1, #adb5bd) repeat-x !important; }
+  background: #adb5bd linear-gradient(180deg, #969ca3, #adb5bd) repeat-x !important; }
 
 .bg-gradient-dark {
-  background: #212529 linear-gradient(180deg, #1c1f23, #212529) repeat-x !important; }
+  background: #212529 linear-gradient(180deg, #1f2225, #212529) repeat-x !important; }
 
 .bg-gradient-default {
-  background: #344675 linear-gradient(180deg, #2c3c63, #344675) repeat-x !important; }
+  background: #344675 linear-gradient(180deg, #2f3e66, #344675) repeat-x !important; }
 
 .bg-gradient-white {
-  background: #ffffff linear-gradient(180deg, #d9d9d9, #ffffff) repeat-x !important; }
+  background: #ffffff linear-gradient(180deg, #dbdbdb, #ffffff) repeat-x !important; }
 
 .bg-gradient-neutral {
-  background: #ffffff linear-gradient(180deg, #d9d9d9, #ffffff) repeat-x !important; }
+  background: #ffffff linear-gradient(180deg, #dbdbdb, #ffffff) repeat-x !important; }
 
 .bg-gradient-darker {
-  background: black linear-gradient(180deg, black, black) repeat-x !important; }
+  background: black linear-gradient(180deg, #030303, black) repeat-x !important; }
 
 .bg-gradient-blue {
-  background: #5e72e4 linear-gradient(180deg, #5061c2, #5e72e4) repeat-x !important; }
+  background: #5e72e4 linear-gradient(180deg, #5263c4, #5e72e4) repeat-x !important; }
 
 .bg-gradient-indigo {
-  background: #5603ad linear-gradient(180deg, #490393, #5603ad) repeat-x !important; }
+  background: #5603ad linear-gradient(180deg, #4c0596, #5603ad) repeat-x !important; }
 
 .bg-gradient-purple {
-  background: #8965e0 linear-gradient(180deg, #7456be, #8965e0) repeat-x !important; }
+  background: #8965e0 linear-gradient(180deg, #7758c1, #8965e0) repeat-x !important; }
 
 .bg-gradient-pink {
-  background: #f3a4b5 linear-gradient(180deg, #cf8b9a, #f3a4b5) repeat-x !important; }
+  background: #f3a4b5 linear-gradient(180deg, #d18e9c, #f3a4b5) repeat-x !important; }
 
 .bg-gradient-red {
-  background: #f5365c linear-gradient(180deg, #d02e4e, #f5365c) repeat-x !important; }
+  background: #f5365c linear-gradient(180deg, #d33051, #f5365c) repeat-x !important; }
 
 .bg-gradient-orange {
-  background: #fb6340 linear-gradient(180deg, #d55436, #fb6340) repeat-x !important; }
+  background: #fb6340 linear-gradient(180deg, #d85739, #fb6340) repeat-x !important; }
 
 .bg-gradient-yellow {
-  background: #ffd600 linear-gradient(180deg, #d9b600, #ffd600) repeat-x !important; }
+  background: #ffd600 linear-gradient(180deg, #dbb803, #ffd600) repeat-x !important; }
 
 .bg-gradient-green {
-  background: #2dce89 linear-gradient(180deg, #26af74, #2dce89) repeat-x !important; }
+  background: #2dce89 linear-gradient(180deg, #29b277, #2dce89) repeat-x !important; }
 
 .bg-gradient-teal {
-  background: #11cdef linear-gradient(180deg, #0eaecb, #11cdef) repeat-x !important; }
+  background: #11cdef linear-gradient(180deg, #11b1ce, #11cdef) repeat-x !important; }
 
 .bg-gradient-cyan {
-  background: #2bffc6 linear-gradient(180deg, #25d9a8, #2bffc6) repeat-x !important; }
+  background: #2bffc6 linear-gradient(180deg, #27dbab, #2bffc6) repeat-x !important; }
 
 .bg-gradient-white {
-  background: #ffffff linear-gradient(180deg, #d9d9d9, #ffffff) repeat-x !important; }
+  background: #ffffff linear-gradient(180deg, #dbdbdb, #ffffff) repeat-x !important; }
 
 .bg-gradient-gray {
-  background: #6c757d linear-gradient(180deg, #5c636a, #6c757d) repeat-x !important; }
+  background: #6c757d linear-gradient(180deg, #5e666d, #6c757d) repeat-x !important; }
 
 .bg-gradient-gray-dark {
-  background: #32325d linear-gradient(180deg, #2b2b4f, #32325d) repeat-x !important; }
+  background: #32325d linear-gradient(180deg, #2d2d52, #32325d) repeat-x !important; }
 
 .bg-gradient-light {
-  background: #ced4da linear-gradient(180deg, #afb4b9, #ced4da) repeat-x !important; }
+  background: #ced4da linear-gradient(180deg, #b2b7bc, #ced4da) repeat-x !important; }
 
 .bg-gradient-lighter {
-  background: #e9ecef linear-gradient(180deg, #c6c9cb, #e9ecef) repeat-x !important; }
+  background: #e9ecef linear-gradient(180deg, #c9cbce, #e9ecef) repeat-x !important; }
 
 .section-primary {
-  background-color: black !important; }
+  background-color: #111111 !important; }
 
 a.section-primary:hover, a.section-primary:focus,
 button.section-primary:hover,
@@ -7777,40 +7777,40 @@ button.section-darker:focus {
   background-color: black !important; }
 
 .bg-gradient-primary {
-  background: #7248BD linear-gradient(180deg, #613da1, #7248BD) repeat-x !important; }
+  background: #7248BD linear-gradient(180deg, #6340a3, #7248BD) repeat-x !important; }
 
 .bg-gradient-secondary {
-  background: #f4f5f7 linear-gradient(180deg, #cfd0d2, #f4f5f7) repeat-x !important; }
+  background: #f4f5f7 linear-gradient(180deg, #d2d3d5, #f4f5f7) repeat-x !important; }
 
 .bg-gradient-success {
-  background: #00f2c3 linear-gradient(180deg, #00cea6, #00f2c3) repeat-x !important; }
+  background: #00f2c3 linear-gradient(180deg, #03d0a8, #00f2c3) repeat-x !important; }
 
 .bg-gradient-info {
-  background: #1d8cf8 linear-gradient(180deg, #1977d3, #1d8cf8) repeat-x !important; }
+  background: #1d8cf8 linear-gradient(180deg, #1b7ad5, #1d8cf8) repeat-x !important; }
 
 .bg-gradient-warning {
-  background: #ff8d72 linear-gradient(180deg, #d97861, #ff8d72) repeat-x !important; }
+  background: #ff8d72 linear-gradient(180deg, #db7a63, #ff8d72) repeat-x !important; }
 
 .bg-gradient-danger {
-  background: #fd5d93 linear-gradient(180deg, #d74f7d, #fd5d93) repeat-x !important; }
+  background: #fd5d93 linear-gradient(180deg, #da5280, #fd5d93) repeat-x !important; }
 
 .bg-gradient-light {
-  background: #adb5bd linear-gradient(180deg, #939aa1, #adb5bd) repeat-x !important; }
+  background: #adb5bd linear-gradient(180deg, #969ca3, #adb5bd) repeat-x !important; }
 
 .bg-gradient-dark {
-  background: #212529 linear-gradient(180deg, #1c1f23, #212529) repeat-x !important; }
+  background: #212529 linear-gradient(180deg, #1f2225, #212529) repeat-x !important; }
 
 .bg-gradient-default {
-  background: #344675 linear-gradient(180deg, #2c3c63, #344675) repeat-x !important; }
+  background: #344675 linear-gradient(180deg, #2f3e66, #344675) repeat-x !important; }
 
 .bg-gradient-white {
-  background: #ffffff linear-gradient(180deg, #d9d9d9, #ffffff) repeat-x !important; }
+  background: #ffffff linear-gradient(180deg, #dbdbdb, #ffffff) repeat-x !important; }
 
 .bg-gradient-neutral {
-  background: #ffffff linear-gradient(180deg, #d9d9d9, #ffffff) repeat-x !important; }
+  background: #ffffff linear-gradient(180deg, #dbdbdb, #ffffff) repeat-x !important; }
 
 .bg-gradient-darker {
-  background: black linear-gradient(180deg, black, black) repeat-x !important; }
+  background: black linear-gradient(180deg, #030303, black) repeat-x !important; }
 
 .fill-primary {
   fill: #7248BD; }
@@ -10964,32 +10964,32 @@ textarea.form-control {
 
 .modal.modal-default .input-group-prepend .input-group-text,
 .modal.modal-default .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-default .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-default .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-default .form-group.no-border .form-control,
 .modal.modal-default .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   color: #ffffff; }
   .modal.modal-default .form-group.no-border .form-control:focus, .modal.modal-default .form-group.no-border .form-control:active, .modal.modal-default .form-group.no-border .form-control:active,
   .modal.modal-default .input-group.no-border .form-control:focus,
   .modal.modal-default .input-group.no-border .form-control:active,
   .modal.modal-default .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-default .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-default .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-default .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-default .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(17, 17, 17, 0.2); }
   .modal.modal-default .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-default .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-default .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-default .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-default .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -11000,21 +11000,21 @@ textarea.form-control {
   .modal.modal-default .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-default .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-default .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-default .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-default .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-default .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-default .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-default .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-default .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-default .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-default .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -11022,7 +11022,7 @@ textarea.form-control {
 .modal.modal-default .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-default .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-default .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-primary .modal-content {
@@ -11072,32 +11072,32 @@ textarea.form-control {
 
 .modal.modal-primary .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-primary .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-primary .form-group.no-border .form-control,
 .modal.modal-primary .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   color: #ffffff; }
   .modal.modal-primary .form-group.no-border .form-control:focus, .modal.modal-primary .form-group.no-border .form-control:active, .modal.modal-primary .form-group.no-border .form-control:active,
   .modal.modal-primary .input-group.no-border .form-control:focus,
   .modal.modal-primary .input-group.no-border .form-control:active,
   .modal.modal-primary .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-primary .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-primary .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-primary .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(17, 17, 17, 0.2); }
   .modal.modal-primary .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-primary .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-primary .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-primary .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-primary .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -11108,21 +11108,21 @@ textarea.form-control {
   .modal.modal-primary .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-primary .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-primary .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-primary .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-primary .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-primary .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-primary .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-primary .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-primary .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -11130,7 +11130,7 @@ textarea.form-control {
 .modal.modal-primary .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-primary .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-danger .modal-content {
@@ -11180,32 +11180,32 @@ textarea.form-control {
 
 .modal.modal-danger .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-danger .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-danger .form-group.no-border .form-control,
 .modal.modal-danger .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   color: #ffffff; }
   .modal.modal-danger .form-group.no-border .form-control:focus, .modal.modal-danger .form-group.no-border .form-control:active, .modal.modal-danger .form-group.no-border .form-control:active,
   .modal.modal-danger .input-group.no-border .form-control:focus,
   .modal.modal-danger .input-group.no-border .form-control:active,
   .modal.modal-danger .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-danger .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-danger .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-danger .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(17, 17, 17, 0.2); }
   .modal.modal-danger .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-danger .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-danger .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-danger .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-danger .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -11216,21 +11216,21 @@ textarea.form-control {
   .modal.modal-danger .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-danger .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-danger .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-danger .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-danger .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-danger .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-danger .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-danger .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-danger .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -11238,7 +11238,7 @@ textarea.form-control {
 .modal.modal-danger .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-danger .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-warning .modal-content {
@@ -11288,32 +11288,32 @@ textarea.form-control {
 
 .modal.modal-warning .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-warning .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-warning .form-group.no-border .form-control,
 .modal.modal-warning .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   color: #ffffff; }
   .modal.modal-warning .form-group.no-border .form-control:focus, .modal.modal-warning .form-group.no-border .form-control:active, .modal.modal-warning .form-group.no-border .form-control:active,
   .modal.modal-warning .input-group.no-border .form-control:focus,
   .modal.modal-warning .input-group.no-border .form-control:active,
   .modal.modal-warning .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-warning .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-warning .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-warning .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(17, 17, 17, 0.2); }
   .modal.modal-warning .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-warning .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-warning .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-warning .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-warning .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -11324,21 +11324,21 @@ textarea.form-control {
   .modal.modal-warning .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-warning .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-warning .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-warning .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-warning .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-warning .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-warning .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-warning .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-warning .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -11346,7 +11346,7 @@ textarea.form-control {
 .modal.modal-warning .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-warning .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-success .modal-content {
@@ -11396,32 +11396,32 @@ textarea.form-control {
 
 .modal.modal-success .input-group-prepend .input-group-text,
 .modal.modal-success .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-success .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-success .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-success .form-group.no-border .form-control,
 .modal.modal-success .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   color: #ffffff; }
   .modal.modal-success .form-group.no-border .form-control:focus, .modal.modal-success .form-group.no-border .form-control:active, .modal.modal-success .form-group.no-border .form-control:active,
   .modal.modal-success .input-group.no-border .form-control:focus,
   .modal.modal-success .input-group.no-border .form-control:active,
   .modal.modal-success .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-success .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-success .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-success .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-success .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(17, 17, 17, 0.2); }
   .modal.modal-success .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-success .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-success .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-success .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-success .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -11432,21 +11432,21 @@ textarea.form-control {
   .modal.modal-success .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-success .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-success .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-success .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-success .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-success .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-success .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-success .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-success .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-success .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-success .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -11454,7 +11454,7 @@ textarea.form-control {
 .modal.modal-success .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-success .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-success .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-info .modal-content {
@@ -11504,32 +11504,32 @@ textarea.form-control {
 
 .modal.modal-info .input-group-prepend .input-group-text,
 .modal.modal-info .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-info .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-info .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-info .form-group.no-border .form-control,
 .modal.modal-info .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   color: #ffffff; }
   .modal.modal-info .form-group.no-border .form-control:focus, .modal.modal-info .form-group.no-border .form-control:active, .modal.modal-info .form-group.no-border .form-control:active,
   .modal.modal-info .input-group.no-border .form-control:focus,
   .modal.modal-info .input-group.no-border .form-control:active,
   .modal.modal-info .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-info .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-info .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-info .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-info .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(17, 17, 17, 0.2); }
   .modal.modal-info .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-info .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-info .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-info .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-info .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -11540,21 +11540,21 @@ textarea.form-control {
   .modal.modal-info .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-info .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-info .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
 
 .modal.modal-info .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-info .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-info .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-info .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal.modal-info .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-info .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-info .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-info .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(17, 17, 17, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -11562,7 +11562,7 @@ textarea.form-control {
 .modal.modal-info .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-info .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-info .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(17, 17, 17, 0.3);
   color: #ffffff; }
 
 .modal .modal-header .close {
@@ -13990,7 +13990,7 @@ table.tablesorter thead tr .header {
   width: 100%;
   min-height: 100vh;
   border-top: 2px solid #7248BD;
-  background: linear-gradient(black, #1e1e24);
+  background: linear-gradient(#111111, #1e1e24);
   -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -moz-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
@@ -20182,29 +20182,29 @@ Copyright (c) 2015 Daniel Eden
     margin-right: 0; }
   .login-page .card-login.card-plain .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(17, 17, 17, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
     color: #ffffff; }
   .login-page .card-login.card-plain .input-group-focus .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .input-group-focus .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     border-color: #ffffff;
     color: #ffffff; }
   .login-page .card-login.card-plain .form-group.no-border .form-control,
   .login-page .card-login.card-plain .input-group.no-border .form-control {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(17, 17, 17, 0.2);
     color: #ffffff; }
     .login-page .card-login.card-plain .form-group.no-border .form-control:focus, .login-page .card-login.card-plain .form-group.no-border .form-control:active, .login-page .card-login.card-plain .form-group.no-border .form-control:active,
     .login-page .card-login.card-plain .input-group.no-border .form-control:focus,
     .login-page .card-login.card-plain .input-group.no-border .form-control:active,
     .login-page .card-login.card-plain .input-group.no-border .form-control:active {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(17, 17, 17, 0.3);
       color: #ffffff; }
   .login-page .card-login.card-plain .form-group.no-border .form-control + .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .form-group.no-border .form-control + .input-group-append .input-group-text,
   .login-page .card-login.card-plain .input-group.no-border .form-control + .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .input-group.no-border .form-control + .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.2); }
+    background-color: rgba(17, 17, 17, 0.2); }
     .login-page .card-login.card-plain .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .login-page .card-login.card-plain .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .login-page .card-login.card-plain .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
     .login-page .card-login.card-plain .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
     .login-page .card-login.card-plain .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -20215,26 +20215,26 @@ Copyright (c) 2015 Daniel Eden
     .login-page .card-login.card-plain .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
     .login-page .card-login.card-plain .input-group.no-border .form-control + .input-group-append .input-group-text:active,
     .login-page .card-login.card-plain .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(17, 17, 17, 0.3);
       color: #ffffff; }
   .login-page .card-login.card-plain .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
   .login-page .card-login.card-plain .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
   .login-page .card-login.card-plain .form-group.no-border .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .form-group.no-border .input-group-append .input-group-text,
   .login-page .card-login.card-plain .input-group.no-border .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .input-group.no-border .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(17, 17, 17, 0.2);
     border: none;
     color: #ffffff; }
   .login-page .card-login.card-plain .form-group.no-border.input-group-focus .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .form-group.no-border.input-group-focus .input-group-append .input-group-text,
   .login-page .card-login.card-plain .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
   .login-page .card-login.card-plain .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(17, 17, 17, 0.3);
     color: #ffffff; }
   .login-page .card-login.card-plain .input-group-addon,
   .login-page .card-login.card-plain .form-group.no-border .input-group-addon,
@@ -20411,7 +20411,7 @@ Copyright (c) 2015 Daniel Eden
 
 .full-page.pricing-page, .full-page.login-page, .full-page.lock-page, .full-page.register-page {
   min-height: 100vh;
-  background: radial-gradient(black, #1e1e24); }
+  background: radial-gradient(#111111, #1e1e24); }
 
 @media (max-width: 767.98px) {
   .landing-page .section-story-overview .image-container:nth-child(2) {

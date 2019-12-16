@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {Component} from "react";
 import { Route, Switch } from "react-router-dom";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
@@ -26,12 +26,13 @@ import Navbar from "components/Navbar/Navbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 
-import routes from "routes.js";
+import routes from "./../routes/authenticatedRoutes.js";
 import logo from "assets/img/revibe-logo.jpg";
 
 var ps;
 
-class App extends React.Component {
+class Authenticated extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -41,8 +42,8 @@ class App extends React.Component {
       sidebarOpened: false
     };
   }
-  componentDidMount() {
 
+  componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";
       document.documentElement.classList.remove("perfect-scrollbar-off");
@@ -53,8 +54,8 @@ class App extends React.Component {
       }
     }
     window.addEventListener("scroll", this.showNavbarButton);
-
   }
+
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps.destroy();
@@ -63,6 +64,7 @@ class App extends React.Component {
     }
     window.removeEventListener("scroll", this.showNavbarButton);
   }
+
   componentDidUpdate(e) {
     if (e.location.pathname !== e.history.location.pathname) {
       if (navigator.platform.indexOf("Win") > -1) {
@@ -76,6 +78,7 @@ class App extends React.Component {
       this.refs.mainPanel.scrollTop = 0;
     }
   }
+
   showNavbarButton = () => {
     if (
       document.documentElement.scrollTop > 50 ||
@@ -91,6 +94,7 @@ class App extends React.Component {
       this.setState({ opacity: 0 });
     }
   };
+
   getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -98,6 +102,7 @@ class App extends React.Component {
       }
       return (
         <Route
+          exact
           path={prop.layout + prop.path}
           component={prop.component}
           key={key}
@@ -105,6 +110,7 @@ class App extends React.Component {
       );
     });
   };
+
   getActiveRoute = routes => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
@@ -125,42 +131,21 @@ class App extends React.Component {
     }
     return activeRoute;
   };
+
   handleActiveClick = color => {
     this.setState({ activeColor: color });
   };
-  handleMiniClick = () => {
-    let notifyMessage = "Sidebar mini ";
-    if (document.body.classList.contains("sidebar-mini")) {
-      this.setState({ sidebarMini: false });
-      notifyMessage += "deactivated...";
-    } else {
-      this.setState({ sidebarMini: true });
-      notifyMessage += "activated...";
-    }
-    let options = {};
-    options = {
-      place: "tr",
-      message: notifyMessage,
-      type: "primary",
-      icon: "tim-icons icon-bell-55",
-      autoDismiss: 7
-    };
-    this.refs.notificationAlert.notificationAlert(options);
-    document.body.classList.remove("sidebar-mini");
-  };
+
   toggleSidebar = () => {
     this.setState({
       sidebarOpened: !this.state.sidebarOpened
     });
     document.documentElement.classList.toggle("nav-open");
   };
-  closeSidebar = () => {
-    this.setState({
-      sidebarOpened: false
-    });
-    document.documentElement.classList.remove("nav-open");
-  };
+
+
   render() {
+    console.log(routes);
     return (
       <div className="wrapper">
         <div className="rna-container">
@@ -176,7 +161,6 @@ class App extends React.Component {
             text: "Revibe",
             imgSrc: logo
           }}
-          closeSidebar={this.closeSidebar}
         />
         <div
           className="main-panel"
@@ -185,12 +169,11 @@ class App extends React.Component {
         >
           <Navbar
             {...this.props}
-            handleMiniClick={this.handleMiniClick}
             brandText={this.getActiveRoute(routes)}
             sidebarOpened={this.state.sidebarOpened}
             toggleSidebar={this.toggleSidebar}
           />
-          <Switch>{this.getRoutes(routes)}</Switch>
+          {this.getRoutes(routes)}
           {// we don't want the Footer to be rendered on full screen maps page
           this.props.location.pathname.indexOf("full-screen-map") !==
           -1 ? null : (
@@ -202,4 +185,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Authenticated;
