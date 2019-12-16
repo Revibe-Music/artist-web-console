@@ -35,8 +35,14 @@ import {
   Container,
   Modal,
 } from "reactstrap";
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as sessionActions from '../../redux/authentication/actions.js';
+
 
 class AdminNavbar extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -45,12 +51,15 @@ class AdminNavbar extends React.Component {
       color: "navbar-transparent"
     };
   }
+
   componentDidMount() {
     window.addEventListener("resize", this.updateColor);
   }
+
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateColor);
   }
+
   // function that adds color white/transparent to the navbar on resize (this is for the collapse)
   updateColor = () => {
     if (window.innerWidth < 993 && this.state.collapseOpen) {
@@ -63,6 +72,7 @@ class AdminNavbar extends React.Component {
       });
     }
   };
+
   // this function opens and closes the collapse on small devices
   toggleCollapse = () => {
     if (this.state.collapseOpen) {
@@ -78,13 +88,28 @@ class AdminNavbar extends React.Component {
       collapseOpen: !this.state.collapseOpen
     });
   };
+
   // this function is to open the Search modal
   toggleModalSearch = () => {
     this.setState({
       modalSearch: !this.state.modalSearch
     });
   };
+  
+  async onLogout(history) {
+    this.props.actions.logout(history);
+  }
+
   render() {
+
+    const LogoutButton = withRouter(({ history }) => (
+      <Button
+        onClick={() => this.onLogout(history)}
+      >
+        Logout
+      </Button>
+    ));
+
     return (
       <>
         <Navbar
@@ -204,7 +229,9 @@ class AdminNavbar extends React.Component {
                     </NavLink>
                     <DropdownItem divider tag="li" />
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item">Log out</DropdownItem>
+                      <DropdownItem className="nav-item">
+                        <LogoutButton />
+                      </DropdownItem>
                     </NavLink>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -236,4 +263,10 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+const mapDispatch = (dispatch) => {
+  return {
+    actions: bindActionCreators(sessionActions, dispatch)
+  };
+};
+
+export default connect(null, mapDispatch)(AdminNavbar);

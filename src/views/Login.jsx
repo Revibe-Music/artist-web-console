@@ -32,22 +32,61 @@ import {
   Container,
   Col
 } from "reactstrap";
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as sessionActions from '../redux/authentication/actions.js';
 
 class Login extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      user: {
+        username: 'test_username',   
+        password: 'password'
+      }
+      
+    };
+
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
     document.body.classList.toggle("login-page");
   }
+
   componentWillUnmount() {
     document.body.classList.toggle("login-page");
   }
 
+  async onSubmit(history) {
+    this.props.actions.login(this.state.user, history);
+  }
+
+  onChange(e) {
+    const { value, name } = e.target;
+    const { user } = this.state;
+    user[name] = value;
+    this.setState({ user });
+  }
+
   render() {
+
+    const SubmitButton = withRouter(({ history }) => (
+      <Button
+        block
+        className="mb-3"
+        color="primary"
+        href="#pablo"
+        onClick={() => this.onSubmit(history)}
+        size="lg"
+      >
+        Get Started
+      </Button>
+    ));
+
     return (
       <div className="content" style={{paddingTop: "50px"}}>
         <Container>
@@ -61,10 +100,10 @@ class Login extends Component {
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
-                        <i className="tim-icons icon-email-85" />
+                        <i className="tim-icons icon-single-02" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="text" />
+                    <Input placeholder="Username" type="text" />
                   </InputGroup>
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">
@@ -76,16 +115,7 @@ class Login extends Component {
                   </InputGroup>
                 </CardBody>
                 <CardFooter>
-                  <Button
-                    block
-                    className="mb-3"
-                    color="primary"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                    size="lg"
-                  >
-                    Get Started
-                  </Button>
+                <SubmitButton />
                   <div className="pull-left">
                     <h6>
                       <Link to="/account/register">Create Account</Link>
@@ -101,4 +131,10 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatch = (dispatch) => {
+  return {
+    actions: bindActionCreators(sessionActions, dispatch)
+  };
+};
+
+export default connect(null, mapDispatch)(Login);
