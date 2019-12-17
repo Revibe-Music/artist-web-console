@@ -65,11 +65,11 @@ class Login extends Component {
     this.props.actions.login(this.state.user, history);
   }
 
-  onChange(e) {
-    const { value, name } = e.target;
-    const { user } = this.state;
-    user[name] = value;
-    this.setState({ user });
+  onChange(key, value) {
+    var newUser = {...this.state.user}
+    newUser[key] = value
+    this.setState({user: newUser})
+    // console.log(index, key, value);
   }
 
   render() {
@@ -83,7 +83,7 @@ class Login extends Component {
         onClick={() => this.onSubmit(history)}
         size="lg"
       >
-        Get Started
+        Login
       </Button>
     ));
 
@@ -103,7 +103,7 @@ class Login extends Component {
                         <i className="tim-icons icon-single-02" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Username" type="text" />
+                    <Input placeholder="Username" type="text" onChange={event => this.onChange( "username", event.target.value)}/>
                   </InputGroup>
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">
@@ -111,7 +111,7 @@ class Login extends Component {
                         <i className="tim-icons icon-lock-circle" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="text" />
+                    <Input placeholder="Password" type="text" onChange={event => this.onChange( "password", event.target.value)}/>
                   </InputGroup>
                 </CardBody>
                 <CardFooter>

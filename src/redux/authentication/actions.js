@@ -6,23 +6,33 @@ const revibe = new RevibeAPI()
 
 export const login = (credentials, history) => {
     return async () => {
-        var auth = await revibe.login(credentials)
-        const response = await auth.json()
-        console.log(response);
-        await sessionService.saveSession({ response })
-        await sessionService.saveUser(response.user)
+        var response = await revibe.login(credentials)
+        console.log(response.headers);
+        sessionService.saveSession({ response })
+        sessionService.saveUser(response.user)
         await history.push('/dashboard');
     };
 };
 
 export const register = (credentials, history) => 
 {
+    return async () => 
+    {
+        var response = await revibe.register(credentials)
+        console.log(response.headers);
+        sessionService.saveSession({ response })
+        sessionService.saveUser(response.user)
+        await history.push('/dashboard');
+    };
+};
+
+export const registerArtist = (credentials, history) => 
+{
     return async () => {
-        var auth = await revibe.register(credentials)
-        const response = await auth.json()
+        var response = await revibe.registerArtist(credentials)
         console.log(response);
-        await sessionService.saveSession({ response })
-        await sessionService.saveUser(response.user)
+        sessionService.saveSession({ response })
+        sessionService.saveUser(response.user)
         await history.push('/dashboard');
     };
 };

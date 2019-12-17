@@ -40,25 +40,25 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as sessionActions from '../redux/authentication/actions.js';
+import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 
-class Register extends React.Component {
+class RegisterArtist extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      agreedToTerms: false,
       user: {
-        username: '',
-        email: '',   
-        password: '',
+        username: this.sessionActions.username,
+        email: this.sessionActions.email,   
+        artist_display_name: '',
+        last_name: '',
         profile: {}
       }
       
     };
 
     this.onSubmit = this.onSubmit.bind(this);
-    this.onChangeAgree = this.onChangeAgree.bind(this)
-    this.onChangeUserFields = this.onChangeUserFields.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
@@ -73,19 +73,12 @@ class Register extends React.Component {
     this.props.actions.register(this.state.user, history);
   }
 
-  onChangeUserFields(key, value) {
+  onChange(key, value) {
     var newUser = {...this.state.user}
     newUser[key] = value
     this.setState({user: newUser})
     // console.log(index, key, value);
   }
-
-  onChangeAgree(value) {
-    this.setState({agreedToTerms: value})
-    console.log(value)
-    // console.log(index, key, value);
-  }
-
 
   render() {
 
@@ -108,7 +101,7 @@ class Register extends React.Component {
             <Col className="m-auto" md="7">
               <Card className="card-register card-gray">
                 <CardHeader>
-                  <CardTitle style={{color: "#7248bd"}} tag="h4">Register</CardTitle>
+                  <CardTitle style={{color: "#7248bd"}} tag="h4">Artist Information</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Form className="form">
@@ -118,7 +111,7 @@ class Register extends React.Component {
                           <i className="tim-icons icon-single-02" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Username" type="text" onChange={event => this.onChangeUserFields( "username", event.target.value)} />
+                      <Input placeholder="Username" type="text" />
                     </InputGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">
@@ -126,7 +119,7 @@ class Register extends React.Component {
                           <i className="tim-icons icon-email-85" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Email" type="text" onChange={event => this.onChangeUserFields( "email", event.target.value)}/>
+                      <Input placeholder="Email" type="text"/>
                     </InputGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">
@@ -134,11 +127,11 @@ class Register extends React.Component {
                           <i className="tim-icons icon-lock-circle" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Password" type="text" onChange={event => this.onChangeUserFields( "password", event.target.value)}/>
+                      <Input placeholder="Password" type="text" onChange={event => this.onChange( "password", event.target.value)}/>
                     </InputGroup>
                     <FormGroup check className="text-left">
                       <Label check>
-                        <Input type="checkbox" onClick= {event => this.onChangeAgree(event.target.checked)}/>
+                        <Input type="checkbox" />
                         <span className="form-check-sign" />I agree to the{" "}
                         <a href="#pablo" onClick={e => e.preventDefault()}>
                           terms and conditions
@@ -171,4 +164,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatch)(Register);
+export default connect(null, mapDispatch)(RegisterArtist);

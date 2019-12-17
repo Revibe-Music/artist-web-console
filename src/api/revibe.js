@@ -1,5 +1,6 @@
 import Login from "views/Login"
 import Register from "views/Register"
+import axios from "axios"
 
 
 export default class RevibeAPI {
@@ -9,41 +10,42 @@ export default class RevibeAPI {
     // this.session = session
   }
 
-  async _request(endpoint, body, requestType, authenticated) {
+  async _request(endpoint, body, requestType, isAuthenticated) {
     // implemenmt way to get auth credentials
-    if (requestType === "GET")  {
-      return await fetch(this.baseEndpoint + endpoint, {
-        method: requestType,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
+
+    var options = {
+      url: this.baseEndpoint + endpoint,
+      method: requestType,
+      withCredentials: isAuthenticated,
+      responseType: "json",
+     }
+
+    if (requestType === "GET")  
+    {
+      return await axios (options);
     }
     else {
-      return await fetch(this.baseEndpoint + endpoint, {
-        method: requestType,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      })
+      options.data = body;
+      return await axios (options);
     }
   }
 
-  async login(body) {
-    console.log(body);
+  async login(data) {
+    console.log(data);
     
-   return await this. _request("account/login/", body, "POST", false)
+   return await this. _request("account/login/", data, "POST", false)
   }
 
-  async register(body) {
-    return await this. _request("register/", body, "POST", false)
+  async register(data) {
+    return await this. _request("account/register/", data, "POST", false)
   }
 
-  async logout(body) {
-    return await this. _request("logout/", body, "POST", true)
+  async registerArtist(data) {
+    return await this. _request("account/register_artist/", data, "POST", false)
+  }
+
+  async logout(data) {
+    return await this. _request("logout/", data, "POST", true)
   }
 
 }
