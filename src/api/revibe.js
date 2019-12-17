@@ -10,15 +10,18 @@ export default class RevibeAPI {
     // this.session = session
   }
 
-  async _request(endpoint, body, requestType, isAuthenticated) {
+  async _request(endpoint, body, requestType, isAuthenticated, headers={}) {
     // implemenmt way to get auth credentials
-
     var options = {
       url: this.baseEndpoint + endpoint,
       method: requestType,
       withCredentials: isAuthenticated,
       responseType: "json",
      }
+    if(Object.keys(headers).length > 0) {
+      options.headers = headers
+    }
+    
 
     if (requestType === "GET")  
     {
@@ -32,7 +35,6 @@ export default class RevibeAPI {
 
   async login(data) {
     console.log(data);
-    
    return await this. _request("account/login/", data, "POST", false)
   }
 
@@ -41,7 +43,10 @@ export default class RevibeAPI {
   }
 
   async registerArtist(data) {
-    return await this. _request("account/register_artist/", data, "POST", false)
+    var form = new FormData();
+    form.set("name", data.name)
+    form.append("image_up", data.image_up)
+    return await this. _request("account/artist/", form, "POST", true, {"Content-Type": 'multipart/form-data'})
   }
 
   async logout(data) {

@@ -41,22 +41,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as sessionActions from '../redux/authentication/actions.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
+import RevibeAPI from '../api/revibe.js';
+
+const revibe = new RevibeAPI()
 
 class RegisterArtist extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      user: {
-        username: this.sessionActions.username,
-        email: this.sessionActions.email,   
-        artist_display_name: '',
-        last_name: '',
-        profile: {}
-      }
-      
+      display_name: '',
+      image: null
     };
 
+    this.ImageUploader = React.createRef();
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
@@ -69,8 +67,11 @@ class RegisterArtist extends React.Component {
     document.body.classList.toggle("register-page");
   }
 
-  async onSubmit(history) {
-    this.props.actions.register(this.state.user, history);
+  async onSubmit(history) 
+  {
+    var response = await revibe.registerArtist({name: this.state.display_name, image_up: this.ImageUploader.current.state.file})
+    console.log(response);
+    
   }
 
   onChange(key, value) {
@@ -98,56 +99,34 @@ class RegisterArtist extends React.Component {
       <div className="content" style={{paddingTop: "50px"}}>
         <Container>
           <Row>
-            <Col className="m-auto" md="7">
+            <Col className="m-auto" md="8">
               <Card className="card-register card-gray">
                 <CardHeader>
-                  <CardTitle style={{color: "#7248bd"}} tag="h4">Artist Information</CardTitle>
+                  <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h4">Artist Info</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Form className="form">
-                    <InputGroup>
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                  <ImageUpload
+                    avatar
+                    addBtnColor="default"
+                    changeBtnColor="default"
+                    ref={this.ImageUploader}/>
+                    </div>
+                    <Col className="m-auto" md="6">
+                    <InputGroup md="6">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="tim-icons icon-single-02" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Username" type="text" />
+                      <Input placeholder="Display Name" type="text" onChange={event => this.onChange( "display_name", event.target.value)}/>
                     </InputGroup>
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="tim-icons icon-email-85" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Email" type="text"/>
-                    </InputGroup>
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="tim-icons icon-lock-circle" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Password" type="text" onChange={event => this.onChange( "password", event.target.value)}/>
-                    </InputGroup>
-                    <FormGroup check className="text-left">
-                      <Label check>
-                        <Input type="checkbox" />
-                        <span className="form-check-sign" />I agree to the{" "}
-                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                          terms and conditions
-                        </a>
-                        .
-                      </Label>
-                    </FormGroup>
+                    </Col>
                   </Form>
                 </CardBody>
                 <CardFooter>
-                  <SubmitButton />
-                    <div className="pull-right">
-                    <h6>
-                      <Link to="/account/login">Have an Account? Login Here</Link>
-                    </h6>
-                  </div>
+                  <SubmitButton/>
                 </CardFooter>
               </Card>
             </Col>

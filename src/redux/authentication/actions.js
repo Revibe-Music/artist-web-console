@@ -7,10 +7,12 @@ const revibe = new RevibeAPI()
 export const login = (credentials, history) => {
     return async () => {
         var response = await revibe.login(credentials)
-        console.log(response.headers);
+        console.log(response);
         sessionService.saveSession({ response })
-        sessionService.saveUser(response.user)
-        await history.push('/dashboard');
+        sessionService.saveUser(response.data.user)
+        return (response.data.user);
+
+        //await history.push('/dashboard');
     };
 };
 

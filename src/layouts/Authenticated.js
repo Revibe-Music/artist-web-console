@@ -145,7 +145,6 @@ class Authenticated extends Component {
 
 
   render() {
-    console.log(routes);
     return (
       <div className="wrapper">
         <div className="rna-container">

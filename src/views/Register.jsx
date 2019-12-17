@@ -108,7 +108,7 @@ class Register extends React.Component {
             <Col className="m-auto" md="7">
               <Card className="card-register card-gray">
                 <CardHeader>
-                  <CardTitle style={{color: "#7248bd"}} tag="h4">Register</CardTitle>
+                  <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h3">Register</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Form className="form">
@@ -118,7 +118,7 @@ class Register extends React.Component {
                           <i className="tim-icons icon-single-02" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Username" type="text" onChange={event => this.onChangeUserFields( "username", event.target.value)} />
+                      <Input placeholder="Username (Not your Artist or Display Name)" type="text" onChange={event => this.onChangeUserFields( "username", event.target.value)} />
                     </InputGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">

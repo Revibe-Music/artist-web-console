@@ -9,12 +9,14 @@ import PrivateRoute from './../routes/PrivateRoute.js';
 import Login from './../views/Login.jsx';
 import Register from './../views/Register.jsx';
 import Dashboard from './../views/Dashboard.jsx';
+import RegisterArtist from 'views/RegisterArtist.jsx';
 
 const App = ({ authenticated, checked }) => (
   <Router>
     { checked &&
       <Switch>
       <Route path="/account/register" component={Register}/>
+      <Route path="/account/create-profile" component={RegisterArtist}/>
       <Route path="/account/login" component={Login}/>
       <PrivateRoute path="/" component={Authenticated} authenticated={authenticated}/>
      </Switch>

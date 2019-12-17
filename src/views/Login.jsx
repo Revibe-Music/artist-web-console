@@ -61,8 +61,24 @@ class Login extends Component {
     document.body.classList.toggle("login-page");
   }
 
+  componentDidUpdate(prevProps)
+  {
+    console.log(this.props.user);
+    console.log(prevProps.user);
+  }
+
   async onSubmit(history) {
-    this.props.actions.login(this.state.user, history);
+    var user = await this.props.actions.login(this.state.user, history);
+    if (user.is_artist)
+    {
+      await history.push('/dashboard');
+    }
+    else
+    {
+      await history.push('/account/create-profile');
+    }
+    console.log(user);
+    
   }
 
   onChange(key, value) {
@@ -94,7 +110,7 @@ class Login extends Component {
             <Form className="form">
               <Card className="card-login card-gray">
                 <CardHeader>
-                  <CardTitle style={{color: "#7248bd"}} tag="h1">Login</CardTitle>
+                  <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h1">Login</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <InputGroup>
@@ -131,10 +147,16 @@ class Login extends Component {
   }
 }
 
+const mapState = (state) => {
+  return {
+    user: state.session.user
+  };
+};
+
 const mapDispatch = (dispatch) => {
   return {
     actions: bindActionCreators(sessionActions, dispatch)
   };
 };
 
-export default connect(null, mapDispatch)(Login);
+export default connect(mapState, mapDispatch)(Login);
