@@ -36,33 +36,65 @@ import {
   Col,
 } from "reactstrap";
 import SongUpload from "components/SongUpload/SongUpload.jsx";
-import UploadedSongs from "components/Tables/UploadedSongs.jsx";
-import UploadingSongs from "components/Tables/UploadingSongs.jsx";
+import Uploads from "components/Tables/Uploads.jsx";
+import Contributions from "components/Tables/Contributions.jsx";
+import PendingContributions from "components/Tables/PendingContributions.jsx";
 
 
 class Catalog extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      uploading: true
+    }
   }
 
   render() {
     return (
       <div className="content">
-        <UploadedSongs />
-        <UploadingSongs />
 
-        <Row>
-          <Col md="12">
-            <Card>
-              <CardBody>
-                <CardTitle tag="h4">Upload Songs</CardTitle>
-                <SongUpload />
-              </CardBody>
-            </Card>
-            {/* end card */}
-          </Col>
-        </Row>
+      {!this.state.uploading ?
+        <>
+          <Button
+            color="primary"
+            onClick={() => this.setState({uploading:true})}
+          >
+            Upload
+          </Button>
+          <Row className="mt-5">
+            <Col xs={12} md={12}>
+              <PendingContributions />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col xs={12} md={12}>
+              <Uploads />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col xs={12} md={12}>
+              <Contributions />
+            </Col>
+          </Row>
+        </>
+      :
+        <>
+          <a onClick={e => this.setState({uploading:false})}>
+            <i className="tim-icons icon-simple-remove" style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD"}}/>
+          </a>
+          <Row>
+            <Col md="12">
+              <Card>
+                <CardBody>
+                  <CardTitle tag="h4">Upload Songs</CardTitle>
+                  <SongUpload />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </>
+      }
       </div>
     );
   }

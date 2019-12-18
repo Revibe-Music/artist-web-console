@@ -7,7 +7,6 @@ export default class RevibeAPI {
 
   constructor() {
     this.baseEndpoint = " http://test-env.myrpupud2p.us-east-2.elasticbeanstalk.com/v1/"
-    // this.session = session
   }
 
   async _request(endpoint, body, requestType, isAuthenticated, headers={}) {
@@ -21,20 +20,17 @@ export default class RevibeAPI {
     if(Object.keys(headers).length > 0) {
       options.headers = headers
     }
-    
-
-    if (requestType === "GET")  
+    if (requestType === "GET")
     {
-      return await axios (options);
+      return await axios(options);
     }
     else {
       options.data = body;
-      return await axios (options);
+      return await axios(options);
     }
   }
 
   async login(data) {
-    console.log(data);
    return await this. _request("account/login/", data, "POST", false)
   }
 
@@ -54,17 +50,3 @@ export default class RevibeAPI {
   }
 
 }
-
-(async () => {
-  const rawResponse = await fetch('https://httpbin.org/post', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({a: 1, b: 'Textual content'})
-  });
-  const content = await rawResponse.json();
-
-  console.log(content);
-})();
