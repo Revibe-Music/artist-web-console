@@ -33,27 +33,25 @@ import {
 } from "reactstrap";
 
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
-import RevibeAPI from '../api/revibe.js';
-import axios from "axios"
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as sessionActions from '../redux/authentication/actions.js';
 
 class Profile extends React.Component {
 
-  constructor(props) 
-  {
+  constructor(props) {
     super(props)
     this.state = {
       user: {}
-    }
-    axios.get("http://test-env.myrpupud2p.us-east-2.elasticbeanstalk.com/v1/account/profile/")
-        .then(res => {
-          const user = res.data;
-          this.setState({user});
-          console.log(user)
-        })
+    };
+
+    this.getProfile = this.getProfile.bind(this);
+    this.editProfile = this.editProfile.bind(this);    
   }
 
   componentWillMount()
   {
+    this.getProfile()
   }
 
   componentDidMount() 
@@ -63,25 +61,26 @@ class Profile extends React.Component {
 
   componentWillUnmount() 
   {
-    axios.patch("http://test-env.myrpupud2p.us-east-2.elasticbeanstalk.com/v1/account/profile/")
-    .then(res => {
-      console.log(res);
-      console.log(res.data);
-    })
     document.body.classList.toggle("profile-page");
   }
 
   componentDidUpdate(prevProps)
   {
+    console.log(this.state.user);    
+  }
+
+  async getProfile() 
+  {
+    var user = await this.props.actions.getProfile();
+    this.setState({user: user})
     console.log(this.state.user);
   }
 
-
-    async onLoad(history) 
-    {
-      var user = await this.props.actions.loadUser(this.state.user, history);
-      console.log(user);
-    }
+  async editProfile()
+  {
+    var user = await this.props.actions.editProfile();
+    console.log(user);
+  }
 
   onChange(key, value) {
     var newUser = {...this.state.user}
@@ -105,13 +104,13 @@ class Profile extends React.Component {
                     <Col className="pr-md-1" md="5">
                     <FormGroup>
                       <label>Username</label>
-                      <Input placeholder="Username" type="text" onChange={event => this.onChange( "username", event.target.value)}/>
+                      <Input defaultValue={this.state.user.username} placeholder="Username" type="text" onChange={event => this.onChange( "username", event.target.value)}/>
                     </FormGroup>
                     </Col>
                     <Col className="pl-md-1" md="4">
                       <FormGroup>
                         <label>Email address</label>
-                        <Input placeholder="mike@email.com" type="email" onChange={event => this.onChange( "email", event.target.value)}/>
+                        <Input defaultValue={this.state.user.email} placeholder="mike@email.com" type="email" onChange={event => this.onChange( "email", event.target.value)}/>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -119,13 +118,13 @@ class Profile extends React.Component {
                     <Col className="pr-md-1" md="6">
                       <FormGroup>
                         <label>First Name</label>
-                        <Input defaultValue="" placeholder="First Name" type="text" onChange={event => this.onChange( "first_name", event.target.value)}/>
+                        <Input defaultValue={this.state.user.first_name} placeholder="First Name" type="text" onChange={event => this.onChange( "first_name", event.target.value)}/>
                       </FormGroup>
                     </Col>
                     <Col className="pl-md-1" md="6">
                       <FormGroup>
                         <label>Last Name</label>
-                        <Input defaultValue="" placeholder="Last Name" type="text" onChange={event => this.onChange( "last_name", event.target.value)}/>
+                        <Input defaultValue={this.state.user.last_name}  placeholder="Last Name" type="text" onChange={event => this.onChange( "last_name", event.target.value)}/>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -134,7 +133,7 @@ class Profile extends React.Component {
                       <FormGroup>
                         <label>Address</label>
                         <Input
-                          defaultValue=""
+                          defaultValue={this.state.user.address}
                           placeholder="Home Address"
                           type="text"
                           onChange={event => this.onChange( "address", event.target.value)}
@@ -229,5 +228,10 @@ class Profile extends React.Component {
     );
   }
 }
+const mapDispatch = (dispatch) => {
+  return {
+    actions: bindActionCreators(sessionActions, dispatch)
+  };
+};
 
-export default Profile;
+export default connect(null, mapDispatch)(Profile);

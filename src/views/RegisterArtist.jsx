@@ -51,12 +51,12 @@ class RegisterArtist extends React.Component {
     super(props)
     this.state = {
       display_name: '',
-      image: null
     };
 
     this.ImageUploader = React.createRef();
     this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeImage = this.onChangeImage.bind(this);
   }
 
   componentDidMount() {
@@ -70,14 +70,18 @@ class RegisterArtist extends React.Component {
   async onSubmit(history) 
   {
     var response = await revibe.registerArtist({name: this.state.display_name, image_up: this.ImageUploader.current.state.file})
+    await history.push('/dashboard');
     console.log(response);
   }
 
-  onChange(key, value) {
-    var newUser = {...this.state.user}
-    newUser[key] = value
-    this.setState({user: newUser})
-    // console.log(index, key, value);
+  onChangeName(value) 
+  {
+    this.setState({display_name: value})
+  }
+
+  onChangeImage(value) 
+  {
+    this.setState({image: value})
   }
 
   render() {
@@ -119,7 +123,7 @@ class RegisterArtist extends React.Component {
                           <i className="tim-icons icon-single-02" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Display Name" type="text" onChange={event => this.onChange( "display_name", event.target.value)}/>
+                      <Input placeholder="Display Name" type="text" onChange={event => this.onChangeName(event.target.value)}/>
                     </InputGroup>
                     </Col>
                   </Form>

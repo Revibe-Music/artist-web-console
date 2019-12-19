@@ -53,7 +53,6 @@ class Register extends React.Component {
         password: '',
         profile: {}
       }
-      
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -77,13 +76,11 @@ class Register extends React.Component {
     var newUser = {...this.state.user}
     newUser[key] = value
     this.setState({user: newUser})
-    // console.log(index, key, value);
   }
 
   onChangeAgree(value) {
     this.setState({agreedToTerms: value})
     console.log(value)
-    // console.log(index, key, value);
   }
 
 

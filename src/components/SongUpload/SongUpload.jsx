@@ -46,6 +46,9 @@ import Dropzone from 'react-dropzone';
 
 import ReactTable from "react-table";
 import Select from "react-select";
+import RevibeAPI from '../../api/revibe.js';
+
+const revibe = new RevibeAPI()
 
 const musicMetadata = require('music-metadata-browser');
 
@@ -109,13 +112,15 @@ class SongUpload extends Component {
           filterable: false
         },
         {
-          accessor: "duration",
+          id: "duration",
           Header: "Duration",
+          accessor: row => this.formatDuration(row.duration),
           filterable: false
         },
         {
+          id: "quality",
           Header: "Quality",
-          accessor: "quality",
+          accessor: row => this.formatQuality(row.quality),
           filterable: false
         },
         {
@@ -168,11 +173,11 @@ class SongUpload extends Component {
     var songs = []
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
-      var formattedSong = {name: metadata.common.title,
+      var formattedSong = {title: metadata.common.title,
                            album: metadata.common.album,
-                           duration: this.formatDuration(metadata.format.duration),
-                           quality: this.formatQuality(metadata.format.bitrate),
-                           file: files[x]
+                           duration: metadata.format.duration,
+                           quality: metadata.format.bitrate,
+                           song: files[x]
                          }
       songs.push(formattedSong)
     }
@@ -194,9 +199,15 @@ class SongUpload extends Component {
     this.setState({songs: newData})
   }
 
-  uploadButtonPressed() {
-    console.log(this.state.songs);
-    console.log("Need to actually upload stuffs");
+  async uploadButtonPressed() 
+  {
+    var uploads = this.state.songs
+    var album = await revibe.createAlbum()
+    for(var x=0; x<uploads.length; x++) {
+      delete uploads[x].album
+      uploads[x].album_id = album.id
+      revibe.uploadSong(uploads[x])
+    }
   }
 
   render() {
