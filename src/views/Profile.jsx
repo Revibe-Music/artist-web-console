@@ -129,40 +129,27 @@ class Profile extends React.Component {
                     </Col>
                   </Row>
                   <Row>
-                    <Col md="12">
-                      <FormGroup>
-                        <label>Address</label>
-                        <Input
-                          defaultValue={this.state.user.address}
-                          placeholder="Home Address"
-                          type="text"
-                          onChange={event => this.onChange( "address", event.target.value)}
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
                     <Col className="pr-md-1" md="4">
                       <FormGroup>
                         <label>City</label>
-                        <Input defaultvalue="" placeholder="City" type="text" onChange={event => this.onChange( "address", event.target.value)}/>
+                        <Input defaultvalue="" placeholder="City" type="text" onChange={event => this.onChange( "city", event.target.value)}/>
                       </FormGroup>
                     </Col>
                     <Col className="px-md-1" md="4">
                       <FormGroup>
                         <label>Country</label>
-                        <Input defaultvalue="" placeholder="Country" type="text" onChange={event => this.onChange( "address", event.target.value)}/>
+                        <Input defaultvalue="" placeholder="Country" type="text" onChange={event => this.onChange( "country", event.target.value)}/>
                       </FormGroup>
                     </Col>
                     <Col className="pl-md-1" md="4">
                       <FormGroup>
                         <label>Postal Code</label>
-                        <Input defaultvalue="" placeholder="ZIP Code" type="number" onChange={event => this.onChange( "address", event.target.value)}/>
+                        <Input defaultvalue="" placeholder="ZIP Code" type="number" onChange={event => this.onChange( "zip", event.target.value)}/>
                       </FormGroup>
                     </Col>
                   </Row>
                   <Row>
-                    <Col md="8">
+                    <Col md="12">
                       <FormGroup>
                         <label>About Me</label>
                         <Input

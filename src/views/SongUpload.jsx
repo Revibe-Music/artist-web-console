@@ -46,7 +46,11 @@ import Dropzone from 'react-dropzone';
 
 import ReactTable from "react-table";
 import Select from "react-select";
-import RevibeAPI from '../../api/revibe.js';
+import RevibeAPI from '../api/revibe.js';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as sessionActions from '../redux/authentication/actions.js';
+import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 
 const revibe = new RevibeAPI()
 
@@ -77,12 +81,6 @@ class SongUpload extends Component {
           Header: "Name",
           accessor: row => <Input value={row.name} onChange={event => this.editRow( row.index,"name", event.target.value)} />,
           filterable: false,
-        },
-        {
-          id: "album",
-          Header: "Album",
-          accessor: row => <Input value={row.album} onChange={event => this.editRow( row.index,"album", event.target.value)} />,
-          filterable: false
         },
         {
           id: "contributors",
@@ -174,7 +172,6 @@ class SongUpload extends Component {
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
       var formattedSong = {title: metadata.common.title,
-                           album: metadata.common.album,
                            duration: metadata.format.duration,
                            quality: metadata.format.bitrate,
                            song: files[x]
@@ -204,7 +201,6 @@ class SongUpload extends Component {
     var uploads = this.state.songs
     var album = await revibe.createAlbum()
     for(var x=0; x<uploads.length; x++) {
-      delete uploads[x].album
       uploads[x].album_id = album.id
       revibe.uploadSong(uploads[x])
     }
@@ -213,7 +209,68 @@ class SongUpload extends Component {
   render() {
     const maxSize = 10485760; // 10 MB
     return (
-      <>
+<>
+      <Row>
+        <Col md="6">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h2">
+                Album Name
+              </CardTitle>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="12">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h4">
+                Buttons will go here
+                <FormGroup check style={{ alignItems: "center", justifyContent: "center" }}>
+                    <Label check>
+                      <Input type="checkbox" />
+                      <span className="form-check-sign" />
+                    </Label>
+                    <Label check>
+                      <Input type="checkbox" />
+                      <span className="form-check-sign" />
+                    </Label>
+                    <Label check>
+                      <Input type="checkbox" />
+                      <span className="form-check-sign" />
+                    </Label>
+                    <Label check>
+                      <Input type="checkbox" />
+                      <span className="form-check-sign" />
+                    </Label>
+                  </FormGroup>
+              </CardTitle>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="4">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h2">
+                Upload Album Image
+                <ImageUpload
+                    
+                    addBtnColor="default"
+                    changeBtnColor="default"
+                    ref={this.ImageUploader}/>
+              </CardTitle>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+       <Row>
+          <Col md="12">
+            <Card>
+              <CardBody>
+                <CardTitle tag="h4">Upload Songs</CardTitle>
 
       {this.state.songs.length > 0 ?
         <>
@@ -265,6 +322,10 @@ class SongUpload extends Component {
       </Dropzone>
       </div>
       }
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
       </>
     );
   }

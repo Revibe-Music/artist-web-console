@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Authenticated from './Authenticated.js';
-import Unauthenticated from './Unauthenticated.js';
 import PrivateRoute from './../routes/PrivateRoute.js';
 import Login from './../views/Login.jsx';
 import Register from './../views/Register.jsx';
-import Dashboard from './../views/Dashboard.jsx';
 import RegisterArtist from 'views/RegisterArtist.jsx';
 
 const App = ({ authenticated, checked }) => (
