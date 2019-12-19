@@ -44,7 +44,8 @@ import {
 } from "reactstrap";
 import Dropzone from 'react-dropzone';
 
-import UploadingSongs from 'components/Tables/UploadingSongs.jsx'
+import ReactTable from "react-table";
+import Select from "react-select";
 
 const musicMetadata = require('music-metadata-browser');
 
@@ -67,31 +68,160 @@ class SongUpload extends Component {
     this.state = {
       songs: []
     };
-    this.onDrop = this.onDrop.bind(this)
+    this.columns = [
+        {
+          id: "name",
+          Header: "Name",
+          accessor: row => <Input value={row.name} onChange={event => this.editRow( row.index,"name", event.target.value)} />,
+          filterable: false,
+        },
+        {
+          id: "album",
+          Header: "Album",
+          accessor: row => <Input value={row.album} onChange={event => this.editRow( row.index,"album", event.target.value)} />,
+          filterable: false
+        },
+        {
+          id: "contributors",
+          Header: "Contributors",
+          style:{overflow: "visible"},
+          Cell: row => <Select
+            className="react-select info"
+            classNamePrefix="react-select"
+            placeholder="Contributors"
+            name="multipleSelect"
+            closeMenuOnSelect={false}
+            isMulti
+            value={row.contributors}
+            onChange={value =>
+              this.editRow( row.index,"contributors", value)
+            }
+            options={[
+              {
+                value: "",
+                isDisabled: true
+              },
+              { value: "2", label: "Drake " },
+              { value: "3", label: "Travis Scott" },
+              { value: "4", label: "J. Cole" },
+            ]}
+          />,
+          filterable: false
+        },
+        {
+          accessor: "duration",
+          Header: "Duration",
+          filterable: false
+        },
+        {
+          Header: "Quality",
+          accessor: "quality",
+          filterable: false
+        },
+        {
+          id: "explicit",
+          Header: "Explicit",
+          accessor: row => (<FormGroup check style={{alignItems: "center", justifyContent: "center"}}>
+                              <Label check>
+                                <Input type="checkbox" />
+                                <span className="form-check-sign" />
+                              </Label>
+                            </FormGroup>),
+          filterable: false
+        },
+        {
+          Header: "Actions",
+          accessor: "actions",
+          Cell: row => (<Button onClick={() => this.removeRow(row.index)} className="btn-round" color="danger">
+                          Remove
+                       </Button>),
+          sortable: false,
+          filterable: false
+        }
+      ]
+
+      this.editRow = this.editRow.bind(this)
+      this.removeRow = this.removeRow.bind(this)
+      this.onDrop = this.onDrop.bind(this)
+      this.uploadButtonPressed = this.uploadButtonPressed.bind(this)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.songs.length !== prevState.songs.length) {
+      this.state.songs.forEach((item, i) => {
+        item.index = i;
+      });
+    }
+  }
+
+  formatDuration(time) {
+    var minutes = Math.floor(time / 60);
+    var seconds = Math.round(time - minutes * 60);
+    return minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) ;
+  }
+
+  formatQuality(bitrate) {
+    return (bitrate / 1000).toString() + " kb/s"
   }
 
   async onDrop(files) {
     var songs = []
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
-      songs.push(metadata)
-      // console.log(metadata.common);
+      var formattedSong = {name: metadata.common.title,
+                           album: metadata.common.album,
+                           duration: this.formatDuration(metadata.format.duration),
+                           quality: this.formatQuality(metadata.format.bitrate),
+                           file: files[x]
+                         }
+      songs.push(formattedSong)
     }
+    songs.forEach((item, i) => {
+      item.index = i;
+    });
     this.setState({songs})
   }
 
-  removeUpload(index) {
-    var songs = this.state.songs
-    songs.splice(index, 1);
-    this.setState({songs: songs})
+  editRow(index, key, value) {
+    var newData = [... this.state.songs]
+    newData[index][key] = value
+    this.setState({songs: newData})
+  }
+
+  removeRow(index) {
+    var newData = [... this.state.songs]
+    newData.splice(index, 1);
+    this.setState({songs: newData})
+  }
+
+  uploadButtonPressed() {
+    console.log(this.state.songs);
+    console.log("Need to actually upload stuffs");
   }
 
   render() {
     const maxSize = 10485760; // 10 MB
-
     return (
       <>
-      <div  style={basestyle}>
+
+      {this.state.songs.length > 0 ?
+        <>
+        <ReactTable
+          data={this.state.songs}
+          resizable={true}
+          columns={this.columns}
+          defaultPageSize={this.state.songs.length}
+          showPagination={false}
+          className="-striped -highlight"
+        />
+        <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
+        <Button onClick={this.uploadButtonPressed} className="btn-round" color="primary">
+            Upload
+        </Button>
+        </div>
+        </>
+      :
+      <div style={basestyle}>
       <Dropzone
         onDrop={this.onDrop}
         accept="audio/*"
@@ -123,19 +253,7 @@ class SongUpload extends Component {
         }
       </Dropzone>
       </div>
-      {this.state.songs.length > 0 ?
-        <>
-
-        <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
-        <Button onClick={() => console.log("Uploading...")} className="btn-round" color="primary">
-            Upload
-        </Button>{` `}
-        </div>
-        </>
-      :
-      null
       }
-
       </>
     );
   }
