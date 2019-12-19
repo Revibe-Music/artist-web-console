@@ -16,6 +16,19 @@ export const login = (credentials, history) => {
     };
 };
 
+export const loadUser = (credentials, history) => 
+{
+    return async () => 
+    {
+        var response = await revibe.loadUser(credentials)
+        console.log(response);
+        sessionService.saveSession({ response })
+        sessionService.saveUser(response.data.user)
+        return (response.data.user);
+        //await history.push('/dashboard');
+    };
+};
+
 export const register = (credentials, history) => 
 {
     return async () => 

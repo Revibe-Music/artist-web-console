@@ -71,7 +71,6 @@ class RegisterArtist extends React.Component {
   {
     var response = await revibe.registerArtist({name: this.state.display_name, image_up: this.ImageUploader.current.state.file})
     console.log(response);
-    
   }
 
   onChange(key, value) {

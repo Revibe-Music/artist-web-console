@@ -46,7 +46,6 @@ class Login extends Component {
         username: 'test_username',   
         password: 'password'
       }
-      
     };
 
     this.onSubmit = this.onSubmit.bind(this);

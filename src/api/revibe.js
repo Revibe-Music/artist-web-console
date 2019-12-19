@@ -27,10 +27,17 @@ export default class RevibeAPI {
     {
       return await axios (options);
     }
-    else {
+    else 
+    {
       options.data = body;
       return await axios (options);
     }
+  }
+
+  async loadUser(data)
+  {
+    return await this._request("account/profile/", data, "GET", true)
+    console.log(data);
   }
 
   async login(data) {
