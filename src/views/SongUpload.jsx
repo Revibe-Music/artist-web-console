@@ -36,6 +36,9 @@ import {
   Label,
   FormGroup,
   Input,
+  InputGroup,
+  InputGroupText,
+  InputGroupAddon,
   Table,
   Progress,
   Row,
@@ -211,39 +214,48 @@ class SongUpload extends Component {
     return (
 <>
       <Row>
-        <Col md="6">
+        <Col className="m-auto mr-auto" md="6">
           <Card>
             <CardBody>
-              <CardTitle tag="h2">
+              <CardTitle style={{ display: "flex", alignItems: "center", justifyContent: "center"}} tag="h4">
                 Album Name
               </CardTitle>
+              <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="tim-icons icon-single-02" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Album Name" type="text" onChange={event => this.onChange( "album_name", event.target.value)}/>
+                  </InputGroup>
             </CardBody>
           </Card>
         </Col>
       </Row>
       <Row>
-        <Col md="12">
+        <Col className="m-auto mr-auto" md="6">
           <Card>
             <CardBody>
-              <CardTitle tag="h4">
-                Buttons will go here
-                <FormGroup check style={{ alignItems: "center", justifyContent: "center" }}>
-                    <Label check>
-                      <Input type="checkbox" />
-                      <span className="form-check-sign" />
-                    </Label>
-                    <Label check>
-                      <Input type="checkbox" />
-                      <span className="form-check-sign" />
-                    </Label>
-                    <Label check>
-                      <Input type="checkbox" />
-                      <span className="form-check-sign" />
-                    </Label>
-                    <Label check>
-                      <Input type="checkbox" />
-                      <span className="form-check-sign" />
-                    </Label>
+              <CardTitle style={{ display: "flex", justifyContent: "center"}} tag="h4">
+                    Album, Single, EP                
+                    <FormGroup check style={{ display: "flex", justifyContent: "center"}}>
+                    <Select
+                      className="react-select info"
+                      classNamePrefix="react-select"
+                      placeholder="Contributors"
+                      name="multipleSelect"
+                      closeMenuOnSelect={false}
+                      isMulti={false}
+                      options={[
+                        {
+                          value: "",
+                          isDisabled: true
+                        },
+                        { value: "2", label: "Album " },
+                        { value: "3", label: "Single" },
+                        { value: "4", label: "EP" },
+                      ]}
+                    />
                   </FormGroup>
               </CardTitle>
             </CardBody>
@@ -251,23 +263,25 @@ class SongUpload extends Component {
         </Col>
       </Row>
       <Row>
-        <Col md="4">
+        <Col className="m-auto mr-auto" md="6">
           <Card>
-            <CardBody>
-              <CardTitle tag="h2">
+            <CardBody >
+              <CardTitle style={{ display: "flex", alignItems: "center", justifyContent: "center"}} tag="h2">
                 Upload Album Image
-                <ImageUpload
-                    
+              </CardTitle>
+              <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+              <ImageUpload
+                    avatar="none"
                     addBtnColor="default"
                     changeBtnColor="default"
                     ref={this.ImageUploader}/>
-              </CardTitle>
+                    </div>
             </CardBody>
           </Card>
         </Col>
       </Row>
        <Row>
-          <Col md="12">
+          <Col className="m-auto mr-auto" md="6">
             <Card>
               <CardBody>
                 <CardTitle tag="h4">Upload Songs</CardTitle>
