@@ -51,7 +51,10 @@ class Register extends React.Component {
         username: '',
         email: '',   
         password: '',
-        profile: {}
+        profile: {},
+        device_id: '',
+        device_type: 'browser',
+        device_name: ''
       }
     };
 

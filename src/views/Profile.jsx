@@ -37,16 +37,22 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as sessionActions from '../redux/authentication/actions.js';
 
+const artistPicsDB = "https://revibe-media.s3.amazonaws.com/media/images/Artist/"
+
 class Profile extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      user: {}
+      user: {},
+      profile:{
+        artist_uri: "",
+        ext: ""
+      }
     };
 
     this.getProfile = this.getProfile.bind(this);
-    this.editProfile = this.editProfile.bind(this);    
+    this.editProfile = this.editProfile.bind(this);
   }
 
   componentWillMount()
@@ -66,30 +72,36 @@ class Profile extends React.Component {
 
   componentDidUpdate(prevProps)
   {
-    console.log(this.state.user);    
   }
 
   async getProfile() 
   {
-    var user = await this.props.actions.getProfile();
-    this.setState({user: user})
-    console.log(this.state.user);
+    var fetchedProfile = await this.props.actions.getProfile();
+    console.log(fetchedProfile);
+    
+    this.setState({profile: fetchedProfile})    
+    const fetchedUser = fetchedProfile.user
+    this.setState({user: fetchedUser})
+    console.log(artistPicsDB+
+      this.state.profile.artist_uri+
+      "."+
+      this.state.profile.ext);
   }
 
   async editProfile()
   {
-    var user = await this.props.actions.editProfile();
-    console.log(user);
+    await this.props.actions.editProfile(this.state.user);
   }
 
-  onChange(key, value) {
+  onChange(key, value) 
+  {
     var newUser = {...this.state.user}
     newUser[key] = value
-    this.setState({user: newUser})
-    // console.log(index, key, value);
+    this.setState({user: newUser})  
   }
 
   render() {
+    console.log(this.state.profile.ext ==="");
     return (
       <div className="content">
         <Row>
@@ -110,7 +122,7 @@ class Profile extends React.Component {
                     <Col className="pl-md-1" md="4">
                       <FormGroup>
                         <label>Email address</label>
-                        <Input defaultValue={this.state.user.email} placeholder="mike@email.com" type="email" onChange={event => this.onChange( "email", event.target.value)}/>
+                        <Input defaultValue={this.state.user.email} placeholder="user@email.com" type="email" onChange={event => this.onChange( "email", event.target.value)}/>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -167,7 +179,12 @@ class Profile extends React.Component {
                 </Form>
               </CardBody>
               <CardFooter>
-                <Button className="btn-fill" color="primary" type="submit">
+                <Button 
+                className="btn-fill" 
+                color="primary"
+                type="submit"
+                onClick={() => this.editProfile()}
+                >
                   Save
                 </Button>
               </CardFooter>
@@ -183,7 +200,8 @@ class Profile extends React.Component {
                   <div className="block block-three" />
                   <div className="block block-four" />
                   <ImageUpload
-                    avatar
+                    avatar= {this.state.profile.ext === "" ? require("../assets/img/default-avatar.png") : (artistPicsDB+this.state.profile.artist_uri+"."+this.state.profile.ext)}
+                    btnText="Change Artist Image"
                     addBtnColor="default"
                     changeBtnColor="default"
                   />

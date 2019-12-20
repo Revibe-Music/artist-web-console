@@ -222,12 +222,10 @@ class SongUpload extends Component {
             <CardBody>
               <Row>
                 <Col className="m-auto m-auto" md="4">
-                  <CardTitle style={{ display: "flex", alignItems: "center", justifyContent: "center"}} tag="h4">
-                    Album Image
-                  </CardTitle>
                   <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <ImageUpload
-                      avatar="none"
+                      avatar={require("../assets/img/album-img.jpg")}
+                      btnText="Album Art"
                       addBtnColor="default"
                       changeBtnColor="default"
                       ref={this.ImageUploader}

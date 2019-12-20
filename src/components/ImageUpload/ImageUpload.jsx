@@ -28,13 +28,14 @@ class ImageUpload extends React.Component {
     super(props);
     this.state = {
       file: null,
-      imagePreviewUrl: this.props.avatar ? defaultAvatar : null
+      imagePreviewUrl: this.props.avatar ? this.props.avatar : defaultAvatar
     };
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
   }
+  
   handleImageChange(e) {
     e.preventDefault();
     let reader = new FileReader();
@@ -59,16 +60,19 @@ class ImageUpload extends React.Component {
   handleRemove() {
     this.setState({
       file: null,
-      imagePreviewUrl: this.props.avatar ? defaultAvatar : null
+      imagePreviewUrl: this.props.avatar ? this.props.avatar : defaultAvatar
     });
     this.refs.fileInput.value = null;
   }
   render() {
+
+    const image = this.props.avatar ? this.props.avatar : defaultAvatar
+    
     return (
       <div className="fileinput text-center">
         <input type="file" onChange={this.handleImageChange} ref="fileInput" />
         <div className={"thumbnail" + (this.props.avatar ? "img-circle" : "img-square")}>
-          <img src={this.state.imagePreviewUrl} alt="..." />
+          <img src={image} alt="..." />
         </div>
         <div>
           {this.state.file === null ? (
@@ -77,7 +81,7 @@ class ImageUpload extends React.Component {
               className={this.props.addBtnClasses}
               onClick={() => this.handleClick()}
             >
-              {this.props.avatar ? "Add Photo" : "Select image"}
+              {this.props.btnText}
             </Button>
           ) : (
             <span>
@@ -106,6 +110,7 @@ class ImageUpload extends React.Component {
 
 ImageUpload.defaultProps = {
   avatar: true,
+  btnText: "Select Image",
   removeBtnClasses: "btn-round",
   removeBtnColor: "danger",
   addBtnClasses: "btn-round",
@@ -117,6 +122,7 @@ ImageUpload.defaultProps = {
 ImageUpload.propTypes = {
   avatar: PropTypes.bool,
   removeBtnClasses: PropTypes.string,
+  btnText: PropTypes.string,
   removeBtnColor: PropTypes.oneOf([
     "default",
     "primary",

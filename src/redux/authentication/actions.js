@@ -19,7 +19,6 @@ export const getProfile = () =>
     return async () => 
     {
         var response = await revibe.getProfile()
-        console.log(response);
         sessionService.saveUser(response)
         return (response);
     };
@@ -31,8 +30,8 @@ export const editProfile = (data) =>
     {
         var response = await revibe.editProfile(data)
         console.log(response);
-        sessionService.saveUser(response.data.user)
-        return (response.data.user);
+        sessionService.saveUser(response)
+        return (response);
     };
 };
 

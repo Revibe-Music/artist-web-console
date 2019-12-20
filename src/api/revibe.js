@@ -25,7 +25,10 @@ export default class RevibeAPI {
     options.data = body
     try
     {
-      return await axios(options)
+      const response =  await axios(options)
+      console.log("response from axios",response);
+      
+      return response
     }
     catch(error)
     {
@@ -36,17 +39,18 @@ export default class RevibeAPI {
 
   async getProfile()
   {
-    const response = await this._request("account/profile/", null, "GET", true)    
+    const response = await this._request("account/artist/", null, "GET", true)
     return response.data
   }
 
   async editProfile(data)
   {
-    console.log(data);
-    return await this._request("account/profile", data, "PATCH", true)
+    const response = await this._request("account/artist/", JSON.stringify(data), "PATCH", true,{"content-type": 'application/json'})
+    return response.data
   }
 
-  async login(data) {
+  async login(data) 
+  {
    return await this. _request("account/login/", data, "POST", false)
   }
 
@@ -67,7 +71,8 @@ export default class RevibeAPI {
     return await this. _request("logout/", data, "POST", true)
   }
 
-  async uploadSong(data) {
+  async uploadSong(data) 
+  {
     var form = new FormData();
     console.log(data);
     form.set("title", data.name)

@@ -44,7 +44,10 @@ class Login extends Component {
     this.state = {
       user: {
         username: 'test_username',   
-        password: 'password'
+        password: 'password',
+        device_id: '',
+        device_type: 'browser',
+        device_name: ''
       }
     };
 
@@ -77,14 +80,13 @@ class Login extends Component {
       await history.push('/account/create-profile');
     }
     console.log(user);
-    
   }
 
-  onChange(key, value) {
+  onChange(key, value) 
+  {
     var newUser = {...this.state.user}
     newUser[key] = value
     this.setState({user: newUser})
-    // console.log(index, key, value);
   }
 
   render() {
