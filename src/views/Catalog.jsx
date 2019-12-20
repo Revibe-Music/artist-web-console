@@ -35,8 +35,8 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import SongUpload from "components/SongUpload/SongUpload.jsx";
 import Uploads from "components/Tables/Uploads.jsx";
+import SongUpload from "views/SongUpload.jsx";
 import Contributions from "components/Tables/Contributions.jsx";
 import PendingContributions from "components/Tables/PendingContributions.jsx";
 
@@ -46,7 +46,7 @@ class Catalog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uploading: true
+      uploading: false
     }
   }
 
@@ -83,16 +83,7 @@ class Catalog extends React.Component {
           <a onClick={e => this.setState({uploading:false})}>
             <i className="tim-icons icon-simple-remove" style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD"}}/>
           </a>
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardBody>
-                  <CardTitle tag="h4">Upload Songs</CardTitle>
-                  <SongUpload />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          <SongUpload />
         </>
       }
       </div>

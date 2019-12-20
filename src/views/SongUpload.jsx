@@ -36,6 +36,9 @@ import {
   Label,
   FormGroup,
   Input,
+  InputGroup,
+  InputGroupText,
+  InputGroupAddon,
   Table,
   Progress,
   Row,
@@ -46,6 +49,13 @@ import Dropzone from 'react-dropzone';
 
 import ReactTable from "react-table";
 import Select from "react-select";
+import RevibeAPI from '../api/revibe.js';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as sessionActions from '../redux/authentication/actions.js';
+import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
+
+const revibe = new RevibeAPI()
 
 const musicMetadata = require('music-metadata-browser');
 
@@ -66,6 +76,9 @@ class SongUpload extends Component {
   constructor() {
     super();
     this.state = {
+      album_image: null,
+      album_name: "",
+      album_type: "",
       songs: []
     };
     this.columns = [
@@ -74,12 +87,6 @@ class SongUpload extends Component {
           Header: "Name",
           accessor: row => <Input value={row.name} onChange={event => this.editRow( row.index,"name", event.target.value)} />,
           filterable: false,
-        },
-        {
-          id: "album",
-          Header: "Album",
-          accessor: row => <Input value={row.album} onChange={event => this.editRow( row.index,"album", event.target.value)} />,
-          filterable: false
         },
         {
           id: "contributors",
@@ -109,13 +116,15 @@ class SongUpload extends Component {
           filterable: false
         },
         {
-          accessor: "duration",
+          id: "duration",
           Header: "Duration",
+          accessor: row => this.formatDuration(row.duration),
           filterable: false
         },
         {
+          id: "quality",
           Header: "Quality",
-          accessor: "quality",
+          accessor: row => this.formatQuality(row.quality),
           filterable: false
         },
         {
@@ -168,11 +177,10 @@ class SongUpload extends Component {
     var songs = []
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
-      var formattedSong = {name: metadata.common.title,
-                           album: metadata.common.album,
-                           duration: this.formatDuration(metadata.format.duration),
-                           quality: this.formatQuality(metadata.format.bitrate),
-                           file: files[x]
+      var formattedSong = {title: metadata.common.title,
+                           duration: metadata.format.duration,
+                           quality: metadata.format.bitrate,
+                           song: files[x]
                          }
       songs.push(formattedSong)
     }
@@ -194,15 +202,70 @@ class SongUpload extends Component {
     this.setState({songs: newData})
   }
 
-  uploadButtonPressed() {
-    console.log(this.state.songs);
-    console.log("Need to actually upload stuffs");
+  async uploadButtonPressed()
+  {
+    var uploads = this.state.songs
+    var album = await revibe.createAlbum()
+    for(var x=0; x<uploads.length; x++) {
+      uploads[x].album_id = album.id
+      revibe.uploadSong(uploads[x])
+    }
   }
 
   render() {
     const maxSize = 10485760; // 10 MB
     return (
-      <>
+<>
+      <Row>
+        <Col className="m-auto mr-auto">
+          <Card>
+            <CardBody>
+              <Row>
+                <Col className="m-auto m-auto" md="4">
+                  <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <ImageUpload
+                      avatar={require("../assets/img/album-img.jpg")}
+                      btnText="Album Art"
+                      addBtnColor="default"
+                      changeBtnColor="default"
+                      ref={this.ImageUploader}
+                    />
+                  </div>
+                </Col>
+                  <Col className="m-auto mr-auto" md="6">
+                    <InputGroup style={{marginBottom: "20px"}}>
+                      <Input placeholder="Album Name" type="text" onChange={event => this.setState({album_name: event.target.value})}/>
+                    </InputGroup>
+                    <Select
+                      className="react-select primary"
+                      classNamePrefix="react-select"
+                      placeholder="Album Type"
+                      name="multipleSelect"
+                      closeMenuOnSelect={true}
+                      isMulti={false}
+                      onChange={option => this.setState({album_type: option.label})}
+                      options={[
+                        {
+                          value: "",
+                          isDisabled: true
+                        },
+                        { value: "2", label: "Album " },
+                        { value: "3", label: "Single" },
+                        { value: "4", label: "EP" },
+                      ]}
+                    />
+                  </Col>
+              </Row>
+
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+       <Row>
+          <Col className="m-auto mr-auto">
+            <Card>
+              <CardBody>
+                <CardTitle tag="h4">Upload Songs</CardTitle>
 
       {this.state.songs.length > 0 ?
         <>
@@ -254,6 +317,10 @@ class SongUpload extends Component {
       </Dropzone>
       </div>
       }
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
       </>
     );
   }

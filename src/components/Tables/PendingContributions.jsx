@@ -75,39 +75,39 @@ const data = {
       width: 100
     },
     {
-      label: 'Streams',
-      field: 'streams',
+      label: 'Uploaded By',
+      field: 'uploadedBy',
       sort: 'asc',
-      width: 75
+      width: 150
     },
     {
-      label: 'Uploaded',
+      label: 'Upload Date',
       field: 'uploaded',
       sort: 'asc',
       width: 100
     },
     {
-      label: 'Contributors',
-      field: 'contributors',
+      label: 'Contribution Type',
+      field: 'contributionType',
       sort: 'asc',
       width: 150
     },
     {
       label: 'Approve',
       field: 'status',
-      sort: 'asc',
+      sort: 'disabled',
       width: 150
     },
   ],
   rows: [
-    {name: "Airi Satou", album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", status: <NewButton />},
-    {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", status: <NewButton />},
-    {name: "Ashton Cox", album: "Junior Technical Author", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", status: <NewButton />},
-    {name: "Bradley Greer", album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", status: <NewButton />},
-    {name: "Brenden Wagner", album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", status: <NewButton />},
-    {name: "Brielle Williamson", album: "Integration Specialist", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", status: <NewButton />},
-    {name: "Caesar Vance", album: "Pre-Sales Support", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", status: <NewButton />},
-    {name: "Cedric Kelly", album: "Senior Javascript Developer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", status: <NewButton />},
+    {name: "Airi Satou", album: "Accountant", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
+    {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
+    {name: "Ashton Cox", album: "Junior Technical Author", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
+    {name: "Bradley Greer", album: "Software Engineer", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
+    {name: "Brenden Wagner", album: "Software Engineer", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
+    {name: "Brielle Williamson", album: "Integration Specialist", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
+    {name: "Caesar Vance", album: "Pre-Sales Support", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
+    {name: "Cedric Kelly", album: "Senior Javascript Developer", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
   ]
 }
 
