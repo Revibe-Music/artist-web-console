@@ -25,6 +25,7 @@
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.2.1",
     "react-google-maps": "9.4.5",
+    "react-icons": "^3.8.0",
     "react-jvectormap": "0.0.4",
     "react-notification-alert": "0.0.9",
     "react-redux": "^7.1.3",

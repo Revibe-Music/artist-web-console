@@ -76,6 +76,9 @@ class SongUpload extends Component {
   constructor() {
     super();
     this.state = {
+      album_image: null,
+      album_name: "",
+      album_type: "",
       songs: []
     };
     this.columns = [
@@ -199,7 +202,7 @@ class SongUpload extends Component {
     this.setState({songs: newData})
   }
 
-  async uploadButtonPressed() 
+  async uploadButtonPressed()
   {
     var uploads = this.state.songs
     var album = await revibe.createAlbum()
@@ -214,38 +217,35 @@ class SongUpload extends Component {
     return (
 <>
       <Row>
-        <Col className="m-auto mr-auto" md="6">
+        <Col className="m-auto mr-auto">
           <Card>
             <CardBody>
-              <CardTitle style={{ display: "flex", alignItems: "center", justifyContent: "center"}} tag="h4">
-                Album Name
-              </CardTitle>
-              <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="tim-icons icon-single-02" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Album Name" type="text" onChange={event => this.onChange( "album_name", event.target.value)}/>
-                  </InputGroup>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col className="m-auto mr-auto" md="6">
-          <Card>
-            <CardBody>
-              <CardTitle style={{ display: "flex", justifyContent: "center"}} tag="h4">
-                    Album, Single, EP                
-                    <FormGroup check style={{ display: "flex", justifyContent: "center"}}>
+              <Row>
+                <Col className="m-auto m-auto" md="4">
+                  <CardTitle style={{ display: "flex", alignItems: "center", justifyContent: "center"}} tag="h4">
+                    Album Image
+                  </CardTitle>
+                  <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <ImageUpload
+                      avatar="none"
+                      addBtnColor="default"
+                      changeBtnColor="default"
+                      ref={this.ImageUploader}
+                    />
+                  </div>
+                </Col>
+                  <Col className="m-auto mr-auto" md="6">
+                    <InputGroup style={{marginBottom: "20px"}}>
+                      <Input placeholder="Album Name" type="text" onChange={event => this.setState({album_name: event.target.value})}/>
+                    </InputGroup>
                     <Select
-                      className="react-select info"
+                      className="react-select primary"
                       classNamePrefix="react-select"
-                      placeholder="Contributors"
+                      placeholder="Album Type"
                       name="multipleSelect"
-                      closeMenuOnSelect={false}
+                      closeMenuOnSelect={true}
                       isMulti={false}
+                      onChange={option => this.setState({album_type: option.label})}
                       options={[
                         {
                           value: "",
@@ -256,32 +256,15 @@ class SongUpload extends Component {
                         { value: "4", label: "EP" },
                       ]}
                     />
-                  </FormGroup>
-              </CardTitle>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col className="m-auto mr-auto" md="6">
-          <Card>
-            <CardBody >
-              <CardTitle style={{ display: "flex", alignItems: "center", justifyContent: "center"}} tag="h2">
-                Upload Album Image
-              </CardTitle>
-              <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-              <ImageUpload
-                    avatar="none"
-                    addBtnColor="default"
-                    changeBtnColor="default"
-                    ref={this.ImageUploader}/>
-                    </div>
+                  </Col>
+              </Row>
+
             </CardBody>
           </Card>
         </Col>
       </Row>
        <Row>
-          <Col className="m-auto mr-auto" md="6">
+          <Col className="m-auto mr-auto">
             <Card>
               <CardBody>
                 <CardTitle tag="h4">Upload Songs</CardTitle>

@@ -29,6 +29,7 @@ import {
 } from "reactstrap";
 import Moment from 'moment'
 import { MDBDataTable, MDBBtn } from 'mdbreact';
+import { FaEllipsisH } from "react-icons/fa";
 
 const momentRandom = require('moment-random');
 
@@ -75,13 +76,13 @@ const data = {
       width: 100
     },
     {
-      label: 'Streams',
-      field: 'streams',
+      label: 'Uploaded By',
+      field: 'uploadedBy',
       sort: 'asc',
       width: 75
     },
     {
-      label: 'Uploaded',
+      label: 'Uploade Date',
       field: 'uploaded',
       sort: 'asc',
       width: 100
@@ -92,16 +93,22 @@ const data = {
       sort: 'asc',
       width: 150
     },
+    {
+      label: '',
+      field: 'actions',
+      sort: 'disabled',
+      filter: 'disabled',
+    },
   ],
   rows: [
-    {name: "Airi Satou", album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature"},
-    {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature"},
-    {name: "Ashton Cox", album: "Junior Technical Author", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer"},
-    {name: "Bradley Greer", album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature"},
-    {name: "Brenden Wagner", album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer"},
-    {name: "Brielle Williamson", album: "Integration Specialist", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer"},
-    {name: "Caesar Vance", album: "Pre-Sales Support", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer"},
-    {name: "Cedric Kelly", album: "Senior Javascript Developer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature"},
+    {name: "Airi Satou", album: "Accountant", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <FaEllipsisH />},
+    {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <FaEllipsisH />},
+    {name: "Ashton Cox", album: "Junior Technical Author", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <FaEllipsisH />},
+    {name: "Bradley Greer", album: "Software Engineer", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <FaEllipsisH />},
+    {name: "Brenden Wagner", album: "Software Engineer", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <FaEllipsisH />},
+    {name: "Brielle Williamson", album: "Integration Specialist", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <FaEllipsisH />},
+    {name: "Caesar Vance", album: "Pre-Sales Support", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <FaEllipsisH />},
+    {name: "Cedric Kelly", album: "Senior Javascript Developer", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <FaEllipsisH />},
   ]
 }
 

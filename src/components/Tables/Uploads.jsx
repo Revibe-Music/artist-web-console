@@ -29,6 +29,7 @@ import {
 } from "reactstrap";
 import Moment from 'moment'
 import { MDBDataTable } from 'mdbreact';
+import { FaEllipsisH } from "react-icons/fa";
 
 const momentRandom = require('moment-random');
 
@@ -39,45 +40,43 @@ function randomDate(start, end) {
 const data = {
   columns: [
     {
-      label: 'Name',
-      field: 'name',
-      sort: 'asc',
-      width: 150
-    },
-    {
       label: 'Album',
       field: 'album',
       sort: 'asc',
-      width: 100
-    },
-    {
-      label: 'Streams',
-      field: 'streams',
-      sort: 'asc',
-      width: 75
-    },
-    {
-      label: 'Uploaded',
-      field: 'uploaded',
-      sort: 'asc',
-      width: 100
     },
     {
       label: 'Contributors',
       field: 'contributors',
       sort: 'asc',
-      width: 150
     },
+    {
+      label: 'Streams',
+      field: 'streams',
+      sort: 'asc',
+    },
+    {
+      label: 'Uploaded',
+      field: 'uploaded',
+      sort: 'asc',
+    },
+    {
+      label: '',
+      field: 'actions',
+      sort: 'disabled',
+      filter: 'disabled',
+    },
+
   ],
   rows: [
-    {name: "Airi Satou", album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", clickEvent: () => this.handleClick()},
-    {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake"},
-    {name: "Ashton Cox", album: "Junior Technical Author", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake"},
-    {name: "Bradley Greer", album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake"},
-    {name: "Brenden Wagner", album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake"},
-    {name: "Brielle Williamson", album: "Integration Specialist", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake"},
-    {name: "Caesar Vance", album: "Pre-Sales Support", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake"},
-    {name: "Cedric Kelly", album: "Senior Javascript Developer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake"},
+    // {album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", clickEvent: () => this.handleClick()},
+    {album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
+    {album: "Chief Executive Officer (CEO)", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
+    {album: "Junior Technical Author", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
+    {album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
+    {album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
+    {album: "Integration Specialist", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
+    {album: "Pre-Sales Support", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
+    {album: "Senior Javascript Developer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
   ]
 }
 
