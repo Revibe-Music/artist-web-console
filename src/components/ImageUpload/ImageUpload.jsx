@@ -35,7 +35,15 @@ class ImageUpload extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
   }
-  
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.avatar !== this.state.imagePreviewUrl) {
+      if(this.props.file !== null) {
+        this.setState({imagePreviewUrl: this.props.avatar})
+      }
+    }
+  }
+
   handleImageChange(e) {
     e.preventDefault();
     let reader = new FileReader();
@@ -67,12 +75,12 @@ class ImageUpload extends React.Component {
   render() {
 
     const image = this.props.avatar ? this.props.avatar : defaultAvatar
-    
+
     return (
       <div className="fileinput text-center">
         <input type="file" onChange={this.handleImageChange} ref="fileInput" />
         <div className={"thumbnail" + (this.props.avatar ? "img-circle" : "img-square")}>
-          <img src={image} alt="..." />
+          <img src={this.state.imagePreviewUrl} alt="..." />
         </div>
         <div>
           {this.state.file === null ? (

@@ -23,6 +23,7 @@ import { Provider } from 'react-redux';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
+import { authenticationReducer } from './redux/authentication/reducers.js'
 import App from './layouts/App.js';
 
 
@@ -32,13 +33,11 @@ import "react-notification-alert/dist/animate.css";
 
 // Add the sessionReducer
 const reducer = combineReducers({
-  session: sessionReducer
+  // session: sessionReducer
+  authentication: authenticationReducer
 });
 
 const store = createStore(reducer, undefined, compose(applyMiddleware(thunkMiddleware)));
-
-// Init the session service
-sessionService.initSessionService(store);
 
 render(
   <Provider store={store}>

@@ -64,11 +64,6 @@ class Catalog extends React.Component {
           </Button>
           <Row className="mt-5">
             <Col xs={12} md={12}>
-              <PendingContributions />
-            </Col>
-          </Row>
-          <Row className="mt-5">
-            <Col xs={12} md={12}>
               <Uploads />
             </Col>
           </Row>

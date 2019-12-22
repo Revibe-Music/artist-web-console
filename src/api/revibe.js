@@ -1,98 +1,283 @@
-import Login from "views/Login"
-import Register from "views/Register"
 import axios from "axios"
-
+import Fingerprint2 from 'fingerprintjs2'
 
 export default class RevibeAPI {
 
   constructor() {
     this.baseEndpoint = "http://test-env.myrpupud2p.us-east-2.elasticbeanstalk.com/v1/"
+    this.saveDeviceData = this.saveDeviceData.bind(this)
+    Fingerprint2.get(this.saveDeviceData);
   }
 
-  async _request(endpoint, body, requestType, isAuthenticated, headers={}) {
+  saveDeviceData(components){
+    // sets fingerprinted device id and device name to user agent
+    var values = components.map(function (component) { return component.value })
+    var id = Fingerprint2.x64hash128(values.join(''), 31)
+    this.device_id = id
+    this.device_name = components.filter(x=>x.key==="userAgent")[0].value
+  }
+
+  async _request(endpoint, body, requestType, isAuthenticated, content_type="application/json") {
     // implemenmt way to get auth credentials
-    headers["Authorization"] = "Bearer tmtCs9W9IJU19aM1PLmImSeCyeEnfo"
+    var headers = {"Content-Type": content_type}
+    if(isAuthenticated) headers["Authorization"] = "Bearer tmtCs9W9IJU19aM1PLmImSeCyeEnfo"
     var options = {
       url: this.baseEndpoint + endpoint,
       method: requestType,
-      //withCredentials: isAuthenticated //Commented out to hardcode token
+      // withCredentials: true, //Commented out to hardcode token
       headers: headers,
       responseType: "json",
+      data: body
      }
-    if(Object.keys(headers).length > 0) {
-      options.headers = headers
+    try {
+      const response = await axios(options)
+      console.log(response);
+      return response.data
     }
-    options.data = body
-    try
-    {
-      const response =  await axios(options)
-      console.log("response from axios",response);
-      
-      return response
-    }
-    catch(error)
-    {
+    catch(error) {
       console.log("YOO",error.response);
     }
-    
   }
 
-  async getProfile()
-  {
-    const response = await this._request("account/artist/", null, "GET", true)
-    return response.data
-  }
 
-  async editProfile(data)
-  {
-    const response = await this._request("account/artist/", JSON.stringify(data), "PATCH", true,{"content-type": 'application/json'})
-    return response.data
-  }
+  ////////////////////////////////////
+  ////////// AUTHENTICATION //////////
+  ////////////////////////////////////
 
-  async login(data) 
-  {
-   return await this. _request("account/login/", data, "POST", false)
-  }
-
-  async register(data) {
+  async register(username, email, password) {
+    var data = {
+      username: username,
+      email: email,
+      password: password,
+      profile: {},    // just need to pass this
+      device_id: this.device_id,
+      device_name: this.device_name,
+      device_type: "browser"
+    }
     return await this. _request("account/register/", data, "POST", false)
   }
 
-  async registerArtist(data) {
-    var form = new FormData();
-    console.log(data);
-    form.set("name", data.name)
-    form.append("image_up", data.image_up)
-    form.set("platform", "Revibe")
-    return await this. _request("account/artist/", form, "POST", true, {"Content-Type": 'multipart/form-data'})
+  async registerArtist(name, image) {
+    var data = new FormData();
+    data.set("name", name)
+    data.append("image", image)
+    return await this. _request("account/artist/", data, "POST", true, 'multipart/form-data')
   }
 
-  async logout(data) {
-    return await this. _request("logout/", data, "POST", true)
+  async login(username, password) {
+    var data = {
+      username: username,
+      password: password,
+      device_id: this.device_id,
+      device_name: this.device_name,
+      device_type: "browser"
+    }
+    return await this. _request("account/login/", data, "POST", false)
   }
 
-  async uploadSong(data) 
-  {
-    var form = new FormData();
-    console.log(data);
-    form.set("title", data.name)
-    form.append("song", data.song)
-    form.set("duration", data.duration)
-    form.set("platform", "Revibe")
-    form.set("album_id", data.album)
-
-    return await this. _request("account/artist/songs/", form, "POST", true, {"Content-Type": 'multipart/form-data'})
+  async logout() {
+    return await this. _request("logout/", null, "POST", true)
   }
 
-  async createAlbum(data) 
-  {
-    var form = new FormData();
-    console.log(data);
-    form.set("platform", "Revibe")
-    form.set("name", data.name)
-    form.append("image_up", data.image_up)
-    form.set("type", data.type)
-    return await this. _request("account/artist/albums/", form, "POST", true, {"Content-Type": 'multipart/form-data'})
+  async logoutAll() {
+    return await this. _request("logout-all/", null, "POST", true)
   }
+
+  ////////////////////////////////////
+  //////////// USER DATA /////////////
+  ////////////////////////////////////
+
+  async getProfile() {
+    // returns artist and user profile data
+    return await this._request("account/artist/", null, "GET", true)
+  }
+
+  async editArtistProfile(name=null, image=null, about_me=null) {
+    var data = new FormData();
+    // only add variables to form if they arent null
+    if(name !== null) data.set("name", name)
+    if(about_me !== null) data.set("about_me", about_me)
+    if(image !== null) data.append("image", image)
+    return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')
+  }
+
+  async editUserProfile(username=null, email=null) {
+    console.log("in editUserProfile");
+    var data = {}
+    // only add variables to form if they arent null
+    if(username !== null) data.username = username
+    if(email !== null) data.email = email
+    return await this._request("account/profile/", data, "PATCH", true)
+  }
+
+
+  ////////////////////////////////////
+  ////////// UPLOADED ALBUMS /////////
+  ////////////////////////////////////
+
+  async getUploadedAlbums() {
+    return await this._request("account/artist/albums/", null, "GET", true)
+  }
+
+  async createUploadedAlbum(name, image, type, displayed=true) {
+    var data = new FormData();
+    data.set("name", name)
+    data.set("type", type)
+    data.set("displayed", displayed)
+    data.append("image", image)
+    return await this. _request("account/artist/albums/", data, "POST", true, 'multipart/form-data')
+  }
+
+  async editUploadedAlbum(album_id, name=null, image=null, type=null, displayed=null) {
+    var data = new FormData();
+    data.set("album_id", album_id)
+    // only add variables to form if they arent null
+    if(name !== null) data.set("name", name)
+    if(type !== null) data.set("type", type)
+    if(displayed !== null) data.set("displayed", displayed)
+    if(image !== null) data.append("image", image)
+    return await this. _request("account/artist/albums/", data, "PATCH", true, 'multipart/form-data')
+  }
+
+  async deleteUploadedAlbum(album_id) {
+    var data = {album_id: album_id}
+    return await this._request("account/artist/albums/", data, "DELETE", true)
+  }
+
+
+  ////////////////////////////////////
+  //// UPLOADED ALBUM CONTRIBUTORS ///
+  ////////////////////////////////////
+
+  async addUploadedAlbumContributor(album_id, artist_id, contribution_type) {
+    var data = {album_id: album_id, artist_id: artist_id, contribution_type: contribution_type}
+    return await this._request("account/artist/contributions/albums/", data, "POST", true)
+  }
+
+  async editUploadedAlbumContributor(contribution_id, contribution_type) {
+    var data = {contribution_id: contribution_id, contribution_type: contribution_type}
+    return await this._request("account/artist/contributions/albums/", data, "PATCH", true)
+  }
+
+  async deleteUploadedAlbumContributor(contribution_id) {
+    var data = {contribution_id: contribution_id}
+    return await this._request("account/artist/contributions/albums/", data, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  ////////// UPLOADED SONGS //////////
+  ////////////////////////////////////
+
+  async getUploadedSongs(album_id=null) {
+    // if album_id is passed, then only songs from that ablum will be returned
+    var data = album_id !== null ? {album_id: album_id} : null
+    return await this._request("account/artist/songs/", data, "GET", true)
+  }
+
+  async createUploadedSong(title, file, duration, album_id, genre=null, display=true) {
+    var data = new FormData();
+    data.set("title", title)
+    data.set("duration", duration)
+    data.set("album_id", album_id)
+    data.set("display", display)
+    data.append("file", data.file)
+    if(genre !== null) data.set("genre", genre)  // only add if this is not null
+    return await this. _request("account/artist/songs/", data, "POST", true, 'multipart/form-data')
+  }
+
+  async editUploadedSong(song_id, title=null, file=null, duration=null, genre=null, displayed=null) {
+    var data = new FormData();
+    data.set("song_id", song_id)
+    // only add variables to form if they arent null
+    if(title !== null) data.set("title", title)
+    if(duration !== null) data.set("duration", duration)
+    if(genre !== null) data.set("genre", genre)
+    if(displayed !== null) data.set("displayed", displayed)
+    if(file !== null) data.append("file", file)
+    return await this. _request("account/artist/songs/", data, "PATCH", true, 'multipart/form-data')
+  }
+
+  async deleteUploadedSong(song_id) {
+    var data = {song_id: song_id}
+    return await this. _request("account/artist/songs/", data, "DELETE", true, 'multipart/form-data')
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED SONG CONTRIBUTORS ////
+  ////////////////////////////////////
+
+  async addUploadedSongContributor(song_id, artist_id, contribution_type) {
+    var data = {song_id: song_id, artist_id: artist_id, contribution_type: contribution_type}
+    return await this._request("account/artist/contributions/songs/", data, "POST", true)
+  }
+
+  async editUploadedSongContributor(contribution_id, contribution_type) {
+    var data = {contribution_id: contribution_id, contribution_type: contribution_type}
+    return await this._request("account/artist/contributions/songs/", data, "PATCH", true)
+  }
+
+  async deleteUploadedSongContributor(contribution_id) {
+    var data = {contribution_id: contribution_id}
+    return await this._request("account/artist/contributions/songs/", data, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  ////// ALL YOUR CONTRIBUTIONS  /////
+  ////////////////////////////////////
+
+  async getAllContributions() {
+    return await this._request("account/artist/contributions/", null, "GET", true)
+  }
+
+  ////////////////////////////////////
+  ///// YOUR ALBUM CONTRIBUTIONS  ////
+  ////////////////////////////////////
+
+  async getAlbumContributions() {
+    return await this._request("account/artist/contributions/albums/", null, "GET", true)
+  }
+
+  async editAlbumContribution(contribution_id) {
+    // will not implemented in version 1
+  }
+
+  async approveAlbumContribution(contribution_id) {
+    // will not implemented in version 1
+  }
+
+  async rejectAlbumContribution(contribution_id) {
+    // will not implemented in version 1
+  }
+
+  async deleteAlbumContribution(contribution_id) {
+    var data = {contribution_id: contribution_id}
+    return await this._request("account/artist/contributions/albums/", data, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  ///// YOUR SONG CONTRIBUTIONS  /////
+  ////////////////////////////////////
+
+  async getSongContributions() {
+    return await this._request("account/artist/contributions/songs/", null, "GET", true)
+  }
+
+  async editSongContribution(contribution_id) {
+    // will not implemented in version 1
+  }
+
+  async approveSongContribution(contribution_id) {
+    // will not implemented in version 1
+  }
+
+  async rejectSongContribution(contribution_id) {
+    // will not implemented in version 1
+  }
+
+  async deleteSongContribution(contribution_id) {
+    var data = {contribution_id: contribution_id}
+    return await this._request("account/artist/contributions/songs/", data, "DELETE", true)
+  }
+
 
 }

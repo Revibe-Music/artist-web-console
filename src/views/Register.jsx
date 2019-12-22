@@ -38,8 +38,7 @@ import {
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as sessionActions from '../redux/authentication/actions.js';
+import { register } from '../redux/authentication/actions.js';
 
 class Register extends React.Component {
 
@@ -47,19 +46,12 @@ class Register extends React.Component {
     super(props)
     this.state = {
       agreedToTerms: false,
-      user: {
-        username: '',
-        email: '',   
-        password: '',
-        profile: {},
-        device_id: '',
-        device_type: 'browser',
-        device_name: ''
-      }
+      username: '',
+      email: '',
+      password: '',
     };
 
     this.onSubmit = this.onSubmit.bind(this);
-    this.onChangeAgree = this.onChangeAgree.bind(this)
     this.onChangeUserFields = this.onChangeUserFields.bind(this);
   }
 
@@ -72,23 +64,17 @@ class Register extends React.Component {
   }
 
   async onSubmit(history) {
-    this.props.actions.register(this.state.user, history);
+    this.props.register(this.state.username, this.state.email, this.state.password);
+    history.push("create-profile/")
   }
 
   onChangeUserFields(key, value) {
-    var newUser = {...this.state.user}
-    newUser[key] = value
-    this.setState({user: newUser})
+    var newState = {...this.state}
+    newState[key] = value
+    this.setState(newState)
   }
-
-  onChangeAgree(value) {
-    this.setState({agreedToTerms: value})
-    console.log(value)
-  }
-
 
   render() {
-
     const SubmitButton = withRouter(({ history }) => (
       <Button
         block
@@ -138,7 +124,7 @@ class Register extends React.Component {
                     </InputGroup>
                     <FormGroup check className="text-left">
                       <Label check>
-                        <Input type="checkbox" onClick= {event => this.onChangeAgree(event.target.checked)}/>
+                        <Input type="checkbox" onClick= {event => this.onChangeUserFields("agreedToTerms", event.target.checked)}/>
                         <span className="form-check-sign" />I agree to the{" "}
                         <a href="#pablo" onClick={e => e.preventDefault()}>
                           terms and conditions
@@ -165,10 +151,9 @@ class Register extends React.Component {
   }
 }
 
-const mapDispatch = (dispatch) => {
-  return {
-    actions: bindActionCreators(sessionActions, dispatch)
-  };
-};
 
-export default connect(null, mapDispatch)(Register);
+const mapDispatchToProps = dispatch => ({
+    register: (data) =>dispatch(register(data)),
+});
+
+export default connect(null, mapDispatchToProps)(Register);

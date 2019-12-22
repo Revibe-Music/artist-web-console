@@ -29,9 +29,11 @@ App.propTypes = {
   checked: bool.isRequired
 };
 
-const mapState = ({ session }) => ({
-  checked: session.checked,
-  authenticated: session.authenticated
-});
+function mapStateToProps(state) {
+  return {
+    checked: state.authentication.checkedLogin,
+    authenticated: state.authentication.isLoggedIn
+  }
+};
 
-export default connect(mapState)(App);
+export default connect(mapStateToProps)(App);

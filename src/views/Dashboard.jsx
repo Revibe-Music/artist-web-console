@@ -46,6 +46,13 @@ class Dashboard extends React.Component {
     return (
       <div className="content">
         <Row>
+        <Col xs="12">
+          <Card className="card-chart">
+            <CardHeader className="m-auto mr-auto">
+                <CardTitle tag="h4">The following charts/graphs are displaying stock data. User generated data is coming soon. </CardTitle>
+            </CardHeader>
+          </Card>
+        </Col>
           <Col xs="12">
             <Card className="card-chart">
               <CardHeader>
@@ -57,10 +64,9 @@ class Dashboard extends React.Component {
                 </Row>
               </CardHeader>
               <CardBody>
-                {/* <LineGraph
+                <LineGraph
                   data={[100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100]}
-                /> */}
-                <h1> Insufficient Data Available</h1>
+                />
               </CardBody>
             </Card>
           </Col>

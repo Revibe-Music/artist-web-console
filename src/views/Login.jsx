@@ -34,21 +34,15 @@ import {
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as sessionActions from '../redux/authentication/actions.js';
+import { login } from 'redux/authentication/actions.js'
 
 class Login extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      user: {
-        username: 'test_username',   
-        password: 'password',
-        device_id: '',
-        device_type: 'browser',
-        device_name: ''
-      }
+      username: 'test_username',
+      password: 'password',
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -63,30 +57,19 @@ class Login extends Component {
     document.body.classList.toggle("login-page");
   }
 
-  componentDidUpdate(prevProps)
-  {
-    console.log(this.props.user);
-    console.log(prevProps.user);
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if(this.props.user)
+  // }
 
   async onSubmit(history) {
-    var user = await this.props.actions.login(this.state.user, history);
-    if (user.is_artist)
-    {
-      await history.push('/dashboard');
-    }
-    else
-    {
-      await history.push('/account/create-profile');
-    }
-    console.log(user);
+    this.props.login(this.state.username, this.state.password, history);
   }
 
-  onChange(key, value) 
+  onChange(key, value)
   {
-    var newUser = {...this.state.user}
-    newUser[key] = value
-    this.setState({user: newUser})
+    var newState = {...this.state.user}
+    newState[key] = value
+    this.setState(newState)
   }
 
   render() {
@@ -148,16 +131,14 @@ class Login extends Component {
   }
 }
 
-const mapState = (state) => {
+function mapStateToProps(state) {
   return {
-    user: state.session.user
-  };
+    user: state.authentication.user,
+  }
 };
 
-const mapDispatch = (dispatch) => {
-  return {
-    actions: bindActionCreators(sessionActions, dispatch)
-  };
-};
+const mapDispatchToProps = dispatch => ({
+    login: (username, password, history) => dispatch(login(username, password, history)),
+});
 
-export default connect(mapState, mapDispatch)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -4,35 +4,34 @@ import RevibeAPI from '../../api/revibe.js';
 const revibe = new RevibeAPI()
 
 
-// check if the app has checked the user's authentication status at all
-const checkedAuthentication = bool => ({
-    type: 'CHECK_AUTHENTICATION',
-    checkedLogin: bool,
+const addUpload = newUpload => ({
+    type: 'ADD_UPLOAD',
+    newUpload: newUpload,
 });
 
-// check if a user has logged in to any platforms before
-const checkHasLoggedIn = bool => ({
-    type: 'HAS_AUTHENTICATED',
-    hasLoggedIn: bool,
+const editUpload = upload => ({
+    type: 'EDIT_UPLOAD',
+    upload: upload,
 });
 
-const loginUser = user => ({
-    type: 'LOGIN_USER',
-    checkedLogin: true,
-    hasLoggedIn: true,
+const removeUpload = index => ({
+    type: 'REMOVE_UPLOAD',
+    index: index,
 });
 
-const logoutUser = () => ({
-    type: 'LOGOUT_USER',
+const addContribution = newContribution => ({
+    type: 'ADD_CONTRIBUTION',
+    newContribution: newContribution,
 });
 
-const updateUser = user => ({
-    type: 'UPDATE_USER_DATA',
-    user: user,
+const editContribution = contribution => ({
+    type: 'EDIT_CONTRIBUTION',
+    contribution: contribution,
 });
 
-const removeUser = artist => ({
-    type: 'REMOVE_USER_DATA',
+const removeContribution = index => ({
+    type: 'REMOVE_CONTRIBUTION',
+    index: index,
 });
 
 const error = error => ({
@@ -41,9 +40,12 @@ const error = error => ({
 });
 
 
+let index = state.uploads.findIndex((x) => x.name === n);
+
+
 // Only functions below should ever be called by a component!
 
-export function register(username, email, password, history) {
+export function addArtistUpload(username, email, password) {
   return async (dispatch) => {
     var response = await revibe.register(username, email, password)
     dispatch(loginUser());
@@ -59,7 +61,7 @@ export function registerArtist(name, image) {
       artistId: response.artist_id,
       displayName: response.name,
       artistImage: response.artist_uri+"."+response.ext,
-      artistAboutMe: response.artist_profile.about_me,
+      artistBio: response.artist_profile.about_me,
       country: "",
       city: "",
       zipcode: "",
@@ -71,15 +73,9 @@ export function registerArtist(name, image) {
   }
 }
 
-export function login(username, password, history) {
+export function login(username, password) {
   return async (dispatch) => {
-    var response = await revibe.login(username, password)
-    if (response.user.is_artist) {
-      await history.push('/dashboard');
-    }
-    else {
-      await history.push('/account/create-profile');
-    }
+    await revibe.login(username, password)
     dispatch(loginUser());
     dispatch(getProfile());
   }
@@ -102,7 +98,7 @@ export function getProfile() {
       artistId: response.artist_id,
       displayName: response.name,
       artistImage: response.artist_uri+"."+response.ext,
-      artistAboutMe: response.artist_profile.about_me,
+      artistBio: response.artist_profile.about_me,
       country: "",
       city: "",
       zipcode: "",
@@ -118,20 +114,20 @@ export function getProfile() {
 export function editProfile(data) {
   return async (dispatch) => {
     // check to see if variables are in data
-    var username = Object.keys(data).filter(x=> x==="username").length > 0 ? data.username : null
-    var email = Object.keys(data).filter(x=> x==="email").length > 0 ? data.email : null
-    var name = Object.keys(data).filter(x=> x==="name").length > 0 ? data.name : null
-    var image = Object.keys(data).filter(x=> x==="image").length > 0 ? data.image : null
-
-    console.log("username:",username);
-    console.log("email:",email);
-    console.log("name:",name);
-    console.log("image:",image);
+    var username = Object.keys().filter(x==="username").length > 0 ? data.username : null
+    var email = Object.keys().filter(x==="email").length > 0 ? data.email : null
+    var name = Object.keys().filter(x==="name").length > 0 ? data.name : null
+    var image = Object.keys().filter(x==="image").length > 0 ? data.image : null
 
     // check to see if user has edited user or artist profile data and make requests accordingly
     if(username !== null || email !== null) await revibe.editUserProfile(username, email)
     if(name !== null || image !== null) await revibe.editArtistProfile(name, image)
 
     dispatch(getProfile());
+    }
+
   }
 }
+
+
+};

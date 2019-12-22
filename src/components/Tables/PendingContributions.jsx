@@ -38,28 +38,32 @@ function randomDate(start, end) {
 }
 
 
-const NewButton = () => (<div>
-                  <Button
-                      onClick={() => {
-                        console.log("Accepted");
-                      }}
-                      color="success"
-                      size="sm"
-                      className="btn-icon btn-link like"
-                    >
-                      <i className="tim-icons icon-check-2" />
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        console.log("Declined");
-                      }}
-                      color="danger"
-                      size="sm"
-                      className="btn-icon btn-link like"
-                    >
-                      <i className="tim-icons icon-simple-remove" />
-                    </Button>
-                  </div>)
+const NewButton = () => (
+    <div>
+      <Button
+          onClick={() => {
+            console.log("Accepted");
+          }}
+          color="success"
+          size="sm"
+          className="btn-icon btn-link like"
+        >
+          <i className="tim-icons icon-check-2" />
+        </Button>
+        <Button
+          onClick={() => {
+            console.log("Declined");
+          }}
+          color="danger"
+          size="sm"
+          className="btn-icon btn-link like"
+        >
+          <i className="tim-icons icon-simple-remove" />
+        </Button>
+      </div>
+    )
+
+
 const data = {
   columns: [
     {
@@ -103,12 +107,7 @@ const data = {
     {name: "Airi Satou", album: "Accountant", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
     {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
     {name: "Ashton Cox", album: "Junior Technical Author", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
-    {name: "Bradley Greer", album: "Software Engineer", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
-    {name: "Brenden Wagner", album: "Software Engineer", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
-    {name: "Brielle Williamson", album: "Integration Specialist", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
-    {name: "Caesar Vance", album: "Pre-Sales Support", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
-    {name: "Cedric Kelly", album: "Senior Javascript Developer", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
-  ]
+    ]
 }
 
 

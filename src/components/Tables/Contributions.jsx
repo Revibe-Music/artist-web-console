@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import classNames from "classnames";
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -23,6 +23,10 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   Row,
   Col,
   Button
@@ -30,37 +34,35 @@ import {
 import Moment from 'moment'
 import { MDBDataTable, MDBBtn } from 'mdbreact';
 import { FaEllipsisH } from "react-icons/fa";
-
 const momentRandom = require('moment-random');
-
 
 function randomDate(start, end) {
     return momentRandom(end).format("DD-MM-YYYY")
 }
 
+const Options = (props) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen(prevState => !prevState);
 
-const NewButton = () => (<div>
-                  <Button
-                      onClick={() => {
-                        console.log("Accepted");
-                      }}
-                      color="success"
-                      size="sm"
-                      className="btn-icon btn-link like"
-                    >
-                      <i className="tim-icons icon-check-2" />
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        console.log("Declined");
-                      }}
-                      color="danger"
-                      size="sm"
-                      className="btn-icon btn-link like"
-                    >
-                      <i className="tim-icons icon-simple-remove" />
-                    </Button>
-                  </div>)
+  return (
+    <Dropdown
+      isOpen={dropdownOpen}
+      toggle={toggle}
+      direction="left"
+    >
+     <DropdownToggle tag="div">
+      <FaEllipsisH />
+    </DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem header>Actions</DropdownItem>
+        <DropdownItem>Edit</DropdownItem>
+        <DropdownItem>Stats</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  )
+}
+
+
 const data = {
   columns: [
     {
@@ -101,15 +103,10 @@ const data = {
     },
   ],
   rows: [
-    {name: "Airi Satou", album: "Accountant", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <FaEllipsisH />},
-    {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <FaEllipsisH />},
-    {name: "Ashton Cox", album: "Junior Technical Author", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <FaEllipsisH />},
-    {name: "Bradley Greer", album: "Software Engineer", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <FaEllipsisH />},
-    {name: "Brenden Wagner", album: "Software Engineer", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <FaEllipsisH />},
-    {name: "Brielle Williamson", album: "Integration Specialist", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <FaEllipsisH />},
-    {name: "Caesar Vance", album: "Pre-Sales Support", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <FaEllipsisH />},
-    {name: "Cedric Kelly", album: "Senior Javascript Developer", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <FaEllipsisH />},
-  ]
+    {name: "Airi Satou", album: "Accountant", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <Options />},
+    {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <Options />},
+    {name: "Ashton Cox", album: "Junior Technical Author", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <Options />},
+    ]
 }
 
 

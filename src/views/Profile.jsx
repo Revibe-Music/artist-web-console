@@ -34,74 +34,50 @@ import {
 
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as sessionActions from '../redux/authentication/actions.js';
+import { editProfile } from 'redux/authentication/actions.js'
+import defaultAvatar from "assets/img/default-avatar.png";
 
 const artistPicsDB = "https://revibe-media.s3.amazonaws.com/media/images/Artist/"
+
 
 class Profile extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      user: {},
-      profile:{
-        artist_uri: "",
-        ext: ""
+      editedUser: {
+        name: null,
+        username: null,
+        email: null,
+        country: null,
+        city: null,
+        zipcode: null,
+        aboutMe: null
       }
-    };
-
-    this.getProfile = this.getProfile.bind(this);
-    this.editProfile = this.editProfile.bind(this);
+    }
   }
 
-  componentWillMount()
-  {
-    this.getProfile()
-  }
-
-  componentDidMount() 
-  {
+  componentDidMount() {
     document.body.classList.toggle("profile-page");
   }
 
-  componentWillUnmount() 
-  {
+  componentWillUnmount() {
     document.body.classList.toggle("profile-page");
   }
 
-  componentDidUpdate(prevProps)
-  {
+  saveBtnPressed() {
+    var user = { ...this.state.editedUser }
+    Object.keys(user).forEach((key) => (user[key] == null) && delete user[key]);
+    this.props.editProfile(user)
   }
 
-  async getProfile() 
-  {
-    var fetchedProfile = await this.props.actions.getProfile();
-    console.log(fetchedProfile);
-    
-    this.setState({profile: fetchedProfile})    
-    const fetchedUser = fetchedProfile.user
-    this.setState({user: fetchedUser})
-    console.log(artistPicsDB+
-      this.state.profile.artist_uri+
-      "."+
-      this.state.profile.ext);
-  }
-
-  async editProfile()
-  {
-    await this.props.actions.editProfile(this.state.user);
-  }
-
-  onChange(key, value) 
-  {
-    var newUser = {...this.state.user}
-    newUser[key] = value
-    this.setState({user: newUser})  
+  onChange(key, value) {
+    var user = { ...this.state.editedUser }
+    user[key] = value
+    this.setState({editedUser: user})
   }
 
   render() {
-    console.log(this.state.profile.ext ==="");
     return (
       <div className="content">
         <Row>
@@ -115,28 +91,22 @@ class Profile extends React.Component {
                   <Row>
                     <Col className="pr-md-1" md="5">
                     <FormGroup>
-                      <label>Username</label>
-                      <Input defaultValue={this.state.user.username} placeholder="Username" type="text" onChange={event => this.onChange( "username", event.target.value)}/>
+                      <label>Display Name</label>
+                      <Input defaultValue={this.props.user.displayName} placeholder="Display Name" type="text" onChange={event => this.onChange( "name", event.target.value)}/>
                     </FormGroup>
-                    </Col>
-                    <Col className="pl-md-1" md="4">
-                      <FormGroup>
-                        <label>Email address</label>
-                        <Input defaultValue={this.state.user.email} placeholder="user@email.com" type="email" onChange={event => this.onChange( "email", event.target.value)}/>
-                      </FormGroup>
                     </Col>
                   </Row>
                   <Row>
                     <Col className="pr-md-1" md="6">
                       <FormGroup>
-                        <label>First Name</label>
-                        <Input defaultValue={this.state.user.first_name} placeholder="First Name" type="text" onChange={event => this.onChange( "first_name", event.target.value)}/>
+                        <label>Username</label>
+                        <Input defaultValue={this.props.user.username} placeholder="Username" type="text" onChange={event => this.onChange( "username", event.target.value)}/>
                       </FormGroup>
                     </Col>
                     <Col className="pl-md-1" md="6">
                       <FormGroup>
-                        <label>Last Name</label>
-                        <Input defaultValue={this.state.user.last_name}  placeholder="Last Name" type="text" onChange={event => this.onChange( "last_name", event.target.value)}/>
+                        <label>Email address</label>
+                        <Input defaultValue={this.props.user.email} placeholder="user@email.com" type="email" onChange={event => this.onChange( "email", event.target.value)}/>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -166,8 +136,7 @@ class Profile extends React.Component {
                         <label>About Me</label>
                         <Input
                           cols="80"
-                          defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                          that two seat Lambo."
+                          defaultValue={this.props.user.artistAboutMe}
                           placeholder="Here can be your description"
                           rows="4"
                           type="textarea"
@@ -179,11 +148,11 @@ class Profile extends React.Component {
                 </Form>
               </CardBody>
               <CardFooter>
-                <Button 
-                className="btn-fill" 
+                <Button
+                className="btn-fill"
                 color="primary"
                 type="submit"
-                onClick={() => this.editProfile()}
+                onClick={() => this.saveBtnPressed()}
                 >
                   Save
                 </Button>
@@ -200,18 +169,13 @@ class Profile extends React.Component {
                   <div className="block block-three" />
                   <div className="block block-four" />
                   <ImageUpload
-                    avatar= {this.state.profile.ext === "" ? require("../assets/img/default-avatar.png") : (artistPicsDB+this.state.profile.artist_uri+"."+this.state.profile.ext)}
+                    avatar= {this.props.user.artistImage === "" ? require("../assets/img/default-avatar.png") : (artistPicsDB+this.props.user.artistImage)}
                     btnText="Change Artist Image"
                     addBtnColor="default"
                     changeBtnColor="default"
                   />
-                  <p className="description">Artist</p>
                 </div>
-                <div className="card-description">
-                  Do not be scared of the truth because we need to restart the
-                  human foundation in truth And I love you like Kanye loves
-                  Kanye I love Rick Owens’ bed design but the back is...
-                </div>
+
               </CardBody>
               <CardFooter>
                 <div className="button-container">
@@ -233,10 +197,16 @@ class Profile extends React.Component {
     );
   }
 }
-const mapDispatch = (dispatch) => {
+
+function mapStateToProps(state) {
   return {
-    actions: bindActionCreators(sessionActions, dispatch)
-  };
+    user: state.authentication.user,
+  }
 };
 
-export default connect(null, mapDispatch)(Profile);
+const mapDispatchToProps = dispatch => ({
+    editProfile: (data) =>dispatch(editProfile(data)),
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import classNames from "classnames";
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -23,6 +23,10 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   Row,
   Col,
   Button
@@ -37,6 +41,29 @@ const momentRandom = require('moment-random');
 function randomDate(start, end) {
     return momentRandom(end).format("DD-MM-YYYY")
 }
+
+const Options = (props) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen(prevState => !prevState);
+
+  return (
+    <Dropdown
+      isOpen={dropdownOpen}
+      toggle={toggle}
+      direction="left"
+    >
+     <DropdownToggle tag="div">
+      <FaEllipsisH />
+    </DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem header>Actions</DropdownItem>
+        <DropdownItem>Edit</DropdownItem>
+        <DropdownItem>Stats</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  )
+}
+
 const data = {
   columns: [
     {
@@ -69,15 +96,10 @@ const data = {
   ],
   rows: [
     // {album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", clickEvent: () => this.handleClick()},
-    {album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
-    {album: "Chief Executive Officer (CEO)", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
-    {album: "Junior Technical Author", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
-    {album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
-    {album: "Software Engineer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
-    {album: "Integration Specialist", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
-    {album: "Pre-Sales Support", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
-    {album: "Senior Javascript Developer", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <FaEllipsisH />},
-  ]
+    {album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <Options />},
+    {album: "Chief Executive Officer (CEO)", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <Options />},
+    {album: "Junior Technical Author", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <Options />},
+    ]
 }
 
 
@@ -98,7 +120,6 @@ class Uploads extends Component {
         <MDBDataTable
           entriesOptions={[5, 10, 15, 20, 25]}
           entries={5}
-          responsive
           striped
           data={data}
         />
