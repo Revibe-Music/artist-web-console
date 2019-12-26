@@ -32,4 +32,4 @@ artifacts:
   files:
     - "**/*"
   discard-paths: no
-  base-directory: src
+  base-directory: build
