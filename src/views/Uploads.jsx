@@ -35,13 +35,11 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import Uploads from "components/Tables/Uploads.jsx";
+import UploadsTable from "components/Tables/UploadsTable.jsx";
 import SongUpload from "views/SongUpload.jsx";
-import Contributions from "components/Tables/Contributions.jsx";
-import PendingContributions from "components/Tables/PendingContributions.jsx";
 
 
-class Catalog extends React.Component {
+class Uploads extends React.Component {
 
   constructor(props) {
     super(props);
@@ -53,7 +51,6 @@ class Catalog extends React.Component {
   render() {
     return (
       <div className="content">
-
       {!this.state.uploading ?
         <>
           <Button
@@ -64,12 +61,7 @@ class Catalog extends React.Component {
           </Button>
           <Row className="mt-5">
             <Col xs={12} md={12}>
-              <Uploads />
-            </Col>
-          </Row>
-          <Row className="mt-5">
-            <Col xs={12} md={12}>
-              <Contributions />
+              <UploadsTable />
             </Col>
           </Row>
         </>
@@ -86,4 +78,4 @@ class Catalog extends React.Component {
   }
 }
 
-export default Catalog;
+export default Uploads;

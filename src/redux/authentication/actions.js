@@ -43,7 +43,7 @@ const error = error => ({
 
 // Only functions below should ever be called by a component!
 
-export function register(username, email, password, history) {
+export function register(username, email, password) {
   return async (dispatch) => {
     var response = await revibe.register(username, email, password)
     dispatch(loginUser());

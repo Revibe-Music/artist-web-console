@@ -15,9 +15,10 @@
 
 */
 
-import Dashboard from "views/Dashboard.jsx";
-import Catalog from "views/Catalog.jsx";
-import Profile from "views/Profile.jsx";
+import Dashboard from "views/Dashboard";
+import Contributions from "views/Contributions";
+import Uploads from "views/Uploads";
+import Profile from "views/Profile";
 
 const routes = [
   {
@@ -28,10 +29,17 @@ const routes = [
     layout: ""
   },
   {
-    path: "/catalog",
-    name: "Catalog",
-    icon: "tim-icons icon-bullet-list-67",
-    component: Catalog,
+    path: "/uploads",
+    name: "Uploads",
+    icon: "tim-icons icon-cloud-upload-94",
+    component: Uploads,
+    layout: ""
+  },
+  {
+    path: "/contributions",
+    name: "Contributions",
+    icon: "tim-icons icon-vector",
+    component: Contributions,
     layout: ""
   },
   {

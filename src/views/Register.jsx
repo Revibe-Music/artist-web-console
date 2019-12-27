@@ -153,7 +153,7 @@ class Register extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-    register: (data) =>dispatch(register(data)),
+    register: (username, email, password) =>dispatch(register(username, email, password)),
 });
 
 export default connect(null, mapDispatchToProps)(Register);

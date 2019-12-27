@@ -109,7 +109,8 @@ export default class RevibeAPI {
 
   async logout() {
     this._deleteCookie()
-    return await this. _request("account/logout/", null, "POST", true)
+    var data = {access_token: this._getCookie()}
+    return await this. _request("account/logout/", data, "POST", true)
   }
 
   async logoutAll() {
