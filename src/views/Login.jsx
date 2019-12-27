@@ -41,8 +41,8 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: 'test_username',
-      password: 'password',
+      username: 'bigR1',
+      password: 'riley',
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -62,6 +62,7 @@ class Login extends Component {
   // }
 
   async onSubmit(history) {
+    const { cookies } = this.props;
     this.props.login(this.state.username, this.state.password, history);
   }
 
@@ -138,7 +139,7 @@ function mapStateToProps(state) {
 };
 
 const mapDispatchToProps = dispatch => ({
-    login: (username, password, history) => dispatch(login(username, password, history)),
+    login: (username, password, history, fn) => dispatch(login(username, password, history, fn)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

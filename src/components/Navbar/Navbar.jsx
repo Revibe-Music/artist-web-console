@@ -37,8 +37,7 @@ import {
 } from "reactstrap";
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as sessionActions from '../../redux/authentication/actions.js';
+import {logout} from '../../redux/authentication/actions.js';
 
 
 class AdminNavbar extends React.Component {
@@ -95,9 +94,9 @@ class AdminNavbar extends React.Component {
       modalSearch: !this.state.modalSearch
     });
   };
-  
+
   async onLogout(history) {
-    this.props.actions.logout(history);
+    this.props.logout(history);
   }
 
   render() {
@@ -260,10 +259,8 @@ class AdminNavbar extends React.Component {
   }
 }
 
-const mapDispatch = (dispatch) => {
-  return {
-    actions: bindActionCreators(sessionActions, dispatch)
-  };
-};
+const mapDispatchToProps = dispatch => ({
+    logout: (history) =>dispatch(logout(history)),
+});
 
-export default connect(null, mapDispatch)(AdminNavbar);
+export default connect(null, mapDispatchToProps)(AdminNavbar);

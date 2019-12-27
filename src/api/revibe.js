@@ -1,15 +1,18 @@
 import axios from "axios"
 import Fingerprint2 from 'fingerprintjs2'
+import Cookies from 'js-cookie'
+
+const cookieName = "bshdcce3gcw473q839hxkqabxe3q7qhxbaekc"  // should probably try and set somewhere in env
 
 export default class RevibeAPI {
 
   constructor() {
     this.baseEndpoint = "http://test-env.myrpupud2p.us-east-2.elasticbeanstalk.com/v1/"
-    this.saveDeviceData = this.saveDeviceData.bind(this)
-    Fingerprint2.get(this.saveDeviceData);
+    this._saveDeviceData = this._saveDeviceData.bind(this)
+    Fingerprint2.get(this._saveDeviceData);
   }
 
-  saveDeviceData(components){
+  _saveDeviceData(components) {
     // sets fingerprinted device id and device name to user agent
     var values = components.map(function (component) { return component.value })
     var id = Fingerprint2.x64hash128(values.join(''), 31)
@@ -17,14 +20,32 @@ export default class RevibeAPI {
     this.device_name = components.filter(x=>x.key==="userAgent")[0].value
   }
 
+  _setCookie(value) {
+    Cookies.set(cookieName, value, { expires: .19}) // expire=4.56 hours
+  }
+
+  _getCookie() {
+    return Cookies.get(cookieName)
+  }
+
+  _deleteCookie() {
+    Cookies.remove(cookieName)
+  }
+
+  _cookieIsValid() {
+    return !!Cookies.get(cookieName)
+  }
+
   async _request(endpoint, body, requestType, isAuthenticated, content_type="application/json") {
-    // implemenmt way to get auth credentials
     var headers = {"Content-Type": content_type}
-    if(isAuthenticated) headers["Authorization"] = "Bearer tmtCs9W9IJU19aM1PLmImSeCyeEnfo"
+    if(isAuthenticated) {
+      this.isLoggedIn()
+      headers.Authorization = "Bearer "+ this._getCookie()
+    }
+
     var options = {
       url: this.baseEndpoint + endpoint,
       method: requestType,
-      // withCredentials: true, //Commented out to hardcode token
       headers: headers,
       responseType: "json",
       data: body
@@ -54,7 +75,10 @@ export default class RevibeAPI {
       device_name: this.device_name,
       device_type: "browser"
     }
-    return await this. _request("account/register/", data, "POST", false)
+    var response = await this. _request("account/register/", data, "POST", false)
+    this._setCookie(response.access_token)
+    return response
+
   }
 
   async registerArtist(name, image) {
@@ -72,15 +96,25 @@ export default class RevibeAPI {
       device_name: this.device_name,
       device_type: "browser"
     }
-    return await this. _request("account/login/", data, "POST", false)
+    var response = await this. _request("account/login/", data, "POST", false)
+    this._setCookie(response.access_token)
+    return response
+  }
+
+  isLoggedIn() {
+    if(!this._cookieIsValid()) {
+      window.location.href = "/account/login";
+    }
   }
 
   async logout() {
-    return await this. _request("logout/", null, "POST", true)
+    this._deleteCookie()
+    return await this. _request("account/logout/", null, "POST", true)
   }
 
   async logoutAll() {
-    return await this. _request("logout-all/", null, "POST", true)
+    this._deleteCookie()
+    return await this. _request("account/logout-all/", null, "POST", true)
   }
 
   ////////////////////////////////////
@@ -242,11 +276,13 @@ export default class RevibeAPI {
   }
 
   async approveAlbumContribution(contribution_id) {
-    // will not implemented in version 1
+    var data = {contribution_id: contribution_id, content: "album", action: "approve"}
+    return await this._request("account/artist/contributions/approve/", data, "POST", true)
   }
 
   async rejectAlbumContribution(contribution_id) {
-    // will not implemented in version 1
+    var data = {contribution_id: contribution_id, content: "album", action: "deny"}
+    return await this._request("account/artist/contributions/approve/", data, "POST", true)
   }
 
   async deleteAlbumContribution(contribution_id) {
@@ -267,11 +303,13 @@ export default class RevibeAPI {
   }
 
   async approveSongContribution(contribution_id) {
-    // will not implemented in version 1
+    var data = {contribution_id: contribution_id, content: "song", action: "approve"}
+    return await this._request("account/artist/contributions/approve/", data, "POST", true)
   }
 
   async rejectSongContribution(contribution_id) {
-    // will not implemented in version 1
+    var data = {contribution_id: contribution_id, content: "song", action: "deny"}
+    return await this._request("account/artist/contributions/approve/", data, "POST", true)
   }
 
   async deleteSongContribution(contribution_id) {

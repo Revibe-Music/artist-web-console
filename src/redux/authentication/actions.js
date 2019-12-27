@@ -85,9 +85,10 @@ export function login(username, password, history) {
   }
 }
 
-export function logout() {
+export function logout(history) {
   return async (dispatch) => {
     await revibe.logout()
+    await history.push('/account/login');
     dispatch(logoutUser());
     dispatch(removeUser());
   }
