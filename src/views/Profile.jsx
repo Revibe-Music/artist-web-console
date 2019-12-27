@@ -89,19 +89,11 @@ class Profile extends React.Component {
               <CardBody>
                 <Form>
                   <Row>
-                    <Col className="pr-md-1" md="5">
+                    <Col className="pr-md-1" md="6">
                     <FormGroup>
                       <label>Display Name</label>
                       <Input defaultValue={this.props.user.displayName} placeholder="Display Name" type="text" onChange={event => this.onChange( "name", event.target.value)}/>
                     </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="pr-md-1" md="6">
-                      <FormGroup>
-                        <label>Username</label>
-                        <Input defaultValue={this.props.user.username} placeholder="Username" type="text" onChange={event => this.onChange( "username", event.target.value)}/>
-                      </FormGroup>
                     </Col>
                     <Col className="pl-md-1" md="6">
                       <FormGroup>

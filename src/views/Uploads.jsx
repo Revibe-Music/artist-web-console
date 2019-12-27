@@ -37,6 +37,7 @@ import {
 } from "reactstrap";
 import UploadsTable from "components/Tables/UploadsTable.jsx";
 import SongUpload from "views/SongUpload.jsx";
+import { FaArrowLeft } from "react-icons/fa";
 
 
 class Uploads extends React.Component {
@@ -68,7 +69,7 @@ class Uploads extends React.Component {
       :
         <>
           <a onClick={e => this.setState({uploading:false})}>
-            <i className="tim-icons icon-simple-remove" style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD"}}/>
+            <FaArrowLeft style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD"}} />
           </a>
           <SongUpload />
         </>
