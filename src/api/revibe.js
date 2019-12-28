@@ -108,8 +108,8 @@ export default class RevibeAPI {
   }
 
   async logout() {
+    const data = {access_token: this._getCookie()}
     this._deleteCookie()
-    var data = {access_token: this._getCookie()}
     return await this. _request("account/logout/", data, "POST", true)
   }
 
@@ -215,7 +215,7 @@ export default class RevibeAPI {
     data.set("duration", duration)
     data.set("album_id", album_id)
     data.set("display", display)
-    data.append("file", data.file)
+    data.append("file", file)
     if(genre !== null) data.set("genre", genre)  // only add if this is not null
     return await this. _request("account/artist/songs/", data, "POST", true, 'multipart/form-data')
   }

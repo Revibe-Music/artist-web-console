@@ -50,9 +50,6 @@ import Dropzone from 'react-dropzone';
 import ReactTable from "react-table";
 import Select from "react-select";
 import RevibeAPI from '../api/revibe.js';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as sessionActions from '../redux/authentication/actions.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 
 const revibe = new RevibeAPI()
@@ -82,11 +79,12 @@ class SongUpload extends Component {
       album_type: "",
       songs: []
     };
+    this.ImageUploader = React.createRef();
     this.columns = [
         {
           id: "name",
           Header: "Name",
-          accessor: row => <Input value={row.name} onChange={event => this.editRow( row.index,"name", event.target.value)} />,
+          accessor: row => <Input value={row.title} onChange={event => this.editRow( row.index,"title", event.target.value)} />,
           filterable: false,
         },
         {
@@ -179,16 +177,16 @@ class SongUpload extends Component {
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
       var formattedSong = {title: metadata.common.title,
-                           duration: metadata.format.duration,
+                           duration: Math.round(metadata.format.duration),
                            quality: metadata.format.bitrate,
-                           song: files[x]
+                           file: files[x]
                          }
       songs.push(formattedSong)
     }
     songs.forEach((item, i) => {
       item.index = i;
     });
-    this.setState({songs})
+    this.setState({songs:songs})
   }
 
   editRow(index, key, value) {
@@ -206,10 +204,10 @@ class SongUpload extends Component {
   async uploadButtonPressed()
   {
     var uploads = this.state.songs
-    var album = await revibe.createAlbum()
+    var album = await revibe.createUploadedAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
+    console.log(uploads);
     for(var x=0; x<uploads.length; x++) {
-      uploads[x].album_id = album.id
-      revibe.uploadSong(uploads[x])
+      revibe.createUploadedSong(uploads[x].title, uploads[x].file, uploads[x].duration, album.album_id)
     }
   }
 

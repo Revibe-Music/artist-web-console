@@ -38,8 +38,7 @@ import {
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as sessionActions from '../redux/authentication/actions.js';
+import {registerArtist} from '../redux/authentication/actions.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import RevibeAPI from '../api/revibe.js';
 
@@ -67,19 +66,18 @@ class RegisterArtist extends React.Component {
     document.body.classList.toggle("register-page");
   }
 
-  async onSubmit(history) 
+  async onSubmit(history)
   {
-    var response = await revibe.registerArtist({name: this.state.display_name, image_up: this.ImageUploader.current.state.file})
+    await this.props.registerArtist(this.state.display_name, this.ImageUploader.current.state.file)
     await history.push('/dashboard');
-    console.log(response);
   }
 
-  onChangeName(value) 
+  onChangeName(value)
   {
     this.setState({display_name: value})
   }
 
-  onChangeImage(value) 
+  onChangeImage(value)
   {
     this.setState({image: value})
   }
@@ -140,10 +138,9 @@ class RegisterArtist extends React.Component {
   }
 }
 
-const mapDispatch = (dispatch) => {
-  return {
-    actions: bindActionCreators(sessionActions, dispatch)
-  };
-};
 
-export default connect(null, mapDispatch)(RegisterArtist);
+const mapDispatchToProps = dispatch => ({
+    registerArtist: (name, image) =>dispatch(registerArtist(name, image)),
+});
+
+export default connect(null, mapDispatchToProps)(RegisterArtist);
