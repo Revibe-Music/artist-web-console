@@ -23,94 +23,34 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Row,
   Col,
   Button
 } from "reactstrap";
 import Moment from 'moment'
 import { MDBDataTable, MDBBtn } from 'mdbreact';
-import { FaEllipsisH } from "react-icons/fa";
+
+import Options from 'components/Tables/Options.jsx'
+import { songContributionColumns } from 'components/Tables/ColumnConfig.js'
+
 const momentRandom = require('moment-random');
 
 function randomDate(start, end) {
     return momentRandom(end).format("DD-MM-YYYY")
 }
 
-const Options = (props) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggle = () => setDropdownOpen(prevState => !prevState);
-
-  return (
-    <Dropdown
-      isOpen={dropdownOpen}
-      toggle={toggle}
-      direction="left"
-    >
-     <DropdownToggle tag="div">
-      <FaEllipsisH />
-    </DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem header>Actions</DropdownItem>
-        <DropdownItem>Edit</DropdownItem>
-        <DropdownItem>Stats</DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  )
-}
 
 
-const data = {
-  columns: [
-    {
-      label: 'Name',
-      field: 'name',
-      sort: 'asc',
-      width: 150
-    },
-    {
-      label: 'Album',
-      field: 'album',
-      sort: 'asc',
-      width: 100
-    },
-    {
-      label: 'Uploaded By',
-      field: 'uploadedBy',
-      sort: 'asc',
-      width: 75
-    },
-    {
-      label: 'Uploade Date',
-      field: 'uploaded',
-      sort: 'asc',
-      width: 100
-    },
-    {
-      label: 'Contribution Type',
-      field: 'contributionType',
-      sort: 'asc',
-      width: 150
-    },
-    {
-      label: '',
-      field: 'actions',
-      sort: 'disabled',
-      filter: 'disabled',
-    },
-  ],
-  rows: [
+
+const rows = [
     {name: "Airi Satou", album: "Accountant", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <Options />},
     {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <Options />},
     {name: "Ashton Cox", album: "Junior Technical Author", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <Options />},
-    ]
-}
+  ]
 
 
-class Contributions extends Component {
+
+class SongContributionsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -118,6 +58,7 @@ class Contributions extends Component {
     };
   }
   render() {
+    var data = {columns: songContributionColumns, rows: rows}
     return (
         <Card>
           <CardHeader>
@@ -138,4 +79,4 @@ class Contributions extends Component {
   }
 }
 
-export default Contributions;
+export default SongContributionsTable;

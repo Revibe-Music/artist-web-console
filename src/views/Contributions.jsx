@@ -35,7 +35,8 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import ContributionsTable from "components/Tables/ContributionsTable.jsx";
+import AlbumContributionsTable from "components/Tables/AlbumContributionsTable.jsx";
+import SongContributionsTable from "components/Tables/SongContributionsTable.jsx";
 import PendingContributions from "components/Tables/PendingContributionsTable.jsx";
 
 
@@ -55,7 +56,7 @@ class Contributions extends React.Component {
         </Row>
         <Row className="mt-5">
           <Col xs={12} md={12}>
-            <ContributionsTable />
+            <AlbumContributionsTable />
           </Col>
         </Row>
       }

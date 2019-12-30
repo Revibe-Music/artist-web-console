@@ -23,20 +23,17 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Row,
   Col,
   Button
 } from "reactstrap";
 import Moment from 'moment'
 import { MDBDataTable } from 'mdbreact';
-import { FaEllipsisH } from "react-icons/fa";
 import { compact } from 'lodash';
 import { connect } from 'react-redux';
 
+import Options from 'components/Tables/Options.jsx'
+import { uploadedAlbumColumns } from 'components/Tables/ColumnConfig.js'
 
 const momentRandom = require('moment-random');
 
@@ -45,61 +42,8 @@ function randomDate(start, end) {
     return momentRandom(end).format("DD-MM-YYYY")
 }
 
-const Options = (props) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggle = () => setDropdownOpen(prevState => !prevState);
 
-  return (
-    <Dropdown
-      isOpen={dropdownOpen}
-      toggle={toggle}
-      direction="left"
-    >
-     <DropdownToggle tag="div">
-      <FaEllipsisH />
-    </DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem header>Actions</DropdownItem>
-        <DropdownItem>Edit</DropdownItem>
-        <DropdownItem>Stats</DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  )
-}
 
-const columns = [
-    {
-      label: 'Name',
-      field: 'name',
-      sort: 'asc',
-    },
-    {
-      label: 'Type',
-      field: 'type',
-      sort: 'asc',
-    },
-    {
-      label: 'Contributors',
-      field: 'contributors',
-      sort: 'asc',
-    },
-    {
-      label: 'Streams',
-      field: 'streams',
-      sort: 'asc',
-    },
-    {
-      label: 'Uploaded',
-      field: 'uploaded',
-      sort: 'asc',
-    },
-    {
-      label: '',
-      field: 'actions',
-      sort: 'disabled',
-      filter: 'disabled',
-    },
-  ]
 
 
 class UploadedAlbumsTable extends Component {
@@ -133,7 +77,7 @@ class UploadedAlbumsTable extends Component {
 
   render() {
     var rows = this.setRowData(this.props.uploadedAlbums)
-    var data = {columns: columns, rows: rows}
+    var data = {columns: uploadedAlbumColumns, rows: rows}
     return (
       <Card>
         <CardHeader>
