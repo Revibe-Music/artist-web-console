@@ -62,10 +62,7 @@ export function registerArtist(name, image) {
       artistAboutMe: response.artist_profile.about_me,
       country: "",
       city: "",
-      zipcode: "",
-      // country: response.artist_profile.country,
-      // city: response.artist_profile.city,
-      // zipcode: response.artist_profile.zipcode,
+      zipcode: ""
     }
     dispatch(updateUser(user));
   }

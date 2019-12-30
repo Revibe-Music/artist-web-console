@@ -57,10 +57,6 @@ class Login extends Component {
     document.body.classList.toggle("login-page");
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if(this.props.user)
-  // }
-
   async onSubmit(history) {
     const { cookies } = this.props;
     this.props.login(this.state.username, this.state.password, history);

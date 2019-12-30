@@ -216,7 +216,9 @@ class Sidebar extends React.Component {
           <Nav>{this.createLinks(this.props.routes)}</Nav>
           <ul className="nav" style={{bottom: 0, position: "absolute"}}>
             <li className="nav-item">
-              <a className="nav-link" href="https://www.creative-tim.com">
+              <a className="nav-link"
+                 target="_blank"
+                 href="/contact-us">
                 Contact Us
               </a>
             </li>{" "}
@@ -230,7 +232,9 @@ class Sidebar extends React.Component {
               </a>
             </li>{" "}
             <li className="nav-item">
-              <a className="nav-link" target="_blank" href={privacyPolicyLink}>
+              <a className="nav-link" 
+                 target="_blank" 
+                 href={privacyPolicyLink}>
                 Privacy Policy
               </a>
             </li>
