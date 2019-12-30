@@ -18,19 +18,9 @@ import React from "react";
 
 // reactstrap components
 import {
-  Badge,
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  FormGroup,
-  Input,
   Container,
   Row,
-  Col,
-  Carousel,
-  CarouselItem
+  Col
 } from "reactstrap";
 
 // core components
