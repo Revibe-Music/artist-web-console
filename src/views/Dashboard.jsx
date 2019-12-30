@@ -31,6 +31,7 @@ import {
   CardBody,
   CardFooter,
   CardTitle,
+  Container,
   Row,
   Col,
 } from "reactstrap";
@@ -45,6 +46,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div className="content">
+      <Container>
         <Row>
         <Col xs="12">
           <Card className="card-chart">
@@ -181,6 +183,7 @@ class Dashboard extends React.Component {
           <VectorMap />
           </Col>
         </Row>
+        </Container>
       </div>
     );
   }

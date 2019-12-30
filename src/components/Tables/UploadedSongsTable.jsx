@@ -16,31 +16,15 @@
 */
 import React, { Component, useState } from "react";
 import classNames from "classnames";
-// react component for creating dynamic tables
-import ReactTable from "react-table";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Row,
-  Col,
-  Button
-} from "reactstrap";
-import Moment from 'moment'
+
+import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import { MDBDataTable } from 'mdbreact';
+import * as moment from 'moment'
 import { compact } from 'lodash';
 import { connect } from 'react-redux';
 
 import Options from 'components/Tables/Options.jsx'
 import { uploadedSongColumns } from 'components/Tables/ColumnConfig.js'
-
-const momentRandom = require('moment-random');
-
-
-function randomDate(start, end) {
-    return momentRandom(end).format("DD-MM-YYYY")
-}
 
 
 class UploadedSongsTable extends Component {
@@ -63,7 +47,7 @@ class UploadedSongsTable extends Component {
         name: songs[x].title,
         album: songs[x].album.name,
         contributors: contributors,
-        uploaded: randomDate(new Date(2012, 0, 1), new Date()),
+        uploaded: moment(songs[x].uploaded_date).format("DD-MM-YYYY"),
         actions: <Options />,
         streams: songs[x].total_streams
       }
@@ -92,6 +76,8 @@ class UploadedSongsTable extends Component {
     );
   }
 }
+
+
 function mapStateToProps(state) {
   return {
     uploadedSongs: state.media.uploadedSongs,
@@ -99,8 +85,5 @@ function mapStateToProps(state) {
   }
 };
 
-// const mapDispatchToProps = dispatch => ({
-//     login: (username, password, history, fn) => dispatch(login(username, password, history, fn)),
-// });
 
 export default connect(mapStateToProps)(UploadedSongsTable);

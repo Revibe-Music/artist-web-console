@@ -16,19 +16,10 @@
 */
 import React, { Component, useState } from "react";
 import classNames from "classnames";
-// react component for creating dynamic tables
-import ReactTable from "react-table";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Row,
-  Col,
-  Button
-} from "reactstrap";
-import Moment from 'moment'
+
+import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import { MDBDataTable, MDBBtn } from 'mdbreact';
+import * as moment from 'moment'
 
 import Options from 'components/Tables/Options.jsx'
 import { songContributionColumns } from 'components/Tables/ColumnConfig.js'

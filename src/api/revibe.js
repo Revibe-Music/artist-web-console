@@ -130,15 +130,12 @@ export default class RevibeAPI {
   async editArtistProfile(name=null,email=null,image=null,country=null,city=null,zipcode=null,about_me=null) {
     var data = new FormData();
     // only add variables to form if they arent null
-    var artistProfileData = {}
-    if(email !== null) artistProfileData.email=email
-    if(country !== null) artistProfileData.country=country
-    if(city !== null) artistProfileData.city=city
-    if(zipcode !== null) artistProfileData.zip_code=zipcode
-    if(about_me !== null) artistProfileData.about_me=about_me
-
     if(name !== null) data.set("name", name)
-    if(Object.keys(artistProfileData).length > 0) data.set("artist_profile", JSON.stringify(artistProfileData))
+    if(email !== null) data.set("email", email)
+    if(country !== null) data.set("country", country)
+    if(city !== null) data.set("city", city)
+    if(zipcode !== null) data.set("zip_code", zipcode)
+    if(about_me !== null) data.set("about_me", about_me)
     if(image !== null) data.append("image", image)
 
     return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')

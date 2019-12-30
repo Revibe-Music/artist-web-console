@@ -112,7 +112,7 @@ class Login extends Component {
                         <i className="tim-icons icon-lock-circle" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="text" onChange={event => this.onChange( "password", event.target.value)}/>
+                    <Input placeholder="Password" type="password" onChange={event => this.onChange( "password", event.target.value)}/>
                   </InputGroup>
                 </CardBody>
                 <CardFooter>

@@ -174,10 +174,10 @@ class SongUpload extends Component {
     this.setState({songs: newData})
   }
 
-  async uploadButtonPressed() {
+  async updateButtonPressed() {
     this.setState({uploading: true})
     var uploads = this.state.songs
-    var album = await revibe.createUploadedAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
+    var album = await revibe.editUploadedAlbum(this.props.album_id, this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
 
     for(var x=0; x<uploads.length; x++) {
       const song = uploads[x]
@@ -326,7 +326,7 @@ class SongUpload extends Component {
         />
         <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
         <Button onClick={this.uploadButtonPressed} className="btn-round" color="primary">
-            Upload
+            Save
         </Button>
         </div>
         </>

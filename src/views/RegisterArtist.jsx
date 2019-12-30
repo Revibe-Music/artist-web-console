@@ -25,6 +25,7 @@ import {
   CardFooter,
   CardImg,
   CardTitle,
+  Container,
   Label,
   FormGroup,
   Form,
@@ -32,7 +33,6 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Container,
   Row,
   Col
 } from "reactstrap";

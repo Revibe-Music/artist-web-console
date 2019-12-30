@@ -36,7 +36,7 @@ class Options extends Component {
        <DropdownToggle tag="div">
         <FaEllipsisH />
       </DropdownToggle>
-        <DropdownMenu>
+        <DropdownMenu right>
           <DropdownItem header>Actions</DropdownItem>
           <DropdownItem>Edit</DropdownItem>
           <DropdownItem>Stats</DropdownItem>

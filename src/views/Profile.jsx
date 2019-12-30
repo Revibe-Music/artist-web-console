@@ -25,19 +25,27 @@ import {
   CardBody,
   CardFooter,
   CardText,
+  Container,
   FormGroup,
   Form,
   Input,
+  InputGroup,
   Row,
   Col
 } from "reactstrap";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+// import SweetAlert from 'sweetalert2-react';
 
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { connect } from 'react-redux';
 import { editArtistProfile } from 'redux/authentication/actions.js'
 import { compact } from 'lodash';
 
-const artistPicsDB = "https://revibe-media.s3.amazonaws.com/media/images/Artist/"
+const MySwal = withReactContent(Swal)
+
+const artistPicsDB = "https://revibe-media-test.s3.amazonaws.com/media/images/Artist/"
 
 
 class Profile extends React.Component {
@@ -52,7 +60,8 @@ class Profile extends React.Component {
         city: null,
         zipcode: null,
         aboutMe: null
-      }
+      },
+
     }
     this.ImageUploader = React.createRef();
   }
@@ -66,6 +75,15 @@ class Profile extends React.Component {
   }
 
   saveBtnPressed() {
+    MySwal.fire({
+      title: 'Profile Saved',
+      text: '',
+      icon: 'success',
+      showCancelButton: false,
+      showConfirmButton: false,
+      timer: 1500,
+      background: "#303030"
+    })
     var user = { ...this.state.editedUser }
     console.log();
     if(this.ImageUploader.current.state.file !== null) {
@@ -84,6 +102,7 @@ class Profile extends React.Component {
   render() {
     return (
       <div className="content">
+      <Container>
         <Row>
           <Col md="8">
             <Card>
@@ -91,7 +110,7 @@ class Profile extends React.Component {
                 <h5 className="title">Edit Profile</h5>
               </CardHeader>
               <CardBody>
-                <Form>
+                <Form className="form">
                   <Row>
                     <Col className="pr-md-1" md="6">
                     <FormGroup>
@@ -111,7 +130,7 @@ class Profile extends React.Component {
                     <Col className="px-md-1" md="4">
                       <FormGroup>
                         <label>Country</label>
-                        <Input defaultValue={this.props.user.country} placeholder="Country" type="text" onChange={event => this.onChange("country", event.target.value)}/>
+                        <Input className="primary" defaultValue={this.props.user.country} placeholder="Country" type="text" onChange={event => this.onChange("country", event.target.value)}/>
                       </FormGroup>
                     </Col>
                     <Col className="pr-md-1" md="4">
@@ -192,6 +211,8 @@ class Profile extends React.Component {
             </Card>
           </Col>
         </Row>
+
+        </Container>
       </div>
     );
   }

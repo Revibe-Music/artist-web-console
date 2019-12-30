@@ -23,6 +23,7 @@ import {
   CardHeader,
   CardBody,
   CardTitle,
+  Container,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -53,6 +54,7 @@ class Uploads extends React.Component {
   render() {
     return (
       <div className="content">
+      <Container>
       {!this.state.uploading ?
         <>
           <Button
@@ -80,6 +82,7 @@ class Uploads extends React.Component {
           <SongUpload />
         </>
       }
+      </Container>
       </div>
     );
   }
