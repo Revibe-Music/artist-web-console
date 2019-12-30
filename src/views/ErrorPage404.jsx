@@ -37,11 +37,11 @@ import {
 import Footer from "components/Footer/Footer.jsx";
 import { FaRegQuestionCircle } from "react-icons/fa";
 
-class ErrorPage extends React.Component {
+class ErrorPage404 extends React.Component {
 
   state = 
   {
-    error_code: "400"
+    error_code: "404"
   };
 
   render() {
@@ -61,16 +61,16 @@ class ErrorPage extends React.Component {
                   </div>
                 </Col>
                 <Col className="mt-md-5" lg="6">
-                  <a href="https://revibe.tech">
+                  <a href="/dashboard/">
                   <img style={{paddingLeft: "155px"}} src={require("assets/img/revibetransparent.png")}/>
                   </a>
-                  <h1>Dude, where's my page? {this.state.error_code} Error</h1>
+                  <h1 className="mt-md-5 title text-center text-primary">Dude, where's my page? {this.state.error_code} Error</h1>
                   <Row>
-                    <Col className="mt-md-5" lg="12">
-                      <div className="info text-center text-primary">
-                        <h4> Apologies</h4>
-                        <p className="description">
-                          It looks like there was an error loading this page...
+                    <Col lg="12">
+                      <div>
+                        <h4 className="info text-center text-primary"> Apologies</h4>
+                        <p className="content info text-center">
+                          It looks like there was an error locating this page...
                         </p>
                       </div>
                     </Col>
@@ -86,4 +86,4 @@ class ErrorPage extends React.Component {
   }
 }
 
-export default ErrorPage;
+export default ErrorPage404;
