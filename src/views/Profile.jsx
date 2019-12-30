@@ -67,7 +67,6 @@ class Profile extends React.Component {
 
   saveBtnPressed() {
     var user = { ...this.state.editedUser }
-    console.log();
     if(this.ImageUploader.current.state.file !== null) {
       user.image = this.ImageUploader.current.state.file
     }
