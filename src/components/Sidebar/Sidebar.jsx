@@ -25,6 +25,9 @@ import Footer from "components/Footer/Footer.jsx";
 // reactstrap components
 import { Nav, Collapse } from "reactstrap";
 
+const privacyPolicyLink = "https://artist-website.s3.us-east-2.amazonaws.com/static/media/Privacy+Policy.pdf"
+const termAndConditionsLink = "https://artist-website.s3.us-east-2.amazonaws.com/static/media/Terms+and+Conditions.pdf"
+
 var ps;
 
 class Sidebar extends React.Component {
@@ -220,13 +223,14 @@ class Sidebar extends React.Component {
             <li className="nav-item">
               <a
                 className="nav-link"
-                href="https://www.creative-tim.com/presentation"
+                target="_blank"
+                href={termAndConditionsLink}
               >
                 Terms & Conditions
               </a>
             </li>{" "}
             <li className="nav-item">
-              <a className="nav-link" href="https://blog.creative-tim.com">
+              <a className="nav-link" target="_blank" href={privacyPolicyLink}>
                 Privacy Policy
               </a>
             </li>
