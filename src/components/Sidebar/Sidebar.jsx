@@ -20,6 +20,7 @@ import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
+import Footer from "components/Footer/Footer.jsx";
 
 // reactstrap components
 import { Nav, Collapse } from "reactstrap";
@@ -210,7 +211,28 @@ class Sidebar extends React.Component {
             </div>
           ) : null}
           <Nav>{this.createLinks(this.props.routes)}</Nav>
+          <ul className="nav" style={{bottom: 0, position: "absolute"}}>
+            <li className="nav-item">
+              <a className="nav-link" href="https://www.creative-tim.com">
+                Contact Us
+              </a>
+            </li>{" "}
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="https://www.creative-tim.com/presentation"
+              >
+                Terms & Conditions
+              </a>
+            </li>{" "}
+            <li className="nav-item">
+              <a className="nav-link" href="https://blog.creative-tim.com">
+                Privacy Policy
+              </a>
+            </li>
+          </ul>
         </div>
+
       </div>
     );
   }
