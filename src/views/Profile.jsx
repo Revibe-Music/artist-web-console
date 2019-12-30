@@ -37,7 +37,7 @@ import { connect } from 'react-redux';
 import { editArtistProfile } from 'redux/authentication/actions.js'
 import { compact } from 'lodash';
 
-const artistPicsDB = "https://revibe-media.s3.amazonaws.com/media/images/Artist/"
+const artistPicsDB = "https://revibe-media-test.s3.amazonaws.com/media/images/Artist/"
 
 
 class Profile extends React.Component {

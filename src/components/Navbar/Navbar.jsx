@@ -39,7 +39,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {logout} from '../../redux/authentication/actions.js';
 
-const artistPicsDB = "https://revibe-media.s3.amazonaws.com/media/images/Artist/"
+const artistPicsDB = "https://revibe-media-test.s3.amazonaws.com/media/images/Artist/"
 
 
 class AdminNavbar extends React.Component {

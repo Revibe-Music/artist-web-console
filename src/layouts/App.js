@@ -9,6 +9,7 @@ import Login from './../views/Login.jsx';
 import Register from './../views/Register.jsx';
 import RegisterArtist from 'views/RegisterArtist.jsx';
 import ContactUs from 'views/ContactUs.jsx';
+import ErrorPage from 'views/ErrorPage.jsx'
 
 const App = ({ authenticated, checked }) => (
   <Router>
@@ -18,6 +19,7 @@ const App = ({ authenticated, checked }) => (
       <Route path="/account/create-profile" component={RegisterArtist}/>
       <Route path="/account/login" component={Login}/>
       <Route path="/contact-us" component={ContactUs}/>
+      <Route path="/error" component={ErrorPage}/>
       <PrivateRoute path="/" component={Authenticated} authenticated={authenticated}/>
      </Switch>
     }
