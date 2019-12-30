@@ -36,8 +36,6 @@ import {
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-// import SweetAlert from 'sweetalert2-react';
-
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { connect } from 'react-redux';
 import { editArtistProfile } from 'redux/authentication/actions.js'
