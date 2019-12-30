@@ -103,36 +103,30 @@ export function getProfile() {
       artistId: response.artist_id,
       displayName: response.name,
       artistImage: response.artist_uri+"."+response.ext,
+      country: response.artist_profile.country,
+      city: response.artist_profile.city,
+      zipcode: response.artist_profile.zip_code,
       artistAboutMe: response.artist_profile.about_me,
-      country: "",
-      city: "",
-      zipcode: "",
-      // country: response.artist_profile.country,
-      // city: response.artist_profile.city,
-      // zipcode: response.artist_profile.zipcode,
     }
     dispatch(updateUser(user));
   }
 }
 
 
-export function editProfile(data) {
+export function editArtistProfile(data) {
   return async (dispatch) => {
     // check to see if variables are in data
-    var username = Object.keys(data).filter(x=> x==="username").length > 0 ? data.username : null
-    var email = Object.keys(data).filter(x=> x==="email").length > 0 ? data.email : null
+    console.log(data);
     var name = Object.keys(data).filter(x=> x==="name").length > 0 ? data.name : null
+    var email = Object.keys(data).filter(x=> x==="email").length > 0 ? data.email : null
     var image = Object.keys(data).filter(x=> x==="image").length > 0 ? data.image : null
-
-    console.log("username:",username);
-    console.log("email:",email);
-    console.log("name:",name);
-    console.log("image:",image);
+    var country = Object.keys(data).filter(x=> x==="country").length > 0 ? data.country : null
+    var city = Object.keys(data).filter(x=> x==="city").length > 0 ? data.city : null
+    var zipcode = Object.keys(data).filter(x=> x==="zipcode").length > 0 ? data.zipcode : null
+    var aboutMe = Object.keys(data).filter(x=> x==="aboutMe").length > 0 ? data.aboutMe : null
 
     // check to see if user has edited user or artist profile data and make requests accordingly
-    if(username !== null || email !== null) await revibe.editUserProfile(username, email)
-    if(name !== null || image !== null) await revibe.editArtistProfile(name, image)
-
+    if(name || email || image || country || city || zipcode || aboutMe) await revibe.editArtistProfile(name,email,image,country,city,zipcode,aboutMe)
     dispatch(getProfile());
   }
 }

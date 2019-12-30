@@ -1,19 +1,40 @@
 var initialState = {
-  uploads:[],
-  contributions: [],
+  uploadedAlbums:[],
+  uploadedSongs: [],
+  albumContributions: [],
+  songContributions: [],
   error: null,
 }
 
 
-export const authenticationReducer = (state=initialState, action) => {
+export const mediaReducer = (state=initialState, action) => {
     switch (action.type) {
 
+        case "FETCH_UPLOADED_ALBUMS":
+            return {
+              ...state,
+              uploadedAlbums: action.uploadedAlbums
+            };
+        case "FETCH_UPLOADED_SONGS":
+            return {
+              ...state,
+              uploadedSongs: action.uploadedSongs
+            };
+        case "FETCH_ALBUM_CONTRIBUTIONS":
+            return {
+              ...state,
+              albumContributions: action.albumContributions
+            };
+        case "FETCH_SONG_CONTRIBUTIONS":
+            return {
+              ...state,
+              songContributions: action.songContributions
+            };
         case "ADD_UPLOAD":
             return {
               ...state,
               uploads: [...state.uploads, action.newUpload]
             };
-
         case "EDIT_UPLOAD":
             // FIGURE OUT
             return {

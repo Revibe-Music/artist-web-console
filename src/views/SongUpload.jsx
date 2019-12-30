@@ -49,12 +49,14 @@ import Dropzone from 'react-dropzone';
 
 import ReactTable from "react-table";
 import Select from "react-select";
+import { ClipLoader } from "react-spinners";
+import { FaCheckCircle } from "react-icons/fa";
+
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 
-const revibe = new RevibeAPI()
-
 const musicMetadata = require('music-metadata-browser');
+const revibe = new RevibeAPI()
 
 
 const basestyle = {
@@ -72,36 +74,141 @@ const basestyle = {
 class SongUpload extends Component {
 
   constructor() {
-    super();
-    this.state = {
-      album_image: null,
-      album_name: "",
-      album_type: "",
-      songs: []
-    };
-    this.ImageUploader = React.createRef();
-    this.columns = [
+      super();
+      this.state = {
+        album_image: null,
+        album_name: "",
+        album_type: "",
+        songs: [],
+        uploading: false
+      };
+      this.ImageUploader = React.createRef();
+
+      this.editRow = this.editRow.bind(this)
+      this.removeRow = this.removeRow.bind(this)
+      this.onDrop = this.onDrop.bind(this)
+      this.uploadButtonPressed = this.uploadButtonPressed.bind(this)
+      this.uploadStatus = this.uploadStatus.bind(this)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.songs.length !== prevState.songs.length) {
+      this.state.songs.forEach((item, i) => {
+        item.index = i;
+      });
+    }
+  }
+
+  uploadStatus(song) {
+    console.log(song);
+    if(this.state.uploading) {
+      if(song.uploaded) {
+        console.log("Uploaded!");
+        return (
+          <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
+            <FaCheckCircle style={{fontSize: "50px", color: "green"}}/>
+          </div>
+        )
+      }
+      return (
+        <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
+          <ClipLoader
+            size={50}
+            color={"#7248BD"}
+            loading={true}
+          />
+        </div>
+
+      )
+    }
+    return (
+      <Button onClick={() => this.removeRow(song.index)} className="btn-round" color="danger">
+        Remove
+      </Button>
+    )
+  }
+
+  changeAlbumCover(image) {
+    this.setState({album_image: image})
+  }
+
+  formatDuration(time) {
+    var minutes = Math.floor(time / 60);
+    var seconds = Math.round(time - minutes * 60);
+    return minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) ;
+  }
+
+  formatQuality(bitrate) {
+    return (bitrate / 1000).toString() + " kb/s"
+  }
+
+  async onDrop(files) {
+    var songs = []
+    for(var x=0; x<files.length; x++) {
+      var metadata = await musicMetadata.parseBlob(files[x]);
+      var formattedSong = {title: metadata.common.title,
+                           duration: Math.round(metadata.format.duration),
+                           quality: metadata.format.bitrate,
+                           file: files[x],
+                           explicit: false,
+                           uploaded: false,
+                         }
+      songs.push(formattedSong)
+    }
+    songs.forEach((item, i) => {
+      item.index = i;
+    });
+    this.setState({songs:songs})
+  }
+
+  editRow(index, key, value) {
+    var newData = [... this.state.songs]
+    newData[index][key] = value
+    this.setState({songs: newData})
+  }
+
+  removeRow(index) {
+    var newData = [... this.state.songs]
+    newData.splice(index, 1);
+    this.setState({songs: newData})
+  }
+
+  async uploadButtonPressed() {
+    this.setState({uploading: true})
+    var uploads = this.state.songs
+    var album = await revibe.createUploadedAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
+
+    for(var x=0; x<uploads.length; x++) {
+      const song = uploads[x]
+      revibe.createUploadedSong(song.title, song.file, song.duration, album.album_id, song.explicit)
+        .then(() => this.editRow(song.index, "uploaded", true))
+    }
+  }
+
+  render() {
+
+    var columns = [
         {
-          id: "name",
-          Header: "Name",
-          accessor: row => <Input value={row.title} onChange={event => this.editRow( row.index,"title", event.target.value)} />,
+          id: "title",
+          Header: "Title",
+          accessor: row => (
+            <Input value={row.title} onChange={event => this.editRow(row.index,"title", event.target.value)} />
+          ),
           filterable: false,
         },
         {
           id: "contributors",
           Header: "Contributors",
           style:{overflow: "visible"},
-          Cell: row => <Select
+          accessor: row => <Select
             className="react-select info"
             classNamePrefix="react-select"
-            placeholder="Contributors"
+            placeholder="Select"
             name="multipleSelect"
             closeMenuOnSelect={false}
             isMulti
             value={row.contributors}
-            onChange={value =>
-              this.editRow( row.index,"contributors", value)
-            }
+            onChange={value => this.editRow( row.index,"contributors", value)}
             options={[
               {
                 value: "",
@@ -129,92 +236,31 @@ class SongUpload extends Component {
         {
           id: "explicit",
           Header: "Explicit",
-          accessor: row => (<FormGroup check style={{alignItems: "center", justifyContent: "center"}}>
-                              <Label check>
-                                <Input type="checkbox" />
-                                <span className="form-check-sign" />
-                              </Label>
-                            </FormGroup>),
+          accessor: row => (
+            <FormGroup check style={{alignItems: "center", justifyContent: "center"}}>
+              <Label check>
+                <Input type="checkbox" value={row.explicit} onChange={event => this.editRow(row.index,"explicit", event.target.checked)}/>
+                <span className="form-check-sign" />
+              </Label>
+            </FormGroup>),
+          sortable: false,
           filterable: false
         },
         {
-          Header: "Actions",
-          accessor: "actions",
-          Cell: row => (<Button onClick={() => this.removeRow(row.index)} className="btn-round" color="danger">
-                          Remove
-                       </Button>),
+          id: "actions",
+          Header: () => (
+            <div style={{textAlign: "center"}}>
+              {this.state.uploading ? "Upload Status" : "Actions"}
+            </div>
+            ),
+          accessor: row => this.uploadStatus(row),
           sortable: false,
           filterable: false
         }
       ]
 
-      this.editRow = this.editRow.bind(this)
-      this.removeRow = this.removeRow.bind(this)
-      this.onDrop = this.onDrop.bind(this)
-      this.uploadButtonPressed = this.uploadButtonPressed.bind(this)
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if(this.state.songs.length !== prevState.songs.length) {
-      this.state.songs.forEach((item, i) => {
-        item.index = i;
-      });
-    }
-  }
-
-  formatDuration(time) {
-    var minutes = Math.floor(time / 60);
-    var seconds = Math.round(time - minutes * 60);
-    return minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) ;
-  }
-
-  formatQuality(bitrate) {
-    return (bitrate / 1000).toString() + " kb/s"
-  }
-
-  async onDrop(files) {
-    var songs = []
-    for(var x=0; x<files.length; x++) {
-      var metadata = await musicMetadata.parseBlob(files[x]);
-      var formattedSong = {title: metadata.common.title,
-                           duration: Math.round(metadata.format.duration),
-                           quality: metadata.format.bitrate,
-                           file: files[x]
-                         }
-      songs.push(formattedSong)
-    }
-    songs.forEach((item, i) => {
-      item.index = i;
-    });
-    this.setState({songs:songs})
-  }
-
-  editRow(index, key, value) {
-    var newData = [... this.state.songs]
-    newData[index][key] = value
-    this.setState({songs: newData})
-  }
-
-  removeRow(index) {
-    var newData = [... this.state.songs]
-    newData.splice(index, 1);
-    this.setState({songs: newData})
-  }
-
-  async uploadButtonPressed()
-  {
-    var uploads = this.state.songs
-    var album = await revibe.createUploadedAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
-    console.log(uploads);
-    for(var x=0; x<uploads.length; x++) {
-      revibe.createUploadedSong(uploads[x].title, uploads[x].file, uploads[x].duration, album.album_id)
-    }
-  }
-
-  render() {
-    const maxSize = 10485760; // 10 MB
     return (
-<>
+      <>
       <Row>
         <Col className="m-auto mr-auto">
           <Card>
@@ -223,7 +269,8 @@ class SongUpload extends Component {
                 <Col className="m-auto m-auto" md="4">
                   <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <ImageUpload
-                      avatar={require("../assets/img/album-img.jpg")}
+                      defaultImage={require("../assets/img/album-img.jpg")}
+                      uploadedImage={null}
                       btnText="Album Art"
                       addBtnColor="default"
                       changeBtnColor="default"
@@ -271,7 +318,7 @@ class SongUpload extends Component {
         <ReactTable
           data={this.state.songs}
           resizable={true}
-          columns={this.columns}
+          columns={columns}
           defaultPageSize={this.state.songs.length}
           showPagination={false}
           className="-striped -highlight"
@@ -288,12 +335,10 @@ class SongUpload extends Component {
         onDrop={this.onDrop}
         accept="audio/*"
         minSize={0}
-        maxSize={maxSize}
         multiple
       >
         {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
-          const filesRejected = rejectedFiles.length > 0 && rejectedFiles[0].size < maxSize
-          const isFileTooLarge = filesRejected && rejectedFiles[0].size > maxSize;
+          const filesRejected = rejectedFiles.length > 0
           return (
             <div {...getRootProps()} className="text-center">
               <input {...getInputProps()} />
@@ -301,11 +346,6 @@ class SongUpload extends Component {
               {filesRejected && (
                 <div className="text-danger mt-2">
                   Unsupported file types.
-                </div>
-              )}
-              {isFileTooLarge && filesRejected && (
-                <div className="text-danger mt-2">
-                  File is too large.
                 </div>
               )}
               <i style={{fontSize: 80, marginTop: 50, color: "#7248BD"}} className="tim-icons icon-cloud-upload-94" />

@@ -34,8 +34,8 @@ import {
 
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { connect } from 'react-redux';
-import { editProfile } from 'redux/authentication/actions.js'
-import defaultAvatar from "assets/img/default-avatar.png";
+import { editArtistProfile } from 'redux/authentication/actions.js'
+import { compact } from 'lodash';
 
 const artistPicsDB = "https://revibe-media.s3.amazonaws.com/media/images/Artist/"
 
@@ -47,7 +47,6 @@ class Profile extends React.Component {
     this.state = {
       editedUser: {
         name: null,
-        username: null,
         email: null,
         country: null,
         city: null,
@@ -55,6 +54,7 @@ class Profile extends React.Component {
         aboutMe: null
       }
     }
+    this.ImageUploader = React.createRef();
   }
 
   componentDidMount() {
@@ -67,8 +67,12 @@ class Profile extends React.Component {
 
   saveBtnPressed() {
     var user = { ...this.state.editedUser }
-    Object.keys(user).forEach((key) => (user[key] == null) && delete user[key]);
-    this.props.editProfile(user)
+    console.log();
+    if(this.ImageUploader.current.state.file !== null) {
+      user.image = this.ImageUploader.current.state.file
+    }
+    Object.keys(user).forEach((key) => {if(user[key] == null) delete user[key]});
+    this.props.editArtistProfile(user)
   }
 
   onChange(key, value) {
@@ -103,22 +107,23 @@ class Profile extends React.Component {
                     </Col>
                   </Row>
                   <Row>
-                    <Col className="pr-md-1" md="4">
-                      <FormGroup>
-                        <label>City</label>
-                        <Input defaultvalue="" placeholder="City" type="text" onChange={event => this.onChange( "city", event.target.value)}/>
-                      </FormGroup>
-                    </Col>
+
                     <Col className="px-md-1" md="4">
                       <FormGroup>
                         <label>Country</label>
-                        <Input defaultvalue="" placeholder="Country" type="text" onChange={event => this.onChange( "country", event.target.value)}/>
+                        <Input defaultValue={this.props.user.country} placeholder="Country" type="text" onChange={event => this.onChange("country", event.target.value)}/>
+                      </FormGroup>
+                    </Col>
+                    <Col className="pr-md-1" md="4">
+                      <FormGroup>
+                        <label>City</label>
+                        <Input defaultValue={this.props.user.city} placeholder="City" type="text" onChange={event => this.onChange("city", event.target.value)}/>
                       </FormGroup>
                     </Col>
                     <Col className="pl-md-1" md="4">
                       <FormGroup>
                         <label>Postal Code</label>
-                        <Input defaultvalue="" placeholder="ZIP Code" type="number" onChange={event => this.onChange( "zip", event.target.value)}/>
+                        <Input defaultValue={this.props.user.zipcode} placeholder="ZIP Code" type="number" onChange={event => this.onChange("zipcode", event.target.value)}/>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -132,7 +137,7 @@ class Profile extends React.Component {
                           placeholder="Here can be your description"
                           rows="4"
                           type="textarea"
-                          onChange={event => this.onChange( "address", event.target.value)}
+                          onChange={event => this.onChange("aboutMe", event.target.value)}
                         />
                       </FormGroup>
                     </Col>
@@ -161,10 +166,12 @@ class Profile extends React.Component {
                   <div className="block block-three" />
                   <div className="block block-four" />
                   <ImageUpload
-                    avatar= {this.props.user.artistImage === "" ? require("../assets/img/default-avatar.png") : (artistPicsDB+this.props.user.artistImage)}
+                    defaultImage={require("../assets/img/default-avatar.png")}
+                    uploadedImage={this.props.user.artistImage === "" ? null : (artistPicsDB+this.props.user.artistImage)}
                     btnText="Change Artist Image"
                     addBtnColor="default"
                     changeBtnColor="default"
+                    ref={this.ImageUploader}
                   />
                 </div>
 
@@ -197,7 +204,7 @@ function mapStateToProps(state) {
 };
 
 const mapDispatchToProps = dispatch => ({
-    editProfile: (data) =>dispatch(editProfile(data)),
+    editArtistProfile: (data) =>dispatch(editArtistProfile(data)),
 });
 
 

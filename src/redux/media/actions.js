@@ -4,6 +4,26 @@ import RevibeAPI from '../../api/revibe.js';
 const revibe = new RevibeAPI()
 
 
+const fetchUploadedAlbums = uploadedAlbums => ({
+    type: 'FETCH_UPLOADED_ALBUMS',
+    uploadedAlbums: uploadedAlbums,
+});
+
+const fetchUploadedSongs = uploadedSongs => ({
+    type: 'FETCH_UPLOADED_SONGS',
+    uploadedSongs: uploadedSongs,
+});
+
+const fetchAlbumContributions = albumContributions => ({
+    type: 'FETCH_ALBUM_CONTRIBUTIONS',
+    albumContributions: albumContributions,
+});
+
+const fetchSongContributions = songContributions => ({
+    type: 'FETCH_SONG_CONTRIBUTIONS',
+    songContributions: songContributions,
+});
+
 const addUpload = newUpload => ({
     type: 'ADD_UPLOAD',
     newUpload: newUpload,
@@ -40,94 +60,32 @@ const error = error => ({
 });
 
 
-let index = state.uploads.findIndex((x) => x.name === n);
-
-
 // Only functions below should ever be called by a component!
 
-export function addArtistUpload(username, email, password) {
+export function getUploadedAlbums() {
   return async (dispatch) => {
-    var response = await revibe.register(username, email, password)
-    dispatch(loginUser());
+    var albums = await revibe.getUploadedAlbums()
+    dispatch(fetchUploadedAlbums(albums));
   }
 }
 
-export function registerArtist(name, image) {
+export function getUploadedSongs() {
   return async (dispatch) => {
-    var response = await revibe.registerArtist(name, image)
-    var user = {
-      username: response.user.username,
-      email: response.user.email,
-      artistId: response.artist_id,
-      displayName: response.name,
-      artistImage: response.artist_uri+"."+response.ext,
-      artistBio: response.artist_profile.about_me,
-      country: "",
-      city: "",
-      zipcode: "",
-      // country: response.artist_profile.country,
-      // city: response.artist_profile.city,
-      // zipcode: response.artist_profile.zipcode,
-    }
-    dispatch(updateUser(user));
+    var songs = await revibe.getUploadedSongs()
+    dispatch(fetchUploadedSongs(songs));
   }
 }
 
-export function login(username, password) {
+export function getAlbumContributions() {
   return async (dispatch) => {
-    await revibe.login(username, password)
-    dispatch(loginUser());
-    dispatch(getProfile());
+    var albums = await revibe.getAlbumContributions()
+    dispatch(fetchAlbumContributions(albums));
   }
 }
 
-export function logout() {
+export function getSongContributions() {
   return async (dispatch) => {
-    await revibe.logout()
-    dispatch(logoutUser());
-    dispatch(removeUser());
+    var songs = await revibe.getSongContributions()
+    dispatch(fetchSongContributions(songs));
   }
 }
-
-export function getProfile() {
-  return async (dispatch) => {
-    var response = await revibe.getProfile()
-    var user = {
-      username: response.user.username,
-      email: response.user.email,
-      artistId: response.artist_id,
-      displayName: response.name,
-      artistImage: response.artist_uri+"."+response.ext,
-      artistBio: response.artist_profile.about_me,
-      country: "",
-      city: "",
-      zipcode: "",
-      // country: response.artist_profile.country,
-      // city: response.artist_profile.city,
-      // zipcode: response.artist_profile.zipcode,
-    }
-    dispatch(updateUser(user));
-  }
-}
-
-
-export function editProfile(data) {
-  return async (dispatch) => {
-    // check to see if variables are in data
-    var username = Object.keys().filter(x==="username").length > 0 ? data.username : null
-    var email = Object.keys().filter(x==="email").length > 0 ? data.email : null
-    var name = Object.keys().filter(x==="name").length > 0 ? data.name : null
-    var image = Object.keys().filter(x==="image").length > 0 ? data.image : null
-
-    // check to see if user has edited user or artist profile data and make requests accordingly
-    if(username !== null || email !== null) await revibe.editUserProfile(username, email)
-    if(name !== null || image !== null) await revibe.editArtistProfile(name, image)
-
-    dispatch(getProfile());
-    }
-
-  }
-}
-
-
-};

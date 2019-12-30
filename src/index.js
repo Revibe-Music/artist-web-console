@@ -24,6 +24,7 @@ import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 import { authenticationReducer } from './redux/authentication/reducers.js'
+import { mediaReducer } from './redux/media/reducers.js'
 import App from './layouts/App.js';
 
 
@@ -34,6 +35,7 @@ import "react-notification-alert/dist/animate.css";
 // Add the sessionReducer
 const reducer = combineReducers({
   // session: sessionReducer
+  media: mediaReducer,
   authentication: authenticationReducer
 });
 

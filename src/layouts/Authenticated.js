@@ -27,6 +27,7 @@ import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import { connect } from 'react-redux';
 import { getProfile } from 'redux/authentication/actions.js'
+import { getUploadedAlbums, getUploadedSongs, getAlbumContributions, getSongContributions } from 'redux/media/actions.js'
 
 import routes from "./../routes/authenticatedRoutes.js";
 import logo from "assets/img/revibe-logo.jpg";
@@ -47,6 +48,11 @@ class Authenticated extends Component {
 
   componentDidMount() {
     this.props.getProfile()
+    this.props.getUploadedAlbums()
+    this.props.getUploadedSongs()
+    this.props.getAlbumContributions()
+    this.props.getSongContributions()
+
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";
       document.documentElement.classList.remove("perfect-scrollbar-off");
@@ -189,7 +195,11 @@ class Authenticated extends Component {
 
 
 const mapDispatchToProps = dispatch => ({
-    getProfile: () =>dispatch(getProfile()),
+  getProfile: () =>dispatch(getProfile()),
+  getUploadedAlbums: () =>dispatch(getUploadedAlbums()),
+  getUploadedSongs: () =>dispatch(getUploadedSongs()),
+  getAlbumContributions: () =>dispatch(getAlbumContributions()),
+  getSongContributions: () =>dispatch(getSongContributions()),
 });
 
 export default connect(null, mapDispatchToProps)(Authenticated);

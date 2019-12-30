@@ -127,12 +127,20 @@ export default class RevibeAPI {
     return await this._request("account/artist/", null, "GET", true)
   }
 
-  async editArtistProfile(name=null, image=null, about_me=null) {
+  async editArtistProfile(name=null,email=null,image=null,country=null,city=null,zipcode=null,about_me=null) {
     var data = new FormData();
     // only add variables to form if they arent null
+    var artistProfileData = {}
+    if(email !== null) artistProfileData.email=email
+    if(country !== null) artistProfileData.country=country
+    if(city !== null) artistProfileData.city=city
+    if(zipcode !== null) artistProfileData.zip_code=zipcode
+    if(about_me !== null) artistProfileData.about_me=about_me
+
     if(name !== null) data.set("name", name)
-    if(about_me !== null) data.set("about_me", about_me)
+    if(Object.keys(artistProfileData).length > 0) data.set("artist_profile", JSON.stringify(artistProfileData))
     if(image !== null) data.append("image", image)
+
     return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')
   }
 
@@ -209,11 +217,12 @@ export default class RevibeAPI {
     return await this._request("account/artist/songs/", data, "GET", true)
   }
 
-  async createUploadedSong(title, file, duration, album_id, genre=null, display=true) {
+  async createUploadedSong(title, file, duration, album_id, explicit, genre=null, display=true) {
     var data = new FormData();
     data.set("title", title)
     data.set("duration", duration)
     data.set("album_id", album_id)
+    data.set("_explicit", explicit)
     data.set("display", display)
     data.append("file", file)
     if(genre !== null) data.set("genre", genre)  // only add if this is not null

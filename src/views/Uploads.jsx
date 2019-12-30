@@ -35,7 +35,8 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import UploadsTable from "components/Tables/UploadsTable.jsx";
+import UploadedAlbumsTable from "components/Tables/UploadedAlbumsTable.jsx";
+import UploadedSongsTable from "components/Tables/UploadedSongsTable.jsx";
 import SongUpload from "views/SongUpload.jsx";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -62,7 +63,12 @@ class Uploads extends React.Component {
           </Button>
           <Row className="mt-5">
             <Col xs={12} md={12}>
-              <UploadsTable />
+              <UploadedAlbumsTable />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col xs={12} md={12}>
+              <UploadedSongsTable />
             </Col>
           </Row>
         </>

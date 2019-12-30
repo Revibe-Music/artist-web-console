@@ -21,15 +21,15 @@ import PropTypes from "prop-types";
 import { Button } from "reactstrap";
 
 // import defaultImage from "assets/img/image_placeholder.jpg";
-import defaultAvatar from "assets/img/default-avatar.png";
 
 class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
-      imagePreviewUrl: this.props.avatar ? this.props.avatar : defaultAvatar
+      imagePreviewUrl: this.props.uploadedImage ? this.props.uploadedImage : this.props.defaultImage
     };
+
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -37,9 +37,11 @@ class ImageUpload extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.avatar !== this.state.imagePreviewUrl) {
-      if(this.props.file !== null) {
-        this.setState({imagePreviewUrl: this.props.avatar})
+    if(this.props.uploadedImage !== null) {
+      if(this.props.uploadedImage !== this.state.imagePreviewUrl) {
+        if(this.state.file === null) {
+          this.setState({imagePreviewUrl: this.props.uploadedImage})
+        }
       }
     }
   }
@@ -55,6 +57,7 @@ class ImageUpload extends React.Component {
       });
     };
     reader.readAsDataURL(file);
+    // this.props.handleChange(file)
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -68,18 +71,16 @@ class ImageUpload extends React.Component {
   handleRemove() {
     this.setState({
       file: null,
-      imagePreviewUrl: this.props.avatar ? this.props.avatar : defaultAvatar
+      imagePreviewUrl: this.props.defaultImage
     });
     this.refs.fileInput.value = null;
   }
   render() {
 
-    const image = this.props.avatar ? this.props.avatar : defaultAvatar
-
     return (
       <div className="fileinput text-center">
         <input type="file" onChange={this.handleImageChange} ref="fileInput" />
-        <div className={"thumbnail" + (this.props.avatar ? "img-circle" : "img-square")}>
+        <div className={"thumbnail" + (this.props.defaultImage ? "img-circle" : "img-square")}>
           <img src={this.state.imagePreviewUrl} alt="..." />
         </div>
         <div>
@@ -100,7 +101,7 @@ class ImageUpload extends React.Component {
               >
                 Change
               </Button>
-              {this.props.avatar ? <br /> : null}
+              {this.props.defaultImage ? <br /> : null}
               <Button
                 color={this.props.removeBtnColor}
                 className={this.props.removeBtnClasses}

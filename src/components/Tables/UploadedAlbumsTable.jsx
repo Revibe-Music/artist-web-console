@@ -34,6 +34,9 @@ import {
 import Moment from 'moment'
 import { MDBDataTable } from 'mdbreact';
 import { FaEllipsisH } from "react-icons/fa";
+import { compact } from 'lodash';
+import { connect } from 'react-redux';
+
 
 const momentRandom = require('moment-random');
 
@@ -64,11 +67,15 @@ const Options = (props) => {
   )
 }
 
-const data = {
-  columns: [
+const columns = [
     {
-      label: 'Album',
-      field: 'album',
+      label: 'Name',
+      field: 'name',
+      sort: 'asc',
+    },
+    {
+      label: 'Type',
+      field: 'type',
       sort: 'asc',
     },
     {
@@ -92,29 +99,45 @@ const data = {
       sort: 'disabled',
       filter: 'disabled',
     },
-
-  ],
-  rows: [
-    // {album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", clickEvent: () => this.handleClick()},
-    {album: "Accountant", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <Options />},
-    {album: "Chief Executive Officer (CEO)", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <Options />},
-    {album: "Junior Technical Author", streams:"102", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributors: "Drake", actions: <Options />},
-    ]
-}
+  ]
 
 
-class Uploads extends Component {
+class UploadedAlbumsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
     };
+    this.setRowData = this.setRowData.bind(this)
   }
+
+  setRowData(albums) {
+    var rows = []
+    const displayName = this.props.artistName
+    for(var x=0; x<albums.length; x++) {
+      var contributors = compact(albums[x].contributors.map(function(elem){
+        if(elem.artist_name !== displayName) return elem.artist_name;
+      }))
+      contributors = contributors.length > 0 ? contributors.join(",") : "None"
+      let album = {
+        name: albums[x].name,
+        type: albums[x].type,
+        contributors: contributors,
+        uploaded: randomDate(new Date(2012, 0, 1), new Date()),
+        actions: <Options />,
+        streams: albums[x].total_streams
+      }
+      rows.push(album)
+    }
+    return rows
+  }
+
   render() {
+    var rows = this.setRowData(this.props.uploadedAlbums)
+    var data = {columns: columns, rows: rows}
     return (
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Uploads</CardTitle>
+          <CardTitle tag="h4">Uploaded Albums</CardTitle>
         </CardHeader>
         <CardBody>
         <MDBDataTable
@@ -128,5 +151,15 @@ class Uploads extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    uploadedAlbums: state.media.uploadedAlbums,
+    artistName: state.authentication.user.displayName
+  }
+};
 
-export default Uploads;
+// const mapDispatchToProps = dispatch => ({
+//     login: (username, password, history, fn) => dispatch(login(username, password, history, fn)),
+// });
+
+export default connect(mapStateToProps)(UploadedAlbumsTable);
