@@ -26,6 +26,7 @@ class Options extends Component {
     this.setState({dropdownOpen: !this.state.dropdownOpen})
   }
 
+
   render() {
     return (
       <Dropdown
@@ -38,12 +39,15 @@ class Options extends Component {
       </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem header>Actions</DropdownItem>
-          <DropdownItem>Edit</DropdownItem>
-          <DropdownItem>Stats</DropdownItem>
+          <DropdownItem
+            onClick={() => this.props.edit(this.props.id)}
+          >
+          Edit
+          </DropdownItem>
         </DropdownMenu>
       </Dropdown>
     )
   }
 }
 
-export default Options;
+export default Options

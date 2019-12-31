@@ -27,14 +27,14 @@ import { albumContributionColumns } from 'components/Tables/ColumnConfig.js'
 const momentRandom = require('moment-random');
 
 function randomDate(start, end) {
-    return momentRandom(end).format("DD-MM-YYYY")
+    return momentRandom(start,end).format("MM-DD-YYYY")
 }
 
 
 const rows = [
-  {name: "Airi Satou", album: "Accountant", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <Options />},
-  {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Feature", actions: <Options />},
-  {name: "Ashton Cox", album: "Junior Technical Author", uploadedBy:"Travis Scott", uploaded: randomDate(new Date(2012, 0, 1), new Date()), contributionType: "Producer", actions: <Options />},
+  {name: "Level Up", album: "Level Up", uploadedBy:"ED Raw", uploaded: randomDate(new Date(2019, 8, 16), new Date(2019, 7, 15)), contributionType: "Feature", actions: <Options />},
+  {name: "'Posed to Be", album: "'Posed to Be", uploadedBy:"SWAD", uploaded: randomDate(new Date(2019, 8, 16), new Date(2019, 7, 15)), contributionType: "Feature", actions: <Options />},
+  {name: "All I Want", album: "Heavens Drive", uploadedBy:"SWAD", uploaded: randomDate(new Date(2019, 8, 16), new Date(2019, 7, 15)), contributionType: "Feature", actions: <Options />},
 ]
 
 

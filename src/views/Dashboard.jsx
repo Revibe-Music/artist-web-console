@@ -43,18 +43,19 @@ class Dashboard extends React.Component {
     super(props);
   }
 
+  // <Col xs="12">
+  //   <Card className="card-chart">
+  //     <CardHeader className="m-auto mr-auto">
+  //         <CardTitle tag="h4">The following charts/graphs are displaying stock data. User generated data is coming soon. </CardTitle>
+  //     </CardHeader>
+  //   </Card>
+  // </Col>
+
   render() {
     return (
       <div className="content">
       <Container>
         <Row>
-        <Col xs="12">
-          <Card className="card-chart">
-            <CardHeader className="m-auto mr-auto">
-                <CardTitle tag="h4">The following charts/graphs are displaying stock data. User generated data is coming soon. </CardTitle>
-            </CardHeader>
-          </Card>
-        </Col>
           <Col xs="12">
             <Card className="card-chart">
               <CardHeader>
@@ -78,13 +79,13 @@ class Dashboard extends React.Component {
                 <Row>
                   <Col xs="5">
                     <div className="info-icon text-center icon-primary">
-                      <i className="tim-icons icon-chat-33" />
+                      <i className="tim-icons icon-headphones" />
                     </div>
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Number</p>
-                      <CardTitle tag="h3">150GB</CardTitle>
+                      <p className="card-category">Streams</p>
+                      <CardTitle tag="h3">24,000</CardTitle>
                     </div>
                   </Col>
                 </Row>
@@ -92,7 +93,7 @@ class Dashboard extends React.Component {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="tim-icons icon-refresh-01" /> Update Now
+                  <i className="tim-icons icon-refresh-01" /> Refresh
                 </div>
               </CardFooter>
             </Card>
@@ -109,7 +110,7 @@ class Dashboard extends React.Component {
                   <Col xs="7">
                     <div className="numbers">
                       <p className="card-category">Followers</p>
-                      <CardTitle tag="h3">+45k</CardTitle>
+                      <CardTitle tag="h3">+25</CardTitle>
                     </div>
                   </Col>
                 </Row>
@@ -117,7 +118,7 @@ class Dashboard extends React.Component {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="tim-icons icon-sound-wave" /> Last Research
+                  <i className="tim-icons icon-send" /> Send Update
                 </div>
               </CardFooter>
             </Card>
@@ -133,8 +134,8 @@ class Dashboard extends React.Component {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Users</p>
-                      <CardTitle tag="h3">150,000</CardTitle>
+                      <p className="card-category">Listeners</p>
+                      <CardTitle tag="h3">1,400</CardTitle>
                     </div>
                   </Col>
                 </Row>
@@ -142,7 +143,7 @@ class Dashboard extends React.Component {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="tim-icons icon-trophy" /> Customers feedback
+                  <i className="tim-icons icon-pin" />Demographics
                 </div>
               </CardFooter>
             </Card>

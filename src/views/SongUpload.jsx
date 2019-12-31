@@ -51,10 +51,15 @@ import Dropzone from 'react-dropzone';
 import ReactTable from "react-table";
 import Select from "react-select";
 import { ClipLoader } from "react-spinners";
+import Lottie from 'react-lottie';
 import { FaCheckCircle } from "react-icons/fa";
+import { connect } from 'react-redux';
 
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
+import { uploadAlbum } from 'redux/media/actions.js'
+
+import * as savedAnimation from 'assets/img/check.json'
 
 const musicMetadata = require('music-metadata-browser');
 const revibe = new RevibeAPI()
@@ -71,6 +76,15 @@ const basestyle = {
   borderStyle: 'dashed',
   backgroundColor: 'transparent',
 };
+
+const defaultOptions = {
+      loop: false,
+      autoplay: true,
+      animationData: require('assets/img/check.json'),
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+      }
+    };
 
 class SongUpload extends Component {
 
@@ -101,16 +115,19 @@ class SongUpload extends Component {
   }
 
   uploadStatus(song) {
-    console.log(song);
     if(this.state.uploading) {
       if(song.uploaded) {
         console.log("Uploaded!");
         return (
           <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
-            <FaCheckCircle style={{fontSize: "50px", color: "green"}}/>
+          <Lottie options={defaultOptions}
+            height={50}
+            width={50}
+          />
           </div>
         )
       }
+
       return (
         <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
           <ClipLoader
@@ -119,8 +136,8 @@ class SongUpload extends Component {
             loading={true}
           />
         </div>
-
       )
+
     }
     return (
       <Button onClick={() => this.removeRow(song.index)} className="btn-round" color="danger">
@@ -177,13 +194,14 @@ class SongUpload extends Component {
   async uploadButtonPressed() {
     this.setState({uploading: true})
     var uploads = this.state.songs
-    var album = await revibe.createUploadedAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
-
-    for(var x=0; x<uploads.length; x++) {
-      const song = uploads[x]
-      revibe.createUploadedSong(song.title, song.file, song.duration, album.album_id, song.explicit)
-        .then(() => this.editRow(song.index, "uploaded", true))
-    }
+    this.props.uploadAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type, this.state.songs, this.editRow)
+    // var album = await revibe.createUploadedAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
+    //
+    // for(var x=0; x<uploads.length; x++) {
+    //   const song = uploads[x]
+    //   revibe.createUploadedSong(song.title, song.file, song.duration, album.album_id, song.explicit)
+    //     .then(() => this.editRow(song.index, "uploaded", true))
+    // }
   }
 
   render() {
@@ -366,4 +384,9 @@ class SongUpload extends Component {
   }
 }
 
-export default SongUpload
+
+const mapDispatchToProps = dispatch => ({
+    uploadAlbum: (name, image, type, songs, uploadStatusFn) =>dispatch(uploadAlbum(name, image, type, songs, uploadStatusFn)),
+});
+
+export default connect(null, mapDispatchToProps)(SongUpload)

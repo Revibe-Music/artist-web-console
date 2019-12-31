@@ -25,6 +25,7 @@ import { connect } from 'react-redux';
 
 import Options from 'components/Tables/Options.jsx'
 import { uploadedAlbumColumns } from 'components/Tables/ColumnConfig.js'
+import { selectAlbum } from 'redux/media/actions.js'
 
 
 class UploadedAlbumsTable extends Component {
@@ -48,7 +49,7 @@ class UploadedAlbumsTable extends Component {
         type: albums[x].type,
         contributors: contributors,
         uploaded: moment(albums[x].uploaded_date).format("DD-MM-YYYY"),
-        actions: <Options />,
+        actions: <Options id={albums[x].album_id} edit={this.props.selectAlbum}/>,
         streams: albums[x].total_streams
       }
       rows.push(album)
@@ -84,4 +85,8 @@ function mapStateToProps(state) {
   }
 };
 
-export default connect(mapStateToProps)(UploadedAlbumsTable);
+const mapDispatchToProps = dispatch => ({
+    selectAlbum: (album_id) =>dispatch(selectAlbum(album_id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UploadedAlbumsTable);

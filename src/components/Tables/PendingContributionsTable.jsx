@@ -34,7 +34,7 @@ const momentRandom = require('moment-random');
 
 
 function randomDate(start, end) {
-    return momentRandom(end).format("DD-MM-YYYY")
+    return momentRandom(start,end).format("DD-MM-YYYY")
 }
 
 
@@ -104,9 +104,7 @@ const data = {
     },
   ],
   rows: [
-    {name: "Airi Satou", album: "Accountant", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
-    {name: "Angelica Ramos", album: "Chief Executive Officer (CEO)", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
-    {name: "Ashton Cox", album: "Junior Technical Author", uploaded: randomDate(new Date(2012, 0, 1), new Date()), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
+    {name: "Winter", album: "Seasons", uploaded: randomDate(new Date(2019, 8, 16), new Date(2019, 7, 15)), uploadedBy: "Drake", contributionType: "Feature", status: <NewButton />},
     ]
 }
 

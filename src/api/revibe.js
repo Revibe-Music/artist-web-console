@@ -240,7 +240,7 @@ export default class RevibeAPI {
 
   async deleteUploadedSong(song_id) {
     var data = {song_id: song_id}
-    return await this. _request("account/artist/songs/", data, "DELETE", true, 'multipart/form-data')
+    return await this. _request("account/artist/songs/", data, "DELETE", true)
   }
 
   ////////////////////////////////////

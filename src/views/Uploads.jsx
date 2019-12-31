@@ -24,34 +24,70 @@ import {
   CardBody,
   CardTitle,
   Container,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Label,
-  FormGroup,
-  Input,
   Progress,
   Table,
   Row,
   Col,
 } from "reactstrap";
+import { FaArrowLeft } from "react-icons/fa";
+import { connect } from 'react-redux';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 import UploadedAlbumsTable from "components/Tables/UploadedAlbumsTable.jsx";
 import UploadedSongsTable from "components/Tables/UploadedSongsTable.jsx";
+import EditAlbum from "views/EditAlbum.jsx";
 import SongUpload from "views/SongUpload.jsx";
-import { FaArrowLeft } from "react-icons/fa";
+import { selectAlbum, deleteAlbum } from 'redux/media/actions.js'
 
+const MySwal = withReactContent(Swal)
 
 class Uploads extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      uploading: false
+      uploading: false,
     }
   }
 
   render() {
+    if(this.props.selectedAlbum) {
+      return (
+        <div className="content">
+          <Container>
+            <a onClick={e => this.props.selectAlbum(null)}>
+              <FaArrowLeft style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD"}} />
+            </a>
+            <Button
+              className="float-right"
+              color="danger"
+              onClick={() => {
+                MySwal.fire({
+                title: 'Are You Sure?',
+                html: "<p style={{color: 'red'}}>Deleting an album is a permanent action that cannot be undone.</p>",
+                icon: 'error',
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel",
+                showCancelButton: true,
+                background: "#303030"
+              })
+                .then((result) => {
+                  if (result.value) {
+                    const album = this.props.selectedAlbum
+                    this.props.selectAlbum(null)
+                    this.props.deleteAlbum(album)
+                  }
+                })
+              }}
+            >
+              Delete
+            </Button>
+            <EditAlbum />
+          </Container>
+        </div>
+      )
+    }
     return (
       <div className="content">
       <Container>
@@ -63,6 +99,7 @@ class Uploads extends React.Component {
           >
             Upload
           </Button>
+
           <Row className="mt-5">
             <Col xs={12} md={12}>
               <UploadedAlbumsTable />
@@ -88,4 +125,16 @@ class Uploads extends React.Component {
   }
 }
 
-export default Uploads;
+function mapStateToProps(state) {
+  return {
+    selectedAlbum: state.media.selectedAlbum,
+    selectedSong: state.media.selectedSong
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+    selectAlbum: (album_id) => dispatch(selectAlbum(album_id)),
+    deleteAlbum: (album_id) => dispatch(deleteAlbum(album_id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Uploads);

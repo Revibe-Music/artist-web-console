@@ -3,6 +3,8 @@ var initialState = {
   uploadedSongs: [],
   albumContributions: [],
   songContributions: [],
+  selectedAlbum: null,  // this is used to determine which album a user is editing/previewing
+  selectedSong: null,   // this is used to determine which song a user is editing/previewing
   error: null,
 }
 
@@ -30,23 +32,45 @@ export const mediaReducer = (state=initialState, action) => {
               ...state,
               songContributions: action.songContributions
             };
-        case "ADD_UPLOAD":
+        case "ADD_UPLOADED_ALBUM":
             return {
               ...state,
-              uploads: [...state.uploads, action.newUpload]
+              uploadedAlbums: [...state.uploadedAlbums, action.newUpload]
             };
-        case "EDIT_UPLOAD":
-            // FIGURE OUT
+        case "EDIT_UPLOADED_ALBUM":
             return {
               ...state,
-              uploads: [...state.uploads, action.newUpload]
+              uploadedAlbums: state.uploadedAlbums.map((album) => (
+                album.album_id===action.editedUpload.album_id ? action.editedUpload: album
+              ))
             };
-        case 'REMOVE_UPLOAD':
+        case 'REMOVE_UPLOADED_ALBUM':
             return {
               ...state,
-              uploads: [
-                ...state.uploads.slice(0, action.index),
-                ...state.uploads.slice(action.index + 1)
+              uploadedAlbums: [
+                ...state.uploadedAlbums.slice(0, action.index),
+                ...state.uploadedAlbums.slice(action.index + 1)
+              ]
+            };
+
+        case "ADD_UPLOADED_SONG":
+            return {
+              ...state,
+              uploadedSongs: [...state.uploadedAlbums, action.newUpload]
+            };
+        case "EDIT_UPLOADED_SONG":
+            return {
+              ...state,
+              uploadedSongs: state.uploadedSongs.map((song) => (
+                song.album_id===action.editedUpload.song_id ? action.editedUpload: song
+              ))
+            };
+        case 'REMOVE_UPLOADED_SONG':
+            return {
+              ...state,
+              uploadedSongs: [
+                ...state.uploadedSongs.slice(0, action.index),
+                ...state.uploadedSongs.slice(action.index + 1)
               ]
             };
         case "ADD_CONTRIBUTION":
@@ -68,6 +92,17 @@ export const mediaReducer = (state=initialState, action) => {
                 ...state.contributions.slice(0, action.index),
                 ...state.contributions.slice(action.index + 1)
               ]
+            };
+
+        case 'SET_SELECTED_ALBUM':
+            return {
+              ...state,
+              selectedAlbum: action.album_id
+            };
+        case 'SET_SELECTED_SONG':
+            return {
+              ...state,
+              selectedSong: action.song_id
             };
         case 'ERROR':
             return {

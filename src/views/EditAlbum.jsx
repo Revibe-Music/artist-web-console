@@ -52,13 +52,19 @@ import ReactTable from "react-table";
 import Select from "react-select";
 import { ClipLoader } from "react-spinners";
 import { FaCheckCircle } from "react-icons/fa";
+import { connect } from 'react-redux';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
+import { editAlbum, deleteAlbum, deleteSong } from 'redux/media/actions.js'
 
+const MySwal = withReactContent(Swal)
 const musicMetadata = require('music-metadata-browser');
 const revibe = new RevibeAPI()
 
+const albumPicsDB = "https://revibe-media-test.s3.us-east-2.amazonaws.com/media/images/Album/"
 
 const basestyle = {
   display: 'flex',
@@ -72,65 +78,30 @@ const basestyle = {
   backgroundColor: 'transparent',
 };
 
-class SongUpload extends Component {
+class EditAlbum extends Component {
 
-  constructor() {
-      super();
+  constructor(props) {
+      super(props);
       this.state = {
-        album_image: null,
-        album_name: "",
-        album_type: "",
-        songs: [],
-        uploading: false
+        edited_album_image: null,
+        edited_album_name: null,
+        edited_album_type: null,
+        songs: this.props.uploadedSongs.filter(song => song.album.album_id === this.props.selectedAlbum),
       };
+
       this.ImageUploader = React.createRef();
 
       this.editRow = this.editRow.bind(this)
-      this.removeRow = this.removeRow.bind(this)
-      this.onDrop = this.onDrop.bind(this)
-      this.uploadButtonPressed = this.uploadButtonPressed.bind(this)
-      this.uploadStatus = this.uploadStatus.bind(this)
+      this.saveButtonPressed = this.saveButtonPressed.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(this.state.songs.length !== prevState.songs.length) {
-      this.state.songs.forEach((item, i) => {
-        item.index = i;
-      });
+      // this.state.songs.forEach((item, i) => {
+      //   item.index = i;
+      // });
+      this.setState({songs: this.props.uploadedSongs.filter(song => song.album.album_id === this.props.selectedAlbum)})
     }
-  }
-
-  uploadStatus(song) {
-    console.log(song);
-    if(this.state.uploading) {
-      if(song.uploaded) {
-        console.log("Uploaded!");
-        return (
-          <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
-            <FaCheckCircle style={{fontSize: "50px", color: "green"}}/>
-          </div>
-        )
-      }
-      return (
-        <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
-          <ClipLoader
-            size={50}
-            color={"#7248BD"}
-            loading={true}
-          />
-        </div>
-
-      )
-    }
-    return (
-      <Button onClick={() => this.removeRow(song.index)} className="btn-round" color="danger">
-        Remove
-      </Button>
-    )
-  }
-
-  changeAlbumCover(image) {
-    this.setState({album_image: image})
   }
 
   formatDuration(time) {
@@ -143,47 +114,15 @@ class SongUpload extends Component {
     return (bitrate / 1000).toString() + " kb/s"
   }
 
-  async onDrop(files) {
-    var songs = []
-    for(var x=0; x<files.length; x++) {
-      var metadata = await musicMetadata.parseBlob(files[x]);
-      var formattedSong = {title: metadata.common.title,
-                           duration: Math.round(metadata.format.duration),
-                           quality: metadata.format.bitrate,
-                           file: files[x],
-                           explicit: false,
-                           uploaded: false,
-                         }
-      songs.push(formattedSong)
-    }
-    songs.forEach((item, i) => {
-      item.index = i;
-    });
-    this.setState({songs:songs})
-  }
-
   editRow(index, key, value) {
     var newData = [... this.state.songs]
     newData[index][key] = value
     this.setState({songs: newData})
   }
 
-  removeRow(index) {
-    var newData = [... this.state.songs]
-    newData.splice(index, 1);
-    this.setState({songs: newData})
-  }
-
-  async updateButtonPressed() {
-    this.setState({uploading: true})
-    var uploads = this.state.songs
-    var album = await revibe.editUploadedAlbum(this.props.album_id, this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
-
-    for(var x=0; x<uploads.length; x++) {
-      const song = uploads[x]
-      revibe.createUploadedSong(song.title, song.file, song.duration, album.album_id, song.explicit)
-        .then(() => this.editRow(song.index, "uploaded", true))
-    }
+  async saveButtonPressed() {
+    var image = this.ImageUploader.current.state.file ? this.ImageUploader.current.state.file : null
+    this.props.editAlbum(this.props.selectedAlbum, this.state.edited_album_name, image, this.state.edited_album_type)
   }
 
   render() {
@@ -251,19 +190,52 @@ class SongUpload extends Component {
           id: "actions",
           Header: () => (
             <div style={{textAlign: "center"}}>
-              {this.state.uploading ? "Upload Status" : "Actions"}
+              "Actions"
             </div>
             ),
-          accessor: row => this.uploadStatus(row),
+          accessor: row => (<Button
+                              onClick={() => {
+                                  MySwal.fire({
+                                  title: 'Are You Sure?',
+                                  html: "<p style={{color: 'red'}}>Deleting a song is a permanent action that cannot be undone.</p>",
+                                  icon: 'error',
+                                  confirmButtonText: "Delete",
+                                  cancelButtonText: "Cancel",
+                                  showCancelButton: true,
+                                  background: "#303030"
+                                })
+                                  .then((result) => {
+                                    if (result.value) {
+                                      this.props.deleteSong(row.song_id)
+                                    }
+                                  })
+                                }
+                              }
+                              className="btn-round" color="danger">
+                                Remove
+                              </Button>),
           sortable: false,
           filterable: false
         }
       ]
 
+    var albumTypes = [
+      {
+        value: "",
+        isDisabled: true
+      },
+      { value: "2", label: "Album " },
+      { value: "3", label: "Single" },
+      { value: "4", label: "EP" },
+    ]
+    var index = this.props.uploadedAlbums.map(function(x) {return x.album_id; }).indexOf(this.props.selectedAlbum);
+    var album = this.props.uploadedAlbums[index];
+    var songs = this.props.uploadedSongs.filter(song => song.album.album_id === this.props.selectedAlbum)
+
     return (
-      <Container>
+      <>
       <Row>
-        <Col className="m-auto mr-auto">
+        <Col>
           <Card>
             <CardBody>
               <Row>
@@ -271,7 +243,7 @@ class SongUpload extends Component {
                   <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <ImageUpload
                       defaultImage={require("../assets/img/album-img.jpg")}
-                      uploadedImage={null}
+                      uploadedImage={albumPicsDB+album.album_uri+".png"}
                       btnText="Album Art"
                       addBtnColor="default"
                       changeBtnColor="default"
@@ -281,25 +253,18 @@ class SongUpload extends Component {
                 </Col>
                   <Col className="m-auto mr-auto" md="6">
                     <InputGroup style={{marginBottom: "20px"}}>
-                      <Input placeholder="Album Name" type="text" onChange={event => this.setState({album_name: event.target.value})}/>
+                      <Input defaultValue={album.name} placeholder="Album Name" type="text" onChange={event => this.setState({edited_album_name: event.target.value})}/>
                     </InputGroup>
                     <Select
                       className="react-select primary"
                       classNamePrefix="react-select"
+                      defaultValue={albumTypes.filter(option => option.label === album.type)}
                       placeholder="Album Type"
                       name="multipleSelect"
                       closeMenuOnSelect={true}
                       isMulti={false}
-                      onChange={option => this.setState({album_type: option.label})}
-                      options={[
-                        {
-                          value: "",
-                          isDisabled: true
-                        },
-                        { value: "2", label: "Album " },
-                        { value: "3", label: "Single" },
-                        { value: "4", label: "EP" },
-                      ]}
+                      onChange={option => this.setState({edited_album_type: option.label})}
+                      options={albumTypes}
                     />
                   </Col>
               </Row>
@@ -312,58 +277,39 @@ class SongUpload extends Component {
           <Col className="m-auto mr-auto">
             <Card>
               <CardBody>
-                <CardTitle tag="h4">Upload Songs</CardTitle>
-
-      {this.state.songs.length > 0 ?
-        <>
-        <ReactTable
-          data={this.state.songs}
-          resizable={true}
-          columns={columns}
-          defaultPageSize={this.state.songs.length}
-          showPagination={false}
-          className="-striped -highlight"
-        />
-        <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
-        <Button onClick={this.uploadButtonPressed} className="btn-round" color="primary">
-            Save
-        </Button>
-        </div>
-        </>
-      :
-      <div style={basestyle}>
-      <Dropzone
-        onDrop={this.onDrop}
-        accept="audio/*"
-        minSize={0}
-        multiple
-      >
-        {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
-          const filesRejected = rejectedFiles.length > 0
-          return (
-            <div {...getRootProps()} className="text-center">
-              <input {...getInputProps()} />
-              <p>Choose a file or drop it in here.</p>
-              {filesRejected && (
-                <div className="text-danger mt-2">
-                  Unsupported file types.
-                </div>
-              )}
-              <i style={{fontSize: 80, marginTop: 50, color: "#7248BD"}} className="tim-icons icon-cloud-upload-94" />
-
-            </div>
-          )}
-        }
-      </Dropzone>
-      </div>
-      }
+                <CardTitle tag="h4">Songs</CardTitle>
+                  <ReactTable
+                    data={songs}
+                    resizable={true}
+                    columns={columns}
+                    defaultPageSize={songs.length}
+                    showPagination={false}
+                    className="-striped -highlight"
+                  />
             </CardBody>
           </Card>
         </Col>
       </Row>
-      </Container>
+      <Button onClick={this.saveButtonPressed} className="btn-round" color="primary">
+          Save
+      </Button>
+      </>
     );
   }
 }
 
-export default SongUpload
+function mapStateToProps(state) {
+  return {
+    uploadedAlbums: state.media.uploadedAlbums,
+    uploadedSongs: state.media.uploadedSongs,
+    selectedAlbum: state.media.selectedAlbum
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+    editAlbum: (id, name, image, type) =>dispatch(editAlbum(id, name, image, type)),
+    deleteAlbum: (id) =>dispatch(deleteAlbum(id)),
+    deleteSong: (id) =>dispatch(deleteSong(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditAlbum)
