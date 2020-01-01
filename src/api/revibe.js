@@ -52,7 +52,7 @@ export default class RevibeAPI {
      }
     try {
       const response = await axios(options)
-      console.log(response);
+      console.log(response.data);
       return response.data
     }
     catch(error) {
@@ -116,6 +116,11 @@ export default class RevibeAPI {
   async logoutAll() {
     this._deleteCookie()
     return await this. _request("account/logout-all/", null, "POST", true)
+  }
+
+  async contactUs(data) 
+  {
+    return await this. _request("/administration/forms/contact-form/", data, "POST", false)
   }
 
   ////////////////////////////////////
