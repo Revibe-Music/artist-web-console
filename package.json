@@ -45,6 +45,7 @@
     "react-spinners": "^0.7.2",
     "react-table": "6.8.6",
     "react-tagsinput": "3.19.0",
+    "react-tooltip": "^3.11.1",
     "reactstrap": "7.0.2",
     "redux": "^4.0.4",
     "redux-react-session": "^2.6.1",

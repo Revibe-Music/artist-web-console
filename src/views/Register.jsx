@@ -34,13 +34,15 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
+  Tooltip
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ClipLoader from "react-spinners/ClipLoader";
 
 import { register } from '../redux/authentication/actions.js';
+import ReactTooltip from 'react-tooltip';
 
 const termAndConditionsLink = "https://artist-website.s3.us-east-2.amazonaws.com/static/media/Terms+and+Conditions.pdf"
 
@@ -251,6 +253,7 @@ class Register extends React.Component {
     this.setState(newState)
   }
 
+
   render() {
     const SubmitButton = withRouter(({ history }) => (
       <Button
@@ -278,6 +281,7 @@ class Register extends React.Component {
 
     return (
       <div className="content" style={{paddingTop: "50px"}}>
+
         <Container>
           <Row>
             <Col className="m-auto" md="7">

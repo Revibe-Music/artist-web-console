@@ -26,28 +26,32 @@ const routes = [
     name: "Dashboard",
     icon: "tim-icons icon-chart-bar-32",
     component: Dashboard,
-    layout: ""
+    layout: "",
+    toolTipMessage: "Page to view metrics"
   },
   {
     path: "/uploads",
     name: "Uploads",
     icon: "tim-icons icon-cloud-upload-94",
     component: Uploads,
-    layout: ""
+    layout: "",
+    toolTipMessage: "Upload/Edit songs & albums"
   },
   {
     path: "/contributions",
     name: "Contributions",
     icon: "tim-icons icon-vector",
     component: Contributions,
-    layout: ""
+    layout: "",
+    toolTipMessage: "View/Edit contributions"
   },
   {
     path: "/profile",
     name: "Profile",
     icon: "tim-icons icon-single-02",
     component: Profile,
-    layout: ""
+    layout: "",
+    toolTipMessage: "View/Edit profile"
   },
 ];
 

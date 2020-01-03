@@ -40,6 +40,7 @@ import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { connect } from 'react-redux';
 import { editArtistProfile } from 'redux/authentication/actions.js'
 import { compact } from 'lodash';
+import ReactTooltip from 'react-tooltip';
 
 const MySwal = withReactContent(Swal)
 
@@ -148,6 +149,7 @@ class Profile extends React.Component {
                 </Form>
               </CardBody>
               <CardFooter>
+              <a data-tip data-for="saveButtonTooltip">
                 <Button
                 className="btn-fill"
                 color="primary"
@@ -156,6 +158,10 @@ class Profile extends React.Component {
                 >
                   Save
                 </Button>
+                </a>
+              <ReactTooltip id="saveButtonTooltip" effect='solid' delayShow={1500}>
+                <span>Save changes to profile</span>
+              </ReactTooltip>
               </CardFooter>
             </Card>
           </Col>

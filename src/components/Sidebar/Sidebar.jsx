@@ -21,6 +21,7 @@ import PropTypes from "prop-types";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import Footer from "components/Footer/Footer.jsx";
+import ReactTooltip from 'react-tooltip';
 
 // reactstrap components
 import { Nav, Collapse } from "reactstrap";
@@ -114,12 +115,16 @@ class Sidebar extends React.Component {
         );
       }
       return (
+        <a data-tip data-for={prop.name}>
         <li className={this.activeRoute(prop.layout + prop.path)} key={key}>
           <NavLink to={prop.layout + prop.path} activeClassName="" onClick={this.props.closeSidebar}>
             {prop.icon !== undefined ? (
               <>
                 <i className={prop.icon} />
                 <p>{prop.name}</p>
+                <ReactTooltip id={prop.name} type='' effect='solid' delayShow={1500}>
+                <span>{prop.toolTipMessage}</span>
+                </ReactTooltip>
               </>
             ) : (
               <>
@@ -129,10 +134,13 @@ class Sidebar extends React.Component {
                 <span className="sidebar-normal">
                   {prop.name}
                 </span>
+                <span>{prop.toolTipMessage}</span>
               </>
             )}
-          </NavLink>
+            </NavLink>
         </li>
+          
+          </a>
       );
     });
   };

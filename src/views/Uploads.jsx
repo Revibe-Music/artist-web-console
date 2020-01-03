@@ -39,6 +39,7 @@ import UploadedSongsTable from "components/Tables/UploadedSongsTable.jsx";
 import EditAlbum from "views/EditAlbum.jsx";
 import SongUpload from "views/SongUpload.jsx";
 import { selectAlbum, deleteAlbum } from 'redux/media/actions.js'
+import ReactTooltip from 'react-tooltip';
 
 const MySwal = withReactContent(Swal)
 
@@ -93,12 +94,17 @@ class Uploads extends React.Component {
       <Container>
       {!this.state.uploading ?
         <>
+        <a data-tip data-for="uploadToolTip">
           <Button
             color="primary"
             onClick={() => this.setState({uploading:true})}
           >
             Upload
           </Button>
+          </a>
+              <ReactTooltip id="uploadToolTip" effect='solid' delayShow={1500}>
+                <span>Upload new songs/albums</span>
+              </ReactTooltip>
 
           <Row className="mt-5">
             <Col xs={12} md={12}>
@@ -113,9 +119,12 @@ class Uploads extends React.Component {
         </>
       :
         <>
-          <a onClick={e => this.setState({uploading:false})}>
+          <a onClick={e => this.setState({uploading:false})} data-tip data-for="backButtonTooltip">
             <FaArrowLeft style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD"}} />
           </a>
+          <ReactTooltip id="backButtonTooltip" effect='solid' delayShow={1500}>
+                <span>Back to view catalog</span>
+          </ReactTooltip>
           <SongUpload />
         </>
       }
