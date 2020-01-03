@@ -58,12 +58,12 @@ import { connect } from 'react-redux';
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { uploadAlbum } from 'redux/media/actions.js'
+import ReactTooltip from 'react-tooltip';
 
 import * as savedAnimation from 'assets/img/check.json'
 
 const musicMetadata = require('music-metadata-browser');
 const revibe = new RevibeAPI()
-
 
 const basestyle = {
   display: 'flex',
@@ -119,12 +119,17 @@ class SongUpload extends Component {
       if(song.uploaded) {
         console.log("Uploaded!");
         return (
+          <a data-tip data-for="uploadToolTip">
           <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
           <Lottie options={defaultOptions}
             height={50}
             width={50}
           />
           </div>
+          <ReactTooltip id="uploadToolTip" effect='solid' delayShow={0}>
+            <span>YEET</span>
+          </ReactTooltip>
+          </a>
         )
       }
 
@@ -280,6 +285,7 @@ class SongUpload extends Component {
 
     return (
       <Container>
+        <h1>UPLOAD NEW MUSIC</h1>
       <Row>
         <Col className="m-auto mr-auto">
           <Card>
@@ -287,6 +293,7 @@ class SongUpload extends Component {
               <Row>
                 <Col className="m-auto m-auto" md="4">
                   <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <a data-tip data-for="albumArtTooltip">
                     <ImageUpload
                       defaultImage={require("../assets/img/album-img.jpg")}
                       uploadedImage={null}
@@ -295,6 +302,10 @@ class SongUpload extends Component {
                       changeBtnColor="default"
                       ref={this.ImageUploader}
                     />
+                    </a>
+                    <ReactTooltip id="albumArtTooltip" effect='solid' delayShow={1500}>
+                <span>Upload the album cover</span>
+              </ReactTooltip>
                   </div>
                 </Col>
                   <Col className="m-auto mr-auto" md="6">
@@ -326,6 +337,7 @@ class SongUpload extends Component {
           </Card>
         </Col>
       </Row>
+      <a data-tip data-for="cloudUploadTooltip">
        <Row>
           <Col className="m-auto mr-auto">
             <Card>
@@ -334,6 +346,7 @@ class SongUpload extends Component {
 
       {this.state.songs.length > 0 ?
         <>
+                
         <ReactTable
           data={this.state.songs}
           resizable={true}
@@ -379,6 +392,10 @@ class SongUpload extends Component {
           </Card>
         </Col>
       </Row>
+      </a>
+          <ReactTooltip id="cloudUploadTooltip" effect='solid' delayShow={1500}>
+      <span>Click or drag songs into box to upload</span>
+    </ReactTooltip>
       </Container>
     );
   }
