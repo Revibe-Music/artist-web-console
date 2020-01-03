@@ -51,12 +51,13 @@ import Dropzone from 'react-dropzone';
 import ReactTable from "react-table";
 import Select from "react-select";
 import { ClipLoader } from "react-spinners";
+import { FaTimes, FaUserPlus } from "react-icons/fa";
 import Lottie from 'react-lottie';
-import { FaCheckCircle } from "react-icons/fa";
 import { connect } from 'react-redux';
 
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
+import EditContributions from "components/Modals/EditContributions.jsx";
 import { uploadAlbum } from 'redux/media/actions.js'
 
 import * as savedAnimation from 'assets/img/check.json'
@@ -140,9 +141,14 @@ class SongUpload extends Component {
 
     }
     return (
-      <Button onClick={() => this.removeRow(song.index)} className="btn-round" color="danger">
-        Remove
-      </Button>
+      <Row style={{flex: 50, justifyContent: "center", textAlign: "center"}}>
+        <Col md="4">
+          <EditContributions />
+        </Col>
+        <Col md="4">
+          <FaTimes style={{color: "red", cursor: 'pointer', fontSize: "20px"}} onClick={() => this.removeRow(song.index)} />
+        </Col>
+      </Row>
     )
   }
 
@@ -157,7 +163,7 @@ class SongUpload extends Component {
   }
 
   formatQuality(bitrate) {
-    return (bitrate / 1000).toString() + " kb/s"
+    return Math.round(bitrate / 1000).toString() + " kb/s"
   }
 
   async onDrop(files) {
@@ -195,13 +201,6 @@ class SongUpload extends Component {
     this.setState({uploading: true})
     var uploads = this.state.songs
     this.props.uploadAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type, this.state.songs, this.editRow)
-    // var album = await revibe.createUploadedAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type)
-    //
-    // for(var x=0; x<uploads.length; x++) {
-    //   const song = uploads[x]
-    //   revibe.createUploadedSong(song.title, song.file, song.duration, album.album_id, song.explicit)
-    //     .then(() => this.editRow(song.index, "uploaded", true))
-    // }
   }
 
   render() {
@@ -219,25 +218,7 @@ class SongUpload extends Component {
           id: "contributors",
           Header: "Contributors",
           style:{overflow: "visible"},
-          accessor: row => <Select
-            className="react-select info"
-            classNamePrefix="react-select"
-            placeholder="Select"
-            name="multipleSelect"
-            closeMenuOnSelect={false}
-            isMulti
-            value={row.contributors}
-            onChange={value => this.editRow( row.index,"contributors", value)}
-            options={[
-              {
-                value: "",
-                isDisabled: true
-              },
-              { value: "2", label: "Drake " },
-              { value: "3", label: "Travis Scott" },
-              { value: "4", label: "J. Cole" },
-            ]}
-          />,
+          accessor: row => <EditContributions />,
           filterable: false
         },
         {
@@ -291,7 +272,7 @@ class SongUpload extends Component {
                       defaultImage={require("../assets/img/album-img.jpg")}
                       uploadedImage={null}
                       btnText="Album Art"
-                      addBtnColor="default"
+                      addBtnColor="primary"
                       changeBtnColor="default"
                       ref={this.ImageUploader}
                     />
@@ -331,50 +312,49 @@ class SongUpload extends Component {
             <Card>
               <CardBody>
                 <CardTitle tag="h4">Upload Songs</CardTitle>
+                  {this.state.songs.length > 0 ?
+                    <>
+                    <ReactTable
+                      data={this.state.songs}
+                      resizable={true}
+                      columns={columns}
+                      defaultPageSize={this.state.songs.length}
+                      showPagination={false}
+                      className="-striped -highlight"
+                    />
+                    <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
+                    <Button onClick={this.uploadButtonPressed} className="btn-round" color="primary">
+                        Upload
+                    </Button>
+                    </div>
+                    </>
+                  :
+                  <div style={basestyle}>
+                  <Dropzone
+                    onDrop={this.onDrop}
+                    accept="audio/*"
+                    minSize={0}
+                    multiple
+                  >
+                    {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
+                      const filesRejected = rejectedFiles.length > 0
+                      return (
+                        <div {...getRootProps()} className="text-center">
+                          <input {...getInputProps()} />
+                          <p>Choose a file or drop it in here.</p>
+                          {filesRejected && (
+                            <div className="text-danger mt-2">
+                              Unsupported file types.
+                            </div>
+                          )}
+                          <i style={{fontSize: 80, marginTop: 50, color: "#7248BD"}} className="tim-icons icon-cloud-upload-94" />
 
-      {this.state.songs.length > 0 ?
-        <>
-        <ReactTable
-          data={this.state.songs}
-          resizable={true}
-          columns={columns}
-          defaultPageSize={this.state.songs.length}
-          showPagination={false}
-          className="-striped -highlight"
-        />
-        <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
-        <Button onClick={this.uploadButtonPressed} className="btn-round" color="primary">
-            Upload
-        </Button>
-        </div>
-        </>
-      :
-      <div style={basestyle}>
-      <Dropzone
-        onDrop={this.onDrop}
-        accept="audio/*"
-        minSize={0}
-        multiple
-      >
-        {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
-          const filesRejected = rejectedFiles.length > 0
-          return (
-            <div {...getRootProps()} className="text-center">
-              <input {...getInputProps()} />
-              <p>Choose a file or drop it in here.</p>
-              {filesRejected && (
-                <div className="text-danger mt-2">
-                  Unsupported file types.
-                </div>
-              )}
-              <i style={{fontSize: 80, marginTop: 50, color: "#7248BD"}} className="tim-icons icon-cloud-upload-94" />
-
-            </div>
-          )}
-        }
-      </Dropzone>
-      </div>
-      }
+                        </div>
+                      )}
+                    }
+                  </Dropzone>
+                  </div>
+                  }
             </CardBody>
           </Card>
         </Col>

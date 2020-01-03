@@ -49,38 +49,52 @@ class RegisterArtist extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      display_name: '',
+      displayName: '',
+
+      displayNameState: '',
+      displayNameError: '',
+      artistImageState: '',
+      artistImageError: '',
+
     };
 
     this.ImageUploader = React.createRef();
     this.onSubmit = this.onSubmit.bind(this);
-    this.onChangeName = this.onChangeName.bind(this);
-    this.onChangeImage = this.onChangeImage.bind(this);
-  }
-
-  componentDidMount() {
-    document.body.classList.toggle("register-page");
-  }
-
-  componentWillUnmount() {
-    document.body.classList.toggle("register-page");
+    this.onChange = this.onChange.bind(this);
   }
 
   async onSubmit(history)
   {
-    await this.props.registerArtist(this.state.display_name, this.ImageUploader.current.state.file)
-    await history.push('/dashboard');
+    var validFields = true
+    if (this.state.displayName === "") {
+      validFields = false
+      this.setState({
+        displayNameState: "has-danger",
+        displayNameError: "This field may not be blank."
+       });
+    }
+    if (this.ImageUploader.current.state.file === null) {
+      this.setState({
+        artistImageState: "has-danger",
+        artistImageError: "Please select an image."
+       });
+    }
+    if(validFields) {
+      if(this.state.displayNameError==="" && this.ImageUploader.current.state.file !== null) {
+        this.props.registerArtist(this.state.displayName, this.ImageUploader.current.state.file, history)
+      }
+    }
+
   }
 
-  onChangeName(value)
-  {
-    this.setState({display_name: value})
+  onChange(value)  {
+    this.setState({
+      displayName: value,
+      displayNameState: "",
+      displayNameError: ""
+    })
   }
 
-  onChangeImage(value)
-  {
-    this.setState({image: value})
-  }
 
   render() {
 
@@ -101,35 +115,57 @@ class RegisterArtist extends React.Component {
         <Container>
           <Row>
             <Col className="m-auto" md="8">
+            <Form className="form">
               <Card className="card-register card-gray">
                 <CardHeader>
                   <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h4">Artist Info</CardTitle>
                 </CardHeader>
                 <CardBody>
-                  <Form className="form">
-                    <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                  <ImageUpload
-                    avatar
-                    addBtnColor="default"
-                    changeBtnColor="default"
-                    ref={this.ImageUploader}/>
+                <Row>
+                  <Col className="m-auto" md="6">
+                    <div style={{display: "flex",alignItems: "center", justifyContent: "center",textAlign: "center"}}>
+                      <ImageUpload
+                        defaultImage={require("../assets/img/default-avatar.png")}
+                        uploadedImage={null}
+                        addBtnColor="default"
+                        changeBtnColor="default"
+                        ref={this.ImageUploader}
+                      />
                     </div>
-                    <Col className="m-auto" md="6">
-                    <InputGroup md="6">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="tim-icons icon-single-02" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Display Name" type="text" onChange={event => this.onChangeName(event.target.value)}/>
-                    </InputGroup>
-                    </Col>
-                  </Form>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="m-auto" md="6">
+                    <div style={{display: "flex",alignItems: "center", justifyContent: "center",textAlign: "center"}}>
+                    {this.state.artistImageState === "has-danger" ? (
+                      <label style={{color: "red"}} className="error">
+                        {this.state.artistImageError}
+                      </label>
+                    ) : null}
+                    </div>
+                  </Col>
+                </Row>
+                <Col className="m-auto" md="6">
+                <FormGroup className={`has-label ${this.state.displayNameState}`}>
+                  <label>Display Name *</label>
+                  <Input
+                    placeholder="(This is what users will see)"
+                    type="text"
+                    onChange={e => this.onChange(e.target.value)}
+                  />
+                  {this.state.displayNameState === "has-danger" ? (
+                    <label className="error">
+                      {this.state.displayNameError}
+                    </label>
+                  ) : null}
+                </FormGroup>
+                </Col>
                 </CardBody>
                 <CardFooter>
                   <SubmitButton/>
                 </CardFooter>
               </Card>
+              </Form>
             </Col>
           </Row>
         </Container>
@@ -140,7 +176,7 @@ class RegisterArtist extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-    registerArtist: (name, image) =>dispatch(registerArtist(name, image)),
+    registerArtist: (name, image, history) => dispatch(registerArtist(name, image, history)),
 });
 
 export default connect(null, mapDispatchToProps)(RegisterArtist);

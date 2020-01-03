@@ -47,7 +47,7 @@ class Uploads extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uploading: false,
+      uploading: true,
     }
   }
 

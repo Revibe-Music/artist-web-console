@@ -25,12 +25,14 @@ import {
   CardFooter,
   CardTitle,
   Form,
+  FormGroup,
   Input,
   InputGroupAddon,
   InputGroupText,
   InputGroup,
   Container,
-  Col
+  Col,
+  Row
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -41,8 +43,19 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: 'bigR1',
-      password: 'riley',
+      // fields
+      username: "",
+      password: "",
+
+      // state of fields (success or error)
+      usernameState: "",
+      passwordState: "",
+
+      // field errors
+      usernameError: "",
+      passwordError: "",
+
+      loginError: "YOOOO",
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -58,15 +71,35 @@ class Login extends Component {
   }
 
   async onSubmit(history) {
-    const { cookies } = this.props;
-    this.props.login(this.state.username, this.state.password, history);
+    var validFields = true
+    if (this.state.username === "") {
+      validFields = false
+      this.setState({
+        usernameState: "has-danger",
+        usernameError: "Username is a required field."
+       });
+    }
+    if (this.state.password === "") {
+      validFields = false
+      this.setState({
+        passwordState: "has-danger",
+        passwordError: "Password is a required field."
+       });
+    }
+    if(validFields) {
+      if(this.state.usernameError==="" && this.state.passwordError==="") {
+        this.props.login(this.state.username, this.state.password, history);
+      }
+    }
   }
 
   onChange(key, value)
   {
-    var newState = {...this.state.user}
-    newState[key] = value
-    this.setState(newState)
+    this.setState({
+      [key]: value,
+      [key + "State"]: "has-success",
+      [key + "Error"]: "",
+     });
   }
 
   render() {
@@ -76,7 +109,6 @@ class Login extends Component {
         block
         className="mb-3"
         color="primary"
-        href="#pablo"
         onClick={() => this.onSubmit(history)}
         size="lg"
       >
@@ -87,33 +119,52 @@ class Login extends Component {
     return (
       <div className="content" style={{paddingTop: "50px"}}>
         <Container>
-          <Col className="m-auto mr-auto" lg="4" md="6">
+        <Row>
+          <Col className="m-auto mr-auto" md="7">
             <Form className="form">
               <Card className="card-login card-gray">
                 <CardHeader>
-                  <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h1">Login</CardTitle>
+                  <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h3">Login</CardTitle>
                 </CardHeader>
+                <div style={{textAlign:"center"}}>
+                  {this.props.otherError !== "" ? (
+                    <label style={{color:"red"}}>
+                      {this.props.otherError}
+                    </label>
+                  ) : null}
+                </div>
                 <CardBody>
-                  <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="tim-icons icon-single-02" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Username" type="text" onChange={event => this.onChange( "username", event.target.value)}/>
-                  </InputGroup>
-                  <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="tim-icons icon-lock-circle" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Password" type="password" onChange={event => this.onChange( "password", event.target.value)}/>
-                  </InputGroup>
+                <FormGroup className={`has-label ${this.state.usernameState}`}>
+                  <label>Username *</label>
+                  <Input
+                    name="username"
+                    type="text"
+                    onChange={e => this.onChange( "username", e.target.value)}
+                  />
+                  {this.state.usernameState === "has-danger" ? (
+                    <label className="error">
+                      {this.state.usernameError}
+                    </label>
+                  ) : null}
+                </FormGroup>
+                <FormGroup className={`has-label ${this.state.passwordState}`}>
+                  <label>Password *</label>
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="off"
+                    onChange={e => this.onChange( "password", e.target.value)}
+                  />
+                  {this.state.passwordState === "has-danger" ? (
+                    <label className="error">{this.state.passwordError}</label>
+                  ) : null}
+                </FormGroup>
                 </CardBody>
                 <CardFooter>
+
                 <SubmitButton />
-                  <div className="pull-left">
+                  <div className="pull-right">
                     <h6>
                       <Link to="/account/register">Create Account</Link>
                     </h6>
@@ -122,6 +173,7 @@ class Login extends Component {
               </Card>
             </Form>
           </Col>
+          </Row>
         </Container>
       </div>
     );
@@ -131,6 +183,7 @@ class Login extends Component {
 function mapStateToProps(state) {
   return {
     user: state.authentication.user,
+    otherError: state.authentication.errors.other,
   }
 };
 

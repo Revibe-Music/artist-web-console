@@ -25,7 +25,7 @@ import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 import { authenticationReducer } from './redux/authentication/reducers.js'
 import { mediaReducer } from './redux/media/reducers.js'
-import App from './layouts/App.js';
+import App from 'App.js';
 
 
 import "assets/css/nucleo-icons.css";

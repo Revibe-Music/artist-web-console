@@ -3,10 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Authenticated from './Authenticated.js';
-import PrivateRoute from './../routes/PrivateRoute.js';
-import Login from './../views/Login.jsx';
-import Register from './../views/Register.jsx';
+import Authenticated from './layouts/Authenticated.js';
+import PrivateRoute from './routes/PrivateRoute.js';
+import Login from 'views/Login.jsx';
+import Register from 'views/Register.jsx';
 import RegisterArtist from 'views/RegisterArtist.jsx';
 import ContactUs from 'views/ContactUs.jsx';
 import Error400 from 'views/Error400.jsx'
@@ -22,8 +22,9 @@ const App = ({ authenticated, checked }) => (
       <Route path="/account/login" component={Login}/>
       <Route path="/contact-us" component={ContactUs}/>
       <Route path="/error-400" component={Error400}/>
-      <Route path="/error-404" component={Error404}/>
       <PrivateRoute path="/" component={Authenticated} authenticated={authenticated}/>
+      <Route path="*" component={Error404}/>
+
      </Switch>
     }
   </Router>

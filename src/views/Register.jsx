@@ -40,15 +40,34 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { register } from '../redux/authentication/actions.js';
 
+const termAndConditionsLink = "https://artist-website.s3.us-east-2.amazonaws.com/static/media/Terms+and+Conditions.pdf"
+
+
 class Register extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
+      // fields
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
       agreedToTerms: false,
-      username: '',
-      email: '',
-      password: '',
+
+      // state of fields (success or error)
+      usernameState: "",
+      emailState: "",
+      passwordState: "",
+      confirmPasswordState: "",
+      agreedToTermsState: "",
+
+      // field errors
+      usernameError: "",
+      emailError: "",
+      passwordError: "",
+      confirmPasswordError: "",
+      agreedToTermsError: "",
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -63,9 +82,157 @@ class Register extends React.Component {
     document.body.classList.toggle("register-page");
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.usernameError !== prevProps.usernameError) {
+      this.setState({
+        usernameError: this.props.usernameError,
+        usernameState: "has-danger"
+      })
+    }
+    if(this.props.emailError !== prevProps.emailError) {
+      console.log(this.props.emailError);
+      this.setState({
+        emailError: this.props.emailError,
+        emailState: "has-danger"
+      })
+    }
+    if(this.props.passwordError !== prevProps.passwordError) {
+      console.log(this.props.passwordError);
+      this.setState({
+        passwordError: this.props.passwordError,
+        passwordState: "has-danger"
+      })
+    }
+  }
+
+  // function that returns true if value is email, false otherwise
+  verifyEmail(value) {
+    var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (emailRex.test(value)) {
+      return true;
+    }
+    return false;
+  }
+
+  // function that verifies if a string has a given length or not
+  verifyLength(value, length) {
+    if (value.length >= length) {
+      return true;
+    }
+    return false;
+  };
+
+  // function that verifies if two strings are equal
+  compare(string1, string2){
+    if (string1 === string2) {
+      return true;
+    }
+    return false;
+  };
+
+  change(event, stateName, type, stateNameEqualTo, maxValue) {
+    switch (type) {
+      case "username":
+        if (this.verifyLength(event.target.value, 6)) {
+          this.setState({
+            [stateName + "State"]: "has-success",
+            [stateName + "Error"]: ""
+           });
+        } else {
+          this.setState({
+            [stateName + "State"]: "has-danger",
+            [stateName + "Error"]: "Username must contain at least 8 characters."
+           });
+        }
+        break;
+      case "email":
+        if (this.verifyEmail(event.target.value)) {
+          this.setState({
+            [stateName + "State"]: "has-success",
+            [stateName + "Error"]: ""
+           });
+        } else {
+          this.setState({
+            [stateName + "State"]: "has-danger",
+            [stateName + "Error"]: "Please enter a valid email address."
+           });
+        }
+        break;
+      case "password":
+        if (this.verifyLength(event.target.value, 8)) {
+          this.setState({
+            [stateName + "State"]: "has-success",
+            [stateName + "Error"]: ""
+           });
+        } else {
+          this.setState({
+            [stateName + "State"]: "has-danger",
+            [stateName + "Error"]: "Password must contain at least 8 characters."
+           });
+        }
+        break;
+      case "equalTo":
+        if (this.compare(event.target.value, this.state[stateNameEqualTo])) {
+          this.setState({
+            [stateName + "State"]: "has-success",
+            [stateName + "Error"]: "",
+           });
+        } else {
+          this.setState({
+            [stateName + "State"]: "has-danger",
+            [stateName + "Error"]: "Password must match field above.",
+          });
+        }
+        break;
+
+      default:
+        break;
+    }
+    this.setState({ [stateName]: event.target.value });
+  };
+
   async onSubmit(history) {
-    this.props.register(this.state.username, this.state.email, this.state.password);
-    history.push("create-profile/")
+    var validFields = true
+    if (this.state.username === "") {
+      validFields = false
+      this.setState({
+        usernameState: "has-danger",
+        usernameError: "This field may not be blank."
+       });
+    }
+    if (this.state.email === "") {
+      validFields = false
+      this.setState({
+        emailState: "has-danger",
+        emailError: "This field may not be blank."
+       });
+    }
+    if (this.state.password === "") {
+      validFields = false
+      this.setState({
+        passwordState: "has-danger",
+        passwordError: "This field may not be blank."
+       });
+    }
+    if (this.state.confirmPassword === "") {
+      validFields = false
+      this.setState({
+        confirmPasswordState: "has-danger",
+        confirmPasswordError: "This field may not be blank."
+       });
+    }
+    if (!this.state.agreedToTerms) {
+      validFields = false
+      this.setState({
+        agreedToTermsState: "has-danger",
+        agreedToTermsError: "Please agree to the terms and conditions. "
+       });
+    }
+    if(validFields) {
+      if(this.state.usernameError==="" && this.state.emailError==="" && this.state.passwordError==="" && this.state.confirmPasswordError==="") {
+        this.props.register(this.state.username, this.state.email, this.state.password, history);
+      }
+    }
   }
 
   onChangeUserFields(key, value) {
@@ -92,47 +259,102 @@ class Register extends React.Component {
         <Container>
           <Row>
             <Col className="m-auto" md="7">
+            <Form className="form">
               <Card className="card-register card-gray">
                 <CardHeader>
                   <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h3">Register</CardTitle>
                 </CardHeader>
+                <div style={{textAlign:"center"}}>
+                  {this.props.otherError !== "" ? (
+                    <label style={{color:"red"}}>
+                      {this.props.otherError}
+                    </label>
+                  ) : null}
+                </div>
                 <CardBody>
-                  <Form className="form">
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="tim-icons icon-single-02" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Username (Not your Artist or Display Name)" type="text" onChange={event => this.onChangeUserFields( "username", event.target.value)} />
-                    </InputGroup>
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="tim-icons icon-email-85" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Email" type="text" onChange={event => this.onChangeUserFields( "email", event.target.value)}/>
-                    </InputGroup>
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="tim-icons icon-lock-circle" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Password" type="text" onChange={event => this.onChangeUserFields( "password", event.target.value)}/>
-                    </InputGroup>
-                    <FormGroup check className="text-left">
-                      <Label check>
-                        <Input type="checkbox" onClick= {event => this.onChangeUserFields("agreedToTerms", event.target.checked)}/>
-                        <span className="form-check-sign" />I agree to the{" "}
-                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                          terms and conditions
-                        </a>
-                        .
-                      </Label>
-                    </FormGroup>
-                  </Form>
+                  <FormGroup className={`has-label ${this.state.usernameState}`}>
+                    <label>Username *</label>
+                    <Input
+                      placeholder="(Not your Artist or Display Name)"
+                      name="username"
+                      type="text"
+                      onChange={e => this.change(e, "username", "username")}
+                    />
+                    {this.state.usernameState === "has-danger" ? (
+                      <label className="error">
+                        {this.state.usernameError}
+                      </label>
+                    ) : null}
+                  </FormGroup>
+                  <FormGroup className={`has-label ${this.state.emailState}`}>
+                    <label>Email Address *</label>
+                    <Input
+                      name="email"
+                      type="email"
+                      onChange={e => this.change(e, "email", "email")}
+                    />
+                    {this.state.emailState === "has-danger" ? (
+                      <label className="error">
+                        {this.state.emailError}
+                      </label>
+                    ) : null}
+                  </FormGroup>
+                  <FormGroup className={`has-label ${this.state.passwordState}`}>
+                    <label>Password *</label>
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="off"
+                      onChange={e =>
+                        this.change(e, "password", "password")
+                      }
+                    />
+                    {this.state.passwordState === "has-danger" ? (
+                      <label className="error">{this.state.passwordError}</label>
+                    ) : null}
+                  </FormGroup>
+                  <FormGroup
+                    className={`has-label ${this.state.confirmPasswordState}`}
+                  >
+                    <label>Confirm Password *</label>
+                    <Input
+                      equalto="#password"
+                      id="passwordConfirmation"
+                      name="password_confirmation"
+                      type="password"
+                      autoComplete="off"
+                      onChange={e => this.change(e, "confirmPassword", "equalTo", "password")}
+                    />
+                    {this.state.confirmPasswordState ===
+                    "has-danger" ? (
+                      <label className="error">{this.state.confirmPasswordError}</label>
+                    ) : null}
+                  </FormGroup>
+
+                  <FormGroup
+                    check
+                    className={`text-left`}
+                    >
+                    <Label check>
+                      <Input
+                        type="checkbox"
+                        onClick= {event => this.onChangeUserFields("agreedToTerms", event.target.checked)}
+                      />
+                      <span className="form-check-sign" />I agree to the{" "}
+                      <a
+                        target="_blank"
+                        href={termAndConditionsLink}
+                      >
+                        terms and conditions
+                      </a>
+                      .
+                    </Label>
+                    {this.state.agreedToTermsState ===
+                    "has-danger" ? (
+                      <label style={{color: "red"}} className="error">{this.state.agreedToTermsError}</label>
+                    ) : null}
+                  </FormGroup>
                 </CardBody>
                 <CardFooter>
                   <SubmitButton />
@@ -143,6 +365,7 @@ class Register extends React.Component {
                   </div>
                 </CardFooter>
               </Card>
+              </Form>
             </Col>
           </Row>
         </Container>
@@ -151,9 +374,17 @@ class Register extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    usernameError: state.authentication.errors.username,
+    emailError: state.authentication.errors.email,
+    passwordError: state.authentication.errors.password,
+    otherError: state.authentication.errors.other,
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
-    register: (username, email, password) =>dispatch(register(username, email, password)),
+    register: (username, email, password, history) =>dispatch(register(username, email, password, history)),
 });
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -110,52 +110,39 @@ class Profile extends React.Component {
                 <Form className="form">
                   <Row>
                     <Col className="pr-md-1" md="6">
-                    <FormGroup>
                       <label>Display Name</label>
                       <Input defaultValue={this.props.user.displayName} placeholder="Display Name" type="text" onChange={event => this.onChange( "name", event.target.value)}/>
-                    </FormGroup>
                     </Col>
                     <Col className="pl-md-1" md="6">
-                      <FormGroup>
-                        <label>Email address</label>
-                        <Input defaultValue={this.props.user.email} placeholder="user@email.com" type="email" onChange={event => this.onChange( "email", event.target.value)}/>
-                      </FormGroup>
+                      <label>Email address</label>
+                      <Input defaultValue={this.props.user.email} placeholder="user@email.com" type="email" onChange={event => this.onChange( "email", event.target.value)}/>
                     </Col>
                   </Row>
                   <Row>
-
                     <Col className="px-md-1" md="4">
-                      <FormGroup>
-                        <label>Country</label>
-                        <Input className="primary" defaultValue={this.props.user.country} placeholder="Country" type="text" onChange={event => this.onChange("country", event.target.value)}/>
-                      </FormGroup>
+                      <label>Country</label>
+                      <Input className="primary" defaultValue={this.props.user.country} placeholder="Country" type="text" onChange={event => this.onChange("country", event.target.value)}/>
                     </Col>
                     <Col className="pr-md-1" md="4">
-                      <FormGroup>
-                        <label>City</label>
-                        <Input defaultValue={this.props.user.city} placeholder="City" type="text" onChange={event => this.onChange("city", event.target.value)}/>
-                      </FormGroup>
+                      <label>City</label>
+                      <Input defaultValue={this.props.user.city} placeholder="City" type="text" onChange={event => this.onChange("city", event.target.value)}/>
                     </Col>
                     <Col className="pl-md-1" md="4">
-                      <FormGroup>
-                        <label>Postal Code</label>
-                        <Input defaultValue={this.props.user.zipcode} placeholder="ZIP Code" type="number" onChange={event => this.onChange("zipcode", event.target.value)}/>
-                      </FormGroup>
+                      <label>Postal Code</label>
+                      <Input defaultValue={this.props.user.zipcode} placeholder="ZIP Code" type="number" onChange={event => this.onChange("zipcode", event.target.value)}/>
                     </Col>
                   </Row>
                   <Row>
                     <Col md="12">
-                      <FormGroup>
-                        <label>About Me</label>
-                        <Input
-                          cols="80"
-                          defaultValue={this.props.user.artistAboutMe}
-                          placeholder="Here can be your description"
-                          rows="4"
-                          type="textarea"
-                          onChange={event => this.onChange("aboutMe", event.target.value)}
-                        />
-                      </FormGroup>
+                      <label>About Me</label>
+                      <Input
+                        cols="80"
+                        defaultValue={this.props.user.artistAboutMe}
+                        placeholder="Here can be your description"
+                        rows="4"
+                        type="textarea"
+                        onChange={event => this.onChange("aboutMe", event.target.value)}
+                      />
                     </Col>
                   </Row>
                 </Form>
@@ -185,7 +172,7 @@ class Profile extends React.Component {
                     defaultImage={require("../assets/img/default-avatar.png")}
                     uploadedImage={this.props.user.artistImage === "" ? null : (artistPicsDB+this.props.user.artistImage)}
                     btnText="Change Artist Image"
-                    addBtnColor="default"
+                    addBtnColor="primary"
                     changeBtnColor="default"
                     ref={this.ImageUploader}
                   />

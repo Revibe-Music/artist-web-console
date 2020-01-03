@@ -12,7 +12,12 @@ var initialState = {
     city: "",
     zipcode: "",
   },
-  error: null,
+  errors: {
+    username: "",
+    email: "",
+    password: "",
+    other: ""
+  },
 }
 
 
@@ -62,7 +67,20 @@ export const authenticationReducer = (state=initialState, action) => {
         case 'ERROR':
             return {
               ...state,
-              error: action.error
+              errors : {
+                ...state.errors,
+                [action.errorType]: action.error
+              }
+            };
+        case 'CLEAR_ERROR':
+            return {
+              ...state,
+              errors : {
+                username: "",
+                email: "",
+                password: "",
+                other: ""
+              }
             };
         default:
             return state;

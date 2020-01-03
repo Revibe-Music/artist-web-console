@@ -105,6 +105,7 @@ class AdminNavbar extends React.Component {
 
     const LogoutButton = withRouter(({ history }) => (
       <Button
+        color="danger"
         onClick={() => this.onLogout(history)}
       >
         Logout
@@ -112,82 +113,80 @@ class AdminNavbar extends React.Component {
     ));
 
     return (
-      <>
-        <Navbar
-          className={classNames("navbar-absolute", {
-            [this.state.color]:
-              this.props.location.pathname.indexOf("full-screen-map") === -1
-          })}
-          expand="lg"
-        >
-          <Container fluid>
-            <div className="navbar-wrapper">
-              {<div
-                className={classNames("navbar-toggle d-inline", {
-                  toggled: this.props.sidebarOpened
-                })}
-              >
-                <button
-                  className="navbar-toggler"
-                  type="button"
-                  onClick={this.props.toggleSidebar}
-                >
-                  <span className="navbar-toggler-bar bar1" />
-                  <span className="navbar-toggler-bar bar2" />
-                  <span className="navbar-toggler-bar bar3" />
-                </button>
-              </div>}
-              <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
-                {this.props.brandText}
-              </NavbarBrand>
-            </div>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navigation"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-              onClick={this.toggleCollapse}
+      <Navbar
+        className={classNames("navbar-absolute", {
+          [this.state.color]:
+            this.props.location.pathname.indexOf("full-screen-map") === -1
+        })}
+        expand="lg"
+      >
+        <Container fluid>
+          <div className="navbar-wrapper">
+            {<div
+              className={classNames("navbar-toggle d-inline", {
+                toggled: this.props.sidebarOpened
+              })}
             >
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
-            </button>
-            <Collapse navbar isOpen={this.state.collapseOpen}>
-              <Nav className="ml-auto" navbar>
-                <UncontrolledDropdown nav>
-                  <DropdownToggle
-                    caret
-                    color="default"
-                    data-toggle="dropdown"
-                    nav
-                    onClick={e => e.preventDefault()}
-                  >
-                    <div className="photo">
-                      <img alt="..." src={this.props.artistImage ? artistPicsDB+this.props.artistImage : require("assets/img/default-avatar.png")} />
-                    </div>
-                    <b className="caret d-none d-lg-block d-xl-block" />
-                    <p className="d-lg-none">Profile</p>
-                  </DropdownToggle>
-                  <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">Edit Profile</DropdownItem>
-                    </NavLink>
-                    <DropdownItem divider tag="li" />
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">
-                        <LogoutButton />
-                      </DropdownItem>
-                    </NavLink>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-                <li className="separator d-lg-none" />
-              </Nav>
-            </Collapse>
-          </Container>
-        </Navbar>
-      </>
+              <button
+                className="navbar-toggler"
+                type="button"
+                onClick={this.props.toggleSidebar}
+              >
+                <span className="navbar-toggler-bar bar1" />
+                <span className="navbar-toggler-bar bar2" />
+                <span className="navbar-toggler-bar bar3" />
+              </button>
+            </div>}
+            <NavbarBrand href="" onClick={e => e.preventDefault()}>
+              {this.props.brandText}
+            </NavbarBrand>
+          </div>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navigation"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            onClick={this.toggleCollapse}
+          >
+            <span className="navbar-toggler-bar navbar-kebab" />
+            <span className="navbar-toggler-bar navbar-kebab" />
+            <span className="navbar-toggler-bar navbar-kebab" />
+          </button>
+          <Collapse navbar isOpen={this.state.collapseOpen}>
+            <Nav className="ml-auto" navbar>
+              <UncontrolledDropdown nav>
+                <DropdownToggle
+                  caret
+                  color="default"
+                  data-toggle="dropdown"
+                  nav
+                  onClick={e => e.preventDefault()}
+                >
+                  <div className="photo">
+                    <img alt="..." src={this.props.artistImage ? artistPicsDB+this.props.artistImage : require("assets/img/default-avatar.png")} />
+                  </div>
+                  <b className="caret d-none d-lg-block d-xl-block" />
+                  <p className="d-lg-none">Profile</p>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-navbar" right tag="ul">
+                  <NavLink tag="li">
+                    <DropdownItem className="nav-item">Edit Profile</DropdownItem>
+                  </NavLink>
+                  <DropdownItem divider tag="li" />
+                  <NavLink tag="li">
+                    <DropdownItem className="nav-item">
+                      <LogoutButton />
+                    </DropdownItem>
+                  </NavLink>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+              <li className="separator d-lg-none" />
+            </Nav>
+          </Collapse>
+        </Container>
+      </Navbar>
     );
   }
 }

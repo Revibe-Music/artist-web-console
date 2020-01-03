@@ -43,21 +43,35 @@ export default class RevibeAPI {
       headers.Authorization = "Bearer "+ this._getCookie()
     }
 
-    var options = {
-      url: this.baseEndpoint + endpoint,
-      method: requestType,
-      headers: headers,
-      responseType: "json",
-      data: body
-     }
-    try {
-      const response = await axios(options)
-      console.log(response);
-      return response.data
+    var numRequestsSent = 0
+    var maxRequestAttempts = 2
+    var response = null
+
+    while(numRequestsSent < maxRequestAttempts) {
+      try {
+        response = await axios({
+          url: this.baseEndpoint + endpoint,
+          method: requestType,
+          headers: headers,
+          responseType: "json",
+          data: body
+         }
+       )
+        break
+      }
+      catch(error) {
+        console.log(error);
+        response = error.response
+        if(response.status === 500 || response.status === 400) {
+          numRequestsSent += 1
+        }
+        else {
+          break
+        }
+      }
     }
-    catch(error) {
-      console.log("YOO",error.response);
-    }
+    console.log(response);
+    return response
   }
 
 
@@ -76,14 +90,15 @@ export default class RevibeAPI {
       device_type: "browser"
     }
     var response = await this. _request("account/register/", data, "POST", false)
-    this._setCookie(response.access_token)
+    this._setCookie(response.data.access_token)
     return response
 
   }
 
-  async registerArtist(name, image) {
+  async registerArtist(name, image, email) {
     var data = new FormData();
     data.set("name", name)
+    data.set("email", email)
     data.append("image", image)
     return await this. _request("account/artist/", data, "POST", true, 'multipart/form-data')
   }
@@ -97,7 +112,7 @@ export default class RevibeAPI {
       device_type: "browser"
     }
     var response = await this. _request("account/login/", data, "POST", false)
-    this._setCookie(response.access_token)
+    this._setCookie(response.data.access_token)
     return response
   }
 
@@ -322,6 +337,14 @@ export default class RevibeAPI {
   async deleteSongContribution(contribution_id) {
     var data = {contribution_id: contribution_id}
     return await this._request("account/artist/contributions/songs/", data, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  ///////////// SEARCH  //////////////
+  ////////////////////////////////////
+
+  async searchArtists(query) {
+    return await this._request("content/search/?type=artists&text="+query, null, "GET", true)
   }
 
 
