@@ -79,7 +79,6 @@ class Register extends React.Component {
 
   render() {
     const SubmitButton = withRouter(({ history }) => (
-      <a data-tip data-for='getStartedButton'>
       <Button
         block
         className="mb-3"
@@ -90,11 +89,6 @@ class Register extends React.Component {
         Get Started
        
       </Button>
-      <ReactTooltip id='getStartedButton' type='error'>
-        <span>Click Here to get started</span>
-      </ReactTooltip>
-      </a>
-      
     ));
 
     return (
