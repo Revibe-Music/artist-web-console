@@ -122,7 +122,7 @@ class Sidebar extends React.Component {
               <>
                 <i className={prop.icon} />
                 <p>{prop.name}</p>
-                <ReactTooltip id={prop.name} type='' effect='solid'>
+                <ReactTooltip id={prop.name} type='' effect='solid' delayShow={1500}>
                 <span>{prop.toolTipMessage}</span>
                 </ReactTooltip>
               </>
