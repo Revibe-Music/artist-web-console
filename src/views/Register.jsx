@@ -34,11 +34,13 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
+  Tooltip
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { register } from '../redux/authentication/actions.js';
+import ReactTooltip from 'react-tooltip';
 
 class Register extends React.Component {
 
@@ -74,8 +76,10 @@ class Register extends React.Component {
     this.setState(newState)
   }
 
+
   render() {
     const SubmitButton = withRouter(({ history }) => (
+      <a data-tip data-for='getStartedButton'>
       <Button
         block
         className="mb-3"
@@ -84,11 +88,18 @@ class Register extends React.Component {
         size="lg"
       >
         Get Started
+       
       </Button>
+      <ReactTooltip id='getStartedButton' type='error'>
+        <span>Click Here to get started</span>
+      </ReactTooltip>
+      </a>
+      
     ));
 
     return (
       <div className="content" style={{paddingTop: "50px"}}>
+        
         <Container>
           <Row>
             <Col className="m-auto" md="7">
@@ -104,7 +115,7 @@ class Register extends React.Component {
                           <i className="tim-icons icon-single-02" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Username (Not your Artist or Display Name)" type="text" onChange={event => this.onChangeUserFields( "username", event.target.value)} />
+                      <Input placeholder="Username (This will NOT be visible to the public)" type="text" onChange={event => this.onChangeUserFields( "username", event.target.value)} />
                     </InputGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">

@@ -114,14 +114,14 @@ class RegisterArtist extends React.Component {
                     changeBtnColor="default"
                     ref={this.ImageUploader}/>
                     </div>
-                    <Col className="m-auto" md="6">
-                    <InputGroup md="6">
+                    <Col className="m-auto" md="8">
+                    <InputGroup md="8">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="tim-icons icon-single-02" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Display Name" type="text" onChange={event => this.onChangeName(event.target.value)}/>
+                      <Input placeholder="Display Name (name you want public to see)" type="text" onChange={event => this.onChangeName(event.target.value)}/>
                     </InputGroup>
                     </Col>
                   </Form>
