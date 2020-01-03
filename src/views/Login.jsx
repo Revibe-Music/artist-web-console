@@ -36,6 +36,8 @@ import {
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import ClipLoader from "react-spinners/ClipLoader";
+
 import { login } from 'redux/authentication/actions.js'
 
 class Login extends Component {
@@ -55,7 +57,8 @@ class Login extends Component {
       usernameError: "",
       passwordError: "",
 
-      loginError: "YOOOO",
+      SubmitButtonClicked:false
+
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -68,6 +71,25 @@ class Login extends Component {
 
   componentWillUnmount() {
     document.body.classList.toggle("login-page");
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.loginErrors.username !== prevProps.loginErrors.username) {
+      if(this.props.loginErrors.username) {
+        this.setState({
+          usernameError: this.props.loginErrors.username,
+          usernameState: "has-danger"
+        })
+      }
+    }
+    if(this.props.loginErrors.password !== prevProps.loginErrors.password) {
+      if(this.props.loginErrors.password) {
+        this.setState({
+          passwordError: this.props.loginErrors.password,
+          passwordState: "has-danger"
+        })
+      }
+    }
   }
 
   async onSubmit(history) {
@@ -88,6 +110,7 @@ class Login extends Component {
     }
     if(validFields) {
       if(this.state.usernameError==="" && this.state.passwordError==="") {
+        this.setState({SubmitButtonClicked: true})
         this.props.login(this.state.username, this.state.password, history);
       }
     }
@@ -113,6 +136,18 @@ class Login extends Component {
         size="lg"
       >
         Login
+        {this.state.SubmitButtonClicked ?
+          <div className="pull-right" >
+            <ClipLoader
+            style={{paddingTop: 0, paddingBottom: 0}}
+            size={20}
+            color={"white"}
+            loading={this.state.SubmitButtonClicked && Object.keys(this.props.loginErrors).length < 1}
+            />
+          </div>
+        :
+          null
+        }
       </Button>
     ));
 
@@ -127,9 +162,9 @@ class Login extends Component {
                   <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h3">Login</CardTitle>
                 </CardHeader>
                 <div style={{textAlign:"center"}}>
-                  {this.props.otherError !== "" ? (
+                  {Object.keys(this.props.loginErrors).filter(x => x === "non_field_errors").length > 0 ? (
                     <label style={{color:"red"}}>
-                      {this.props.otherError}
+                      {this.props.loginErrors.non_field_errors}
                     </label>
                   ) : null}
                 </div>
@@ -183,7 +218,7 @@ class Login extends Component {
 function mapStateToProps(state) {
   return {
     user: state.authentication.user,
-    otherError: state.authentication.errors.other,
+    loginErrors: state.authentication.loginErrors,
   }
 };
 

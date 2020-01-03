@@ -21,10 +21,9 @@ const App = ({ authenticated, checked }) => (
       <Route path="/account/create-profile" component={RegisterArtist}/>
       <Route path="/account/login" component={Login}/>
       <Route path="/contact-us" component={ContactUs}/>
-      <Route path="/error-400" component={Error400}/>
+      <Route path="/400" component={Error400}/>
+      <Route path="/404" component={Error404}/>
       <PrivateRoute path="/" component={Authenticated} authenticated={authenticated}/>
-      <Route path="*" component={Error404}/>
-
      </Switch>
     }
   </Router>

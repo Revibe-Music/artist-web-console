@@ -36,6 +36,66 @@ export default class RevibeAPI {
     return !!Cookies.get(cookieName)
   }
 
+  _handleErrors(response) {
+    console.log(response);
+    var errors = {}
+    if(response.status === 400) {
+      // bad request ish
+      window.location.href = "/400";
+    }
+    if(response.status === 401) {
+      // unauthorized ish
+      window.location.href = "/accont/login";
+    }
+    if(response.status === 403) {
+      // forbidden ish
+      var errorKeys = Object.keys(response.data)
+      for(var x=0; x<errorKeys.length; x++) {
+        errors[errorKeys[x]] = response.data[errorKeys[x]]
+      }
+    }
+    if(response.status === 404) {
+      // not found ish
+      window.location.href = "/404";
+    }
+    else if(response.status === 409) {
+      // conflict ish
+      var errorKeys = Object.keys(response.data)
+      for(var x=0; x<errorKeys.length; x++) {
+        errors[errorKeys[x]] = response.data[errorKeys[x]]
+      }
+    }
+    else if(response.status === 415) {
+      // unsupported media type ish
+      var errorKeys = Object.keys(response.data)
+      for(var x=0; x<errorKeys.length; x++) {
+        errors[errorKeys[x]] = response.data[errorKeys[x]]
+      }
+    }
+    else if(response.status === 417) {
+      var errorKeys = Object.keys(response.data)
+      console.log(errorKeys);
+      for(var x=0; x<errorKeys.length; x++) {
+        console.log(response.data[errorKeys[x]]);
+        errors[errorKeys[x]] = response.data[errorKeys[x]][0]
+      }
+      console.log(errors);
+    }
+    else if(response.status === 500) {
+      // internal server error ish
+      window.location.href = "/400";
+    }
+    else if(response.status === 501){
+      // not implemented error ish
+      window.location.href = "/400";
+    }
+    else if(response.status === 503){
+      // Service unavailable error ish
+      window.location.href = "/400";
+    }
+    return errors
+  }
+
   async _request(endpoint, body, requestType, isAuthenticated, content_type="application/json") {
     var headers = {"Content-Type": content_type}
     if(isAuthenticated) {
@@ -62,12 +122,8 @@ export default class RevibeAPI {
       catch(error) {
         console.log(error);
         response = error.response
-        if(response.status === 500 || response.status === 400) {
-          numRequestsSent += 1
-        }
-        else {
-          break
-        }
+        response.data = this._handleErrors(error.response)
+        numRequestsSent += 1
       }
     }
     console.log(response);

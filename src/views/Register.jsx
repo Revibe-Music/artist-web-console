@@ -38,6 +38,8 @@ import {
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import ClipLoader from "react-spinners/ClipLoader";
+
 import { register } from '../redux/authentication/actions.js';
 
 const termAndConditionsLink = "https://artist-website.s3.us-east-2.amazonaws.com/static/media/Terms+and+Conditions.pdf"
@@ -68,6 +70,9 @@ class Register extends React.Component {
       passwordError: "",
       confirmPasswordError: "",
       agreedToTermsError: "",
+
+      SubmitButtonClicked:false
+
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -83,25 +88,29 @@ class Register extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.usernameError !== prevProps.usernameError) {
-      this.setState({
-        usernameError: this.props.usernameError,
-        usernameState: "has-danger"
-      })
+    if(this.props.registerErrors.username !== prevProps.registerErrors.username) {
+      if(this.props.registerErrors.username) {
+        this.setState({
+          usernameError: this.props.registerErrors.username,
+          usernameState: "has-danger"
+        })
+      }
     }
-    if(this.props.emailError !== prevProps.emailError) {
-      console.log(this.props.emailError);
-      this.setState({
-        emailError: this.props.emailError,
-        emailState: "has-danger"
-      })
+    if(this.props.registerErrors.email !== prevProps.registerErrors.email) {
+      if(this.props.registerErrors.email) {
+        this.setState({
+          emailError: this.props.registerErrors.email,
+          emailState: "has-danger"
+        })
+      }
     }
-    if(this.props.passwordError !== prevProps.passwordError) {
-      console.log(this.props.passwordError);
-      this.setState({
-        passwordError: this.props.passwordError,
-        passwordState: "has-danger"
-      })
+    if(this.props.registerErrors.password !== prevProps.registerErrors.password) {
+      if(this.props.registerErrors.password) {
+        this.setState({
+          passwordError: this.props.registerErrors.password,
+          passwordState: "has-danger"
+        })
+      }
     }
   }
 
@@ -230,6 +239,7 @@ class Register extends React.Component {
     }
     if(validFields) {
       if(this.state.usernameError==="" && this.state.emailError==="" && this.state.passwordError==="" && this.state.confirmPasswordError==="") {
+        this.setState({SubmitButtonClicked: true})
         this.props.register(this.state.username, this.state.email, this.state.password, history);
       }
     }
@@ -250,7 +260,19 @@ class Register extends React.Component {
         onClick={() => this.onSubmit(history)}
         size="lg"
       >
-        Get Started
+        Register
+        {this.state.SubmitButtonClicked ?
+          <div className="pull-right" >
+            <ClipLoader
+            style={{paddingTop: 0, paddingBottom: 0}}
+            size={20}
+            color={"white"}
+            loading={this.state.SubmitButtonClicked && Object.keys(this.props.registerErrors).length < 1}
+            />
+          </div>
+        :
+          null
+        }
       </Button>
     ));
 
@@ -376,10 +398,7 @@ class Register extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    usernameError: state.authentication.errors.username,
-    emailError: state.authentication.errors.email,
-    passwordError: state.authentication.errors.password,
-    otherError: state.authentication.errors.other,
+    registerErrors: state.authentication.registerErrors,
   }
 };
 

@@ -12,12 +12,12 @@ var initialState = {
     city: "",
     zipcode: "",
   },
-  errors: {
-    username: "",
-    email: "",
-    password: "",
-    other: ""
-  },
+  registerErrors: {},
+  registerArtistErrors: {},
+  loginErrors: {},
+  logoutErrors: {},
+  getProfileErrors: {},
+  editProfileErrors: {},
 }
 
 
@@ -67,20 +67,12 @@ export const authenticationReducer = (state=initialState, action) => {
         case 'ERROR':
             return {
               ...state,
-              errors : {
-                ...state.errors,
-                [action.errorType]: action.error
-              }
+              [action.errorName + "Errors"] : action.errors
             };
         case 'CLEAR_ERROR':
             return {
               ...state,
-              errors : {
-                username: "",
-                email: "",
-                password: "",
-                other: ""
-              }
+              [action.errorName + "Errors"] : {}
             };
         default:
             return state;

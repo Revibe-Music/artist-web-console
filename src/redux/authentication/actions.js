@@ -1,4 +1,3 @@
-import { sessionService } from 'redux-react-session';
 import RevibeAPI from '../../api/revibe.js';
 
 const revibe = new RevibeAPI()
@@ -35,84 +34,40 @@ const removeUser = artist => ({
     type: 'REMOVE_USER_DATA',
 });
 
-const error = (errorType, error) => ({
+const error = (errorName, errors) => ({
     type: 'ERROR',
-    errorType: errorType,
-    error: error,
+    errorName: errorName,
+    errors: errors,
 });
 
-const clearErrors = () => ({
+const clearErrors = (errorName) => ({
     type: 'CLEAR_ERROR',
+    errorName: errorName
 });
 
 
 // Only functions below should ever be called by a component!
 
-export function handleErrors(response) {
-  return async (dispatch) => {
-    if(response.status === 400) {
-      // bad request ish
-    }
-    if(response.status === 401) {
-      // unauthorized ish
-    }
-    if(response.status === 403) {
-      // forbidden ish
-    }
-    if(response.status === 404) {
-      // not found ish
-    }
-    else if(response.status === 409) {
-      // conflict ish
-    }
-    else if(response.status === 415) {
-      // unsupported media type ish
-    }
-    else if(response.status === 417) {
-      console.log(response.data);
-      if(Object.keys(response.data).filter(key => key === "username").length > 0) {
-        dispatch(error("username",response.data.username[0]));
-      }
-      if(Object.keys(response.data).filter(key => key === "email").length > 0) {
-        dispatch(error("email",response.data.email[0]));
-      }
-      if(Object.keys(response.data).filter(key => key === "password").length > 0) {
-        dispatch(error("password",response.data.password[0]));
-      }
-      if(Object.keys(response.data).filter(key => key === "non_field_errors").length > 0) {
-        dispatch(error("other",response.data.non_field_errors[0]));
-      }
-    }
-    else if(response.status === 500){
-      // internal server error ish
-    }
-    else if(response.status === 501){
-      // not implemented error ish
-    }
-    else if(response.status === 503){
-      // Service unavailable error ish
-    }
-  }
-}
-
 export function register(username, email, password, history) {
   return async (dispatch) => {
+    dispatch(clearErrors("register"))
     var response = await revibe.register(username, email, password)
-    if(response.status === 200) {
+    if(String(response.status).charAt(0)=="2") {
       dispatch(loginUser());
-      dispatch(clearErrors());
       history.push("create-profile/")
     }
     else {
-      dispatch(handleErrors(response))
+      dispatch(error("register", response.data))
     }
   }
 }
 
 export function registerArtist(name, image, history) {
-  return async (dispatch) => {
-    var response = await revibe.registerArtist(name, image)
-    if(response.status === 201) {
+  return async (dispatch, getState) => {
+    dispatch(clearErrors("registerArtist"))
+    var email = getState().authentication.user.email
+    var response = await revibe.registerArtist(name, image, email)
+    if(String(response.status).charAt(0)=="2") {
       response = response.data
       var user = {
         username: response.user.username,
@@ -126,20 +81,19 @@ export function registerArtist(name, image, history) {
         zipcode: ""
       }
       dispatch(updateUser(user));
-      dispatch(clearErrors());
       history.push('/dashboard');
-
     }
     else {
-      dispatch(handleErrors(response))
+      dispatch(error("registerArtist", response.data))
     }
   }
 }
 
 export function login(username, password, history) {
   return async (dispatch) => {
+    dispatch(clearErrors("login"))
     var response = await revibe.login(username, password)
-    if(response.status === 200) {
+    if(String(response.status).charAt(0)=="2") {
       response = response.data
       if (response.user.is_artist) {
         await history.push('/dashboard');
@@ -149,10 +103,10 @@ export function login(username, password, history) {
       }
       dispatch(loginUser());
       dispatch(getProfile());
-      dispatch(clearErrors());
     }
     else {
-      dispatch(handleErrors(response))
+      console.log(response.data);
+      dispatch(error("login", response.data))
     }
 
   }
@@ -160,22 +114,23 @@ export function login(username, password, history) {
 
 export function logout(history) {
   return async (dispatch) => {
+    dispatch(clearErrors("logout"));
     var response = await revibe.logout()
     if(response.status === 200) {
       response = response.data
       await history.push('/account/login');
       dispatch(logoutUser());
       dispatch(removeUser());
-      dispatch(clearErrors());
     }
     else {
-      dispatch(error("An error occured while logging you out."));
+      dispatch(error("logout", response.data))
     }
   }
 }
 
 export function getProfile() {
   return async (dispatch) => {
+    dispatch(clearErrors("getProfile"));
     var response = await revibe.getProfile()
     if(response.status === 200) {
       response = response.data
@@ -191,10 +146,9 @@ export function getProfile() {
         artistAboutMe: response.artist_profile.about_me,
       }
       dispatch(updateUser(user));
-      dispatch(clearErrors());
     }
     else {
-      dispatch(error("An error occured while fetching user data."));
+      dispatch(error("getProfile", response.data))
     }
   }
 }
@@ -202,6 +156,7 @@ export function getProfile() {
 
 export function editArtistProfile(data) {
   return async (dispatch) => {
+    dispatch(clearErrors("editProfile"));
     // check to see if variables are in data
     var name = Object.keys(data).filter(x=> x==="name").length > 0 ? data.name : null
     var email = Object.keys(data).filter(x=> x==="email").length > 0 ? data.email : null
@@ -214,13 +169,12 @@ export function editArtistProfile(data) {
     // check to see if user has edited user or artist profile data and make requests accordingly
     if(name || email || image || country || city || zipcode || aboutMe) {
       var response = await revibe.editArtistProfile(name,email,image,country,city,zipcode,aboutMe)
-      if(response.status === 200) {
+      if(String(response.status).charAt(0)=="2") {
         response = response.data
         dispatch(getProfile());
-        dispatch(clearErrors());
       }
       else {
-        dispatch(error("An error occured while updating user profile."));
+        dispatch(error("editProfile", response.data))
       }
     }
   }

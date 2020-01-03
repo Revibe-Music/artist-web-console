@@ -34,10 +34,13 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
+
 } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import ClipLoader from "react-spinners/ClipLoader";
+
 import {registerArtist} from '../redux/authentication/actions.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import RevibeAPI from '../api/revibe.js';
@@ -56,11 +59,32 @@ class RegisterArtist extends React.Component {
       artistImageState: '',
       artistImageError: '',
 
+      SubmitButtonClicked:false
     };
 
     this.ImageUploader = React.createRef();
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.registerArtistErrors.name !== prevProps.registerArtistErrors.name) {
+      if(this.props.registerArtistErrors.name) {
+        this.setState({
+          displayNameError: this.props.registerArtistErrors.name,
+          displayNameState: "has-danger"
+        })
+      }
+    }
+    if(this.props.registerArtistErrors.image !== prevProps.registerArtistErrors.image) {
+      if(this.props.registerArtistErrors.image) {
+        this.setState({
+          artistImageError: this.props.registerArtistErrors.image,
+          artistImageState: "has-danger"
+        })
+      }
+    }
+
   }
 
   async onSubmit(history)
@@ -81,6 +105,7 @@ class RegisterArtist extends React.Component {
     }
     if(validFields) {
       if(this.state.displayNameError==="" && this.ImageUploader.current.state.file !== null) {
+        this.setState({SubmitButtonClicked: true})
         this.props.registerArtist(this.state.displayName, this.ImageUploader.current.state.file, history)
       }
     }
@@ -107,6 +132,18 @@ class RegisterArtist extends React.Component {
         size="lg"
       >
         Get Started
+        {this.state.SubmitButtonClicked ?
+          <div className="pull-right" >
+            <ClipLoader
+            style={{paddingTop: 0, paddingBottom: 0}}
+            size={20}
+            color={"white"}
+            loading={this.state.SubmitButtonClicked && Object.keys(this.props.registerArtistErrors).length < 1}
+            />
+          </div>
+        :
+          null
+        }
       </Button>
     ));
 
@@ -174,9 +211,14 @@ class RegisterArtist extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    registerArtistErrors: state.authentication.registerArtistErrors,
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
     registerArtist: (name, image, history) => dispatch(registerArtist(name, image, history)),
 });
 
-export default connect(null, mapDispatchToProps)(RegisterArtist);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterArtist);
