@@ -39,12 +39,14 @@ import RevibeAPI from 'api/revibe.js';
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import Select from "react-select";
+
 
 
 const MySwal = withReactContent(Swal)
 const revibe = new RevibeAPI()
 
-class FeedbackForm extends React.Component {
+class Feedback extends React.Component {
 
   constructor(props) 
   {
@@ -54,7 +56,7 @@ class FeedbackForm extends React.Component {
         first_name: "",
         last_name: "",
         email: "",
-        subject: "",
+        feedback_type: "",
         message: ""
     }
   };
@@ -116,14 +118,14 @@ class FeedbackForm extends React.Component {
 
     return (
       <>
-          <div className="popup" ref="wrapper">
+          <div className="wrapper" ref="wrapper">
           <div className="page-header header-filter contactus-3">
           <div className="main" style={{paddingTop: "100px"}}>
-          <Container fluid>
+          <Container>
               <Row>
                 <Col className="text-center" md="12">
-                  <h1 className="title">Questions?</h1>
-                  <h3>We'd like to talk more about what you need</h3>
+                  <h1 className="title">We Appreciate Your Feedback</h1>
+                  <h3>Enter for a chance to win a high five by a Reviber</h3>
                 </Col>
               </Row>
               <Row>
@@ -189,15 +191,32 @@ class FeedbackForm extends React.Component {
                             type="text"
                             onChange={event => this.onChange( "email", event.target.value)}/>
                         </InputGroup>
-                        <label>Subject</label>
+                        <label>Feedback Type</label>
                         <InputGroup>
-                          <Input
-                            type="text"
-                            onChange={event => this.onChange( "subject", event.target.value)}
-                          />
+                        <Col className="m-auto mr-auto" md="12">
+                    <Select
+                      className="react-select primary"
+                      classNamePrefix="react-select"
+                      placeholder="Feedback Type"
+                      name="multipleSelect"
+                      closeMenuOnSelect={true}
+                      isMulti={false}
+                      onChange={option => this.setState({feedback_type: option.label})}
+                      options={[
+                        {
+                          value: "",
+                          isDisabled: true
+                        },
+                        { value: "2", label: "Bug or Issue" },
+                        { value: "3", label: "Feature Request" },
+                        { value: "4", label: "General Feedback" },
+                      ]}
+                    />
+                  </Col>
                         </InputGroup>
                         <label>Your message</label>
                         <Input
+                          placeholder=" If possible, please include steps to reproduce the bug/issue."
                           id="message"
                           name="message"
                           rows="20"
@@ -225,4 +244,4 @@ class FeedbackForm extends React.Component {
   }
 }
 
-export default FeedbackForm;
+export default Feedback;
