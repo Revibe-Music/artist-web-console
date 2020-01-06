@@ -19,6 +19,7 @@ import Dashboard from "views/Dashboard";
 import Contributions from "views/Contributions";
 import Uploads from "views/Uploads";
 import Profile from "views/Profile";
+import Feedback from "views/Feedback";
 
 const routes = [
   {
@@ -50,6 +51,14 @@ const routes = [
     name: "Profile",
     icon: "tim-icons icon-single-02",
     component: Profile,
+    layout: "",
+    toolTipMessage: "View/Edit profile"
+  },
+  {
+    path: "/feedback",
+    name: "Feedback",
+    icon: "tim-icons icon-notes",
+    component: Feedback,
     layout: "",
     toolTipMessage: "View/Edit profile"
   },
