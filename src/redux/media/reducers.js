@@ -73,27 +73,21 @@ export const mediaReducer = (state=initialState, action) => {
                 ...state.uploadedSongs.slice(action.index + 1)
               ]
             };
-        case "ADD_CONTRIBUTION":
+        case "CHANGE_ALBUM_CONTRIBUTION_STATUS":
             return {
               ...state,
-              contributions: [...state.contributions, action.newContribution]
+              albumContributions: state.albumContributions.map((album) => (
+                album.album_id===action.albumContribution.album_id ? action.albumContribution: album
+              ))
             };
 
-        case "EDIT_CONTRIBUTION":
-            // FIGURE OUT
+        case "CHANGE_SONG_CONTRIBUTION_STATUS":
             return {
               ...state,
-              contributions: [...state.contributions, action.contribution]
+              songContributions: state.songContributions.map((song) => (
+                song.song_id===action.songContribution.song_id ? action.songContribution: song
+              ))
             };
-        case 'REMOVE_CONTRIBUTION':
-            return {
-              ...state,
-              contributions: [
-                ...state.contributions.slice(0, action.index),
-                ...state.contributions.slice(action.index + 1)
-              ]
-            };
-
         case 'SET_SELECTED_ALBUM':
             return {
               ...state,

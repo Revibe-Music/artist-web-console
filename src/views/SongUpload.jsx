@@ -489,8 +489,7 @@ class SongUpload extends Component {
       ]
 
     return (
-      <Container>
-        <h1>UPLOAD NEW MUSIC</h1>
+      <>
       <Row>
         <Col className="m-auto mr-auto">
           <Card>
@@ -596,37 +595,36 @@ class SongUpload extends Component {
         </Col>
       </Row>
       </a>
-          <ReactTooltip id="cloudUploadTooltip" effect='solid' delayShow={1500}>
-      <span>Click or drag songs into box to upload</span>
-    </ReactTooltip>
-    {this.state.isOpen ?
-      <Modal
-        isOpen={this.state.isOpen}
-        toggle={this.toggle}
-        className={"modal-dialog"}
-        backdrop={true}
-      >
-        <ModalHeader toggle={this.toggle}>How Did {this.state.modalContribution.contributor.name} Contribute?</ModalHeader>
-        <ModalBody>
-         <Select
-           className="react-select primary"
-           classNamePrefix="react-select"
-           isMulti={false}
-           placeholder="Type"
-           closeMenuOnSelect={true}
-           defaultValue={this.contributionTypes.filter(option => option.label === this.state.modalContribution.type)}
-           onChange={value => this.addContributonType(this.state.modalSong.index, this.state.modalContribution.contributor.artist_id, value.label)}
-           options={this.contributionTypes}
-         />
-        </ModalBody>
-        <ModalFooter>
-        </ModalFooter>
-      </Modal>
-    :
-      null
-    }
-
-      </Container>
+      <ReactTooltip id="cloudUploadTooltip" effect='solid' delayShow={1500}>
+        <span>Click or drag songs into box to upload</span>
+      </ReactTooltip>
+      {this.state.isOpen ?
+        <Modal
+          isOpen={this.state.isOpen}
+          toggle={this.toggle}
+          className={"modal-dialog"}
+          backdrop={true}
+        >
+          <ModalHeader toggle={this.toggle}>How Did {this.state.modalContribution.contributor.name} Contribute?</ModalHeader>
+          <ModalBody>
+           <Select
+             className="react-select primary"
+             classNamePrefix="react-select"
+             isMulti={false}
+             placeholder="Type"
+             closeMenuOnSelect={true}
+             defaultValue={this.contributionTypes.filter(option => option.label === this.state.modalContribution.type)}
+             onChange={value => this.addContributonType(this.state.modalSong.index, this.state.modalContribution.contributor.artist_id, value.label)}
+             options={this.contributionTypes}
+           />
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </Modal>
+      :
+        null
+      }
+      </>
     );
   }
 }

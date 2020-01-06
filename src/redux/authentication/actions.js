@@ -130,7 +130,7 @@ export function logout(history) {
   return async (dispatch) => {
     dispatch(clearErrors("logout"));
     var response = await revibe.logout()
-    if(response.status === 200) {
+    if(String(response.status).charAt(0)=="2") {
       response = response.data
       await history.push('/account/login');
       dispatch(logoutUser());
@@ -146,7 +146,7 @@ export function getProfile() {
   return async (dispatch) => {
     dispatch(clearErrors("getProfile"));
     var response = await revibe.getProfile()
-    if(response.status === 200) {
+    if(String(response.status).charAt(0)=="2") {
       response = response.data
       var user = {
         username: response.user.username,

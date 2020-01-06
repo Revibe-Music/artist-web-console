@@ -93,17 +93,17 @@ export const albumContributionColumns = [
       width: 100
     },
     {
-      label: 'Contribution Type',
+      label: 'Contribution',
       field: 'contributionType',
       sort: 'asc',
       width: 150
     },
-    {
-      label: '',
-      field: 'actions',
-      sort: 'disabled',
-      filter: 'disabled',
-    },
+    // {
+    //   label: '',
+    //   field: 'actions',
+    //   sort: 'disabled',
+    //   filter: 'disabled',
+    // },
   ]
 
 
@@ -133,15 +133,54 @@ export const songContributionColumns = [
       width: 100
     },
     {
-      label: 'Contribution Type',
+      label: 'Contribution',
+      field: 'contributionType',
+      sort: 'asc',
+      width: 150
+    },
+    // {
+    //   label: '',
+    //   field: 'actions',
+    //   sort: 'disabled',
+    //   filter: 'disabled',
+    // },
+]
+
+export const pendingContributionColumns = [
+    {
+      label: 'Name',
+      field: 'name',
+      sort: 'asc',
+      width: 150
+    },
+    {
+      label: 'Type',
+      field: 'type',
+      sort: 'asc',
+      width: 100
+    },
+    {
+      label: 'Uploaded By',
+      field: 'uploadedBy',
+      sort: 'asc',
+      width: 150
+    },
+    {
+      label: 'Upload Date',
+      field: 'uploaded',
+      sort: 'asc',
+      width: 100
+    },
+    {
+      label: 'Contribution',
       field: 'contributionType',
       sort: 'asc',
       width: 150
     },
     {
-      label: '',
-      field: 'actions',
+      label: 'Approve',
+      field: 'status',
       sort: 'disabled',
-      filter: 'disabled',
+      width: 150
     },
-  ]
+]

@@ -20,39 +20,46 @@ import classNames from "classnames";
 import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import { MDBDataTable, MDBBtn } from 'mdbreact';
 import * as moment from 'moment'
+import { connect } from 'react-redux';
 
 import Options from 'components/Tables/Options.jsx'
 import { albumContributionColumns } from 'components/Tables/ColumnConfig.js'
 
-const momentRandom = require('moment-random');
-
-function randomDate(start, end) {
-    return momentRandom(start,end).format("MM-DD-YYYY")
-}
-
-
-const rows = [
-  {name: "Level Up", album: "Level Up", uploadedBy:"ED Raw", uploaded: randomDate(new Date(2019, 8, 16), new Date(2019, 7, 15)), contributionType: "Feature", actions: <Options />},
-  {name: "'Posed to Be", album: "'Posed to Be", uploadedBy:"SWAD", uploaded: randomDate(new Date(2019, 8, 16), new Date(2019, 7, 15)), contributionType: "Feature", actions: <Options />},
-  {name: "All I Want", album: "Heavens Drive", uploadedBy:"SWAD", uploaded: randomDate(new Date(2019, 8, 16), new Date(2019, 7, 15)), contributionType: "Feature", actions: <Options />},
-]
-
-
 
 class AlbumContributionsTable extends Component {
+
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
+    this.setRowData = this.setRowData.bind(this)
   }
+
+  setRowData(albums) {
+    var rows = []
+    for(var x=0; x<albums.length; x++) {
+      var contributionIndex = albums[x].contributors.map(function(x) {return x.artist_id; }).indexOf(this.props.artist_id)
+      if(albums[x].contributors[contributionIndex].approved) {
+        let album = {
+          name: albums[x].title,
+          album: albums[x].album.name,
+          uploadedBy: "Drake",
+          uploaded: moment(albums[x].uploaded_date).format("DD-MM-YYYY"),
+          contributionType: albums[x].contributors[contributionIndex].contribution_type,
+        }
+        rows.push(album)
+      }
+    }
+    return rows
+  }
+
   render() {
+    var rows = this.setRowData(this.props.albumContributions)
     var data = {columns: albumContributionColumns, rows: rows}
 
     return (
         <Card>
           <CardHeader>
-            <CardTitle tag="h4">Contributions</CardTitle>
+            <CardTitle tag="h4">Album Contributions</CardTitle>
           </CardHeader>
           <CardBody>
           <MDBDataTable
@@ -62,11 +69,17 @@ class AlbumContributionsTable extends Component {
             striped
             data={data}
           />
-
           </CardBody>
         </Card>
     );
   }
 }
 
-export default AlbumContributionsTable;
+function mapStateToProps(state) {
+  return {
+    artist_id: state.authentication.user.artistId,
+    albumContributions: state.media.albumContributions,
+  }
+};
+
+export default connect(mapStateToProps)(AlbumContributionsTable);

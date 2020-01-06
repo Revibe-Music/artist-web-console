@@ -17,25 +17,9 @@
 import React from "react";
 
 // reactstrap components
-import {
-  Button,
-  Container,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Label,
-  FormGroup,
-  Input,
-  Progress,
-  Table,
-  Row,
-  Col,
-} from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
+import { connect } from 'react-redux';
+
 import AlbumContributionsTable from "components/Tables/AlbumContributionsTable.jsx";
 import SongContributionsTable from "components/Tables/SongContributionsTable.jsx";
 import PendingContributions from "components/Tables/PendingContributionsTable.jsx";
@@ -45,20 +29,53 @@ class Contributions extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {}
+    this.shouldDisplayPendingContributions = this.shouldDisplayPendingContributions.bind(this)
+  }
+
+  shouldDisplayPendingContributions(songs, albums) {
+    var shouldDisplay = false
+    for(var x=0; x<songs.length; x++) {
+      var contributionIndex = songs[x].contributors.map(function(x) {return x.artist_id; }).indexOf(this.props.artist_id)
+      if(songs[x].contributors[contributionIndex].pending) {
+        shouldDisplay = true
+        break
+      }
+    }
+    if(!shouldDisplay) {
+      for(var x=0; x<albums.length; x++) {
+        var contributionIndex = albums[x].contributors.map(function(x) {return x.artist_id; }).indexOf(this.props.artist_id)
+        if(albums[x].contributors[contributionIndex]) {
+          shouldDisplay = true
+          break
+        }
+      }
+    }
+    return shouldDisplay
   }
 
   render() {
+
     return (
       <div className="content">
         <Container>
+          {this.shouldDisplayPendingContributions(this.props.songContributions, this.props.albumContributions) ?
+            <Row className="mt-5">
+              <Col xs={12} md={12}>
+                <PendingContributions />
+              </Col>
+            </Row>
+          :
+          null
+          }
           <Row className="mt-5">
             <Col xs={12} md={12}>
-              <PendingContributions />
+              <AlbumContributionsTable />
             </Col>
           </Row>
           <Row className="mt-5">
             <Col xs={12} md={12}>
-              <AlbumContributionsTable />
+              <SongContributionsTable />
             </Col>
           </Row>
         </Container>
@@ -67,4 +84,12 @@ class Contributions extends React.Component {
   }
 }
 
-export default Contributions;
+function mapStateToProps(state) {
+  return {
+    artist_id: state.authentication.user.artistId,
+    songContributions: state.media.songContributions,
+    albumContributions: state.media.albumContributions,
+  }
+};
+
+export default connect(mapStateToProps)(Contributions);
