@@ -134,6 +134,7 @@ class Login extends Component {
         color="primary"
         onClick={() => this.onSubmit(history)}
         size="lg"
+        type="submit"
       >
         Login
         {this.state.SubmitButtonClicked ?

@@ -130,6 +130,7 @@ class RegisterArtist extends React.Component {
         color="primary"
         onClick={() => this.onSubmit(history)}
         size="lg"
+        type="submit"
       >
         Get Started
         {this.state.SubmitButtonClicked ?

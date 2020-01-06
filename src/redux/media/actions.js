@@ -147,16 +147,27 @@ export function getSongContributions() {
 export function uploadAlbum(name, image, type, songs, uploadStatusFn) {
   return async (dispatch) => {
     var response = await revibe.createUploadedAlbum(name, image, type)
-    if(response.status === 200) {
+    if(response.status === 201) {
       response = response.data
       dispatch(addUploadedAlbum(response));
       for(var x=0; x<songs.length; x++) {
         const song = songs[x]
+        const contributors = songs[x].contributors
         revibe.createUploadedSong(song.title, song.file, song.duration, response.album_id, song.explicit)
           .then((savedSong) => {
             savedSong = savedSong.data
-            uploadStatusFn(song.index, "uploaded", true)
-            dispatch(addUploadedSong(savedSong));
+            var contributionPromises = []
+            for(var i=0; i<contributors.length; i++) {
+              var contribution = revibe.addUploadedSongContributor(savedSong.song_id, contributors[i].contributor.artist_id, contributors[i].type)
+              contributionPromises.push(contribution)
+            }
+            Promise.all(contributionPromises)
+              .then(() => {
+                console.log("Should stop loading");
+                uploadStatusFn(song.index, "uploaded", true)
+                dispatch(addUploadedSong(song));
+              });
+
           })
       }
       dispatch(error(null));

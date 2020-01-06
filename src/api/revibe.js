@@ -83,7 +83,7 @@ export default class RevibeAPI {
     }
     else if(response.status === 500) {
       // internal server error ish
-      window.location.href = "/400";
+      // window.location.href = "/400";
     }
     else if(response.status === 501){
       // not implemented error ish
@@ -141,8 +141,8 @@ export default class RevibeAPI {
       email: email,
       password: password,
       profile: {},    // just need to pass this
-      device_id: this.device_id,
-      device_name: this.device_name,
+      // device_id: this.device_id,
+      // device_name: this.device_name,
       device_type: "browser"
     }
     var response = await this. _request("account/register/", data, "POST", false)
@@ -163,8 +163,8 @@ export default class RevibeAPI {
     var data = {
       username: username,
       password: password,
-      device_id: this.device_id,
-      device_name: this.device_name,
+      // device_id: this.device_id,
+      // device_name: this.device_name,
       device_type: "browser"
     }
     var response = await this. _request("account/login/", data, "POST", false)
@@ -325,6 +325,7 @@ export default class RevibeAPI {
 
   async addUploadedSongContributor(song_id, artist_id, contribution_type) {
     var data = {song_id: song_id, artist_id: artist_id, contribution_type: contribution_type}
+    console.log(data);
     return await this._request("account/artist/contributions/songs/", data, "POST", true)
   }
 

@@ -19,6 +19,7 @@ import React from "react";
 // reactstrap components
 import {
   Button,
+  Container,
   Card,
   CardHeader,
   CardBody,
@@ -49,17 +50,18 @@ class Contributions extends React.Component {
   render() {
     return (
       <div className="content">
-        <Row className="mt-5">
-          <Col xs={12} md={12}>
-            <PendingContributions />
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <Col xs={12} md={12}>
-            <AlbumContributionsTable />
-          </Col>
-        </Row>
-      }
+        <Container>
+          <Row className="mt-5">
+            <Col xs={12} md={12}>
+              <PendingContributions />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col xs={12} md={12}>
+              <AlbumContributionsTable />
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

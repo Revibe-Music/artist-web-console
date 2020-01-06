@@ -40,6 +40,12 @@ import {
   InputGroup,
   InputGroupText,
   InputGroupAddon,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ListGroup,
+  ListGroupItem,
   Table,
   Progress,
   Row,
@@ -47,9 +53,12 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 import Dropzone from 'react-dropzone';
-
 import ReactTable from "react-table";
+import SearchBar from '@opuscapita/react-searchbar';
 import Select from "react-select";
+import TagsInput from "react-tagsinput";
+import Autosuggest from 'react-autosuggest';
+import { WithContext as ReactTags } from 'react-tag-input';
 import { ClipLoader } from "react-spinners";
 import { FaTimes, FaUserPlus } from "react-icons/fa";
 import Lottie from 'react-lottie';
@@ -57,7 +66,6 @@ import { connect } from 'react-redux';
 
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
-import EditContributions from "components/Modals/EditContributions.jsx";
 import { uploadAlbum } from 'redux/media/actions.js'
 import ReactTooltip from 'react-tooltip';
 
@@ -65,6 +73,7 @@ import * as savedAnimation from 'assets/img/check.json'
 
 const musicMetadata = require('music-metadata-browser');
 const revibe = new RevibeAPI()
+const PicsDB = "https://revibe-media-test.s3.amazonaws.com/media/images/Artist/"
 
 const basestyle = {
   display: 'flex',
@@ -87,6 +96,53 @@ const defaultOptions = {
       }
     };
 
+const theme = {
+  container: {
+    position: 'relative'
+  },
+  input: {
+    width: '150px',
+    height: '30px',
+  },
+  inputOpen: {
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0
+  },
+  inputFocused: {
+    outline: 'none'
+  },
+  itemsContainer: {
+    display: 'none'
+  },
+  itemsContainerOpen: {
+    display: 'block',
+    position: 'relative',
+    top: '-1px',
+    width: '280px',
+    border: '1px solid #aaa',
+    backgroundColor: '#fff',
+    fontSize: '16px',
+    lineHeight: 1.25,
+    borderBottomLeftRadius: '4px',
+    borderBottomRightRadius: '4px',
+    zIndex: 2
+  },
+  itemsList: {
+    maxHeight: '150px',
+    overflowY: "scroll",
+    margin: 0,
+    padding: 0,
+  },
+  item: {
+    cursor: 'pointer',
+    padding: '10px 20px'
+  },
+  itemHighlighted: {
+    backgroundColor: '#ddd'
+  }
+};
+
+
 class SongUpload extends Component {
 
   constructor() {
@@ -96,8 +152,28 @@ class SongUpload extends Component {
         album_name: "",
         album_type: "",
         songs: [],
-        uploading: false
+        uploading: false,
+        searchResults: [],
+
+        isOpen: false,
+        modalSong: {},
+        modalContribution: {}
       };
+
+      this.contributionTypes = [
+        {
+          value: "",
+          isDisabled: true
+        },
+        { value: "2", label: "Artist " },
+        { value: "3", label: "Feature " },
+        { value: "3", label: "Producer" },
+        { value: "4", label: "Song Writer" },
+        { value: "5", label: "Audio Engineer" },
+        { value: "6", label: "Graphic Designer" },
+        { value: "7", label: "Videographer" },
+      ]
+
       this.ImageUploader = React.createRef();
 
       this.editRow = this.editRow.bind(this)
@@ -105,6 +181,11 @@ class SongUpload extends Component {
       this.onDrop = this.onDrop.bind(this)
       this.uploadButtonPressed = this.uploadButtonPressed.bind(this)
       this.uploadStatus = this.uploadStatus.bind(this)
+      this.toggle = this.toggle.bind(this)
+      this.renderSearchResults = this.renderSearchResults.bind(this)
+      this.searchArtists = this.searchArtists.bind(this)
+      this.addContributor = this.addContributor.bind(this)
+      this.removeContributor = this.removeContributor.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -115,25 +196,35 @@ class SongUpload extends Component {
     }
   }
 
+  toggle(song, contribution) {
+    var updatedState = {isOpen: !this.state.isOpen}
+    if(song) {
+      updatedState.modalSong = song
+    }
+    else {
+      updatedState.modalSong = {}
+    }
+    if(contribution) {
+      updatedState.modalContribution = contribution
+    }
+    else {
+      updatedState.modalContribution = {}
+    }
+    this.setState(updatedState)
+  }
+
   uploadStatus(song) {
     if(this.state.uploading) {
       if(song.uploaded) {
-        console.log("Uploaded!");
         return (
-          <a data-tip data-for="uploadToolTip">
           <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
-          <Lottie options={defaultOptions}
-            height={50}
-            width={50}
-          />
+            <Lottie options={defaultOptions}
+              height={50}
+              width={50}
+            />
           </div>
-          <ReactTooltip id="uploadToolTip" effect='solid' delayShow={0}>
-            <span>YEET</span>
-          </ReactTooltip>
-          </a>
         )
       }
-
       return (
         <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
           <ClipLoader
@@ -143,24 +234,16 @@ class SongUpload extends Component {
           />
         </div>
       )
-
     }
     return (
-      <Row style={{flex: 50, justifyContent: "center", textAlign: "center"}}>
-        <Col md="4">
-          <EditContributions />
-        </Col>
-        <Col md="4">
-          <FaTimes style={{color: "red", cursor: 'pointer', fontSize: "20px"}} onClick={() => this.removeRow(song.index)} />
-        </Col>
-      </Row>
+      <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
+        <i style={{fontSize: "20px", cursor: 'pointer', color: "red"}} className="tim-icons icon-simple-remove" onClick={() => this.removeRow(song.index)}/>
+      </div>
     )
   }
 
-  changeAlbumCover(image) {
-    this.setState({album_image: image})
-  }
 
+  /// FILE HANDLING METHODS
   formatDuration(time) {
     var minutes = Math.floor(time / 60);
     var seconds = Math.round(time - minutes * 60);
@@ -175,12 +258,13 @@ class SongUpload extends Component {
     var songs = []
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
-      var formattedSong = {title: metadata.common.title,
+      var formattedSong = {title: metadata.common.title ? metadata.common.title : files[x].name,
                            duration: Math.round(metadata.format.duration),
                            quality: metadata.format.bitrate,
                            file: files[x],
                            explicit: false,
                            uploaded: false,
+                           contributors: []
                          }
       songs.push(formattedSong)
     }
@@ -190,6 +274,7 @@ class SongUpload extends Component {
     this.setState({songs:songs})
   }
 
+  /// TABLE ROW EDIT METHODS
   editRow(index, key, value) {
     var newData = [... this.state.songs]
     newData[index][key] = value
@@ -205,8 +290,141 @@ class SongUpload extends Component {
   async uploadButtonPressed() {
     this.setState({uploading: true})
     var uploads = this.state.songs
+    console.log(uploads);
     this.props.uploadAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type, this.state.songs, this.editRow)
   }
+
+  /// CONTRIBUTOR OPRERATIONS ///
+  addContributor(index, contributor) {
+    var newSongs = [ ...this.state.songs]
+    var contributorIndex = newSongs[index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
+    if(contributorIndex == -1) {
+        newSongs[index].contributors.push({contributor: contributor, type: null})
+        this.setState({songs: newSongs})
+    }
+  }
+
+  removeContributor(index, artist_id) {
+    var newSongs = [ ...this.state.songs]
+    var contributorIndex = newSongs[index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
+    newSongs[index].contributors.splice(contributorIndex, 1)
+    this.setState({songs: newSongs})
+  }
+
+  addContributonType(index, artist_id, type) {
+    var newSongs = [ ...this.state.songs]
+    var contributorIndex = newSongs[index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
+    newSongs[index].contributors[contributorIndex].type = type
+    this.setState({songs: newSongs})
+  }
+
+  /// CONTRIBUTOR RENDER METHODS ///
+  renderContributors (props, index) {
+    let {tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other} = props
+    return (
+      <>
+      <span key={key} {...other}>
+        <span onClick={() => {
+          this.toggle(this.state.songs[index], tag)
+        }}>
+          {tag.contributor.name} : {tag.type ? tag.type: "Select Type"}
+        </span>
+
+        {!disabled &&
+          <a
+            className={classNameRemove}
+            onClick={(e) => {
+              // onRemove(key)
+              this.removeContributor(index,tag.contributor.artist_id)
+            }}
+          />
+        }
+      </span>
+
+      </>
+    )
+  }
+
+  async searchArtists({ value }) {
+    if(value.length > 0) {
+      var results = await revibe.searchArtists(value)
+      if(results.data.artists.length > 0) {
+        this.setState({searchResults: results.data.artists})
+      }
+      else {
+        this.setState({searchResults: ["No Results."]})
+      }
+    }
+  };
+
+  renderSearchResults(index, artist) {
+    if(artist.name) {
+      return (
+        <Row style={{color:"black",paddingTop: "10px",cursor: 'pointer',width: "200px"}}>
+         <Col md={4}>
+           <div className="photo">
+             <img
+             alt="..."
+             style={{height:"80%", width: "80%", borderRadius: "50%"}}
+             src={artist.ext ? PicsDB+artist.artist_uri+"."+artist.ext : require("assets/img/default-avatar.png")} />
+           </div>
+         </Col>
+         <Col style={{textAlign: "left"}} xs={8} md={8}>
+           {artist.name}
+         </Col>
+       </Row>
+     );
+    }
+    return (
+      <Row style={{color:"black",paddingTop: "10px",cursor: 'pointer',width: "200px"}}>
+       <Col style={{textAlign: "left"}} xs={8} md={8}>
+         No Results.
+       </Col>
+     </Row>
+   );
+  }
+
+
+  displayContributions(row) {
+    return (
+      <TagsInput
+        renderInput={({addTag,...props}) => {
+          return (
+          <div style={{position: "absolute"}}>
+          <Autosuggest
+            theme={theme}
+            suggestions={this.state.searchResults}
+            onSuggestionsFetchRequested={this.searchArtists}
+            onSuggestionsClearRequested={() => this.setState({searchResults: []})}
+            getSuggestionValue={suggestion => suggestion.name}
+            onSuggestionSelected={(e, {suggestion}) => {
+              addTag(suggestion.name)
+              this.addContributor(row.index, suggestion)
+              this.toggle(row, {contributor: suggestion, type: null})
+            }}
+            renderSuggestion={(suggestion) => this.renderSearchResults(row.index, suggestion)}
+            inputProps={{
+              ...props,
+               placeholder: 'Add Contributors...',
+               type: 'search',
+             }}
+          />
+          </div>
+        )}}
+      inputProps={{
+          className: 'react-tagsinput-input',
+          placeholder: 'Add Contributor'
+      }}
+      onChange={() => console.log("Changed")}
+      renderTag={props => this.renderContributors(props,row.index)}
+      tagProps={{ className: "react-tagsinput-tag primary" }}
+      value={row.contributors}
+      />
+    )
+
+  }
+
+
 
   render() {
 
@@ -222,9 +440,10 @@ class SongUpload extends Component {
         {
           id: "contributors",
           Header: "Contributors",
-          style:{overflow: "visible"},
-          accessor: row => <EditContributions />,
-          filterable: false
+          style:{overflowX:"scroll", paddingTop: 0, marginTop: 0},
+          accessor: row => this.displayContributions(row),
+          filterable: false,
+          width: 200
         },
         {
           id: "duration",
@@ -240,9 +459,14 @@ class SongUpload extends Component {
         },
         {
           id: "explicit",
-          Header: "Explicit",
+          Header: () => (
+            <div style={{textAlign: "center"}}>
+              Explicit
+            </div>
+            ),
+          style:{margin: 0},
           accessor: row => (
-            <FormGroup check style={{alignItems: "center", justifyContent: "center"}}>
+              <FormGroup check style={{flex: 1, alignItems: "center", justifyContent: "center", textAlign: "center",padding: 0,margin:0}}>
               <Label check>
                 <Input type="checkbox" value={row.explicit} onChange={event => this.editRow(row.index,"explicit", event.target.checked)}/>
                 <span className="form-check-sign" />
@@ -375,6 +599,33 @@ class SongUpload extends Component {
           <ReactTooltip id="cloudUploadTooltip" effect='solid' delayShow={1500}>
       <span>Click or drag songs into box to upload</span>
     </ReactTooltip>
+    {this.state.isOpen ?
+      <Modal
+        isOpen={this.state.isOpen}
+        toggle={this.toggle}
+        className={"modal-dialog"}
+        backdrop={true}
+      >
+        <ModalHeader toggle={this.toggle}>How Did {this.state.modalContribution.contributor.name} Contribute?</ModalHeader>
+        <ModalBody>
+         <Select
+           className="react-select primary"
+           classNamePrefix="react-select"
+           isMulti={false}
+           placeholder="Type"
+           closeMenuOnSelect={true}
+           defaultValue={this.contributionTypes.filter(option => option.label === this.state.modalContribution.type)}
+           onChange={value => this.addContributonType(this.state.modalSong.index, this.state.modalContribution.contributor.artist_id, value.label)}
+           options={this.contributionTypes}
+         />
+        </ModalBody>
+        <ModalFooter>
+        </ModalFooter>
+      </Modal>
+    :
+      null
+    }
+
       </Container>
     );
   }

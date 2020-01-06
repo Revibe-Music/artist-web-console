@@ -53,7 +53,20 @@ export function register(username, email, password, history) {
     dispatch(clearErrors("register"))
     var response = await revibe.register(username, email, password)
     if(String(response.status).charAt(0)=="2") {
+      response = response.data
+      var user = {
+        username: response.user.username,
+        email: response.user.email,
+        artistId: "",
+        displayName: "",
+        artistImage: "",
+        artistAboutMe: "",
+        country: "",
+        city: "",
+        zipcode: ""
+      }
       dispatch(loginUser());
+      dispatch(updateUser(user));
       history.push("create-profile/")
     }
     else {
@@ -65,7 +78,8 @@ export function register(username, email, password, history) {
 export function registerArtist(name, image, history) {
   return async (dispatch, getState) => {
     dispatch(clearErrors("registerArtist"))
-    var email = getState().authentication.user.email
+    var email = getState().authentication.user
+    console.log(email);
     var response = await revibe.registerArtist(name, image, email)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
