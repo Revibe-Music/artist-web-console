@@ -58,6 +58,13 @@ class Dashboard extends React.Component {
         <Row>
           <Col xs="12">
             <Card className="card-chart">
+              <CardHeader className="m-auto mr-auto">
+                  <CardTitle tag="h4">The following charts/graphs are displaying stock data. User generated data is coming soon. </CardTitle>
+              </CardHeader>
+            </Card>
+          </Col>
+          <Col xs="12">
+            <Card className="card-chart">
               <CardHeader>
                 <Row>
                   <Col className="text-left" sm="6">
