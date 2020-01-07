@@ -37,14 +37,21 @@ class SongContributionsTable extends Component {
   setRowData(songs) {
     var rows = []
     for(var x=0; x<songs.length; x++) {
-      var contributionIndex = songs[x].contributors.map(function(x) {return x.artist_id; }).indexOf(this.props.artist_id)
-      if(songs[x].contributors[contributionIndex].approved) {
+      const contributionIndexes = songs[x].contributors.map((contribution, i) => contribution.artist_id === this.props.artist_id ? i : -1).filter(index => index !== -1);
+      var contributionTypes = []
+      for(var i=0; i<contributionIndexes.length; i++) {
+        var index = contributionIndexes[i]
+        if(songs[x].contributors[index].approved) {
+          contributionTypes.push(songs[x].contributors[index].contribution_type)
+        }
+      }
+      if(contributionTypes.length > 0) {
         let song = {
           name: songs[x].title,
           album: songs[x].album.name,
           uploadedBy: "Drake",
           uploaded: moment(songs[x].uploaded_date).format("DD-MM-YYYY"),
-          contributionType: songs[x].contributors[contributionIndex].contribution_type,
+          contributionType: contributionTypes.join(", "),
         }
         rows.push(song)
       }

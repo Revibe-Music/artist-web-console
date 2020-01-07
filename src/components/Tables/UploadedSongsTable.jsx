@@ -20,7 +20,7 @@ import classNames from "classnames";
 import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import { MDBDataTable } from 'mdbreact';
 import * as moment from 'moment'
-import { compact } from 'lodash';
+import { compact, uniq } from 'lodash';
 import { connect } from 'react-redux';
 
 import Options from 'components/Tables/Options.jsx'
@@ -39,9 +39,9 @@ class UploadedSongsTable extends Component {
     var rows = []
     const displayName = this.props.artistName
     for(var x=0; x<songs.length; x++) {
-      var contributors = compact(songs[x].contributors.map(function(elem){
-        if(elem.artist_name !== displayName) return elem.artist_name;
-      }))
+      var contributors = songs[x].contributors.map(function(elem){if(elem.artist_name !== displayName) return elem.artist_name})
+      contributors = compact(contributors)
+      contributors = uniq(contributors)
       contributors = contributors.length > 0 ? contributors.join(",") : "None"
       let song = {
         name: songs[x].title,
