@@ -62,6 +62,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import { ClipLoader } from "react-spinners";
 import { FaTimes, FaUserPlus } from "react-icons/fa";
 import Lottie from 'react-lottie';
+import { compact } from 'lodash';
 import { connect } from 'react-redux';
 
 import RevibeAPI from '../api/revibe.js';
@@ -156,23 +157,28 @@ class SongUpload extends Component {
         searchResults: [],
 
         isOpen: false,
-        modalSong: {},
-        modalContribution: {}
+        modalSongIndex: null,
+        modalContributions: {},
+        editedModalContributions: []
       };
 
-      this.contributionTypes = [
-        {
-          value: "",
-          isDisabled: true
-        },
-        { value: "2", label: "Artist " },
-        { value: "3", label: "Feature " },
-        { value: "3", label: "Producer" },
-        { value: "4", label: "Song Writer" },
-        { value: "5", label: "Audio Engineer" },
-        { value: "6", label: "Graphic Designer" },
-        { value: "7", label: "Videographer" },
-      ]
+      // this.contributionTypes = [
+      //   {
+      //     value: "",
+      //     isDisabled: true
+      //   },
+      //   { value: "2", label: "Artist "},
+      //   { value: "3", label: "Feature "},
+      //   { value: "4", label: "Producer"},
+      //   { value: "5", label: "Mixing"},
+      //   { value: "6", label: "Mastering"},
+      //   { value: "7", label: "Song Writer"},
+      //   { value: "8", label: "Vocals"},
+      //   { value: "8", label: "Programmer/Beat Maker"},
+      //   { value: "9", label: "Graphic Designer"},
+      // ]
+
+      this.contributionTypes = ["Artist","Feature","Producer","Mixing","Mastering","Song Writer","Vocals","Programmer/Beat Maker","Graphic Designer"]
 
       this.ImageUploader = React.createRef();
 
@@ -184,8 +190,12 @@ class SongUpload extends Component {
       this.toggle = this.toggle.bind(this)
       this.renderSearchResults = this.renderSearchResults.bind(this)
       this.searchArtists = this.searchArtists.bind(this)
-      this.addContributor = this.addContributor.bind(this)
-      this.removeContributor = this.removeContributor.bind(this)
+      // this.addContributor = this.addContributor.bind(this)
+      // this.removeContributor = this.removeContributor.bind(this)
+      this.toggleContributonType = this.toggleContributonType.bind(this)
+      this.saveContributions = this.saveContributions.bind(this)
+      this.cancelContributions = this.cancelContributions.bind(this)
+      this.contributionHasBeenSelected = this.contributionHasBeenSelected.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -196,19 +206,20 @@ class SongUpload extends Component {
     }
   }
 
-  toggle(song, contribution) {
+  toggle(songIndex=null, contribution=null) {
     var updatedState = {isOpen: !this.state.isOpen}
-    if(song) {
-      updatedState.modalSong = song
+    if(songIndex !== null) {
+      updatedState.modalSongIndex = songIndex
     }
     else {
-      updatedState.modalSong = {}
+      updatedState.modalSongIndex = null
     }
     if(contribution) {
-      updatedState.modalContribution = contribution
+      updatedState.modalContributions = contribution
+      updatedState.editedModalContributions = contribution.type
     }
     else {
-      updatedState.modalContribution = {}
+      updatedState.modalContributions = {}
     }
     this.setState(updatedState)
   }
@@ -299,7 +310,7 @@ class SongUpload extends Component {
     var newSongs = [ ...this.state.songs]
     var contributorIndex = newSongs[index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
     if(contributorIndex == -1) {
-        newSongs[index].contributors.push({contributor: contributor, type: null})
+        newSongs[index].contributors.push({contributor: contributor, type: []})
         this.setState({songs: newSongs})
     }
   }
@@ -311,11 +322,46 @@ class SongUpload extends Component {
     this.setState({songs: newSongs})
   }
 
-  addContributonType(index, artist_id, type) {
+  contributionHasBeenSelected(type) {
+    // check whether contribution has type
+    var artist_id = this.state.modalContributions.contributor.artist_id
+    var contributorIndex = this.state.songs[this.state.modalSongIndex].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
+    return this.state.songs[this.state.modalSongIndex].contributors[contributorIndex].type.filter(x=>x===type).length>0
+  }
+
+  toggleContributonType(type) {
+    if(this.state.editedModalContributions.filter(x => x === type).length > 0) {
+      // contribution has already been added, need to remove
+      this.setState({editedModalContributions: compact(this.state.editedModalContributions.map(function(x) {if(x !== type) return x}))})
+    }
+    else {
+      // contribution needs to be added
+      this.setState({editedModalContributions: [...this.state.editedModalContributions, type]})
+    }
+  }
+
+  saveContributions() {
     var newSongs = [ ...this.state.songs]
-    var contributorIndex = newSongs[index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
-    newSongs[index].contributors[contributorIndex].type = type
-    this.setState({songs: newSongs})
+    var artist_id = this.state.modalContributions.contributor.artist_id
+    var contributorIndex = newSongs[this.state.modalSongIndex].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
+    newSongs[this.state.modalSongIndex].contributors[contributorIndex].type = this.state.editedModalContributions
+    console.log(newSongs[this.state.modalSongIndex].contributors);
+    this.setState({
+      songs: newSongs,
+      modalSongIndex: null,
+      modalContributions: {},
+      editedModalContributions: []
+    })
+    this.toggle()
+  }
+
+  cancelContributions() {
+    this.setState({
+      modalSongIndex: null,
+      modalContributions: {},
+      editedModalContributions: []
+    })
+    this.toggle()
   }
 
   /// CONTRIBUTOR RENDER METHODS ///
@@ -325,9 +371,9 @@ class SongUpload extends Component {
       <>
       <span key={key} {...other}>
         <span onClick={() => {
-          this.toggle(this.state.songs[index], tag)
+          this.toggle(index, tag)
         }}>
-          {tag.contributor.name} : {tag.type ? tag.type: "Select Type"}
+          {tag.contributor.name} : {tag.type.length > 0 ? tag.type.join(", ").substring(0,15)+'...': "Select Type"}
         </span>
 
         {!disabled &&
@@ -400,7 +446,7 @@ class SongUpload extends Component {
             onSuggestionSelected={(e, {suggestion}) => {
               addTag(suggestion.name)
               this.addContributor(row.index, suggestion)
-              this.toggle(row, {contributor: suggestion, type: null})
+              this.toggle(row.index, {contributor: suggestion, type: []})
             }}
             renderSuggestion={(suggestion) => this.renderSearchResults(row.index, suggestion)}
             inputProps={{
@@ -603,22 +649,24 @@ class SongUpload extends Component {
           isOpen={this.state.isOpen}
           toggle={this.toggle}
           className={"modal-dialog"}
-          backdrop={true}
+          backdrop={"static"}
         >
-          <ModalHeader toggle={this.toggle}>How Did {this.state.modalContribution.contributor.name} Contribute?</ModalHeader>
+          <ModalHeader toggle={this.toggle}>How Did {this.state.modalContributions.contributor.name} Contribute?</ModalHeader>
           <ModalBody>
-           <Select
-             className="react-select primary"
-             classNamePrefix="react-select"
-             isMulti={false}
-             placeholder="Type"
-             closeMenuOnSelect={true}
-             defaultValue={this.contributionTypes.filter(option => option.label === this.state.modalContribution.type)}
-             onChange={value => this.addContributonType(this.state.modalSong.index, this.state.modalContribution.contributor.artist_id, value.label)}
-             options={this.contributionTypes}
-           />
+            {this.contributionTypes.map(type => (
+              <FormGroup check style={{marginLeft: "30px"}}>
+                <Label check>
+                  <Input type="checkbox" defaultChecked={this.state.modalContributions.type.filter(x=>x===type).length>0} onClick={() => this.toggleContributonType(type)}/>
+                  <span className="form-check-sign">
+                    {type}
+                  </span>
+                </Label>
+              </FormGroup>
+            ))}
           </ModalBody>
           <ModalFooter>
+            <Button color="success" onClick={this.saveContributions}>Save</Button>
+            <Button color="danger" onClick={this.cancelContributions}>Cancel</Button>
           </ModalFooter>
         </Modal>
       :

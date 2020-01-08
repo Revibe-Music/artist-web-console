@@ -138,9 +138,10 @@ export default class RevibeAPI {
   async register(username, email, password) {
     var data = {
       username: username,
-      email: email,
       password: password,
-      profile: {},    // just need to pass this
+      profile: {
+        email: email,
+      },    // just need to pass this
       // device_id: this.device_id,
       // device_name: this.device_name,
       device_type: "browser"
@@ -388,6 +389,7 @@ export default class RevibeAPI {
 
   async approveSongContribution(contribution_id) {
     var data = {contribution_id: contribution_id, content: "song", action: "approve"}
+    console.log(data);
     return await this._request("account/artist/contributions/approve/", data, "POST", true)
   }
 

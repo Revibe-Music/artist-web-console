@@ -43,19 +43,18 @@ class Dashboard extends React.Component {
     super(props);
   }
 
-  // <Col xs="12">
-  //   <Card className="card-chart">
-  //     <CardHeader className="m-auto mr-auto">
-  //         <CardTitle tag="h4">The following charts/graphs are displaying stock data. User generated data is coming soon. </CardTitle>
-  //     </CardHeader>
-  //   </Card>
-  // </Col>
-
   render() {
     return (
       <div className="content">
       <Container>
         <Row>
+          <Col xs="12">
+            <Card className="card-chart">
+              <CardHeader className="m-auto mr-auto">
+                  <CardTitle tag="h4">The following charts/graphs are displaying stock data. User generated data is coming soon. </CardTitle>
+              </CardHeader>
+            </Card>
+          </Col>
           <Col xs="12">
             <Card className="card-chart">
               <CardHeader>
@@ -159,7 +158,7 @@ class Dashboard extends React.Component {
               </CardHeader>
               <CardBody>
                 <BarGraph
-                  data={[53, 20, 10, 80, 100, 45]}
+                  data={[53, 20, 10, 80, 100]}
                 />
               </CardBody>
             </Card>
@@ -175,7 +174,7 @@ class Dashboard extends React.Component {
               </CardHeader>
               <CardBody>
               <BarGraph
-                data={[104, 31, 11, 92, 58, 71]}
+                data={[104, 31, 11, 92, 58]}
               />
               </CardBody>
             </Card>

@@ -84,7 +84,7 @@ class BarGraph extends React.Component {
       gradientStroke.addColorStop(0, "rgba(119,52,169,0)"); //purple colors
 
       return {
-        labels: ["USA", "GER", "AUS", "UK", "RO", "BR"],
+        labels: ["Song 1", "Song 2", "Song 3", "Song 4", "Song 5"],
         datasets: [
           {
             label: "Countries",

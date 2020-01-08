@@ -170,9 +170,11 @@ class Login extends Component {
                   ) : null}
                 </div>
                 <CardBody>
+                <div>
                 <FormGroup className={`has-label ${this.state.usernameState}`}>
                   <label>Username *</label>
                   <Input
+                    id="username"
                     name="username"
                     type="text"
                     onChange={e => this.onChange( "username", e.target.value)}
@@ -183,6 +185,8 @@ class Login extends Component {
                     </label>
                   ) : null}
                 </FormGroup>
+                </div>
+                <div>
                 <FormGroup className={`has-label ${this.state.passwordState}`}>
                   <label>Password *</label>
                   <Input
@@ -196,6 +200,7 @@ class Login extends Component {
                     <label className="error">{this.state.passwordError}</label>
                   ) : null}
                 </FormGroup>
+                </div>
                 </CardBody>
                 <CardFooter>
 

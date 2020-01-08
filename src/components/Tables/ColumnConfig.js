@@ -75,12 +75,6 @@ export const albumContributionColumns = [
       width: 150
     },
     {
-      label: 'Album',
-      field: 'album',
-      sort: 'asc',
-      width: 100
-    },
-    {
       label: 'Uploaded By',
       field: 'uploadedBy',
       sort: 'asc',

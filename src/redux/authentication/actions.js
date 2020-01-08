@@ -56,7 +56,7 @@ export function register(username, email, password, history) {
       response = response.data
       var user = {
         username: response.user.username,
-        email: response.user.email,
+        email: response.user.profile.email,
         artistId: "",
         displayName: "",
         artistImage: "",
@@ -78,8 +78,7 @@ export function register(username, email, password, history) {
 export function registerArtist(name, image, history) {
   return async (dispatch, getState) => {
     dispatch(clearErrors("registerArtist"))
-    var email = getState().authentication.user
-    console.log(email);
+    var email = getState().authentication.user.email
     var response = await revibe.registerArtist(name, image, email)
     if(String(response.status).charAt(0)=="2") {
       response = response.data

@@ -154,8 +154,10 @@ export function uploadAlbum(name, image, type, songs, uploadStatusFn) {
             savedSong = savedSong.data
             var contributionPromises = []
             for(var i=0; i<contributors.length; i++) {
-              var contribution = revibe.addUploadedSongContributor(savedSong.song_id, contributors[i].contributor.artist_id, contributors[i].type)
-              contributionPromises.push(contribution)
+              for(var j=0; j<contributors[i].type.length; j++){
+                var contribution = revibe.addUploadedSongContributor(savedSong.song_id, contributors[i].contributor.artist_id, contributors[i].type[j])
+                contributionPromises.push(contribution)
+              }
             }
             Promise.all(contributionPromises)
               .then(() => {
@@ -232,6 +234,70 @@ export function deleteSong(song_id) {
   }
 }
 
+export function approveAlbumContribution(album, contribution_id) {
+  return async (dispatch, getState) => {
+    var response = await revibe.approveAlbumContribution(contribution_id)
+    if(String(response.status).charAt(0)=="2") {
+      var index = album.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
+      album.contributors[index].approved = true
+      album.contributors[index].pending = false
+      dispatch(changeAlbumContributionStatus(album));
+      dispatch(error(null));
+    }
+    else {
+      dispatch(error("An error occured while approving an album contribution."));
+    }
+  }
+}
+
+export function rejectAlbumContribution(album, contribution_id) {
+  return async (dispatch, getState) => {
+    var response = await revibe.rejectAlbumContribution(contribution_id)
+    if(String(response.status).charAt(0)=="2") {
+      var index = album.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
+      album.contributors[index].approved = false
+      album.contributors[index].pending = false
+      dispatch(changeAlbumContributionStatus(album));
+      dispatch(error(null));
+    }
+    else {
+      dispatch(error("An error occured while rejecting an album contribution."));
+    }
+  }
+}
+
+export function approveSongContribution(song, contribution_id) {
+  return async (dispatch, getState) => {
+    var response = await revibe.approveSongContribution(contribution_id)
+    if(String(response.status).charAt(0)=="2") {
+      var index = song.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
+      song.contributors[index].approved = true
+      song.contributors[index].pending = false
+      dispatch(changeSongContributionStatus(song));
+      dispatch(error(null));
+    }
+    else {
+      dispatch(error("An error occured while approving a song contribution."));
+    }
+  }
+}
+
+export function rejectSongContribution(song, contribution_id) {
+  return async (dispatch, getState) => {
+    var response = await revibe.rejectSongContribution(contribution_id)
+    if(String(response.status).charAt(0)=="2") {
+      var index = song.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
+      song.contributors[index].approved = false
+      song.contributors[index].pending = false
+      dispatch(changeSongContributionStatus(song));
+      dispatch(error(null));
+    }
+    else {
+      dispatch(error("An error occured while rejecting a song contribution."));
+    }
+  }
+}
+
 export function selectAlbum(album_id) {
   return async (dispatch) => {
     dispatch(setSelectedAlbum(album_id));
@@ -241,77 +307,5 @@ export function selectAlbum(album_id) {
 export function selectSong(song_id) {
   return async (dispatch) => {
     dispatch(setSelectedSong(song_id));
-  }
-}
-
-export function approveAlbumContribution(album) {
-  return async (dispatch, getState) => {
-    const artist_id = getState().authentication.user.artistId
-    var index = album.contributors.map(function(x) {return x.artist_id; }).indexOf(artist_id)
-    var response = await revibe.approveSongContribution(album.contributors[index].contribution_id)
-    if(String(response.status).charAt(0)=="2") {
-      album.contributors[index].approved = true
-      album.contributors[index].pending = false
-      dispatch(changeSongContributionStatus(album));
-      dispatch(error(null));
-    }
-    else {
-      dispatch(error("An error occured while deleting an album."));
-    }
-  }
-}
-
-export function rejectAlbumContribution(album) {
-  return async (dispatch, getState) => {
-    const artist_id = getState().authentication.user.artistId
-    var index = album.contributors.map(function(x) {return x.artist_id; }).indexOf(artist_id)
-    var response = await revibe.rejectSongContribution(album.contributors[index].contribution_id)
-    if(String(response.status).charAt(0)=="2") {
-      album.contributors[index].approved = false
-      album.contributors[index].pending = false
-      dispatch(changeSongContributionStatus(album));
-      dispatch(error(null));
-    }
-    else {
-      dispatch(error("An error occured while deleting an album."));
-    }
-  }
-}
-
-export function approveSongContribution(song) {
-  return async (dispatch, getState) => {
-    const artist_id = getState().authentication.user.artistId
-    console.log(artist_id);
-    var index = song.contributors.map(function(x) {return x.artist_id; }).indexOf(artist_id)
-    console.log(song);
-    console.log(index);
-    console.log(song.contributors[index]);
-    var response = await revibe.approveSongContribution(song.contributors[index].contribution_id)
-    if(String(response.status).charAt(0)=="2") {
-      song.contributors[index].approved = true
-      song.contributors[index].pending = false
-      dispatch(changeSongContributionStatus(song));
-      dispatch(error(null));
-    }
-    else {
-      dispatch(error("An error occured while deleting an album."));
-    }
-  }
-}
-
-export function rejectSongContribution(song) {
-  return async (dispatch, getState) => {
-    const artist_id = getState().authentication.user.artistId
-    var index = song.contributors.map(function(x) {return x.artist_id; }).indexOf(artist_id)
-    var response = await revibe.rejectSongContribution(song.contributors[index].contribution_id)
-    if(String(response.status).charAt(0)=="2") {
-      song.contributors[index].approved = false
-      song.contributors[index].pending = false
-      dispatch(changeSongContributionStatus(song));
-      dispatch(error(null));
-    }
-    else {
-      dispatch(error("An error occured while deleting an album."));
-    }
   }
 }

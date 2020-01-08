@@ -36,18 +36,24 @@ class Contributions extends React.Component {
   shouldDisplayPendingContributions(songs, albums) {
     var shouldDisplay = false
     for(var x=0; x<songs.length; x++) {
-      var contributionIndex = songs[x].contributors.map(function(x) {return x.artist_id; }).indexOf(this.props.artist_id)
-      if(songs[x].contributors[contributionIndex].pending) {
-        shouldDisplay = true
-        break
+      for(var i=0; i<songs[x].contributors.length; i++) {
+        if(songs[x].contributors[i].artist_id === this.props.artist_id) {
+          if(songs[x].contributors[i].pending) {
+            shouldDisplay = true
+            break
+          }
+        }
       }
     }
     if(!shouldDisplay) {
       for(var x=0; x<albums.length; x++) {
-        var contributionIndex = albums[x].contributors.map(function(x) {return x.artist_id; }).indexOf(this.props.artist_id)
-        if(albums[x].contributors[contributionIndex]) {
-          shouldDisplay = true
-          break
+        for(var i=0; i<albums[x].contributors.length; i++) {
+          if(albums[x].contributors[i].artist_id === this.props.artist_id) {
+            if(albums[x].contributors[i].pending) {
+              shouldDisplay = true
+              break
+            }
+          }
         }
       }
     }

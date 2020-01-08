@@ -42,12 +42,12 @@ class PendingContributions extends Component {
     this.setRowData = this.setRowData.bind(this)
   }
 
-  ApproveDenyContribution(obj, approveFn, rejectFn) {
+  ApproveDenyContribution(obj, contribution_id, approveFn, rejectFn) {
     return (
       <div>
         <Button
             onClick={() => {
-              approveFn(obj)
+              approveFn(obj,contribution_id)
             }}
             color="success"
             size="sm"
@@ -57,7 +57,7 @@ class PendingContributions extends Component {
           </Button>
           <Button
             onClick={() => {
-              rejectFn(obj)
+              rejectFn(obj,contribution_id)
             }}
             color="danger"
             size="sm"
@@ -72,31 +72,37 @@ class PendingContributions extends Component {
   setRowData(songs, albums) {
     var rows = []
     for(var x=0; x<songs.length; x++) {
-      var contributionIndex = songs[x].contributors.map(function(x) {return x.artist_id; }).indexOf(this.props.artist_id)
-      if(songs[x].contributors[contributionIndex].pending) {
-        let song = {
-          name: songs[x].title,
-          type: "Song",
-          uploadedBy: "Drake",
-          uploaded: moment(songs[x].uploaded_date).format("DD-MM-YYYY"),
-          contributionType: songs[x].contributors[contributionIndex].contribution_type,
-          status: this.ApproveDenyContribution(songs[x], this.props.approveSongContribution, this.props.rejectSongContribution),
+      for(var i=0; i<songs[x].contributors.length; i++) {
+        if(songs[x].contributors[i].artist_id === this.props.artist_id) {
+          if(songs[x].contributors[i].pending) {
+            let song = {
+              name: songs[x].title,
+              type: "Song",
+              uploadedBy: songs[x].uploaded_by.name,
+              uploaded: moment(songs[x].contributors[i].uploaded_date).format("DD-MM-YYYY"),
+              contributionType: songs[x].contributors[i].contribution_type,
+              status: this.ApproveDenyContribution(songs[x], songs[x].contributors[i].contribution_id, this.props.approveSongContribution, this.props.rejectSongContribution),
+            }
+            rows.push(song)
+          }
         }
-        rows.push(song)
       }
     }
     for(var x=0; x<albums.length; x++) {
-      if(albums[x].pending) {
-        let album = {
-          name: albums[x].name,
-          type: "Album",
-          uploadedBy: "Drake",
-          uploaded:  moment(albums[x].uploaded_date).format("DD-MM-YYYY"),
-          contributionType: albums[x].contributionType,
-          status: this.ApproveDenyContribution(albums[x], this.props.approveAlbumContribution, this.rejectAlbumContribution),
-
+      for(var i=0; i<albums[x].contributors.length; i++) {
+        if(albums[x].contributors[i].artist_id === this.props.artist_id) {
+          if(albums[x].contributors[i].pending) {
+            let song = {
+              name: albums[x].name,
+              type: "Album",
+              uploadedBy: albums[x].uploaded_by.name,
+              uploaded:  moment(albums[x].contributors[i].uploaded_date).format("DD-MM-YYYY"),
+              contributionType: albums[x].contributors[i].contribution_type,
+              status: this.ApproveDenyContribution(albums[x], albums[x].contributors[i].contribution_id, this.props.approveAlbumContribution, this.props.rejectAlbumContribution),
+            }
+            rows.push(song)
+          }
         }
-        rows.push(album)
       }
     }
     return rows
@@ -136,10 +142,10 @@ function mapStateToProps(state) {
 };
 
 const mapDispatchToProps = dispatch => ({
-    approveAlbumContribution: (album) =>dispatch(approveAlbumContribution(album)),
-    rejectAlbumContribution: (album) =>dispatch(rejectAlbumContribution(album)),
-    approveSongContribution: (song) =>dispatch(approveSongContribution(song)),
-    rejectSongContribution: (song) =>dispatch(rejectSongContribution(song)),
+    approveAlbumContribution: (album,contribution_id) =>dispatch(approveAlbumContribution(album,contribution_id)),
+    rejectAlbumContribution: (album,contribution_id) =>dispatch(rejectAlbumContribution(album,contribution_id)),
+    approveSongContribution: (song,contribution_id) =>dispatch(approveSongContribution(song,contribution_id)),
+    rejectSongContribution: (song,contribution_id) =>dispatch(rejectSongContribution(song,contribution_id)),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(PendingContributions);
