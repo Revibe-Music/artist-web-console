@@ -4,6 +4,7 @@
   z-index: $zindex-tooltip;
   display: block;
   margin: $tooltip-margin;
+  background-color: transparent;
   // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
   // So reset our font and text properties to avoid inheriting weird values.
   @include reset-text();
@@ -21,6 +22,7 @@
     display: block;
     width: $tooltip-arrow-width;
     height: $tooltip-arrow-height;
+
 
     &::before {
       position: absolute;
@@ -40,7 +42,7 @@
     &::before {
       top: 0;
       border-width: $tooltip-arrow-height ($tooltip-arrow-width / 2) 0;
-      border-top-color: $tooltip-arrow-color;
+      border-top-color: red;
     }
   }
 }
@@ -57,7 +59,7 @@
       right: 0;
       border-width: ($tooltip-arrow-width / 2) $tooltip-arrow-height
         ($tooltip-arrow-width / 2) 0;
-      border-right-color: $tooltip-arrow-color;
+      border-right-color: red;
     }
   }
 }
@@ -71,7 +73,7 @@
     &::before {
       bottom: 0;
       border-width: 0 ($tooltip-arrow-width / 2) $tooltip-arrow-height;
-      border-bottom-color: $tooltip-arrow-color;
+      border-bottom-color: red;
     }
   }
 }
@@ -88,7 +90,7 @@
       left: 0;
       border-width: ($tooltip-arrow-width / 2) 0 ($tooltip-arrow-width / 2)
         $tooltip-arrow-height;
-      border-left-color: $tooltip-arrow-color;
+      border-left-color: red;
     }
   }
 }

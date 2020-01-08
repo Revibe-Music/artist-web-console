@@ -56,7 +56,7 @@ export const mediaReducer = (state=initialState, action) => {
         case "ADD_UPLOADED_SONG":
             return {
               ...state,
-              uploadedSongs: [...state.uploadedAlbums, action.newUpload]
+              uploadedSongs: [...state.uploadedSongs, action.newUpload]
             };
         case "EDIT_UPLOADED_SONG":
             return {

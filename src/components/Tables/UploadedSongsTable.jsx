@@ -42,7 +42,7 @@ class UploadedSongsTable extends Component {
       var contributors = songs[x].contributors.map(function(elem){if(elem.artist_name !== displayName) return elem.artist_name})
       contributors = compact(contributors)
       contributors = uniq(contributors)
-      contributors = contributors.length > 0 ? contributors.join(",") : "None"
+      contributors = contributors.length > 0 ? contributors.join(", ") : "None"
       let song = {
         name: songs[x].title,
         album: songs[x].album.name,

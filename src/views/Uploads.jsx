@@ -120,10 +120,10 @@ class Uploads extends React.Component {
       :
         <>
           <a onClick={e => this.setState({uploading:false})} data-tip data-for="backButtonTooltip">
-            <FaArrowLeft style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD"}} />
+            <FaArrowLeft style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD",cursor: 'pointer'}} />
           </a>
           <ReactTooltip id="backButtonTooltip" effect='solid' delayShow={1500}>
-                <span>Back to view catalog</span>
+            <span>Back to view catalog</span>
           </ReactTooltip>
           <SongUpload />
         </>

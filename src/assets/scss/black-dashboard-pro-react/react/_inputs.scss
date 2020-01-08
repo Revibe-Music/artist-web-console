@@ -14,7 +14,7 @@ textarea.form-control {
   }
   .form-control {
     &:focus {
-      border-color: $info;
+      border-color: $primary;
       & + .input-group-append .input-group-text,
       & ~ .input-group-append .input-group-text,
       & + .input-group-prepend .input-group-text,
