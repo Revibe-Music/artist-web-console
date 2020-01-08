@@ -24,52 +24,36 @@ import classNames from "classnames";
 // reactstrap components
 import {
   Button,
-  ButtonGroup,
   Card,
-  CardHeader,
   CardBody,
   CardTitle,
   Container,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
   Label,
+  Form,
   FormGroup,
   Input,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  ListGroup,
-  ListGroupItem,
-  Table,
-  Progress,
   Row,
   Col,
-  UncontrolledTooltip
 } from "reactstrap";
 import Dropzone from 'react-dropzone';
 import ReactTable from "react-table";
-import SearchBar from '@opuscapita/react-searchbar';
 import Select from "react-select";
 import TagsInput from "react-tagsinput";
 import Autosuggest from 'react-autosuggest';
-import { WithContext as ReactTags } from 'react-tag-input';
 import { ClipLoader } from "react-spinners";
-import { FaTimes, FaUserPlus } from "react-icons/fa";
 import Lottie from 'react-lottie';
+import ReactTooltip from 'react-tooltip';
+import { FiDownload } from 'react-icons/fi';
 import { compact } from 'lodash';
 import { connect } from 'react-redux';
 
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { uploadAlbum } from 'redux/media/actions.js'
-import ReactTooltip from 'react-tooltip';
-
 import * as savedAnimation from 'assets/img/check.json'
 
 const musicMetadata = require('music-metadata-browser');
@@ -149,9 +133,6 @@ class SongUpload extends Component {
   constructor() {
       super();
       this.state = {
-        album_image: null,
-        album_name: "",
-        album_type: "",
         songs: [],
         uploading: false,
         searchResults: [],
@@ -159,24 +140,20 @@ class SongUpload extends Component {
         isOpen: false,
         modalSongIndex: null,
         modalContributions: {},
-        editedModalContributions: []
-      };
+        editedModalContributions: [],
 
-      // this.contributionTypes = [
-      //   {
-      //     value: "",
-      //     isDisabled: true
-      //   },
-      //   { value: "2", label: "Artist "},
-      //   { value: "3", label: "Feature "},
-      //   { value: "4", label: "Producer"},
-      //   { value: "5", label: "Mixing"},
-      //   { value: "6", label: "Mastering"},
-      //   { value: "7", label: "Song Writer"},
-      //   { value: "8", label: "Vocals"},
-      //   { value: "8", label: "Programmer/Beat Maker"},
-      //   { value: "9", label: "Graphic Designer"},
-      // ]
+        // form State
+        albumName: "",
+        albumNameState: "",
+        albumNameError: "",
+
+        albumType: "",
+        albumTypeState: "",
+        albumTypeError: "",
+
+        albumImageState: "",
+        albumImageError: ""
+      };
 
       this.contributionTypes = ["Artist","Feature","Producer","Mixing","Mastering","Song Writer","Vocals","Programmer/Beat Maker","Graphic Designer"]
 
@@ -269,14 +246,15 @@ class SongUpload extends Component {
     var songs = []
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
-      var formattedSong = {title: metadata.common.title ? metadata.common.title : files[x].name,
-                           duration: Math.round(metadata.format.duration),
-                           quality: metadata.format.bitrate,
-                           file: files[x],
-                           explicit: false,
-                           uploaded: false,
-                           contributors: []
-                         }
+      var formattedSong = {
+        title: metadata.common.title ? metadata.common.title : files[x].name,
+        duration: Math.round(metadata.format.duration),
+        quality: metadata.format.bitrate,
+        file: files[x],
+        explicit: false,
+        uploaded: false,
+        contributors: []
+      }
       songs.push(formattedSong)
     }
     songs.forEach((item, i) => {
@@ -299,10 +277,35 @@ class SongUpload extends Component {
   }
 
   async uploadButtonPressed() {
-    this.setState({uploading: true})
-    var uploads = this.state.songs
-    console.log(uploads);
-    this.props.uploadAlbum(this.state.album_name, this.ImageUploader.current.state.file, this.state.album_type, this.state.songs, this.editRow)
+
+    var validFields = true
+    if (this.state.albumName === "") {
+      validFields = false
+      this.setState({
+        albumNameState: "has-danger",
+        albumNameError: "This field may not be blank."
+       });
+    }
+    if (this.state.albumType === "") {
+      this.setState({
+        albumTypeState: "has-danger",
+        albumTypeError: "This field may not be blank."
+       });
+    }
+    if (this.ImageUploader.current.state.file === null) {
+      this.setState({
+        albumImageState: "has-danger",
+        albumImageError: "Please select an image."
+       });
+    }
+    if(validFields) {
+      if(this.state.albumNameError==="" && this.state.albumTypeError==="" && this.ImageUploader.current.state.file !== null) {
+        this.setState({uploading: true})
+        var uploads = this.state.songs
+        console.log(uploads);
+        this.props.uploadAlbum(this.state.albumName, this.ImageUploader.current.state.file, this.state.albumType, this.state.songs, this.editRow)
+      }
+    }
   }
 
   /// CONTRIBUTOR OPRERATIONS ///
@@ -536,110 +539,140 @@ class SongUpload extends Component {
 
     return (
       <>
-      <Row>
         <Col className="m-auto mr-auto">
-          <Card>
+          <Card className="card-gray">
             <CardBody>
               <Row>
                 <Col className="m-auto m-auto" md="4">
-                  <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                    <a data-tip data-for="albumArtTooltip">
-                    <ImageUpload
-                      defaultImage={require("../assets/img/album-img.jpg")}
-                      uploadedImage={null}
-                      btnText="Album Art"
-                      addBtnColor="primary"
-                      changeBtnColor="default"
-                      ref={this.ImageUploader}
-                    />
-                    </a>
-                    <ReactTooltip id="albumArtTooltip" effect='solid' delayShow={1500}>
-                <span>Upload the album cover</span>
-              </ReactTooltip>
-                  </div>
+                  <Row>
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                      <a data-tip data-for="albumArtTooltip">
+                        <ImageUpload
+                          defaultImage={require("../assets/img/album-img.jpg")}
+                          uploadedImage={null}
+                          btnText="Album Art"
+                          addBtnColor="primary"
+                          changeBtnColor="default"
+                          ref={this.ImageUploader}
+                        />
+                      </a>
+                      <ReactTooltip id="albumArtTooltip" effect='solid' delayShow={1500}>
+                        <span>Upload an album cover</span>
+                      </ReactTooltip>
+                    </div>
+                  </Row>
+                  <Row style={{display: "flex",alignItems: "center", justifyContent: "center",textAlign: "center"}}>
+                  {this.state.albumImageState === "has-danger" ? (
+                    <label style={{color: "red"}} className="error">
+                      {this.state.albumImageError}
+                    </label>
+                  ) : null}
+                  </Row>
                 </Col>
-                  <Col className="m-auto mr-auto" md="6">
-                    <InputGroup style={{marginBottom: "20px"}}>
-                      <Input placeholder="Album Name" type="text" onChange={event => this.setState({album_name: event.target.value})}/>
-                    </InputGroup>
-                    <Select
-                      className="react-select primary"
-                      classNamePrefix="react-select"
-                      placeholder="Album Type"
-                      name="multipleSelect"
-                      closeMenuOnSelect={true}
-                      isMulti={false}
-                      onChange={option => this.setState({album_type: option.label})}
-                      options={[
-                        {
-                          value: "",
-                          isDisabled: true
-                        },
-                        { value: "2", label: "Album " },
-                        { value: "3", label: "Single" },
-                        { value: "4", label: "EP" },
-                      ]}
-                    />
-                  </Col>
+                <Col className="m-auto mr-auto" md="6">
+                  <Form className="form">
+                    <FormGroup className={`has-label ${this.state.albumNameState}`}>
+                      <label></label>
+                      <Input
+                        className="primary"
+                        placeholder="Album Name"
+                        type="text"
+                        onChange={e => this.setState({albumNameState: "has-success",albumNameError: "",albumName: e.target.value})}
+                      />
+                      {this.state.albumNameState === "has-danger" ? (
+                        <label className="error">
+                          {this.state.albumNameError}
+                        </label>
+                      ) : null}
+                    </FormGroup>
+
+                    <FormGroup style={{marginTop: "30px"}} className={`has-label ${this.state.albumTypeState}`}>
+                      <label></label>
+                      <Select
+                        className="react-select primary"
+                        classNamePrefix="react-select"
+                        placeholder="Album Type"
+                        name="multipleSelect"
+                        closeMenuOnSelect={true}
+                        isMulti={false}
+                        onChange={option => this.setState({albumTypeState: "has-success",albumTypeError: "",albumType: option.label})}
+                        options={[
+                          {
+                            value: "",
+                            isDisabled: true
+                          },
+                          { value: "2", label: "Album " },
+                          { value: "3", label: "Single" },
+                          { value: "4", label: "EP" },
+                        ]}
+                      />
+                      {this.state.albumTypeState === "has-danger" ? (
+                        <label className="error">
+                          {this.state.albumTypeError}
+                        </label>
+                      ) : null}
+                    </FormGroup>
+                  </Form>
+                </Col>
               </Row>
 
             </CardBody>
           </Card>
         </Col>
-      </Row>
       <a data-tip data-for="cloudUploadTooltip">
-       <Row>
-          <Col className="m-auto mr-auto">
-            <Card>
-              <CardBody>
-                <CardTitle tag="h4">Upload Songs</CardTitle>
-                  {this.state.songs.length > 0 ?
-                    <>
-                    <ReactTable
-                      data={this.state.songs}
-                      resizable={true}
-                      columns={columns}
-                      defaultPageSize={this.state.songs.length}
-                      showPagination={false}
-                      className="-striped -highlight"
-                    />
-                    <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
-                    <Button onClick={this.uploadButtonPressed} className="btn-round" color="primary">
-                        Upload
-                    </Button>
-                    </div>
-                    </>
-                  :
-                  <div style={basestyle}>
-                  <Dropzone
-                    onDrop={this.onDrop}
-                    accept="audio/*"
-                    minSize={0}
-                    multiple
-                  >
-                    {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
-                      const filesRejected = rejectedFiles.length > 0
-                      return (
-                        <div {...getRootProps()} className="text-center">
-                          <input {...getInputProps()} />
-                          <p>Choose a file or drop it in here.</p>
-                          {filesRejected && (
-                            <div className="text-danger mt-2">
-                              Unsupported file types.
-                            </div>
-                          )}
-                          <i style={{fontSize: 80, marginTop: 50, color: "#7248BD"}} className="tim-icons icon-cloud-upload-94" />
-
-                        </div>
-                      )}
-                    }
-                  </Dropzone>
+        <Col className="m-auto mr-auto">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h4">Upload Songs</CardTitle>
+                {this.state.songs.length > 0 ?
+                  <>
+                  <ReactTable
+                    data={this.state.songs}
+                    resizable={true}
+                    columns={columns}
+                    defaultPageSize={this.state.songs.length}
+                    showPagination={false}
+                    className="-striped -highlight"
+                  />
+                  <div style={{display: 'flex', justifyContent: "center", alignItems: 'center', marginTop: 20}}>
+                  <Button onClick={this.uploadButtonPressed} className="btn-round" color="primary">
+                      Upload
+                  </Button>
                   </div>
+                  </>
+                :
+                <div style={basestyle}>
+                <Dropzone
+                  onDrop={this.onDrop}
+                  accept="audio/*"
+                  minSize={0}
+                  multiple
+                >
+                  {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
+                    const filesRejected = rejectedFiles.length > 0
+                    return (
+                      <div {...getRootProps()} style={{width: "100%"}} className="text-center">
+                        <input {...getInputProps()} />
+                        <FiDownload style={{fontSize: 80, marginTop: 30, color: "#7248BD"}}/>
+                        <p style={{fontSize: 20, marginTop: 20}}>Drag & Drop songs here.</p>
+                        {filesRejected && (
+                          <div className="text-danger mt-2">
+                            Unsupported file types.
+                          </div>
+                        )}
+                        <p style={{fontSize: 15, marginTop: 20}}>OR</p>
+                        <Button style={{fontSize: 15, marginTop: 20}} className="btn-simple" color="primary">
+                          Browse Files
+                        </Button>
+                      </div>
+                    )}
                   }
+                </Dropzone>
+                </div>
+                }
             </CardBody>
           </Card>
         </Col>
-      </Row>
       </a>
       <ReactTooltip id="cloudUploadTooltip" effect='solid' delayShow={1500}>
         <span>Click or drag songs into box to upload</span>

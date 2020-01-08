@@ -87,8 +87,7 @@ class RegisterArtist extends React.Component {
 
   }
 
-  async onSubmit(history)
-  {
+  async onSubmit(history) {
     var validFields = true
     if (this.state.displayName === "") {
       validFields = false
@@ -109,7 +108,6 @@ class RegisterArtist extends React.Component {
         this.props.registerArtist(this.state.displayName, this.ImageUploader.current.state.file, history)
       }
     }
-
   }
 
   onChange(value)  {
