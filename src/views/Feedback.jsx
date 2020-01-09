@@ -55,7 +55,7 @@ class Feedback extends React.Component {
         first_name: "",
         last_name: "",
         email: "",
-        feedback_type: "",
+        subject: "",
         message: ""
     }
   };
@@ -110,10 +110,8 @@ class Feedback extends React.Component {
     ));
 
     return (
-      <div className="content">
-        <div className="wrapper" ref="wrapper">
-          <div className="page-header header-filter contactus-3">
-            <div className="main" style={{paddingTop: "100px"}}>
+      <div className="content" >
+          <div className="contactus-3">
             <Container>
                 <Row>
                   <Col className="text-center" md="12">
@@ -126,7 +124,7 @@ class Feedback extends React.Component {
                   <Col lg="3">
                   <div className="info info-hover">
                   <div className="icon icon-primary">
-                        <i className="tim-icons icon-square-pin" style={{paddingLeft: "20px"}}/>
+                        <i className="tim-icons icon-square-pin"/>
                       </div>
                       <h3 className="info-title" style={{color: "#7248bd"}}>Address</h3>
                       <p className="description" style={{color: "#7248bd"}}>8000 Innovation Park Dr.</p>
@@ -136,7 +134,7 @@ class Feedback extends React.Component {
                   <Col lg="3" className="center-align">
                   <div className="info info-hover">
                       <div className="icon icon-info">
-                        <i className="tim-icons icon-email-85" style={{paddingLeft: "20px"}}/>
+                        <i className="tim-icons icon-email-85"/>
                       </div>
                       <h3 className="info-title" style={{color: "#7248bd"}}>Email</h3>
                       <p className="description" style={{color: "#7248bd"}}>support@revibe.tech</p>
@@ -145,7 +143,7 @@ class Feedback extends React.Component {
                   <Col lg="3">
                   <div className="info info-hover">
                       <div className="icon icon-success">
-                        <i className="tim-icons icon-single-02" style={{paddingLeft: "20px"}}/>
+                        <i className="tim-icons icon-single-02"/>
                       </div>
                       <h3 className="info-title" style={{color: "#7248bd"}}>Contact</h3>
                       <p className="description" style={{color: "#7248bd"}}>Kayne Lynn</p>
@@ -194,7 +192,7 @@ class Feedback extends React.Component {
                               name="multipleSelect"
                               closeMenuOnSelect={true}
                               isMulti={false}
-                              onChange={option => this.setState({feedback_type: option.label})}
+                              onChange={option => this.setState({subject: option.label})}
                               options={[
                                 {
                                   value: "",
@@ -228,8 +226,6 @@ class Feedback extends React.Component {
                 </div>
               </Container>
             </div>
-          </div>
-        </div>
       </div>
     );
   }

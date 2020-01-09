@@ -52,7 +52,7 @@ class VectorMapView extends React.Component {
                         <div className="flag">
                           <img
                             alt="..."
-                            src={require("assets/img/US.png")}
+                            src={require("assets/portal/img/US.png")}
                           />
                         </div>
                       </td>
@@ -65,7 +65,7 @@ class VectorMapView extends React.Component {
                         <div className="flag">
                           <img
                             alt="..."
-                            src={require("assets/img/DE.png")}
+                            src={require("assets/portal/img/DE.png")}
                           />
                         </div>
                       </td>
@@ -78,7 +78,7 @@ class VectorMapView extends React.Component {
                         <div className="flag">
                           <img
                             alt="..."
-                            src={require("assets/img/AU.png")}
+                            src={require("assets/portal/img/AU.png")}
                           />
                         </div>
                       </td>
@@ -91,7 +91,7 @@ class VectorMapView extends React.Component {
                         <div className="flag">
                           <img
                             alt="..."
-                            src={require("assets/img/GB.png")}
+                            src={require("assets/portal/img/GB.png")}
                           />
                         </div>
                       </td>
@@ -104,7 +104,7 @@ class VectorMapView extends React.Component {
                         <div className="flag">
                           <img
                             alt="..."
-                            src={require("assets/img/RO.png")}
+                            src={require("assets/portal/img/RO.png")}
                           />
                         </div>
                       </td>
@@ -117,7 +117,7 @@ class VectorMapView extends React.Component {
                         <div className="flag">
                           <img
                             alt="..."
-                            src={require("assets/img/BR.png")}
+                            src={require("assets/portal/img/BR.png")}
                           />
                         </div>
                       </td>

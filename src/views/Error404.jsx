@@ -46,13 +46,13 @@ class Error404 extends React.Component {
                     <img
                       alt="..."
                       height="600"
-                      src={require("assets/img/microphone.jpg")}
+                      src={require("assets/portal/img/microphone.jpg")}
                     />
                   </div>
                 </Col>
                 <Col className="mt-md-5" lg="6">
                   <a href="/dashboard/">
-                  <img style={{paddingLeft: "155px"}} src={require("assets/img/revibetransparent.png")}/>
+                  <img style={{paddingLeft: "155px"}} src={require("assets/portal/img/revibetransparent.png")}/>
                   </a>
                   <h1 className="mt-md-5 title text-center text-primary">Dude, where's my page? {this.state.error_code} Error</h1>
                   <Row>

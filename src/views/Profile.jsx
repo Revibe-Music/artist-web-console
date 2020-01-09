@@ -175,7 +175,7 @@ class Profile extends React.Component {
                   <div className="block block-three" />
                   <div className="block block-four" />
                   <ImageUpload
-                    defaultImage={require("../assets/img/default-avatar.png")}
+                    defaultImage={require("../assets/portal/img/default-avatar.png")}
                     uploadedImage={this.props.user.artistImage === "" ? null : (artistPicsDB+this.props.user.artistImage)}
                     btnText="Change Artist Image"
                     addBtnColor="primary"

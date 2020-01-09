@@ -24,7 +24,7 @@ class Footer extends React.Component {
   render() {
     return (
       <footer
-        className={"footer" + (this.props.default ? " footer-default" : "")}
+        className={"footer" + (this.props.default ? " footer-default" : "")} style={{borderColor:"#7248BD", background:"none", position: "relative"}}
       >
         <Container fluid={this.props.fluid ? true : false}>
           <div className="copyright">

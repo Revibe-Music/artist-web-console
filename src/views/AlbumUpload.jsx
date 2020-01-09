@@ -58,7 +58,8 @@ import { connect } from 'react-redux';
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { uploadAlbum } from 'redux/media/actions.js'
-import * as savedAnimation from 'assets/img/check.json'
+
+import * as savedAnimation from 'assets/portal/img/check.json'
 
 const musicMetadata = require('music-metadata-browser');
 const revibe = new RevibeAPI()
@@ -79,7 +80,7 @@ const basestyle = {
 const defaultOptions = {
       loop: false,
       autoplay: true,
-      animationData: require('assets/img/check.json'),
+      animationData: require('assets/portal/img/check.json'),
       rendererSettings: {
         preserveAspectRatio: 'xMidYMid slice'
       }
@@ -822,7 +823,7 @@ class AlbumUpload extends Component {
                     <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                       <a data-tip data-for="albumArtTooltip">
                         <ImageUpload
-                          defaultImage={require("../assets/img/album-img.jpg")}
+                          defaultImage={require("../assets/portal/img/album-img.jpg")}
                           uploadedImage={null}
                           btnText="Album Art"
                           addBtnColor="primary"
