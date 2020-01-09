@@ -263,7 +263,6 @@ export default class RevibeAPI {
 
   async addUploadedAlbumContributor(album_id, artist_id, contribution_type) {
     var data = {album_id: album_id, artist_id: artist_id, contribution_type: contribution_type}
-    console.log(data);
     return await this._request("account/artist/contributions/albums/", data, "POST", true)
   }
 

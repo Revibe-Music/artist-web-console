@@ -146,11 +146,8 @@ export function uploadAlbum(name, image, type, albumContributors, songs, uploadS
       response = response.data
       const album = response
       var albumContributionPromises = []
-      console.log(albumContributors);
       for(var i=0; i<albumContributors.length; i++) {
-        console.log(albumContributors[i].type);
         for(var j=0; j<albumContributors[i].type.length; j++) {
-          console.log(album);
           var albumContributor = revibe.addUploadedAlbumContributor(album.album_id, albumContributors[i].contributor.artist_id, albumContributors[i].type[j])
           albumContributionPromises.push(albumContributor)
         }

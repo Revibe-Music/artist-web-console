@@ -167,7 +167,6 @@ class AdminNavbar extends React.Component {
                   <div className="photo">
                     <img alt="..." src={this.props.artistImage ? artistPicsDB+this.props.artistImage : require("assets/portal/img/default-avatar.png")} />
                   </div>
-                  <b className="caret d-none d-lg-block d-xl-block" />
                   <p className="d-lg-none">Profile</p>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">

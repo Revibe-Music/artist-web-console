@@ -1007,7 +1007,7 @@ class AlbumUpload extends Component {
                     defaultChecked={this.state.modalEditedSongContributions.filter(x=>x===type).length>0}
                     onClick={() => this.toggleSongContributonType(type)}
                   />
-                  <span className="form-check-sign">
+                  <span className="form-check-sign" style={{color: "black"}}>
                     {type}
                   </span>
                 </Label>
@@ -1040,7 +1040,7 @@ class AlbumUpload extends Component {
                     defaultChecked={this.state.modalEditedAlbumContributions.filter(x=>x===type).length>0}
                     onClick={() => this.toggleAlbumContributonType(type)}
                   />
-                  <span className="form-check-sign">
+                  <span className="form-check-sign"  style={{color: "black"}}>
                     {type}
                   </span>
                 </Label>
