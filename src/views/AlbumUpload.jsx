@@ -585,7 +585,7 @@ class AlbumUpload extends Component {
            <img
            alt="..."
            style={{height:"80%", width: "80%",borderRadius: "50%"}}
-           src={artist.ext ? PicsDB+artist.artist_uri+"."+artist.ext : require("assets/img/default-avatar.png")} />
+           src={artist.ext ? PicsDB+artist.artist_uri+"."+artist.ext : require("assets/portal/img/default-avatar.png")} />
          </Col>
          <Col style={{textAlign: "left"}} xs={8} md={8}>
            {artist.name}
