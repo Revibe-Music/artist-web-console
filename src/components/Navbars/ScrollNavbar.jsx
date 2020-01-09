@@ -84,13 +84,14 @@ class ScrollNavbar extends React.Component {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
-              <NavItem className="active">
+              {/* Will ADD CODE BELOW WHEN WE KNOW WHAT WE WANT FOR THIS TAB */}
+              {/* <NavItem className="active">
               <NavLink
                 href="/blog-posts"
               >
                 Artist of the Week
               </NavLink>
-              </NavItem>
+              </NavItem> */}
 
               <NavItem className="active">
               <NavLink
@@ -115,7 +116,7 @@ class ScrollNavbar extends React.Component {
                   Contact
                 </NavLink>
               </NavItem>
-              <Link to="/register">
+              <Link to="/account/login">
                 <Button color="primary">Log In</Button>
               </Link>
 

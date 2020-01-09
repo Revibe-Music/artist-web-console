@@ -9,7 +9,8 @@ import Home from './../views/Home.jsx'
 import ContactUs from "./../views/ContactUs.jsx"
 import Error400 from "./../views/Error400.jsx"
 import Error404 from "./../views/Error404.jsx"
-
+import AboutUs from "./../views/AboutUs.jsx"
+import WhyRevibe from "./../views/WhyRevibe.jsx"
 
 
 const Unauthenticated = () => (
@@ -21,6 +22,8 @@ const Unauthenticated = () => (
       <Route path="/400" component={Error400}/>
       <Route path="/404" component={Error404}/>
       <Route path="/home" component={Home}/>
+      <Route path="/about-us" component={AboutUs}/>
+      <Route path="/why-revibe" component={WhyRevibe}/>
   </>
 );
 

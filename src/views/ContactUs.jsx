@@ -15,6 +15,7 @@
 
 */
 import React from "react";
+import classnames from "classnames";
 
 // reactstrap components
 import {
@@ -28,11 +29,13 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
+  Navbar
 } from "reactstrap";
 
 // core components
-import Footer from "components/Footer/Footer.jsx";
+import Footer from "components/Footers/Footer.jsx";
+import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx"
 
 import {withRouter} from 'react-router-dom';
 import RevibeAPI from 'api/revibe.js';
@@ -116,11 +119,11 @@ class ContactUs extends React.Component {
 
     return (
       <>
+          <ScrollNavbar/>
           <div className="wrapper" ref="wrapper">
-          <div className="page-header header-filter contactus-3">
-          <div className="main" style={{paddingTop: "100px"}}>
+          <div className="header-filter contactus-3">
           <Container fluid>
-              <Row>
+              <Row className="align-items-center">
                 <Col className="text-center" md="12">
                   <h1 className="title">Questions?</h1>
                   <h3>We'd like to talk more about what you need</h3>
@@ -131,7 +134,7 @@ class ContactUs extends React.Component {
                 <Col lg="3">
                 <div className="info info-hover">
                 <div className="icon icon-primary">
-                      <i className="tim-icons icon-square-pin" style={{paddingLeft: "20px"}}/>
+                      <i className="tim-icons icon-square-pin" />
                     </div>
                     <h3 className="info-title" style={{color: "#7248bd"}}>Address</h3>
                     <p className="description" style={{color: "#7248bd"}}>8000 Innovation Park Dr.</p>
@@ -141,7 +144,7 @@ class ContactUs extends React.Component {
                 <Col lg="3" className="center-align">
                 <div className="info info-hover">
                     <div className="icon icon-info">
-                      <i className="tim-icons icon-email-85" style={{paddingLeft: "20px"}}/>
+                      <i className="tim-icons icon-email-85" />
                     </div>
                     <h3 className="info-title" style={{color: "#7248bd"}}>Email</h3>
                     <p className="description" style={{color: "#7248bd"}}>support@revibe.tech</p>
@@ -150,16 +153,16 @@ class ContactUs extends React.Component {
                 <Col lg="3">
                 <div className="info info-hover">
                     <div className="icon icon-success">
-                      <i className="tim-icons icon-single-02" style={{paddingLeft: "20px"}}/>
+                      <i className="tim-icons icon-single-02" />
                     </div>
                     <h3 className="info-title" style={{color: "#7248bd"}}>Contact</h3>
                     <p className="description" style={{color: "#7248bd"}}>Kayne Lynn</p>
                   </div>
                 </Col>
               </Row>
-              <div className="content" style={{paddingTop: "50px"}}>
               <Row>
                 <Col className="m-auto" md="10">
+                <div className="content" style={{paddingTop: "50px"}}>
                   <Form
                     className="form"
                     id="contact-form"
@@ -211,15 +214,13 @@ class ContactUs extends React.Component {
                       </Row>
                     </CardBody>
                   </Form>
+                  </div>
                 </Col>
               </Row>
-              </div>
             </Container>
-            <Footer />
-
           </div>
           </div>
-          </div>
+          <Footer />
       </>
     );
   }

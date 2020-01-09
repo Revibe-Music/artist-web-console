@@ -15,6 +15,7 @@
 
 */
 import React from "react";
+import { Link } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -62,7 +63,7 @@ class VideoHeader extends React.Component {
               <Row>
                 <Col lg="8">
                 <div className="card-image">
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
+                      <a to="/account/register" onClick={e => e.preventDefault()}>
                         <img
                           alt="..."
                           className="img rounded"
@@ -76,14 +77,14 @@ class VideoHeader extends React.Component {
                 <br /><br/><br/><br/>
                 <h1 className="title">Run your entire music career in one place</h1>
                 <br />
+                <Link to="/account/register">
                 <Button
                   className="btn-round btn-primary"
                   size="lg"
-                  href="/account/register"
-                  onClick={e => e.preventDefault()}
                 >
                   Sign Up
                 </Button>
+                </Link>
               </div>
               </Col>
               </Row>

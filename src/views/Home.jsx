@@ -118,7 +118,7 @@ class Home extends React.Component {
         <div className="main">
         {/* ********* FEATURES 1 ********* */}
         <div className="features-1" style={{paddingBottom: "0px"}}>
-          <Container>
+          <Container fluid>
             <Row >
               <Col md="4" >
                 <div className="info info-hover" style={{paddingTop: "20px"}}>
@@ -141,12 +141,14 @@ class Home extends React.Component {
                 <Col md="8">
                 <img
                     alt="..."
-                    className="img center"
+                    className="img auto"
+                    style={{width:"80%"}}
+                    // align="middle"
                     src={require("assets/site/img/rapper_1.jpg")}
                   />
                 </Col>
                 </Row>
-                <Row>
+                <Row style={{width:"100%"}}> 
                 <Col md="4">
                 <div className="info info-hover">
                   <div className="icon icon-primary">
@@ -168,7 +170,9 @@ class Home extends React.Component {
                 <Col md="8">
                 <img
                     alt="..."
-                    className="img center"
+                    className="img auto"
+                    style={{width:"87%", paddingLeft:"5%", paddingTop:"5%", paddingBottom:"5%"}}
+                    // align="middle"
                     src={require("assets/site/img/music_studio_1.jpg")}
                   />
                 </Col>
@@ -195,7 +199,9 @@ class Home extends React.Component {
                 <Col md="8">
                 <img
                     alt="..."
-                    className="img center"
+                    className="img auto"
+                    style={{width:"80%"}}
+                    // align="middle"
                     src={require("assets/site/img/manager_1.jpg")}
                   />
                 </Col>
@@ -203,73 +209,6 @@ class Home extends React.Component {
           </Container>
         </div>
         {/* ********* END FEATURES 1 ********* */}
-        {/* ********* Start Screenshots Slider ********* */}
-        <div className="header header-3"  >
-        <div className="header-filter">
-        <div className="content-center">
-          <Row>
-            <Col
-              className="ml-auto mr-auto positioned text-center"
-              lg="5"
-              md="8"
-              xs="12"
-            >
-              <h1 className="title">Revibe App</h1 >
-              <p className="description">
-                We let you enjoy your music the way you want. No restrictions. No cost.
-              </p>
-              <Button
-                color="primary"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-                size="lg"
-              >
-                Download
-              </Button>
-            </Col>
-            <Col md="12">
-              <Slick {...slickHeader3Settings}>
-                <div>
-                  <img
-                    alt="..."
-                    src={require("assets/site/img/app1.png")}
-                    width="300"
-                  />
-                </div>
-                <div>
-                  <img
-                    src={require("assets/site/img/app2.png")}
-                    width="150"
-                  />
-                </div>
-                <div>
-                  <img
-                    alt="..."
-                    src={require("assets/site/img/app3.png")}
-                    width="150"
-                  />
-                </div>
-                <div>
-                  <img
-                    alt="..."
-                    src={require("assets/site/img/app4.png")}
-                    width="150"
-                  />
-                </div>
-                <div>
-                  <img
-                    alt="..."
-                    src={require("assets/site/img/app5.png")}
-                    width="150"
-                  />
-                </div>
-              </Slick>
-            </Col>
-          </Row>
-          </div>
-          </div>
-        </div>
-        {/* ********* END Screenshots Slider ********* */}
         </div>
         <Footer />
       </div>

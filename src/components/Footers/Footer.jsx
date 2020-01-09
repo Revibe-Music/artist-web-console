@@ -42,18 +42,18 @@ class Footer extends React.Component {
               <Col md="3" xs="6">
                 <Nav>
                   <NavItem>
-                    <NavLink to="/index" tag={Link}>
+                    <NavLink to="/home" tag={Link}>
                       Home
                     </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink to="/register" tag={Link}>
+                    <NavLink to="/account/register" tag={Link}>
                       Register
                     </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink to="/profile" tag={Link}>
-                      Profile
+                    <NavLink to="/account/login" tag={Link}>
+                      Login
                     </NavLink>
                   </NavItem>
                 </Nav>
@@ -70,11 +70,6 @@ class Footer extends React.Component {
                       About Us
                     </NavLink>
                   </NavItem>
-                  <NavItem>
-                    <NavLink to="/blog-posts" tag={Link}>
-                      Blog
-                    </NavLink>
-                  </NavItem>
                 </Nav>
               </Col>
               <Col md="3">
@@ -83,7 +78,7 @@ class Footer extends React.Component {
                   <Button
                     className="btn-icon btn-neutral btn-round btn-simple"
                     color="default"
-                    href="https://twitter.com/creativetim"
+                    href="https://twitter.com/revibemusic8"
                     id="tooltip39661217"
                     target="_blank"
                   >
@@ -95,7 +90,7 @@ class Footer extends React.Component {
                   <Button
                     className="btn-icon btn-neutral btn-round btn-simple ml-1"
                     color="default"
-                    href="https://www.facebook.com/creativetim"
+                    href="https://www.facebook.com/revibemusic8"
                     id="tooltip206037619"
                     target="_blank"
                   >
@@ -107,11 +102,11 @@ class Footer extends React.Component {
                   <Button
                     className="btn-icon btn-neutral btn-round btn-simple ml-1"
                     color="default"
-                    href="https://dribbble.com/creativetim"
+                    href="https://www.instagram.com/revibemusic8"
                     id="tooltip750293512"
                     target="_blank"
                   >
-                    <i className="fab fa-dribbble" />
+                    <i className="fab fa-instagram" />
                   </Button>
                   <UncontrolledTooltip delay={0} target="tooltip750293512">
                     Follow us
