@@ -37,7 +37,6 @@ export default class RevibeAPI {
   }
 
   _handleErrors(response) {
-    console.log(response);
     var errors = {}
     if(response.status === 400) {
       // bad request ish
@@ -74,12 +73,9 @@ export default class RevibeAPI {
     }
     else if(response.status === 417) {
       var errorKeys = Object.keys(response.data)
-      console.log(errorKeys);
       for(var x=0; x<errorKeys.length; x++) {
-        console.log(response.data[errorKeys[x]]);
         errors[errorKeys[x]] = response.data[errorKeys[x]][0]
       }
-      console.log(errors);
     }
     else if(response.status === 500) {
       // internal server error ish
@@ -219,7 +215,6 @@ export default class RevibeAPI {
   }
 
   async editUserProfile(username=null, email=null) {
-    console.log("in editUserProfile");
     var data = {}
     // only add variables to form if they arent null
     if(username !== null) data.username = username
@@ -326,7 +321,6 @@ export default class RevibeAPI {
 
   async addUploadedSongContributor(song_id, artist_id, contribution_type) {
     var data = {song_id: song_id, artist_id: artist_id, contribution_type: contribution_type}
-    console.log(data);
     return await this._request("account/artist/contributions/songs/", data, "POST", true)
   }
 
@@ -389,7 +383,6 @@ export default class RevibeAPI {
 
   async approveSongContribution(contribution_id) {
     var data = {contribution_id: contribution_id, content: "song", action: "approve"}
-    console.log(data);
     return await this._request("account/artist/contributions/approve/", data, "POST", true)
   }
 
@@ -408,7 +401,7 @@ export default class RevibeAPI {
   ////////////////////////////////////
 
   async searchArtists(query) {
-    return await this._request("content/search/?type=artists&text="+query, null, "GET", true)
+    return await this._request("content/search/artists/?text="+query, null, "GET", true)
   }
 
 

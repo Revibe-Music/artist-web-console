@@ -144,29 +144,35 @@ export function uploadAlbum(name, image, type, songs, uploadStatusFn) {
     var response = await revibe.createUploadedAlbum(name, image, type)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
-      dispatch(addUploadedAlbum(response));
+      response.total_streams = 0
+      const album = response
+      dispatch(addUploadedAlbum(album));
       for(var x=0; x<songs.length; x++) {
         const song = songs[x]
         const contributors = songs[x].contributors
-        revibe.createUploadedSong(song.title, song.file, song.duration, response.album_id, song.explicit)
+        revibe.createUploadedSong(song.title, song.file, song.duration, album.album_id, song.explicit)
           .then((savedSong) => {
             // need to check for response errors here
-            savedSong = savedSong.data
+            const savedSongData = savedSong.data
             var contributionPromises = []
             for(var i=0; i<contributors.length; i++) {
               for(var j=0; j<contributors[i].type.length; j++){
-                var contribution = revibe.addUploadedSongContributor(savedSong.song_id, contributors[i].contributor.artist_id, contributors[i].type[j])
+                var contribution = revibe.addUploadedSongContributor(savedSongData.song_id, contributors[i].contributor.artist_id, contributors[i].type[j])
                 contributionPromises.push(contribution)
               }
             }
             Promise.all(contributionPromises)
-              .then(() => {
+              .then((contributionResult) => {
                 // need to check for response errors here
-                console.log("Should stop loading");
+                var allContributions = contributionResult.map(function(x) {return x.data})
+                console.log(allContributions);
                 uploadStatusFn(song.index, "uploaded", true)
-                dispatch(addUploadedSong(song));
+                savedSongData.album = album
+                savedSongData.contributors = allContributions
+                savedSongData.total_streams = 0
+                // console.log(song);
+                dispatch(addUploadedSong(savedSongData));
               });
-
           })
       }
       dispatch(error(null));

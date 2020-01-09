@@ -56,6 +56,9 @@ class ImageUpload extends React.Component {
         imagePreviewUrl: reader.result
       });
     };
+    if(this.props.onImageSelect !== null) {
+      this.props.onImageSelect(file)
+    }
     reader.readAsDataURL(file);
     // this.props.handleChange(file)
   }
@@ -73,6 +76,9 @@ class ImageUpload extends React.Component {
       file: null,
       imagePreviewUrl: this.props.defaultImage
     });
+    if(this.props.onImageSelect !== null) {
+      this.props.onImageSelect(null)
+    }
     this.refs.fileInput.value = null;
   }
   render() {
@@ -87,41 +93,46 @@ class ImageUpload extends React.Component {
           style={{width: "100%"}}
           />
         </div>
-        <div>
-          {this.state.file === null ? (
-            <Button
-              color={this.props.addBtnColor}
-              className={this.props.addBtnClasses}
-              onClick={() => this.handleClick()}
-            >
-              {this.props.btnText}
-            </Button>
-          ) : (
-            <span>
+        {!this.props.disabled ?
+          <div>
+            {this.state.file === null ? (
               <Button
-                color={this.props.changeBtnColor}
-                className={this.props.changeBtnClasses}
+                color={this.props.addBtnColor}
+                className={this.props.addBtnClasses}
                 onClick={() => this.handleClick()}
               >
-                Change
+                {this.props.btnText}
               </Button>
-              {this.props.defaultImage ? <br /> : null}
-              <Button
-                color={this.props.removeBtnColor}
-                className={this.props.removeBtnClasses}
-                onClick={() => this.handleRemove()}
-              >
-                <i className="fa fa-times" /> Remove
-              </Button>
-            </span>
-          )}
-        </div>
+            ) : (
+              <span>
+                <Button
+                  color={this.props.changeBtnColor}
+                  className={this.props.changeBtnClasses}
+                  onClick={() => this.handleClick()}
+                >
+                  Change
+                </Button>
+                {this.props.defaultImage ? <br /> : null}
+                <Button
+                  color={this.props.removeBtnColor}
+                  className={this.props.removeBtnClasses}
+                  onClick={() => this.handleRemove()}
+                >
+                  <i className="fa fa-times" /> Remove
+                </Button>
+              </span>
+            )}
+          </div>
+        :
+          null
+        }
       </div>
     );
   }
 }
 
 ImageUpload.defaultProps = {
+  disabled: false,
   avatar: true,
   btnText: "Select Image",
   removeBtnClasses: "btn-round",
@@ -129,10 +140,12 @@ ImageUpload.defaultProps = {
   addBtnClasses: "btn-round",
   addBtnColor: "primary",
   changeBtnClasses: "btn-round",
-  changeBtnColor: "primary"
+  changeBtnColor: "primary",
+  onImageSelect: null
 };
 
 ImageUpload.propTypes = {
+  disabled: PropTypes.bool,
   avatar: PropTypes.bool,
   removeBtnClasses: PropTypes.string,
   btnText: PropTypes.string,
@@ -167,7 +180,8 @@ ImageUpload.propTypes = {
     "warning",
     "danger",
     "link"
-  ])
+  ]),
+  onImageSelect: PropTypes.func,
 };
 
 export default ImageUpload;

@@ -359,12 +359,12 @@ This file was modified entirely by Creative Tim for React-Select v2.0.0
         display: none;
       }
       &.react-select__multi-value {
-        background-color: #fcfcfc;
+        background-color: red;
         border: 1px solid #e3e3e3;
       }
     }
     .react-select__control--is-disabled {
-      background-color: #f9f9f9;
+      background-color: white;
     }
   }
 }
