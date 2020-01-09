@@ -139,14 +139,29 @@ export function getSongContributions() {
 }
 
 
-export function uploadAlbum(name, image, type, songs, uploadStatusFn) {
+export function uploadAlbum(name, image, type, albumContributors, songs, uploadStatusFn) {
   return async (dispatch) => {
     var response = await revibe.createUploadedAlbum(name, image, type)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
-      response.total_streams = 0
       const album = response
-      dispatch(addUploadedAlbum(album));
+      var albumContributionPromises = []
+      console.log(albumContributors);
+      for(var i=0; i<albumContributors.length; i++) {
+        console.log(albumContributors[i].type);
+        for(var j=0; j<albumContributors[i].type.length; j++) {
+          console.log(album);
+          var albumContributor = revibe.addUploadedAlbumContributor(album.album_id, albumContributors[i].contributor.artist_id, albumContributors[i].type[j])
+          albumContributionPromises.push(albumContributor)
+        }
+      }
+      Promise.all(albumContributionPromises)
+        .then((albumContributionResult) => {
+          var allAlbumContributions = albumContributionResult.map(function(x) {return x.data})
+          album.contributors = allAlbumContributions
+          album.total_streams = 0
+          dispatch(addUploadedAlbum(album));
+        });
       for(var x=0; x<songs.length; x++) {
         const song = songs[x]
         const contributors = songs[x].contributors
