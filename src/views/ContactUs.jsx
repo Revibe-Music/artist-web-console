@@ -120,9 +120,9 @@ class ContactUs extends React.Component {
     return (
       <>
           <ScrollNavbar/>
-          <div className="wrapper" ref="wrapper">
-          <div className="header-filter contactus-3">
-          <Container fluid>
+          <div className="content">
+          <div className="contactus-3">
+          <Container>
               <Row className="align-items-center">
                 <Col className="text-center" md="12">
                   <h1 className="title">Questions?</h1>
