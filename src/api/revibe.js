@@ -186,9 +186,12 @@ export default class RevibeAPI {
     return await this. _request("account/logout-all/", null, "POST", true)
   }
 
-  async contactUs(data)
-  {
+  async contactUs(data) {
     return await this. _request("/administration/forms/contact-form/", data, "POST", false)
+  }
+
+  async leaveFeedback(data) {
+    return await this. _request("/administration/forms/contact-form/", data, "POST", true)
   }
 
   ////////////////////////////////////
