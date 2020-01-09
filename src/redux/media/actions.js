@@ -177,12 +177,10 @@ export function uploadAlbum(name, image, type, albumContributors, songs, uploadS
               .then((contributionResult) => {
                 // need to check for response errors here
                 var allContributions = contributionResult.map(function(x) {return x.data})
-                console.log(allContributions);
                 uploadStatusFn(song.index, "uploaded", true)
                 savedSongData.album = album
                 savedSongData.contributors = allContributions
                 savedSongData.total_streams = 0
-                // console.log(song);
                 dispatch(addUploadedSong(savedSongData));
               });
           })

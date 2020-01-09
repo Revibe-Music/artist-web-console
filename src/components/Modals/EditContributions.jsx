@@ -69,7 +69,6 @@ class EditContributions extends Component {
   addContributor(contributor) {
     if(this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id) == -1) {
       this.setState({contributions: [...this.state.contributions, {contributor: contributor, type: null}]})
-      console.log(contributor);
     }
 
   }

@@ -66,7 +66,6 @@ class Feedback extends React.Component {
 
   async onSubmit() {
     var response = await revibe.leaveFeedback(this.state)
-    console.log(response);
     if(String(response.status).charAt(0)=="2") {
       MySwal.fire({
         title: 'Thank you for contacting us!',

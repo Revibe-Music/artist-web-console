@@ -301,6 +301,12 @@ class AlbumUpload extends Component {
 
   removeRow(index) {
     var newData = [... this.state.songs]
+    if(isNaN(newData[index].duration)){
+      this.setState({songDurationError: ""})
+    }
+    if(isNaN(newData[index].quality)){
+      this.setState({songQualityError: ""})
+    }
     newData.splice(index, 1);
     this.setState({songs: newData})
   }
@@ -332,6 +338,14 @@ class AlbumUpload extends Component {
     for(var x=0; x<this.state.songs.length; x++) {
       if(this.state.songs[x].title.trim()==="") {
         this.setState({songNameError: "Must provide title for song."});
+        validFields = false
+      }
+      if(isNaN(this.state.songs[x].duration)) {
+        this.setState({songDurationError: "Song does not have valid duration."});
+        validFields = false
+      }
+      if(isNaN(this.state.songs[x].quality)) {
+        this.setState({songQualityError: "Song does not have valid bitrate."});
         validFields = false
       }
       for(var i=0; i<this.state.songs[x].contributors.length; i++) {
@@ -639,7 +653,7 @@ class AlbumUpload extends Component {
           placeholder: 'Add Contributor',
           disabled: this.state.uploading
       }}
-      onChange={() => console.log("Changed")}
+      onChange={() => console.log()}
       renderTag={props => this.renderSongContributorTags(props,row.index)}
       tagProps={{ className: "react-tagsinput-tag primary", disabled: this.state.uploading }}
       value={row.contributors}
@@ -681,7 +695,7 @@ class AlbumUpload extends Component {
       inputProps={{
           disabled: this.state.uploading
       }}
-      onChange={() => console.log("Changed")}
+      onChange={() => console.log()}
       renderTag={props => this.renderAlbumContributorTags(props)}
       tagProps={{ className: "react-tagsinput-tag primary", disabled: this.state.uploading }}
       value={this.state.albumContributors}
@@ -766,13 +780,49 @@ class AlbumUpload extends Component {
         },
         {
           id: "duration",
-          Header: "Duration",
+          Header: () => (
+            <div>
+              Duration
+              {this.state.songDurationError ?
+                <>
+                <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id="duration-error"/>
+                  <UncontrolledTooltip
+                    style={{backgroundColor: "red", color: "white"}}
+                    placement="top"
+                    target="duration-error"
+                  >
+                    {this.state.songDurationError}
+                  </UncontrolledTooltip>
+                </>
+              :
+                null
+              }
+            </div>
+          ),
           accessor: row => this.formatDuration(row.duration),
           filterable: false
         },
         {
           id: "quality",
-          Header: "Quality",
+          Header: () => (
+            <div>
+              Quality
+              {this.state.songQualityError ?
+                <>
+                <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id="quality-error"/>
+                  <UncontrolledTooltip
+                    style={{backgroundColor: "red", color: "white"}}
+                    placement="top"
+                    target="quality-error"
+                  >
+                    {this.state.songQualityError}
+                  </UncontrolledTooltip>
+                </>
+              :
+                null
+              }
+            </div>
+          ),
           accessor: row => this.formatQuality(row.quality),
           filterable: false
         },
@@ -956,7 +1006,7 @@ class AlbumUpload extends Component {
                 <div style={basestyle}>
                 <Dropzone
                   onDrop={this.onDrop}
-                  accept="audio/mp3"
+                  accept=".mp3"
                   minSize={0}
                   multiple
                 >

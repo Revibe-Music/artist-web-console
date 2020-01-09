@@ -71,7 +71,6 @@ class AlbumContributionsTable extends Component {
           <MDBDataTable
             entriesOptions={[5, 10, 15, 20, 25]}
             entries={5}
-            responsive
             striped
             data={data}
           />
