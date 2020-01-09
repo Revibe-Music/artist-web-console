@@ -70,7 +70,7 @@ import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { uploadAlbum } from 'redux/media/actions.js'
 import ReactTooltip from 'react-tooltip';
 
-import * as savedAnimation from 'assets/img/check.json'
+import * as savedAnimation from 'assets/portal/img/check.json'
 
 const musicMetadata = require('music-metadata-browser');
 const revibe = new RevibeAPI()
@@ -91,7 +91,7 @@ const basestyle = {
 const defaultOptions = {
       loop: false,
       autoplay: true,
-      animationData: require('assets/img/check.json'),
+      animationData: require('assets/portal/img/check.json'),
       rendererSettings: {
         preserveAspectRatio: 'xMidYMid slice'
       }
@@ -412,7 +412,7 @@ class SongUpload extends Component {
              <img
              alt="..."
              style={{height:"80%", width: "80%", borderRadius: "50%"}}
-             src={artist.ext ? PicsDB+artist.artist_uri+"."+artist.ext : require("assets/img/default-avatar.png")} />
+             src={artist.ext ? PicsDB+artist.artist_uri+"."+artist.ext : require("assets/portal/img/default-avatar.png")} />
            </div>
          </Col>
          <Col style={{textAlign: "left"}} xs={8} md={8}>
@@ -545,7 +545,7 @@ class SongUpload extends Component {
                   <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <a data-tip data-for="albumArtTooltip">
                     <ImageUpload
-                      defaultImage={require("../assets/img/album-img.jpg")}
+                      defaultImage={require("../assets/portal/img/album-img.jpg")}
                       uploadedImage={null}
                       btnText="Album Art"
                       addBtnColor="primary"

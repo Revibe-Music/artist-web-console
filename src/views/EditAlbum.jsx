@@ -242,7 +242,7 @@ class EditAlbum extends Component {
                 <Col className="m-auto m-auto" md="4">
                   <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <ImageUpload
-                      defaultImage={require("../assets/img/album-img.jpg")}
+                      defaultImage={require("../assets/portal/img/album-img.jpg")}
                       uploadedImage={albumPicsDB+album.album_uri+"."+album.ext}
                       btnText="Album Art"
                       addBtnColor="default"

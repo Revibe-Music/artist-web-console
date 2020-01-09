@@ -45,13 +45,13 @@ class Error400 extends React.Component {
                     <img
                       alt="..."
                       height="600"
-                      src={require("assets/img/max.jpg")}
+                      src={require("assets/portal/img/max.jpg")}
                     />
                   </div>
                 </Col>
                 <Col className="mt-md-5" lg="6">
                   <a href="/dashboard/">
-                  <img style={{paddingLeft: "155px"}} src={require("assets/img/revibetransparent.png")}/>
+                  <img style={{paddingLeft: "155px"}} src={require("assets/portal/img/revibetransparent.png")}/>
                   </a>
                   <h1 className="mt-md-5 title text-center text-primary">This is awkward, {this.state.error_code} Error</h1>
                   <Row>

@@ -27,10 +27,13 @@ import { authenticationReducer } from './redux/authentication/reducers.js'
 import { mediaReducer } from './redux/media/reducers.js'
 import App from 'App.js';
 
-
-import "assets/css/nucleo-icons.css";
-import "assets/scss/black-dashboard-pro-react.scss?v=1.0.0";
+import "assets/site/scss/blk-design-system-pro-react.scss?v1.0.0";
+import "assets/site/css/nucleo-icons.css";
 import "react-notification-alert/dist/animate.css";
+
+// The ones below were used previously for the artist portal
+//import "assets/portal/scss/black-dashboard-pro-react.scss?v=1.0.1";
+//import "assets/portal/css/nucleo-icons.css";
 
 // Add the sessionReducer
 const reducer = combineReducers({

@@ -163,7 +163,7 @@ class RegisterArtist extends React.Component {
                   <Col className="m-auto" md="6">
                     <div style={{display: "flex",alignItems: "center", justifyContent: "center",textAlign: "center"}}>
                       <ImageUpload
-                        defaultImage={require("../assets/img/default-avatar.png")}
+                        defaultImage={require("../assets/portal/img/default-avatar.png")}
                         uploadedImage={null}
                         addBtnColor="default"
                         changeBtnColor="default"

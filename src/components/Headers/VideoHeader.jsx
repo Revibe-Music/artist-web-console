@@ -54,24 +54,39 @@ class VideoHeader extends React.Component {
               playsInline="playsinline"
             >
               <source
-                src={require("../../assets/img/background_video.mp4")}
+                src={require("../../assets/site/img/vid_background_1.mp4")}
                 type="video/mp4"
               />
             </video>
-            <Container className="text-center" style={{marginTop:800}}>
+            <Container className="text-right" style={{marginTop:400}}>
+              <Row>
+                <Col lg="8">
+                <div className="card-image">
+                      <a href="#pablo" onClick={e => e.preventDefault()}>
+                        <img
+                          alt="..."
+                          className="img rounded"
+                          src={require("assets/site/img/laptop-image.png")}
+                        />
+                      </a>
+                    </div>
+                </Col>
+              <Col lg="4" className="auto-md">
               <div className="video-text">
-                <h2 className="description">Stream all you music from</h2>
-                <h1 className="title">one app</h1>
+                <br /><br/><br/><br/>
+                <h1 className="title">Run your entire music career in one place</h1>
                 <br />
                 <Button
-                  className="btn-simple btn-primary"
-                  color="default"
-                  href="#pablo"
+                  className="btn-round btn-primary"
+                  size="lg"
+                  href="/account/register"
                   onClick={e => e.preventDefault()}
                 >
-                  Download Now
+                  Sign Up
                 </Button>
               </div>
+              </Col>
+              </Row>
             </Container>
           </div>
         </div>

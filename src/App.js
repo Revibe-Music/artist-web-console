@@ -7,11 +7,11 @@ import Authenticated from './layouts/Authenticated.js';
 import PrivateRoute from './routes/PrivateRoute.js';
 import Login from 'views/Login.jsx';
 import Register from 'views/Register.jsx';
+import Home from 'views/Home.jsx'
 import RegisterArtist from 'views/RegisterArtist.jsx';
 import ContactUs from 'views/ContactUs.jsx';
 import Error400 from 'views/Error400.jsx'
 import Error404 from 'views/Error404.jsx'
-
 
 const App = ({ authenticated, checked }) => (
   <Router>
@@ -23,6 +23,7 @@ const App = ({ authenticated, checked }) => (
       <Route path="/contact-us" component={ContactUs}/>
       <Route path="/400" component={Error400}/>
       <Route path="/404" component={Error404}/>
+      <Route path="/home" component={Home}/>
       <PrivateRoute path="/" component={Authenticated} authenticated={authenticated}/>
      </Switch>
     }

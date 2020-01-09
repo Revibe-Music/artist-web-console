@@ -14,6 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+
 import React, {Component} from "react";
 import { Route, Switch } from "react-router-dom";
 // javascript plugin used to create scrollbars on windows
@@ -30,7 +31,9 @@ import { getProfile } from 'redux/authentication/actions.js'
 import { getUploadedAlbums, getUploadedSongs, getAlbumContributions, getSongContributions } from 'redux/media/actions.js'
 
 import routes from "./../routes/authenticatedRoutes.js";
-import logo from "assets/img/revibe-logo.jpg";
+import logo from "assets/portal/img/revibe-logo.jpg";
+
+import "assets/portal/scss/black-dashboard-pro-react.scss?v=1.0.1";
 
 var ps;
 
