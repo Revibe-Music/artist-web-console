@@ -38,6 +38,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ClipLoader from "react-spinners/ClipLoader";
 
+import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import { login } from 'redux/authentication/actions.js'
 
 class Login extends Component {
@@ -153,7 +154,10 @@ class Login extends Component {
     ));
 
     return (
-      <div className="content" style={{paddingTop: "50px"}}>
+      <>
+      <ScrollNavbar hideLogin/>
+      <div className="content" style={{paddingTop: "10%"}}>
+
         <Container>
         <Row>
           <Col className="m-auto mr-auto" md="7">
@@ -217,6 +221,7 @@ class Login extends Component {
           </Row>
         </Container>
       </div>
+      </>
     );
   }
 }

@@ -36,21 +36,25 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
+import PropTypes from "prop-types";
+
 
 class ScrollNavbar extends React.Component {
-  componentDidMount() 
-  {
+
+  componentDidMount() {
     let headroom = new Headroom(document.getElementById("navbar-scroll"));
     // initialise
     headroom.init();
   }
+
   scrollPage = (e, id) => {
     e.preventDefault();
-    if (document.getElementById(id) !== null) 
+    if (document.getElementById(id) !== null)
     {
       document.getElementById(id).scrollIntoView();
     }
   };
+
   render() {
     return (
       <>
@@ -116,9 +120,13 @@ class ScrollNavbar extends React.Component {
                   Contact
                 </NavLink>
               </NavItem>
+              {this.props.hideLogin ?
+                null
+              :
               <Link to="/account/login">
                 <Button color="primary">Log In</Button>
               </Link>
+              }
 
             </Nav>
             </UncontrolledCollapse>
@@ -128,5 +136,13 @@ class ScrollNavbar extends React.Component {
     );
   }
 }
+
+ScrollNavbar.defaultProps = {
+  hideLogin: false,
+};
+
+ScrollNavbar.propTypes = {
+  hideLogin: PropTypes.bool,
+};
 
 export default ScrollNavbar;
