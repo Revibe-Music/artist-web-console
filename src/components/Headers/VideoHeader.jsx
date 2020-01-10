@@ -44,11 +44,8 @@ class VideoHeader extends React.Component {
     return (
       <>
       <div className="header header-4">
-        <div className="header-wrapper">
-
           <div className="page-header header-video header-filter">
-            <div className="overlay" />
-            <video
+            <video fluid
               autoPlay="autoplay"
               loop="loop"
               muted="muted"
@@ -59,10 +56,10 @@ class VideoHeader extends React.Component {
                 type="video/mp4"
               />
             </video>
-            <Container className="text-right" style={{marginTop:400}}>
-              <Row>
+            <Container style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+            <Row>
                 <Col lg="8">
-                <div className="card-image">
+                <div className="card-image" >
                       <a to="/account/register" onClick={e => e.preventDefault()}>
                         <img
                           alt="..."
@@ -72,9 +69,8 @@ class VideoHeader extends React.Component {
                       </a>
                     </div>
                 </Col>
-              <Col lg="4" className="auto-md">
+              <Col lg="4" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
               <div className="video-text">
-                <br /><br/><br/><br/>
                 <h1 className="title">Run your entire music career in one place</h1>
                 <br />
                 <Link to="/account/register">
@@ -89,8 +85,7 @@ class VideoHeader extends React.Component {
               </Col>
               </Row>
             </Container>
-          </div>
-        </div>
+            </div>
       </div>
       </>
     );

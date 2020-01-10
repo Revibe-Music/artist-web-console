@@ -107,14 +107,15 @@ class Home extends React.Component {
   }
   render() {
     return (
+      <>
+      <ScrollNavbar/>
       <div className="wrapper" ref="wrapper">
-        <div className="header header-4">
-          <div className="header-wrapper">
-            <ScrollNavbar/>
+          <div className="header-filter">
             <VideoHeader />
+            </div>
+            <div className="header-filter">
             <VideoHeader2/>
           </div>
-        </div>
         <div className="main">
         {/* ********* FEATURES 1 ********* */}
         <div className="features-1" style={{paddingBottom: "0px"}}>
@@ -212,6 +213,7 @@ class Home extends React.Component {
         </div>
         <Footer />
       </div>
+      </>
     );
   }
 }

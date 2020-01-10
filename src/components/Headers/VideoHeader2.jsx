@@ -46,7 +46,7 @@ class VideoHeader extends React.Component {
         <div className="header-wrapper">
 
           <div className="page-header header-video header-filter">
-            <div className="overlay" />
+            <div className="overlay"/>
             <video
               autoPlay="autoplay"
               loop="loop"
@@ -58,9 +58,9 @@ class VideoHeader extends React.Component {
                 type="video/mp4"
               />
             </video>
-            <Container className="text-right" style={{marginTop:300}}>
+            <Container style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
               <Row>
-              <Col lg="4" className="auto-md">
+              <Col lg="4" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
               <div className="video-text">
                 <h2 className="title">
                   Revibe guides you from your first song to your first check.
@@ -74,15 +74,12 @@ class VideoHeader extends React.Component {
               </div>
               </Col>
               <Col lg="8">
-                <br/><br/>
                 <div className="card-image">
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
                         <img
                           alt="..."
                           className="img rounded"
                           src={require("assets/site/img/laptop-image.png")}
                         />
-                      </a>
                     </div>
                 </Col>
               </Row>

@@ -33,6 +33,7 @@ class Footer extends React.Component {
   render() {
     return (
       <>
+      <br/>
         <footer className="footer" style={{borderColor:"#7248BD", background:"none"}}>
           <Container>
             <Row>

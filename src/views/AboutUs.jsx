@@ -276,7 +276,7 @@ class AboutUs extends React.Component {
       <>
         <ScrollNavbar />
         <div className="wrapper" ref="wrapper">
-          <div className="page-header">
+          <div className="header-filter">
             <Container>
               <Row className="align-items-center">
                 <Col lg="6">
@@ -326,8 +326,8 @@ class AboutUs extends React.Component {
               </Row>
             </Container>
             </div>
+            <Footer />
           </div>
-          <Footer />
       </>
     );
   }

@@ -219,8 +219,8 @@ class ContactUs extends React.Component {
               </Row>
             </Container>
           </div>
-          </div>
           <Footer />
+          </div>
       </>
     );
   }

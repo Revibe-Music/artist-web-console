@@ -123,8 +123,8 @@ class WhyRevibe extends React.Component {
               </Row>
             </Container>
             </div>
+            <Footer />
           </div>
-          <Footer />
       </>
     );
   }
