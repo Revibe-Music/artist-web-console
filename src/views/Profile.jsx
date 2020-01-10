@@ -34,17 +34,16 @@ import {
   Col
 } from "reactstrap";
 import Swal from 'sweetalert2'
+import ReactTooltip from 'react-tooltip';
 import withReactContent from 'sweetalert2-react-content'
+import { connect } from 'react-redux';
+import { compact } from 'lodash';
 
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
-import { connect } from 'react-redux';
+import { API_STORAGE } from 'api/config.js'
 import { editArtistProfile } from 'redux/authentication/actions.js'
-import { compact } from 'lodash';
-import ReactTooltip from 'react-tooltip';
 
 const MySwal = withReactContent(Swal)
-
-const artistPicsDB = "https://revibe-media-test.s3.amazonaws.com/media/images/Artist/"
 
 
 class Profile extends React.Component {
@@ -176,7 +175,7 @@ class Profile extends React.Component {
                   <div className="block block-four" />
                   <ImageUpload
                     defaultImage={require("../assets/portal/img/default-avatar.png")}
-                    uploadedImage={this.props.user.artistImage === "" ? null : (artistPicsDB+this.props.user.artistImage)}
+                    uploadedImage={this.props.user.artistImage === "" ? null : `${API_STORAGE}Artist/${this.props.user.artistImage}`}
                     btnText="Change Artist Image"
                     addBtnColor="primary"
                     changeBtnColor="default"

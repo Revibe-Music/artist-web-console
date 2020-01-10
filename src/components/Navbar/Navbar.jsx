@@ -38,8 +38,7 @@ import {
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {logout} from '../../redux/authentication/actions.js';
-
-const artistPicsDB = "https://revibe-media-test.s3.amazonaws.com/media/images/Artist/"
+import { API_STORAGE } from 'api/config.js'
 
 
 class AdminNavbar extends React.Component {
@@ -48,7 +47,6 @@ class AdminNavbar extends React.Component {
     super(props);
     this.state = {
       collapseOpen: false,
-      modalSearch: false,
       color: "navbar-transparent"
     };
   }
@@ -87,13 +85,6 @@ class AdminNavbar extends React.Component {
     }
     this.setState({
       collapseOpen: !this.state.collapseOpen
-    });
-  };
-
-  // this function is to open the Search modal
-  toggleModalSearch = () => {
-    this.setState({
-      modalSearch: !this.state.modalSearch
     });
   };
 
@@ -141,7 +132,7 @@ class AdminNavbar extends React.Component {
               {this.props.brandText}
             </NavbarBrand>
           </div>
-          <button
+          {/*<button
             className="navbar-toggler"
             type="button"
             data-toggle="collapse"
@@ -153,28 +144,21 @@ class AdminNavbar extends React.Component {
             <span className="navbar-toggler-bar navbar-kebab" />
             <span className="navbar-toggler-bar navbar-kebab" />
             <span className="navbar-toggler-bar navbar-kebab" />
-          </button>
-          <Collapse navbar isOpen={this.state.collapseOpen}>
+          </button>*/}
             <Nav className="ml-auto" navbar>
               <UncontrolledDropdown nav>
                 <DropdownToggle
                   caret
-                  color="default"
+                  color="primary"
                   data-toggle="dropdown"
                   nav
                   onClick={e => e.preventDefault()}
                 >
                   <div className="photo">
-                    <img alt="..." src={this.props.artistImage ? artistPicsDB+this.props.artistImage : require("assets/portal/img/default-avatar.png")} />
+                    <img alt="..." src={this.props.artistImage ? `${API_STORAGE}Artist/${this.props.artistImage}` : require("assets/portal/img/default-avatar.png")} />
                   </div>
-                  <b className="caret d-none d-lg-block d-xl-block" />
-                  <p className="d-lg-none">Profile</p>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">Edit Profile</DropdownItem>
-                  </NavLink>
-                  <DropdownItem divider tag="li" />
                   <NavLink tag="li">
                     <DropdownItem className="nav-item">
                       <LogoutButton />
@@ -184,7 +168,6 @@ class AdminNavbar extends React.Component {
               </UncontrolledDropdown>
               <li className="separator d-lg-none" />
             </Nav>
-          </Collapse>
         </Container>
       </Navbar>
     );

@@ -49,7 +49,7 @@ class SongContributionsTable extends Component {
         let song = {
           name: songs[x].title,
           album: songs[x].album.name,
-          uploadedBy: "Drake",
+          uploadedBy: songs[x].uploaded_by.name,
           uploaded: moment(songs[x].uploaded_date).format("DD-MM-YYYY"),
           contributionType: contributionTypes.join(", "),
         }
@@ -72,7 +72,6 @@ class SongContributionsTable extends Component {
           <MDBDataTable
             entriesOptions={[5, 10, 15, 20, 25]}
             entries={5}
-            responsive
             striped
             data={data}
           />

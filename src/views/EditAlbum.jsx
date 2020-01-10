@@ -59,12 +59,12 @@ import withReactContent from 'sweetalert2-react-content'
 import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { editAlbum, deleteAlbum, deleteSong } from 'redux/media/actions.js'
+import { API_STORAGE } from 'api/config.js'
 
 const MySwal = withReactContent(Swal)
 const musicMetadata = require('music-metadata-browser');
 const revibe = new RevibeAPI()
 
-const albumPicsDB = "https://revibe-media-test.s3.us-east-2.amazonaws.com/media/images/Album/"
 
 const basestyle = {
   display: 'flex',
@@ -243,7 +243,7 @@ class EditAlbum extends Component {
                   <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <ImageUpload
                       defaultImage={require("../assets/portal/img/album-img.jpg")}
-                      uploadedImage={albumPicsDB+album.album_uri+"."+album.ext}
+                      uploadedImage={`${API_STORAGE}Album/${album.album_uri}.${album.ext}`}
                       btnText="Album Art"
                       addBtnColor="default"
                       changeBtnColor="default"

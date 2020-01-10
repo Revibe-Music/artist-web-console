@@ -139,14 +139,26 @@ export function getSongContributions() {
 }
 
 
-export function uploadAlbum(name, image, type, songs, uploadStatusFn) {
+export function uploadAlbum(name, image, type, albumContributors, songs, uploadStatusFn) {
   return async (dispatch) => {
     var response = await revibe.createUploadedAlbum(name, image, type)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
-      response.total_streams = 0
       const album = response
-      dispatch(addUploadedAlbum(album));
+      var albumContributionPromises = []
+      for(var i=0; i<albumContributors.length; i++) {
+        for(var j=0; j<albumContributors[i].type.length; j++) {
+          var albumContributor = revibe.addUploadedAlbumContributor(album.album_id, albumContributors[i].contributor.artist_id, albumContributors[i].type[j])
+          albumContributionPromises.push(albumContributor)
+        }
+      }
+      Promise.all(albumContributionPromises)
+        .then((albumContributionResult) => {
+          var allAlbumContributions = albumContributionResult.map(function(x) {return x.data})
+          album.contributors = allAlbumContributions
+          album.total_streams = 0
+          dispatch(addUploadedAlbum(album));
+        });
       for(var x=0; x<songs.length; x++) {
         const song = songs[x]
         const contributors = songs[x].contributors
@@ -165,12 +177,10 @@ export function uploadAlbum(name, image, type, songs, uploadStatusFn) {
               .then((contributionResult) => {
                 // need to check for response errors here
                 var allContributions = contributionResult.map(function(x) {return x.data})
-                console.log(allContributions);
                 uploadStatusFn(song.index, "uploaded", true)
                 savedSongData.album = album
                 savedSongData.contributors = allContributions
                 savedSongData.total_streams = 0
-                // console.log(song);
                 dispatch(addUploadedSong(savedSongData));
               });
           })

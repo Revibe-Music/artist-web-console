@@ -24,12 +24,12 @@ export const uploadedAlbumColumns = [
       field: 'uploaded',
       sort: 'asc',
     },
-    {
-      label: '',
-      field: 'actions',
-      sort: 'disabled',
-      filter: 'disabled',
-    },
+    // {
+    //   label: '',
+    //   field: 'actions',
+    //   sort: 'disabled',
+    //   filter: 'disabled',
+    // },
   ]
 
 

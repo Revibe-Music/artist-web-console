@@ -37,7 +37,7 @@ import withReactContent from 'sweetalert2-react-content'
 import UploadedAlbumsTable from "components/Tables/UploadedAlbumsTable.jsx";
 import UploadedSongsTable from "components/Tables/UploadedSongsTable.jsx";
 import EditAlbum from "views/EditAlbum.jsx";
-import SongUpload from "views/SongUpload.jsx";
+import AlbumUpload from "views/AlbumUpload.jsx";
 import { selectAlbum, deleteAlbum } from 'redux/media/actions.js'
 import ReactTooltip from 'react-tooltip';
 
@@ -125,7 +125,7 @@ class Uploads extends React.Component {
           <ReactTooltip id="backButtonTooltip" effect='solid' delayShow={1500}>
             <span>Back to view catalog</span>
           </ReactTooltip>
-          <SongUpload />
+          <AlbumUpload />
         </>
       }
       </Container>

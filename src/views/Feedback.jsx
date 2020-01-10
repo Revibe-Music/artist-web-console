@@ -50,13 +50,9 @@ class Feedback extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state =
-    {
-        first_name: "",
-        last_name: "",
-        email: "",
-        feedback_type: "",
-        message: ""
+    this.state = {
+      subject: "",
+      message: ""
     }
   };
 
@@ -69,19 +65,21 @@ class Feedback extends React.Component {
   }
 
   async onSubmit() {
-    var response = await revibe.contactUs(this.state)
-    if(response != undefined) {
+    var response = await revibe.leaveFeedback(this.state)
+    if(String(response.status).charAt(0)=="2") {
       MySwal.fire({
         title: 'Thank you for contacting us!',
         text: 'Someone from our team will get back to you soon :)',
         icon: 'success',
-        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        timer: 1500,
         background: "#303030"
       })
     }
     else {
       MySwal.fire({
-        title: 'Form not submitted',
+        title: 'Form was not submitted.',
         text: 'Please make sure all of the fields in the form are filled out',
         icon: 'error',
         showCloseButton: true,
@@ -110,23 +108,16 @@ class Feedback extends React.Component {
     ));
 
     return (
-      <div className="content">
-        <div className="wrapper" ref="wrapper">
-          <div className="page-header header-filter contactus-3">
-            <div className="main" style={{paddingTop: "100px"}}>
+      <div className="content" >
+          <div className="contactus-3">
             <Container>
-                <Row>
-                  <Col className="text-center" md="12">
-                    <h1 className="title">We Appreciate Your Feedback</h1>
-                    <h3>Enter for a chance to win a high five by a Reviber</h3>
-                  </Col>
-                </Row>
+
                 <Row>
                   <Col lg ="2"/>
                   <Col lg="3">
                   <div className="info info-hover">
                   <div className="icon icon-primary">
-                        <i className="tim-icons icon-square-pin" style={{paddingLeft: "20px"}}/>
+                        <i className="tim-icons icon-square-pin"/>
                       </div>
                       <h3 className="info-title" style={{color: "#7248bd"}}>Address</h3>
                       <p className="description" style={{color: "#7248bd"}}>8000 Innovation Park Dr.</p>
@@ -136,7 +127,7 @@ class Feedback extends React.Component {
                   <Col lg="3" className="center-align">
                   <div className="info info-hover">
                       <div className="icon icon-info">
-                        <i className="tim-icons icon-email-85" style={{paddingLeft: "20px"}}/>
+                        <i className="tim-icons icon-email-85"/>
                       </div>
                       <h3 className="info-title" style={{color: "#7248bd"}}>Email</h3>
                       <p className="description" style={{color: "#7248bd"}}>support@revibe.tech</p>
@@ -145,7 +136,7 @@ class Feedback extends React.Component {
                   <Col lg="3">
                   <div className="info info-hover">
                       <div className="icon icon-success">
-                        <i className="tim-icons icon-single-02" style={{paddingLeft: "20px"}}/>
+                        <i className="tim-icons icon-single-02"/>
                       </div>
                       <h3 className="info-title" style={{color: "#7248bd"}}>Contact</h3>
                       <p className="description" style={{color: "#7248bd"}}>Kayne Lynn</p>
@@ -160,54 +151,29 @@ class Feedback extends React.Component {
                       id="contact-form"
                       method="post">
                       <CardBody>
-                        <Row>
-                          <Col md="6">
-                            <label>First name</label>
-                            <InputGroup>
-                              <Input
-                                type="text"
-                                onChange={event => this.onChange( "first_name", event.target.value)}/>
-                            </InputGroup>
-                          </Col>
-                          <Col md="6">
-                              <label>Last name</label>
-                              <InputGroup>
-                                <Input
-                                  type="text"
-                                  onChange={event => this.onChange( "last_name", event.target.value)}/>
-                              </InputGroup>
-                          </Col>
-                        </Row>
-                          <label>Email address</label>
-                          <InputGroup>
-                            <Input
-                              type="text"
-                              onChange={event => this.onChange( "email", event.target.value)}/>
-                          </InputGroup>
-                          <label>Feedback Type</label>
-                          <InputGroup>
-                          <Col className="m-auto mr-auto" md="12">
-                            <Select
-                              className="react-select primary"
-                              classNamePrefix="react-select"
-                              placeholder="Feedback Type"
-                              name="multipleSelect"
-                              closeMenuOnSelect={true}
-                              isMulti={false}
-                              onChange={option => this.setState({feedback_type: option.label})}
-                              options={[
-                                {
-                                  value: "",
-                                  isDisabled: true
-                                },
-                                { value: "2", label: "Bug or Issue" },
-                                { value: "3", label: "Feature Request" },
-                                { value: "4", label: "General Feedback" },
-                              ]}
-                            />
-                          </Col>
-                          </InputGroup>
-                          <label>Your message</label>
+                        <div style={{marginBottom: "30px"}}>
+                        <label style={{color:"white"}}>Feedback Type</label>
+                          <Select
+                            className="react-select primary"
+                            classNamePrefix="react-select"
+                            placeholder="Feedback Type"
+                            name="multipleSelect"
+                            closeMenuOnSelect={true}
+                            isMulti={false}
+                            onChange={option => this.setState({subject: option.label})}
+                            options={[
+                              {
+                                value: "",
+                                isDisabled: true
+                              },
+                              { value: "2", label: "Bug or Issue" },
+                              { value: "3", label: "Feature Request" },
+                              { value: "4", label: "General Feedback" },
+                            ]}
+                          />
+                        </div>
+                        <div>
+                          <label style={{color:"white"}}>Your message</label>
                           <Input
                             placeholder=" If possible, please include steps to reproduce the bug/issue."
                             id="message"
@@ -216,11 +182,12 @@ class Feedback extends React.Component {
                             type="textarea"
                             onChange={event => this.onChange( "message", event.target.value)}
                           />
-                        <Row style={{marginTop: "30px"}}>
-                          <Col className="ml-auto" md="3">
-                            <SubmitButton/>
-                          </Col>
-                        </Row>
+                        </div>
+                      <Row style={{marginTop: "30px"}}>
+                        <Col className="ml-auto" md="3">
+                          <SubmitButton/>
+                        </Col>
+                      </Row>
                       </CardBody>
                     </Form>
                   </Col>
@@ -228,11 +195,9 @@ class Feedback extends React.Component {
                 </div>
               </Container>
             </div>
-          </div>
-        </div>
       </div>
     );
   }
 }
 
-export default Feedback;
+export default Feedback
