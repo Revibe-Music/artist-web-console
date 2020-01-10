@@ -1,15 +1,13 @@
 import axios from "axios"
 import Fingerprint2 from 'fingerprintjs2'
 import Cookies from 'js-cookie'
-import { API_ROOT } from './config.js'
+import { API_HOST } from './config.js'
 
 const cookieName = "bshdcce3gcw473q839hxkqabxe3q7qhxbaekc"  // should probably try and set somewhere in env
 
 export default class RevibeAPI {
 
   constructor() {
-    // this.baseEndpoint = "http://test-env.myrpupud2p.us-east-2.elasticbeanstalk.com/v1/"
-    // this.baseEndpoint = API_ROOT
     this._saveDeviceData = this._saveDeviceData.bind(this)
     Fingerprint2.get(this._saveDeviceData);
   }
@@ -108,7 +106,7 @@ export default class RevibeAPI {
     while(numRequestsSent < maxRequestAttempts) {
       try {
         response = await axios({
-          url: API_ROOT + endpoint,
+          url: API_HOST + endpoint,
           method: requestType,
           headers: headers,
           responseType: "json",

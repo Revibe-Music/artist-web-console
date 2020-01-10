@@ -40,11 +40,11 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ClipLoader from "react-spinners/ClipLoader";
-
-import { register } from '../redux/authentication/actions.js';
 import ReactTooltip from 'react-tooltip';
 
-const termAndConditionsLink = "https://artist-website.s3.us-east-2.amazonaws.com/static/media/Terms+and+Conditions.pdf"
+import { register } from '../redux/authentication/actions.js';
+
+const termAndConditionsLink = "https://revibe-media.s3.us-east-2.amazonaws.com/Terms+and+Conditions.pdf"
 
 
 class Register extends React.Component {

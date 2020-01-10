@@ -38,8 +38,7 @@ import {
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {logout} from '../../redux/authentication/actions.js';
-
-const artistPicsDB = "https://revibe-media-test.s3.amazonaws.com/media/images/Artist/"
+import { API_STORAGE } from 'api/config.js'
 
 
 class AdminNavbar extends React.Component {
@@ -156,7 +155,7 @@ class AdminNavbar extends React.Component {
                   onClick={e => e.preventDefault()}
                 >
                   <div className="photo">
-                    <img alt="..." src={this.props.artistImage ? artistPicsDB+this.props.artistImage : require("assets/portal/img/default-avatar.png")} />
+                    <img alt="..." src={this.props.artistImage ? `${API_STORAGE}Artist/${this.props.artistImage}` : require("assets/portal/img/default-avatar.png")} />
                   </div>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">

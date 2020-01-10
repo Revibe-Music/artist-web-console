@@ -26,8 +26,8 @@ import ReactTooltip from 'react-tooltip';
 // reactstrap components
 import { Nav, Collapse } from "reactstrap";
 
-const privacyPolicyLink = "https://artist-website.s3.us-east-2.amazonaws.com/static/media/Privacy+Policy.pdf"
-const termAndConditionsLink = "https://artist-website.s3.us-east-2.amazonaws.com/static/media/Terms+and+Conditions.pdf"
+const privacyPolicyLink = "https://revibe-media.s3.us-east-2.amazonaws.com/Privacy+Policy.pdf"
+const termAndConditionsLink = "https://revibe-media.s3.us-east-2.amazonaws.com/Terms+and+Conditions.pdf"
 
 var ps;
 
@@ -139,7 +139,7 @@ class Sidebar extends React.Component {
             )}
             </NavLink>
         </li>
-          
+
           </a>
       );
     });
@@ -240,8 +240,8 @@ class Sidebar extends React.Component {
               </a>
             </li>{" "}
             <li className="nav-item">
-              <a className="nav-link" 
-                 target="_blank" 
+              <a className="nav-link"
+                 target="_blank"
                  href={privacyPolicyLink}>
                 Privacy Policy
               </a>
