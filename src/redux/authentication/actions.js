@@ -64,7 +64,11 @@ export function register(username, email, password, history) {
         country: "",
         state: "",
         city: "",
-        zipcode: ""
+        zipcode: "",
+        requireContributionApproval: true,
+        shareDataWithContributors: true,
+        shareAdvancedDataWithContributors: false,
+        allowContributorsToEditContributions: false,
       }
       dispatch(loginUser());
       dispatch(updateUser(user));
@@ -93,7 +97,11 @@ export function registerArtist(name, image, history) {
         country: "",
         state: "",
         city: "",
-        zipcode: ""
+        zipcode: "",
+        requireContributionApproval: true,
+        shareDataWithContributors: true,
+        shareAdvancedDataWithContributors: false,
+        allowContributorsToEditContributions: false,
       }
       dispatch(updateUser(user));
       history.push('/dashboard');
@@ -159,6 +167,10 @@ export function getProfile() {
         city: response.artist_profile.city,
         zipcode: response.artist_profile.zip_code,
         artistAboutMe: response.artist_profile.about_me,
+        requireContributionApproval: response.artist_profile.require_contribution_approval,
+        shareDataWithContributors: response.artist_profile.share_data_with_contributors,
+        shareAdvancedDataWithContributors: response.artist_profile.share_advanced_data_with_contributors,
+        allowContributorsToEditContributions: response.artist_profile.allow_contributors_to_edit_contributions,
       }
       dispatch(updateUser(user));
     }
@@ -181,10 +193,14 @@ export function editArtistProfile(data) {
     var city = Object.keys(data).filter(x=> x==="city").length > 0 ? data.city : null
     var zipcode = Object.keys(data).filter(x=> x==="zipcode").length > 0 ? data.zipcode : null
     var aboutMe = Object.keys(data).filter(x=> x==="aboutMe").length > 0 ? data.aboutMe : null
+    var requireContributionApproval = Object.keys(data).filter(x=> x==="requireContributionApproval").length > 0 ? data.requireContributionApproval : null
+    var shareDataWithContributors = Object.keys(data).filter(x=> x==="shareDataWithContributors").length > 0 ? data.shareDataWithContributors : null
+    var shareAdvancedDataWithContributors = Object.keys(data).filter(x=> x==="shareAdvancedDataWithContributors").length > 0 ? data.shareAdvancedDataWithContributors : null
+    var allowContributorsToEditContributions = Object.keys(data).filter(x=> x==="allowContributorsToEditContributions").length > 0 ? data.allowContributorsToEditContributions : null
 
     // check to see if user has edited user or artist profile data and make requests accordingly
-    if(name || email || image || country || state || city || zipcode || aboutMe) {
-      var response = await revibe.editArtistProfile(name,email,image,country,state,city,zipcode,aboutMe)
+    if(name || email || image || country || state || city || zipcode || aboutMe || requireContributionApproval || shareDataWithContributors || shareAdvancedDataWithContributors || allowContributorsToEditContributions) {
+      var response = await revibe.editArtistProfile(name,email,image,country,state,city,zipcode,aboutMe,requireContributionApproval,shareDataWithContributors,shareAdvancedDataWithContributors,allowContributorsToEditContributions)
       if(String(response.status).charAt(0)=="2") {
         response = response.data
         dispatch(getProfile());
