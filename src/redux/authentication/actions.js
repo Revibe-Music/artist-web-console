@@ -62,6 +62,7 @@ export function register(username, email, password, history) {
         artistImage: "",
         artistAboutMe: "",
         country: "",
+        state: "",
         city: "",
         zipcode: ""
       }
@@ -90,6 +91,7 @@ export function registerArtist(name, image, history) {
         artistImage: response.artist_uri+"."+response.ext,
         artistAboutMe: response.artist_profile.about_me,
         country: "",
+        state: "",
         city: "",
         zipcode: ""
       }
@@ -153,6 +155,7 @@ export function getProfile() {
         displayName: response.name,
         artistImage: response.artist_uri+"."+response.ext,
         country: response.artist_profile.country,
+        state: response.artist_profile.state,
         city: response.artist_profile.city,
         zipcode: response.artist_profile.zip_code,
         artistAboutMe: response.artist_profile.about_me,
@@ -174,13 +177,14 @@ export function editArtistProfile(data) {
     var email = Object.keys(data).filter(x=> x==="email").length > 0 ? data.email : null
     var image = Object.keys(data).filter(x=> x==="image").length > 0 ? data.image : null
     var country = Object.keys(data).filter(x=> x==="country").length > 0 ? data.country : null
+    var state = Object.keys(data).filter(x=> x==="state").length > 0 ? data.state : null
     var city = Object.keys(data).filter(x=> x==="city").length > 0 ? data.city : null
     var zipcode = Object.keys(data).filter(x=> x==="zipcode").length > 0 ? data.zipcode : null
     var aboutMe = Object.keys(data).filter(x=> x==="aboutMe").length > 0 ? data.aboutMe : null
 
     // check to see if user has edited user or artist profile data and make requests accordingly
-    if(name || email || image || country || city || zipcode || aboutMe) {
-      var response = await revibe.editArtistProfile(name,email,image,country,city,zipcode,aboutMe)
+    if(name || email || image || country || state || city || zipcode || aboutMe) {
+      var response = await revibe.editArtistProfile(name,email,image,country,state,city,zipcode,aboutMe)
       if(String(response.status).charAt(0)=="2") {
         response = response.data
         dispatch(getProfile());

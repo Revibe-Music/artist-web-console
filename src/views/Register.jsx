@@ -142,7 +142,7 @@ class Register extends React.Component {
     return false;
   };
 
-  change(event, stateName, type, stateNameEqualTo, maxValue) {
+  change(event, stateName, type, stateNameEqualTo) {
     switch (type) {
       case "username":
         if (this.verifyLength(event.target.value, 6)) {
@@ -163,7 +163,8 @@ class Register extends React.Component {
             [stateName + "State"]: "has-success",
             [stateName + "Error"]: ""
            });
-        } else {
+        }
+        else {
           this.setState({
             [stateName + "State"]: "has-danger",
             [stateName + "Error"]: "Please enter a valid email address."
@@ -176,7 +177,8 @@ class Register extends React.Component {
             [stateName + "State"]: "has-success",
             [stateName + "Error"]: ""
            });
-        } else {
+        }
+        else {
           this.setState({
             [stateName + "State"]: "has-danger",
             [stateName + "Error"]: "Password must contain at least 8 characters."
@@ -189,7 +191,8 @@ class Register extends React.Component {
             [stateName + "State"]: "has-success",
             [stateName + "Error"]: "",
            });
-        } else {
+        }
+        else {
           this.setState({
             [stateName + "State"]: "has-danger",
             [stateName + "Error"]: "Password must match field above.",
