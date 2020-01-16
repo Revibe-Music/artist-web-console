@@ -212,10 +212,11 @@ export default class RevibeAPI {
     if(city !== null) data.set("city", city)
     if(zipcode !== null) data.set("zip_code", zipcode)
     if(about_me !== null) data.set("about_me", about_me)
-    if(requireContributionApproval !== null) data.append("require_contribution_approval", requireContributionApproval)
-    if(shareDataWithContributors !== null) data.append("share_data_with_contributors", shareDataWithContributors)
-    if(shareAdvancedDataWithContributors !== null) data.append("share_advanced_data_with_contributors", shareAdvancedDataWithContributors)
-    if(allowContributorsToEditContributions !== null) data.append("allow_contributors_to_edit_contributions", allowContributorsToEditContributions)
+    if(requireContributionApproval !== null) data.set("require_contribution_approval", requireContributionApproval)
+    if(shareDataWithContributors !== null) data.set("share_data_with_contributors", shareDataWithContributors)
+    if(shareAdvancedDataWithContributors !== null) data.set("share_advanced_data_with_contributors", shareAdvancedDataWithContributors)
+    if(allowContributorsToEditContributions !== null) data.set("allow_contributors_to_edit_contributions", allowContributorsToEditContributions)
+    if(image !== null) data.append("image", image)
 
     return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')
   }
