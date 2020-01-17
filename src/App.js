@@ -25,7 +25,7 @@ const App = ({ authenticated, checked }) => (
       <Route path="/contact-us" component={ContactUs}/>
       <Route path="/400" component={Error400}/>
       <Route path="/404" component={Error404}/>
-      <Route path="/home" component={Home}/>
+      <Route path="/" component={Home}/>
       <Route path="/about-us" component={AboutUs}/>
       <Route path="/why-revibe" component={WhyRevibe}/>
       <PrivateRoute path="/" component={Authenticated} authenticated={authenticated}/>
