@@ -49,10 +49,10 @@ const revibe = new RevibeAPI()
 
 class ContactUs extends React.Component {
 
-  constructor(props) 
+  constructor(props)
   {
     super(props)
-    this.state = 
+    this.state =
     {
         first_name: "",
         last_name: "",
@@ -62,19 +62,19 @@ class ContactUs extends React.Component {
     }
   };
 
-  componentDidMount() 
+  componentDidMount()
   {
     document.body.classList.add("contact-page");
   }
-  componentWillUnmount() 
+  componentWillUnmount()
   {
     document.body.classList.remove("contact-page");
   }
 
-  async onSubmit() 
+  async onSubmit()
   {
     var response = await revibe.contactUs(this.state)
-    
+
     if(response != undefined)
     {
       MySwal.fire({
@@ -97,7 +97,7 @@ class ContactUs extends React.Component {
     }
   }
 
-  onChange(key, value) 
+  onChange(key, value)
   {
     var newState = {...this.state}
     newState[key] = value
@@ -130,7 +130,7 @@ class ContactUs extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col lg ="2"/>
+                <Col lg ="2" style={{borderRight: 0}}/>
                 <Col lg="3">
                 <div className="info info-hover">
                 <div className="icon icon-primary">
