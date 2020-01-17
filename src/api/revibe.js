@@ -121,6 +121,7 @@ export default class RevibeAPI {
         numRequestsSent += 1
       }
     }
+    // console.log(response);
     return response
   }
 
@@ -201,15 +202,20 @@ export default class RevibeAPI {
     return await this._request("account/artist/", null, "GET", true)
   }
 
-  async editArtistProfile(name=null,email=null,image=null,country=null,city=null,zipcode=null,about_me=null) {
+  async editArtistProfile(name=null,email=null,image=null,country=null,state=null,city=null,zipcode=null,about_me=null,requireContributionApproval=null,shareDataWithContributors=null,shareAdvancedDataWithContributors=null,allowContributorsToEditContributions=null) {
     var data = new FormData();
     // only add variables to form if they arent null
     if(name !== null) data.set("name", name)
     if(email !== null) data.set("email", email)
     if(country !== null) data.set("country", country)
+    if(state !== null) data.set("state", state)
     if(city !== null) data.set("city", city)
     if(zipcode !== null) data.set("zip_code", zipcode)
     if(about_me !== null) data.set("about_me", about_me)
+    if(requireContributionApproval !== null) data.set("require_contribution_approval", requireContributionApproval)
+    if(shareDataWithContributors !== null) data.set("share_data_with_contributors", shareDataWithContributors)
+    if(shareAdvancedDataWithContributors !== null) data.set("share_advanced_data_with_contributors", shareAdvancedDataWithContributors)
+    if(allowContributorsToEditContributions !== null) data.set("allow_contributors_to_edit_contributions", allowContributorsToEditContributions)
     if(image !== null) data.append("image", image)
 
     return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')

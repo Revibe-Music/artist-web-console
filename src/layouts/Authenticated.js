@@ -47,14 +47,20 @@ class Authenticated extends Component {
       opacity: 0,
       sidebarOpened: false
     };
-  }
-
-  componentDidMount() {
-    this.props.getProfile()
     this.props.getUploadedAlbums()
     this.props.getUploadedSongs()
     this.props.getAlbumContributions()
     this.props.getSongContributions()
+    this.props.getProfile()
+  }
+
+  async componentDidMount() {
+    // this.props.getUploadedAlbums()
+    // this.props.getUploadedSongs()
+    // this.props.getAlbumContributions()
+    // this.props.getSongContributions()
+    // this.props.getProfile()
+
 
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";

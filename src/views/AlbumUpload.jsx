@@ -77,6 +77,10 @@ const basestyle = {
   backgroundColor: 'transparent',
 };
 
+const uploadBtnstyle = {
+  display: "flex",
+};
+
 const defaultOptions = {
       loop: false,
       autoplay: true,
@@ -269,7 +273,7 @@ class AlbumUpload extends Component {
   }
 
   async onDrop(files) {
-    var songs = []
+    var songs = [...this.state.songs]
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
       var formattedSong = {
@@ -283,9 +287,6 @@ class AlbumUpload extends Component {
       }
       songs.push(formattedSong)
     }
-    songs.forEach((item, i) => {
-      item.index = i;
-    });
     this.setState({songs:songs})
   }
 
@@ -981,17 +982,58 @@ class AlbumUpload extends Component {
           <Card>
             <CardBody>
               <CardTitle tag="h4">Upload Songs</CardTitle>
+                <p>*Please note that we only accept MP3 files at this time.</p>
                 {this.state.songs.length > 0 ?
                   <>
                   <ReactTable
                     data={this.state.songs}
                     resizable={true}
                     columns={columns}
+                    defaultPageSize = { this.state.songs.length > 20 ? 20 : this.state.songs.length }
+                    pageSize = { this.state.songs.length > 20 ? 20 : this.state.songs.length }
+                    showPagination  = { this.state.songs.length > 20 ? true : false}
+                    showPageSizeOptions = {false}
+
                     defaultPageSize={this.state.songs.length}
                     showPagination={false}
                     className="-striped -highlight"
                   />
-                  <div style={{display: 'flex', justifyContent: "center", alignItems: 'center', marginTop: 20}}>
+                  <div style={uploadBtnstyle}>
+                  <Dropzone
+                    onDrop={this.onDrop}
+                    accept=".mp3"
+                    minSize={0}
+                    multiple
+                  >
+                    {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
+                      const filesRejected = rejectedFiles.length > 0
+                        return (
+                          <div {...getRootProps()} className="text-center">
+                            <input
+                              {...getInputProps()}
+                              disabled={this.state.uploading}
+                            />
+                            {filesRejected && (
+                              <div className="text-danger mt-2">
+                                Unsupported file types.
+                              </div>
+                            )}
+                            <Button
+                              style={{fontSize: 15, marginTop: 20}}
+                              className="btn-simple"
+                              color="primary"
+                              disabled={this.state.uploading}
+                            >
+                              <i style={{marginRight: "10%"}} className="tim-icons icon-simple-add"/>
+                              Song
+                            </Button>
+                          </div>
+                        )
+                      }
+                    }
+                  </Dropzone>
+                  </div>
+                  <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
                   <Button
                     onClick={this.onSubmit}
                     className="btn-round"
@@ -1031,7 +1073,7 @@ class AlbumUpload extends Component {
                   }
                 </Dropzone>
                 </div>
-                }
+              }
             </CardBody>
           </Card>
         </Col>

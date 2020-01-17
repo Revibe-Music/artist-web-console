@@ -9,7 +9,8 @@ if(hostname === 'artist.revibe.tech') {
   backendHost = "http://prod-env.myrpupud2p.us-east-2.elasticbeanstalk.com/"
   backendStorage = "https://revibe-media.s3.amazonaws.com/media/images/"
 
-} else {
+}
+else {
   backendHost = 'http://test-env.myrpupud2p.us-east-2.elasticbeanstalk.com/'; // test environment
   backendStorage = "https://revibe-media-test.s3.amazonaws.com/media/images/"
 }
