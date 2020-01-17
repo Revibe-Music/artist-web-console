@@ -16,10 +16,7 @@
 
 */
 import React, {Component} from 'react';
-
 import classNames from "classnames";
-// react plugin used to create charts
-
 
 // reactstrap components
 import {
@@ -27,114 +24,38 @@ import {
   Card,
   CardBody,
   CardTitle,
-  Container,
   Label,
   Form,
   FormGroup,
   Input,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Row,
   Col,
-  Tooltip,
   UncontrolledTooltip
 } from "reactstrap";
-import Dropzone from 'react-dropzone';
 import ReactTable from "react-table";
 import Select from "react-select";
-import TagsInput from "react-tagsinput";
-import Autosuggest from 'react-autosuggest';
 import { ClipLoader } from "react-spinners";
 import Lottie from 'react-lottie';
 import ReactTooltip from 'react-tooltip';
-import { FiDownload } from 'react-icons/fi';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { MdErrorOutline } from 'react-icons/md';
-import { compact } from 'lodash';
 import { connect } from 'react-redux';
 
-import RevibeAPI from '../api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
+import SongSelect from "components/SongSelect.js";
+import ContributorTags from "components/ContributorTags.js";
 import { uploadAlbum } from 'redux/media/actions.js'
-import { API_STORAGE } from 'api/config.js'
 import * as savedAnimation from 'assets/portal/img/check.json'
 
 const musicMetadata = require('music-metadata-browser');
-const revibe = new RevibeAPI()
 
-
-const basestyle = {
-  display: 'flex',
-  justifyContent: "center",
-  alignItems: 'center',
-  padding: '20px',
-  borderWidth: 3,
-  borderRadius: 10,
-  borderColor: '#7248BD',
-  borderStyle: 'dashed',
-  backgroundColor: 'transparent',
-};
-
-const uploadBtnstyle = {
-  display: "flex",
-};
 
 const defaultOptions = {
-      loop: false,
-      autoplay: true,
-      animationData: require('assets/portal/img/check.json'),
-      rendererSettings: {
-        preserveAspectRatio: 'xMidYMid slice'
-      }
-    };
-
-const theme = {
-  container: {
-    position: 'relative'
-  },
-  input: {
-    width: '150px',
-    height: '30px',
-  },
-  inputOpen: {
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
-  },
-  inputFocused: {
-    outline: 'none'
-  },
-  itemsContainer: {
-    display: 'none'
-  },
-  itemsContainerOpen: {
-    display: 'block',
-    position: 'relative',
-    top: '-1px',
-    width: '100%',
-    minWidth: 150,
-    maxWidth: 280,
-    border: '1px solid #aaa',
-    backgroundColor: '#fff',
-    fontSize: '16px',
-    lineHeight: 1.25,
-    borderBottomLeftRadius: '4px',
-    borderBottomRightRadius: '4px',
-    zIndex: 2
-  },
-  itemsList: {
-    maxHeight: '150px',
-    overflowY: "scroll",
-    margin: 0,
-    padding: 0,
-  },
-  item: {
-    cursor: 'pointer',
-    padding: '10px 20px'
-  },
-  itemHighlighted: {
-    backgroundColor: '#ddd'
+  loop: false,
+  autoplay: true,
+  animationData: require('assets/portal/img/check.json'),
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
   }
 };
 
@@ -146,18 +67,8 @@ class AlbumUpload extends Component {
       this.state = {
         songs: [],
         uploading: false,
-        searchResults: [],
+        attemptedUpload: false, // indicates if the user pressed upload buttun
 
-        // Song Contribution Modal
-        modalSongContributionsIsOpen: false,
-        modalSongIndex: null,
-        modalSongContribution: {},
-        modalEditedSongContributions: [],
-
-        // Album Contribution Modal
-        modalAlbumContributionsIsOpen: false,
-        modalAlbumContributions: {},
-        modalEditedAlbumContributions: [],
 
         // form State
         albumName: "",
@@ -181,10 +92,7 @@ class AlbumUpload extends Component {
         songDurationError: "",  // not currently used
         songQualityError: "",   // not currently used
 
-        attemptedUpload: false, // indicates if the user pressed upload buttun
       };
-
-      this.contributionTypes = ["Artist","Feature","Producer","Mixing","Mastering","Song Writer","Vocals","Programmer/Beat Maker","Graphic Designer"]
 
       // Table Edit Methods
       this.editRow = this.editRow.bind(this)
@@ -197,19 +105,14 @@ class AlbumUpload extends Component {
       this.uploadStatus = this.uploadStatus.bind(this)
 
       // Song Contribution Methods
-      this.renderSearchResults = this.renderSearchResults.bind(this)
-      this.searchArtists = this.searchArtists.bind(this)
-      this.toggleSongContributorModal = this.toggleSongContributorModal.bind(this)
-      this.toggleSongContributonType = this.toggleSongContributonType.bind(this)
-      this.saveSongContributions = this.saveSongContributions.bind(this)
-      this.cancelSongContributions = this.cancelSongContributions.bind(this)
-      this.songContributionHasBeenSelected = this.songContributionHasBeenSelected.bind(this)
+      this.addSongContributor = this.addSongContributor.bind(this)
+      this.removeSongContributor = this.removeSongContributor.bind(this)
+      this.updateSongContributions = this.updateSongContributions.bind(this)
 
-      this.toggleAlbumContributorModal = this.toggleAlbumContributorModal.bind(this)
-      this.toggleAlbumContributonType = this.toggleAlbumContributonType.bind(this)
-      this.saveAlbumContributions = this.saveAlbumContributions.bind(this)
-      this.cancelAlbumContributions = this.cancelAlbumContributions.bind(this)
-      this.albumContributionHasBeenSelected = this.albumContributionHasBeenSelected.bind(this)
+      // Album Contribution Methods
+      this.addAlbumContributor = this.addAlbumContributor.bind(this)
+      this.removeAlbumContributor = this.removeAlbumContributor.bind(this)
+      this.updateAlbumContributions = this.updateAlbumContributions.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -221,8 +124,6 @@ class AlbumUpload extends Component {
       });
     }
   }
-
-
 
   uploadStatus(song) {
     if(this.state.uploading) {
@@ -364,10 +265,12 @@ class AlbumUpload extends Component {
         break
       }
     }
+
     if(validFields) {
       if(this.state.albumNameError==="" && this.state.albumTypeError==="" && this.state.albumImage !== null) {
         this.setState({uploading: true})
         var uploads = this.state.songs
+        console.log(this.state.albumContributors);
         this.props.uploadAlbum(this.state.albumName, this.state.albumImage, this.state.albumType, this.state.albumContributors, this.state.songs, this.editRow)
       }
     }
@@ -377,332 +280,55 @@ class AlbumUpload extends Component {
 
 
   /// SONG CONTRIBUTOR OPRERATIONS ///
-  addSongContributor(index, contributor) {
+  addSongContributor(contributor, song) {
     var newSongs = [ ...this.state.songs]
-    var contributorIndex = newSongs[index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
-    if(contributorIndex == -1) {
-        newSongs[index].contributors.push({contributor: contributor, type: []})
-        this.setState({songs: newSongs})
-        this.toggleSongContributorModal(index, {contributor: contributor, type: []})
-    }
-  }
-
-  removeSongContributor(index, artist_id) {
-    var newSongs = [ ...this.state.songs]
-    var contributorIndex = newSongs[index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
-    newSongs[index].contributors.splice(contributorIndex, 1)
+    newSongs[song.index].contributors.push({contributor: contributor, type: []})
     this.setState({songs: newSongs})
   }
 
-  /// SONG CONTRIBUTION MODAL OPERATIONS ///
-  toggleSongContributorModal(songIndex=null, contribution=null) {
-    var updatedState = {modalSongContributionsIsOpen: !this.state.modalSongContributionsIsOpen}
-    if(songIndex !== null) {
-      updatedState.modalSongIndex = songIndex
-    }
-    else {
-      updatedState.modalSongIndex = null
-    }
-    if(contribution) {
-      updatedState.modalSongContribution = contribution
-      updatedState.modalEditedSongContributions = contribution.type
-    }
-    else {
-      updatedState.modalSongContribution = {}
-      updatedState.modalEditedSongContributions = []
-    }
-    this.setState(updatedState)
-  }
-
-  toggleSongContributonType(type) {
-    if(this.state.modalEditedSongContributions.filter(x => x === type).length > 0) {
-      // contribution has already been added, need to remove
-      this.setState({modalEditedSongContributions: compact(this.state.modalEditedSongContributions.map(function(x) {if(x !== type) return x}))})
-    }
-    else {
-      // contribution needs to be added
-      this.setState({modalEditedSongContributions: [...this.state.modalEditedSongContributions, type]})
-    }
-  }
-
-  songContributionHasBeenSelected(type) {
-    // check whether contribution has type
-    var artist_id = this.state.modalSongContribution.contributor.artist_id
-    var contributorIndex = this.state.songs[this.state.modalSongIndex].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
-    return this.state.songs[this.state.modalSongIndex].contributors[contributorIndex].type.filter(x=>x===type).length>0
-  }
-
-  saveSongContributions() {
+  removeSongContributor(contributor, song) {
     var newSongs = [ ...this.state.songs]
-    var artist_id = this.state.modalSongContribution.contributor.artist_id
-    var contributorIndex = newSongs[this.state.modalSongIndex].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
-    newSongs[this.state.modalSongIndex].contributors[contributorIndex].type = this.state.modalEditedSongContributions
+    var contributorIndex = newSongs[song.index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
+    newSongs[song.index].contributors.splice(contributorIndex, 1)
+    this.setState({songs: newSongs})
+  }
+
+  updateSongContributions(contribution, song) {
+    var newSongs = [ ...this.state.songs]
+    var contributorIndex = newSongs[song.index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contribution.contributor.artist_id)
+    newSongs[song.index].contributors[contributorIndex] = contribution
     this.setState({
       songs: newSongs,
-      modalSongIndex: null,
-      modalSongContribution: {},
-      modalEditedSongContributions: [],
       songContributionError: "",
       attemptedUpload: false,
     })
-    this.toggleSongContributorModal()
-  }
-
-  cancelSongContributions() {
-    this.setState({
-      modalSongIndex: null,
-      modalSongContribution: {},
-      modalEditedSongContributions: [],
-      songContributionError: "",
-    })
-    this.toggleSongContributorModal()
   }
 
   /// ALBUM CONTRIBUTOR OPRERATIONS ///
   addAlbumContributor(contributor) {
-    var contributorIndex = this.state.albumContributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
-    if(contributorIndex == -1) {
-        this.setState({albumContributors: [...this.state.albumContributors,{contributor: contributor, type:[]}]})
-        this.toggleAlbumContributorModal({contributor: contributor, type: []})
-    }
+    this.setState({albumContributors: [...this.state.albumContributors,{contributor: contributor, type:[]}]})
   }
 
-  removeAlbumContributor(artist_id) {
-    var contributorIndex = this.state.albumContributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
+  removeAlbumContributor(contributor) {
+    var contributorIndex = this.state.albumContributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
     var albumContributors = [...this.state.albumContributors]
     albumContributors.splice(contributorIndex, 1)
     this.setState({albumContributors: albumContributors})
   }
 
-  /// ALBUM CONTRIBUTION MODAL OPERATIONS ///
-  toggleAlbumContributorModal(contribution=null) {
-    var updatedState = {modalAlbumContributionsIsOpen: !this.state.modalAlbumContributionsIsOpen}
-    if(contribution) {
-      updatedState.modalEditedAlbumContributions = contribution.type
-      updatedState.modalAlbumContributions = contribution
-    }
-    else {
-      updatedState.modalEditedAlbumContributions = []
-      updatedState.modalAlbumContributions = {}
-    }
-    this.setState(updatedState)
-  }
-
-  toggleAlbumContributonType(type) {
-    if(this.state.modalEditedAlbumContributions.filter(x => x === type).length > 0) {
-      // contribution has already been added, need to remove
-      this.setState({modalEditedAlbumContributions: compact(this.state.modalEditedAlbumContributions.map(function(x) {if(x !== type) return x}))})
-    }
-    else {
-      // contribution needs to be added
-      this.setState({modalEditedAlbumContributions: [...this.state.modalEditedAlbumContributions, type]})
-    }
-  }
-
-  albumContributionHasBeenSelected(type) {
-    // check whether contribution has type
-    var artist_id = this.state.modalAlbumContributions.contributor.artist_id
-    var contributorIndex = this.state.albumContributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
-    return this.state.albumContributors[contributorIndex].type.filter(x=>x===type).length>0
-  }
-
-  saveAlbumContributions() {
-    var artist_id = this.state.modalAlbumContributions.contributor.artist_id
-    var contributorIndex = this.state.albumContributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artist_id)
+  updateAlbumContributions(contribution) {
+    var contributorIndex = this.state.albumContributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contribution.contributor.artist_id)
     var albumContributions = [...this.state.albumContributors]
-    albumContributions[contributorIndex].type = this.state.modalEditedAlbumContributions
+    albumContributions[contributorIndex] = contribution
     this.setState({
-      albumContributions: albumContributions,
-      modalAlbumContributions: {},
-      modalEditedAlbumContributions: [],
+      albumContributors: albumContributions,
       albumContributorsError: "",
-      albumContributorsState: "",
       attemptedUpload: false,
     })
-    this.toggleAlbumContributorModal()
-  }
-
-  cancelAlbumContributions() {
-    this.setState({
-      modalAlbumContributions: {},
-      modalEditedAlbumContributions: [],
-      albumContributorsError: "",
-    })
-    this.toggleAlbumContributorModal()
-  }
-
-  /// SONG CONTRIBUTOR RENDER METHODS ///
-  renderSongContributorTags (props, index) {
-    let {tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other} = props
-    return (
-      <>
-      <span key={key} {...other} >
-        <span onClick={() => this.toggleSongContributorModal(index, tag)}>
-          {tag.contributor.name} : {tag.type.length > 0 ? tag.type.join(", ").substring(0,15)+'...': "Select Type"}
-        </span>
-
-        {!disabled &&
-          <a
-            className={classNameRemove}
-            onClick={(e) => {
-              // onRemove(key)
-              this.removeSongContributor(index,tag.contributor.artist_id)
-            }}
-          />
-        }
-      </span>
-      </>
-    )
-  }
-
-  /// ALBUM CONTRIBUTOR RENDER METHODS ///
-  renderAlbumContributorTags (props) {
-    let {tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other} = props
-    return (
-      <>
-      <span key={key} {...other} >
-        <span onClick={() => this.toggleAlbumContributorModal(tag)}>
-          {tag.contributor.name} : {tag.type.length > 0 ? tag.type.join(", ").substring(0,15)+'...': "Select Type"}
-        </span>
-
-        {!disabled &&
-          <a
-            className={classNameRemove}
-            onClick={(e) => {
-              // onRemove(key)
-              this.removeAlbumContributor(tag.contributor.artist_id)
-            }}
-          />
-        }
-      </span>
-      </>
-    )
-  }
-
-  async searchArtists({ value }) {
-    if(value.length > 0) {
-      var results = await revibe.searchArtists(value)
-      var artists = results.data.filter(artist => artist.artist_id !== this.props.artist_id)
-      if(artists.length > 0) {
-        this.setState({searchResults: artists})
-      }
-      else {
-        this.setState({searchResults: ["No Results."]})
-      }
-    }
-  };
-
-  renderSearchResults(artist) {
-    if(artist.name) {
-      return (
-        <Row style={{color:"black",paddingTop: "10px",cursor: 'pointer',width: "100%"}}>
-         <Col xs={4} md={4}>
-           <img
-           alt="..."
-           style={{height:"80%", width: "80%",borderRadius: "50%"}}
-           src={artist.ext ? `${API_STORAGE}Artist/${artist.artist_uri}.${artist.ext}` : require("assets/portal/img/default-avatar.png")} />
-         </Col>
-         <Col style={{textAlign: "left"}} xs={8} md={8}>
-           {artist.name}
-         </Col>
-       </Row>
-     );
-    }
-    return (
-      <Row style={{color:"black",paddingTop: "10px",cursor: 'pointer',width: "200px"}}>
-       <Col style={{textAlign: "left"}} xs={8} md={8}>
-         No Results.
-       </Col>
-     </Row>
-   );
   }
 
 
-  displaySongContributions(row) {
-    return (
-      <TagsInput
-        renderInput={({addTag,...props}) => {
-          if(!props.disabled) {
-            return (
-              <div style={row.contributors.length > 0 ? {position: "absolute"} : {position: "absolute", marginTop: 20}}>
-              <Autosuggest
-                theme={theme}
-                suggestions={this.state.searchResults}
-                onSuggestionsFetchRequested={this.searchArtists}
-                onSuggestionsClearRequested={() => this.setState({searchResults: []})}
-                getSuggestionValue={suggestion => suggestion.name}
-                onSuggestionSelected={(e, {suggestion}) => {
-                  addTag(suggestion.name)
-                  this.addSongContributor(row.index, suggestion)
-                }}
-                renderSuggestion={(suggestion) => this.renderSearchResults(suggestion)}
-                inputProps={{
-                  ...props,
-                   placeholder: 'Add Contributors...',
-                   type: 'search',
-                 }}
-              />
-              </div>
-            )
-          }
-          else {
-            return null
-          }
-        }}
-      inputProps={{
-          className: 'react-tagsinput-input',
-          placeholder: 'Add Contributor',
-          disabled: this.state.uploading
-      }}
-      onChange={() => console.log()}
-      renderTag={props => this.renderSongContributorTags(props,row.index)}
-      tagProps={{ className: "react-tagsinput-tag primary", disabled: this.state.uploading }}
-      value={row.contributors}
-      />
-    )
-  }
 
-  displayAlbumContributions() {
-    return (
-      <TagsInput
-        renderInput={({addTag,...props}) => {
-          if(!props.disabled) {
-            return (
-              <div style={this.state.albumContributors.length > 0 ? {position: "absolute",left:0} : {position: "absolute", left:0}}>
-                <Autosuggest
-                  theme={theme}
-                  suggestions={this.state.searchResults}
-                  onSuggestionsFetchRequested={this.searchArtists}
-                  onSuggestionsClearRequested={() => this.setState({searchResults: []})}
-                  getSuggestionValue={suggestion => suggestion.name}
-                  onSuggestionSelected={(e, {suggestion}) => {
-                    addTag(suggestion.name)
-                    this.addAlbumContributor(suggestion)
-                  }}
-                  renderSuggestion={(suggestion) => this.renderSearchResults(suggestion)}
-                  inputProps={{
-                    ...props,
-                     placeholder: 'Search Artists...',
-                     type: 'search',
-                   }}
-                />
-              </div>
-            )
-          }
-          else {
-            return null
-          }
-        }}
-      inputProps={{
-          disabled: this.state.uploading
-      }}
-      onChange={() => console.log()}
-      renderTag={props => this.renderAlbumContributorTags(props)}
-      tagProps={{ className: "react-tagsinput-tag primary", disabled: this.state.uploading }}
-      value={this.state.albumContributors}
-      />
-    )
-  }
 
   render() {
 
@@ -775,7 +401,16 @@ class AlbumUpload extends Component {
             </>
           ),
           style: this.state.uploading ? {overflowX:"scroll"} : {paddingTop: 0, marginTop: 0,overflowX:"scroll"},
-          accessor: row => this.displaySongContributions(row),
+          accessor: row => (
+            <ContributorTags
+              artist_id={this.props.artist_id}
+              owner={row}
+              onAddContributor={this.addSongContributor}
+              onRemoveContributor={this.removeSongContributor}
+              updateContributionTypes={this.updateSongContributions}
+              disabled={this.state.uploading}
+            />
+          ),
           filterable: false,
           width: 200
         },
@@ -945,7 +580,7 @@ class AlbumUpload extends Component {
                       <Row>
                       {this.state.albumContributorsError ?
                         <>
-                        <MdErrorOutline style={{color: "red", marginLeft: "25px"}} id="album-contribution-error"/>
+                        <MdErrorOutline style={{color: "red", marginRight: "25px"}} id="album-contribution-error"/>
                           <UncontrolledTooltip
                             style={{backgroundColor: "red", color: "white"}}
                             placement="top"
@@ -968,7 +603,14 @@ class AlbumUpload extends Component {
                       </UncontrolledTooltip>
                       <label>Add Album Contributors</label>
                       </Row>
-                      {this.displayAlbumContributions(this.state.albumContributors)}
+                      <ContributorTags
+                        artist_id={this.props.artist_id}
+                        owner={null}
+                        onAddContributor={this.addAlbumContributor}
+                        onRemoveContributor={this.removeAlbumContributor}
+                        updateContributionTypes={this.updateAlbumContributions}
+                        disabled={this.state.uploading}
+                      />
                     </FormGroup>
                   </Form>
                 </Col>
@@ -998,155 +640,25 @@ class AlbumUpload extends Component {
                     showPagination={false}
                     className="-striped -highlight"
                   />
-                  <div style={uploadBtnstyle}>
-                  <Dropzone
-                    onDrop={this.onDrop}
-                    accept=".mp3"
-                    minSize={0}
-                    multiple
-                  >
-                    {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
-                      const filesRejected = rejectedFiles.length > 0
-                        return (
-                          <div {...getRootProps()} className="text-center">
-                            <input
-                              {...getInputProps()}
-                              disabled={this.state.uploading}
-                            />
-                            {filesRejected && (
-                              <div className="text-danger mt-2">
-                                Unsupported file types.
-                              </div>
-                            )}
-                            <Button
-                              style={{fontSize: 15, marginTop: 20}}
-                              className="btn-simple"
-                              color="primary"
-                              disabled={this.state.uploading}
-                            >
-                              <i style={{marginRight: "10%"}} className="tim-icons icon-simple-add"/>
-                              Song
-                            </Button>
-                          </div>
-                        )
-                      }
-                    }
-                  </Dropzone>
-                  </div>
+                  <SongSelect onFileSelect={this.onDrop} disabled={this.props.uploading} displayDropzone={false}/>
                   <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
-                  <Button
-                    onClick={this.onSubmit}
-                    className="btn-round"
-                    color="primary"
-                    disabled={this.state.uploading}
-                  >
+                    <Button
+                      onClick={this.onSubmit}
+                      className="btn-round"
+                      color="primary"
+                      disabled={this.state.uploading}
+                    >
                       Upload
-                  </Button>
+                    </Button>
                   </div>
                   </>
                 :
-                <div style={basestyle}>
-                <Dropzone
-                  onDrop={this.onDrop}
-                  accept=".mp3"
-                  minSize={0}
-                  multiple
-                >
-                  {({getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles}) => {
-                    const filesRejected = rejectedFiles.length > 0
-                    return (
-                      <div {...getRootProps()} style={{width: "100%"}} className="text-center">
-                        <input {...getInputProps()} />
-                        <FiDownload style={{fontSize: 80, marginTop: 30, color: "#7248BD"}}/>
-                        <p style={{fontSize: 20, marginTop: 20}}>Drag & Drop songs here.</p>
-                        {filesRejected && (
-                          <div className="text-danger mt-2">
-                            Unsupported file types.
-                          </div>
-                        )}
-                        <p style={{fontSize: 15, marginTop: 20}}>OR</p>
-                        <Button style={{fontSize: 15, marginTop: 20}} className="btn-simple" color="primary">
-                          Browse Files
-                        </Button>
-                      </div>
-                    )}
-                  }
-                </Dropzone>
-                </div>
+                <SongSelect onFileSelect={this.onDrop} />
               }
             </CardBody>
           </Card>
         </Col>
       </a>
-      <ReactTooltip id="cloudUploadTooltip" effect='solid' delayShow={1500}>
-        <span>Click or drag songs into box to upload</span>
-      </ReactTooltip>
-      {this.state.modalSongContributionsIsOpen ?
-        <Modal
-          isOpen={this.state.modalSongContributionsIsOpen}
-          toggle={this.toggleSongContributorModal}
-          className={"modal-dialog"}
-          backdrop={"static"}
-        >
-          <ModalHeader toggle={this.toggleSongContributorModal}>How did {this.state.modalSongContribution.contributor.name} contribute to this song?</ModalHeader>
-          <ModalBody>
-            {this.contributionTypes.map(type => (
-              <FormGroup check style={{marginLeft: "30px"}}>
-                <Label check>
-                  <Input
-                    type="checkbox"
-                    disabled={this.state.uploading}
-                    defaultChecked={this.state.modalEditedSongContributions.filter(x=>x===type).length>0}
-                    onClick={() => this.toggleSongContributonType(type)}
-                  />
-                  <span className="form-check-sign" style={{color: "black"}}>
-                    {type}
-                  </span>
-                </Label>
-              </FormGroup>
-            ))}
-          </ModalBody>
-          <ModalFooter>
-            <Button color="success" onClick={this.saveSongContributions}>Save</Button>
-            <Button color="danger" onClick={this.cancelSongContributions}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-      :
-        null
-      }
-      {this.state.modalAlbumContributionsIsOpen ?
-        <Modal
-          isOpen={this.state.modalAlbumContributionsIsOpen}
-          toggle={this.toggleAlbumContributorModal}
-          className={"modal-dialog"}
-          backdrop={"static"}
-        >
-          <ModalHeader toggle={this.toggleAlbumContributorModal}>How did {this.state.modalAlbumContributions.contributor.name} contribute to this album?</ModalHeader>
-          <ModalBody>
-            {this.contributionTypes.map(type => (
-              <FormGroup check style={{marginLeft: "30px"}}>
-                <Label check>
-                  <Input
-                    type="checkbox"
-                    disabled={this.state.uploading}
-                    defaultChecked={this.state.modalEditedAlbumContributions.filter(x=>x===type).length>0}
-                    onClick={() => this.toggleAlbumContributonType(type)}
-                  />
-                  <span className="form-check-sign"  style={{color: "black"}}>
-                    {type}
-                  </span>
-                </Label>
-              </FormGroup>
-            ))}
-          </ModalBody>
-          <ModalFooter>
-            <Button color="success" onClick={this.saveAlbumContributions}>Save</Button>
-            <Button color="danger" onClick={this.cancelAlbumContributions}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-      :
-        null
-      }
       </>
     );
   }

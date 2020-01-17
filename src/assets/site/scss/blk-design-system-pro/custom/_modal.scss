@@ -192,9 +192,38 @@
     }
 
     &.modal-black{
+      .modal-dialog{
+        border-radius: 10px;
+      }
       .modal-content{
         background: $card-black-background;
         color: rgba($white, 0.8);
+        .modal-header{
+          .modal-title, .title{
+            color: rgba($white, 0.9);
+          }
+        }
+        .modal-body{
+          p{
+            color: rgba($white, 0.8);
+          }
+        }
+      }
+      h1, h2, h3, h4, h5, h6, p{
+        color: $white;
+      }
+    }
+
+    &.modal-grey{
+      .modal-dialog{
+        border-radius: 10px;
+      }
+      .modal-content{
+        background: $gray-800;
+        color: rgba($white, 0.8);
+        border-color: $primary;
+        border-width: medium;
+        border-radius: 10px;
         .modal-header{
           .modal-title, .title{
             color: rgba($white, 0.9);
