@@ -50,7 +50,7 @@ class VideoHeader extends React.Component {
               loop="loop"
               muted="muted"
               playsInline="playsinline"
-              style={{height: "80%"}}
+              style={{width: "80%"}}
             >
               <source
                 src={require("../../assets/site/img/video.mp4")}
