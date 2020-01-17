@@ -113,7 +113,7 @@ class Feedback extends React.Component {
             <Container>
 
                 <Row>
-                  <Col lg ="2"/>
+                  <Col lg ="2" style={{borderRight: 0}}/>
                   <Col lg="3">
                   <div className="info info-hover">
                   <div className="icon icon-primary">

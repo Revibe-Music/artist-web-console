@@ -23,15 +23,15 @@ import Feedback from "views/Feedback";
 
 const routes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
+    path: "/dashboard/stats",
+    name: "Stats",
     icon: "tim-icons icon-chart-bar-32",
     component: Dashboard,
     layout: "",
     toolTipMessage: "Page to view metrics"
   },
   {
-    path: "/uploads",
+    path: "/dashboard/uploads",
     name: "Uploads",
     icon: "tim-icons icon-cloud-upload-94",
     component: Uploads,
@@ -39,7 +39,7 @@ const routes = [
     toolTipMessage: "Upload/Edit songs & albums"
   },
   {
-    path: "/contributions",
+    path: "/dashboard/contributions",
     name: "Contributions",
     icon: "tim-icons icon-vector",
     component: Contributions,
@@ -47,7 +47,7 @@ const routes = [
     toolTipMessage: "View/Edit contributions"
   },
   {
-    path: "/profile",
+    path: "/dashboard/profile",
     name: "Profile",
     icon: "tim-icons icon-single-02",
     component: Profile,
@@ -55,7 +55,7 @@ const routes = [
     toolTipMessage: "View/Edit profile"
   },
   {
-    path: "/feedback",
+    path: "/dashboard/feedback",
     name: "Feedback",
     icon: "tim-icons icon-notes",
     component: Feedback,

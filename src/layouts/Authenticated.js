@@ -52,16 +52,15 @@ class Authenticated extends Component {
     this.props.getAlbumContributions()
     this.props.getSongContributions()
     this.props.getProfile()
+
+    // default to stats page if user just goes to dashboard
+    if(window.location.pathname==="/dashboard" || window.location.pathname==="/dashboard/") {
+       this.props.history.push('/dashboard/stats')
+    }
+
   }
 
-  async componentDidMount() {
-    // this.props.getUploadedAlbums()
-    // this.props.getUploadedSongs()
-    // this.props.getAlbumContributions()
-    // this.props.getSongContributions()
-    // this.props.getProfile()
-
-
+  componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";
       document.documentElement.classList.remove("perfect-scrollbar-off");
@@ -137,12 +136,9 @@ class Authenticated extends Component {
         if (collapseActiveRoute !== activeRoute) {
           return collapseActiveRoute;
         }
-      } else {
-        if (
-          window.location.pathname.indexOf(
-            routes[i].layout + routes[i].path
-          ) !== -1
-        ) {
+      }
+      else {
+        if (window.location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
           return routes[i].name;
         }
       }
@@ -163,6 +159,7 @@ class Authenticated extends Component {
 
 
   render() {
+
     return (
       <div className="wrapper">
         <div className="rna-container">

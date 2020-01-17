@@ -115,6 +115,9 @@ export function getAlbumContributions() {
     var response = await revibe.getAlbumContributions()
     if(String(response.status).charAt(0)=="2") {
       response = response.data
+      if(response === null) {
+        response = []
+      }
       dispatch(fetchAlbumContributions(response));
       dispatch(error(null));
     }
@@ -129,6 +132,9 @@ export function getSongContributions() {
     var response = await revibe.getSongContributions()
     if(String(response.status).charAt(0)=="2") {
       response = response.data
+      if(response === null) {
+        response = []
+      }
       dispatch(fetchSongContributions(response));
       dispatch(error(null));
     }
