@@ -78,7 +78,7 @@ class VideoHeader extends React.Component {
                         <img
                           alt="..."
                           className="img rounded"
-                          src={require("assets/site/img/laptop-image.png")}
+                          src={require("assets/site/img/dashboard.png")}
                         />
                     </div>
                 </Col>

@@ -67,7 +67,7 @@ class ScrollNavbar extends React.Component {
               <span className="navbar-toggler-bar bar3" />
             </button>
             <NavbarBrand>
-            <a href="/home">
+            <a href="/">
               <img src={require("../../assets/site/img/revibetransparent.png")} style={{width:150, marginTop: -7}} />
             </a>
             </NavbarBrand>
@@ -123,8 +123,8 @@ class ScrollNavbar extends React.Component {
               {this.props.hideLogin ?
                 null
               :
-              <Link to="/account/login">
-                <Button color="primary">Log In</Button>
+              <Link to="/account/register">
+                <Button color="primary">Sign Up</Button>
               </Link>
               }
 

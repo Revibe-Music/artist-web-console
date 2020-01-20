@@ -17,9 +17,11 @@ import {
 } from "reactstrap";
 import TagsInput from "react-tagsinput";
 import Autosuggest from 'react-autosuggest';
+import { AiOutlineUserAdd } from 'react-icons/ai';
 import { compact } from 'lodash';
 
-import RevibeAPI from '../api/revibe.js';
+import InviteArtist from "components/Modals/InviteArtist.js";
+import RevibeAPI from 'api/revibe.js';
 import { API_STORAGE } from 'api/config.js'
 
 const revibe = new RevibeAPI()
@@ -87,19 +89,24 @@ class ContributorTags extends Component {
         selectedContribution: {},
         editedContributionTypes: [],
 
+        showInviteArtistModal:false
+
       };
 
       // Contribution Methods
       this.addContributor = this.addContributor.bind(this)
       this.renderSearchResults = this.renderSearchResults.bind(this)
+      this.renderResultsContainer = this.renderResultsContainer.bind(this)
       this.searchArtists = this.searchArtists.bind(this)
 
       // Modal Methods
       this.toggleModal = this.toggleModal.bind(this)
+      this.toggleArtistInvite = this.toggleArtistInvite.bind(this)
       this.toggleContributonType = this.toggleContributonType.bind(this)
       this.modalSaveButtonPressed = this.modalSaveButtonPressed.bind(this)
       this.modalCancelButtonPressed = this.modalCancelButtonPressed.bind(this)
       this.contributionHasBeenSelected = this.contributionHasBeenSelected.bind(this)
+
   }
 
 
@@ -146,15 +153,10 @@ class ContributorTags extends Component {
     this.toggleModal()
   }
 
-  validateContributions() {
-    for(var i=0; i<this.state.contributions.length; i++) {
-      if(this.state.contributions[i].type.length < 1) {
-        return false
-      }
-    }
-    return true
+  /// CONTRIBUTION MODAL OPERATIONS ///
+  toggleArtistInvite() {
+    this.setState({showInviteArtistModal: !this.state.showInviteArtistModal})
   }
-
 
   /// CONTRIBUTOR RENDER METHODS ///
   renderTags (props) {
@@ -185,13 +187,13 @@ class ContributorTags extends Component {
         this.setState({searchResults: artists})
       }
       else {
-        this.setState({searchResults: ["No Results."]})
+        this.setState({searchResults: [{suggestion: "No Results.", name: "No Results."}]})
       }
     }
   };
 
   renderSearchResults(artist) {
-    if(artist.name) {
+    if(artist.name !== "No Results.") {
       return (
         <Row style={{color:"black",paddingTop: "10px",cursor: 'pointer',width: "100%"}}>
          <Col xs={4} md={4}>
@@ -207,13 +209,30 @@ class ContributorTags extends Component {
      );
     }
     return (
-      <Row style={{color:"black",paddingTop: "10px",cursor: 'pointer',width: "200px"}}>
+      <Row style={{color:"black",paddingTop: "10px",width: "200px",display: "flex", alignItems: "center", justifyContent: "space-evenly"}}>
        <Col style={{textAlign: "left"}} xs={8} md={8}>
          No Results.
        </Col>
      </Row>
    );
   }
+
+  renderResultsContainer({ containerProps, children }) {
+    return (
+      <div {...containerProps}>
+        {children}
+        <Row style={{display: "flex", alignItems: "center", justifyContent: "center",marginTop: "20px"}}>
+           <Button onClick={() => this.setState({showInviteArtistModal: true})} color="primary">
+             <div style={{display: "flex", alignItems: "center", justifyContent: "space-evenly"}}>
+              <AiOutlineUserAdd />
+              Invite Artist
+            </div>
+          </Button>
+
+       </Row>
+      </div>
+    );
+  };
 
   addContributor(contributor) {
     var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
@@ -248,9 +267,12 @@ class ContributorTags extends Component {
                 getSuggestionValue={suggestion => suggestion.name}
                 onSuggestionSelected={(e, {suggestion}) => {
                   addTag(suggestion.name)
-                  this.addContributor(suggestion)
+                  if(suggestion.name!=="No Results.") {
+                    this.addContributor(suggestion)
+                  }
                 }}
                 renderSuggestion={(suggestion) => this.renderSearchResults(suggestion)}
+                renderSuggestionsContainer={this.renderResultsContainer}
                 inputProps={{
                   ...props,
                    placeholder: 'Add Contributors...',
@@ -308,6 +330,7 @@ class ContributorTags extends Component {
       :
         null
       }
+      <InviteArtist show={this.state.showInviteArtistModal} toggle={this.toggleArtistInvite}/>
       </>
     )
   }
