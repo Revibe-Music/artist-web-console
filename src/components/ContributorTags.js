@@ -321,6 +321,7 @@ class ContributorTags extends Component {
                 </Label>
               </FormGroup>
             ))}
+            <p style={{marginLeft: "30px"}}>Don't see the contribution type you want? Tell us <u><a href="/dashboard/feedback">here.</a></u></p>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.modalSaveButtonPressed}>Save</Button>
