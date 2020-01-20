@@ -193,6 +193,10 @@ export default class RevibeAPI {
     return await this. _request("administration/forms/contact-form/", data, "POST", true)
   }
 
+  async sendInvitation(data) {
+    return await this. _request("account/send-email", data, "POST", true)
+  }
+
   ////////////////////////////////////
   //////////// USER DATA /////////////
   ////////////////////////////////////
