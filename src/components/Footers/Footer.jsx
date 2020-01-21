@@ -43,7 +43,7 @@ class Footer extends React.Component {
               <Col md="3" xs="6">
                 <Nav>
                   <NavItem>
-                    <NavLink to="/home" tag={Link}>
+                    <NavLink to="/" tag={Link}>
                       Home
                     </NavLink>
                   </NavItem>

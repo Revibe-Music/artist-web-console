@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* BLK Design System PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/blk-design-system-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 import { Link } from "react-router-dom";
 // JavaScript plugin that hides or shows a component based on your scroll
@@ -67,9 +51,9 @@ class ScrollNavbar extends React.Component {
               <span className="navbar-toggler-bar bar3" />
             </button>
             <NavbarBrand>
-            <a href="/">
-              <img src={require("../../assets/site/img/revibetransparent.png")} style={{width:150, marginTop: -7}} />
-            </a>
+              <Link to="/">
+                <img src={require("../../assets/site/img/revibetransparent.png")} style={{width:150, marginTop: -7}} />
+              </Link>
             </NavbarBrand>
           </div>
           <UncontrolledCollapse navbar toggler="#example-header-4">
@@ -96,27 +80,18 @@ class ScrollNavbar extends React.Component {
                 Artist of the Week
               </NavLink>
               </NavItem> */}
-
               <NavItem className="active">
-              <NavLink
-                href="/why-revibe"
-              >
-                Why Revibe?
-              </NavLink>
+                <NavLink to="/why-revibe" tag={Link}>
+                  Why Revibe?
+                </NavLink>
               </NavItem>
-
               <NavItem>
-              <NavLink
-                href="/about-us"
-              >
-                About Us
-              </NavLink>
+                <NavLink to="/about-us" tag={Link}>
+                  About Us
+                </NavLink>
               </NavItem>
-
               <NavItem>
-                <NavLink
-                  href="/contact-us"
-                >
+                <NavLink to="/contact-us" tag={Link}>
                   Contact
                 </NavLink>
               </NavItem>
@@ -127,7 +102,6 @@ class ScrollNavbar extends React.Component {
                 <Button color="primary">Sign Up</Button>
               </Link>
               }
-
             </Nav>
             </UncontrolledCollapse>
         </Container>
