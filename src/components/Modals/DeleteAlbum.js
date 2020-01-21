@@ -22,7 +22,6 @@ class DeleteAlbum extends Component {
   }
 
   deleteButtonPressed() {
-    console.log(this.props.album_id);
     this.props.deleteAlbum(this.props.album_id)
     this.props.toggle()
   }

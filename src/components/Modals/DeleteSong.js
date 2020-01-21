@@ -22,7 +22,6 @@ class DeleteSong extends Component {
   }
 
   deleteButtonPressed() {
-    console.log(this.props.song_id);
     this.props.deleteSong(this.props.song_id)
     this.props.toggle()
   }

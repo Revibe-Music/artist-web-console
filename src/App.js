@@ -1,7 +1,9 @@
 // This component handles the App template used on every page.
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
+import ReactGA from 'react-ga';
+import { createBrowserHistory } from 'history';
 import { connect } from 'react-redux';
 import Authenticated from './layouts/Authenticated.js';
 import PrivateRoute from './routes/PrivateRoute.js';
@@ -15,8 +17,21 @@ import Error404 from 'views/Error404.jsx'
 import AboutUs from "views/AboutUs.jsx"
 import WhyRevibe from "views/WhyRevibe.jsx"
 
+const history = createBrowserHistory();
+
+
+const hostname = window && window.location && window.location.hostname;
+
+// only track in production env
+if(hostname === "artist.revibe.tech") {
+  history.listen(location => {
+    ReactGA.set({ page: location.pathname }); // Update the user's current page
+    ReactGA.pageview(location.pathname); // Record a pageview for the given page
+  });
+}
+
 const App = ({ authenticated, checked }) => (
-  <Router>
+  <Router history={history}>
     { checked &&
       <Switch>
       <Route path="/account/register" component={Register}/>
@@ -29,7 +44,7 @@ const App = ({ authenticated, checked }) => (
       <Route path="/why-revibe" component={WhyRevibe}/>
       <PrivateRoute path="/dashboard" component={Authenticated} authenticated={authenticated}/>
       <Route path="/" component={Home}/>
-      
+
      </Switch>
     }
   </Router>

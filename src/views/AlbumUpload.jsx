@@ -270,7 +270,6 @@ class AlbumUpload extends Component {
       if(this.state.albumNameError==="" && this.state.albumTypeError==="" && this.state.albumImage !== null) {
         this.setState({uploading: true})
         var uploads = this.state.songs
-        console.log(this.state.albumContributors);
         this.props.uploadAlbum(this.state.albumName, this.state.albumImage, this.state.albumType, this.state.albumContributors, this.state.songs, this.editRow)
       }
     }

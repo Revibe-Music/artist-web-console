@@ -36,6 +36,7 @@
     "react-dom": "^16.8.6",
     "react-dropdown-input": "^0.1.11",
     "react-dropzone": "^10.2.1",
+    "react-ga": "^2.7.0",
     "react-google-maps": "9.4.5",
     "react-icons": "^3.8.0",
     "react-jvectormap": "0.0.4",

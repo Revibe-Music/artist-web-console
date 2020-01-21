@@ -121,7 +121,6 @@ export default class RevibeAPI {
         numRequestsSent += 1
       }
     }
-    // console.log(response);
     return response
   }
 
