@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { Component, useState } from "react";
 import classNames from "classnames";
 
@@ -22,7 +6,7 @@ import { MDBDataTable, MDBBtn } from 'mdbreact';
 import * as moment from 'moment'
 import { connect } from 'react-redux';
 
-import Options from 'components/Tables/Options.jsx'
+// import SongOptions from 'components/Tables/SongOptions.jsx'
 import { songContributionColumns } from 'components/Tables/ColumnConfig.js'
 
 
@@ -50,7 +34,7 @@ class SongContributionsTable extends Component {
           name: songs[x].title,
           album: songs[x].album.name,
           uploadedBy: songs[x].uploaded_by.name,
-          uploaded: moment(songs[x].uploaded_date).format("DD-MM-YYYY"),
+          uploaded: moment(songs[x].uploaded_date).format("MM-DD-YYYY"),
           contributionType: contributionTypes.join(", "),
         }
         rows.push(song)

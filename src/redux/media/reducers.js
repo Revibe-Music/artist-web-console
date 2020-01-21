@@ -1,3 +1,5 @@
+import { compact } from 'lodash';
+
 var initialState = {
   uploadedAlbums:[],
   uploadedSongs: [],
@@ -45,8 +47,15 @@ export const mediaReducer = (state=initialState, action) => {
               ))
             };
         case 'REMOVE_UPLOADED_ALBUM':
+            var songs = state.uploadedSongs.map(function(elem){
+                if(elem.album.album_id !== state.uploadedAlbums[action.index].album_id)
+                  return elem
+              }
+            )
+            songs = compact(songs)  // represents remaining songs after removing songs from deleleted album
             return {
               ...state,
+              uploadedSongs: songs,
               uploadedAlbums: [
                 ...state.uploadedAlbums.slice(0, action.index),
                 ...state.uploadedAlbums.slice(action.index + 1)

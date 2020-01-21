@@ -79,7 +79,7 @@ class PendingContributions extends Component {
               name: songs[x].title,
               type: "Song",
               uploadedBy: songs[x].uploaded_by.name,
-              uploaded: moment(songs[x].contributors[i].uploaded_date).format("DD-MM-YYYY"),
+              uploaded: moment(songs[x].contributors[i].uploaded_date).format("MM-DD-YYYY"),
               contributionType: songs[x].contributors[i].contribution_type,
               status: this.ApproveDenyContribution(songs[x], songs[x].contributors[i].contribution_id, this.props.approveSongContribution, this.props.rejectSongContribution),
             }
@@ -96,7 +96,7 @@ class PendingContributions extends Component {
               name: albums[x].name,
               type: "Album",
               uploadedBy: albums[x].uploaded_by.name,
-              uploaded:  moment(albums[x].contributors[i].uploaded_date).format("DD-MM-YYYY"),
+              uploaded:  moment(albums[x].contributors[i].uploaded_date).format("MM-DD-YYYY"),
               contributionType: albums[x].contributors[i].contribution_type,
               status: this.ApproveDenyContribution(albums[x], albums[x].contributors[i].contribution_id, this.props.approveAlbumContribution, this.props.rejectAlbumContribution),
             }

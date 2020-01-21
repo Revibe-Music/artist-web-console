@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { Component, useState } from "react";
 import classNames from "classnames";
 // react component for creating dynamic tables
@@ -22,7 +6,7 @@ import { MDBDataTable, MDBBtn } from 'mdbreact';
 import * as moment from 'moment'
 import { connect } from 'react-redux';
 
-import Options from 'components/Tables/Options.jsx'
+// import AlbumOptions from 'components/Tables/AlbumOptions.jsx'
 import { albumContributionColumns } from 'components/Tables/ColumnConfig.js'
 
 
@@ -49,7 +33,7 @@ class AlbumContributionsTable extends Component {
         let album = {
           name: albums[x].name,
           uploadedBy: albums[x].uploaded_by.name,
-          uploaded: moment(albums[x].uploaded_date).format("DD-MM-YYYY"),
+          uploaded: moment(albums[x].uploaded_date).format("MM-DD-YYYY"),
           contributionType: contributionTypes.join(", "),
         }
         rows.push(album)

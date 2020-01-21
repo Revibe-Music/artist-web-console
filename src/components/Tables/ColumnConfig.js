@@ -25,7 +25,7 @@ export const uploadedAlbumColumns = [
       sort: 'asc',
     },
     {
-      label: 'Delete',
+      label: '',
       field: 'actions',
       sort: 'disabled',
       filter: 'disabled',
@@ -60,7 +60,7 @@ export const uploadedSongColumns = [
       sort: 'asc',
     },
     {
-      label: 'Delete',
+      label: '',
       field: 'actions',
       sort: 'disabled',
       filter: 'disabled',

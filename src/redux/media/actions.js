@@ -216,7 +216,7 @@ export function editAlbum(album_id, name=null, image=null, type=null) {
 
 export function deleteAlbum(album_id) {
   return async (dispatch, getState) => {
-    var response = revibe.deleteUploadedAlbum(album_id)
+    var response = await revibe.deleteUploadedAlbum(album_id)
     if(String(response.status).charAt(0)=="2") {
       var index = getState().media.uploadedAlbums.map(function(x) {return x.album_id; }).indexOf(album_id)
       dispatch(removeUploadedAlbum(index));
@@ -244,7 +244,7 @@ export function editSong(song_id, title=null, file=null) {
 
 export function deleteSong(song_id) {
   return async (dispatch, getState) => {
-    var response = revibe.deleteUploadedSong(song_id)
+    var response = await revibe.deleteUploadedSong(song_id)
     if(String(response.status).charAt(0)=="2") {
       var index = getState().media.uploadedSongs.map(function(x) {return x.song_id; }).indexOf(song_id)
       dispatch(removeUploadedSong(index));
