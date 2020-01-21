@@ -60,7 +60,7 @@ const routes = [
     icon: "tim-icons icon-notes",
     component: Feedback,
     layout: "",
-    toolTipMessage: "View/Edit profile"
+    toolTipMessage: "Tell us what you think!"
   },
 ];
 

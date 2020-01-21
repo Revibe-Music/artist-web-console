@@ -6,7 +6,7 @@ const hostname = window && window.location && window.location.hostname;
 
 if(hostname === 'artist.revibe.tech') {
   // backendHost = 'https://api.revibe.tech'; // production environment
-  backendHost = "http://prod-env.myrpupud2p.us-east-2.elasticbeanstalk.com/"
+  backendHost = "https://api.revibe.tech/"
   backendStorage = "https://revibe-media.s3.amazonaws.com/media/images/"
 
 }

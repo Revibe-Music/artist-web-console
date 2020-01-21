@@ -396,7 +396,7 @@ class AlbumUpload extends Component {
               target="contribution-question"
               hideArrow={true}
             >
-              Add other artists that had roll in creating these songs.
+              Tag other artists that had a roll
             </UncontrolledTooltip>
             </>
           ),
@@ -599,7 +599,7 @@ class AlbumUpload extends Component {
                         target="album-contribution-question"
                         hideArrow={true}
                       >
-                      Add other artists that had roll in creating this album as a whole.
+                      Tag other artists that had a roll
                       </UncontrolledTooltip>
                       <label>Add Album Contributors</label>
                       </Row>

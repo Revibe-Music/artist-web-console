@@ -24,12 +24,12 @@ export const uploadedAlbumColumns = [
       field: 'uploaded',
       sort: 'asc',
     },
-    // {
-    //   label: '',
-    //   field: 'actions',
-    //   sort: 'disabled',
-    //   filter: 'disabled',
-    // },
+    {
+      label: 'Delete',
+      field: 'actions',
+      sort: 'disabled',
+      filter: 'disabled',
+    },
   ]
 
 
@@ -59,12 +59,12 @@ export const uploadedSongColumns = [
       field: 'uploaded',
       sort: 'asc',
     },
-    // {
-    //   label: '',
-    //   field: 'actions',
-    //   sort: 'disabled',
-    //   filter: 'disabled',
-    // },
+    {
+      label: 'Delete',
+      field: 'actions',
+      sort: 'disabled',
+      filter: 'disabled',
+    },
   ]
 
 export const albumContributionColumns = [

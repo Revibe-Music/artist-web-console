@@ -175,7 +175,7 @@ class Feedback extends React.Component {
                         <div>
                           <label style={{color:"white"}}>Your message</label>
                           <Input
-                            placeholder=" If possible, please include steps to reproduce the bug/issue."
+                            placeholder=" If applicable, please include steps to reproduce the bug/issue."
                             id="message"
                             name="message"
                             rows="20"
