@@ -587,7 +587,7 @@ class AlbumUpload extends Component {
           <Card>
             <CardBody>
               <CardTitle tag="h4">Upload Songs</CardTitle>
-                <p>*Please note that we only accept MP3 files at this time.</p>
+                <p>*Please note that we only accept MP3, WAV, FLAC, and OGG files at this time.</p>
                 {this.state.songs.length > 0 ?
                   <>
                   <ReactTable
