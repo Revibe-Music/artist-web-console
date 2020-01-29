@@ -1,5 +1,4 @@
 import RevibeAPI from '../../api/revibe.js';
-
 const revibe = new RevibeAPI()
 
 
@@ -59,7 +58,11 @@ export function register(username, email, password, history) {
         email: response.user.profile.email,
         artistId: "",
         displayName: "",
-        artistImage: "",
+        images: {
+          small: "",
+          medium: "",
+          large: "",
+        },
         artistAboutMe: "",
         country: "",
         state: "",
@@ -92,7 +95,11 @@ export function registerArtist(name, image, history) {
         email: response.user.email,
         artistId: response.artist_id,
         displayName: response.name,
-        artistImage: response.artist_uri+"."+response.ext,
+        images: {
+          small: response.images[1] ? response.images[1].url : "",
+          medium: response.images[2] ? response.images[2].url : "",
+          large: response.images[3] ? response.images[3].url : "",
+        },
         artistAboutMe: response.artist_profile.about_me,
         country: "",
         state: "",
@@ -161,7 +168,11 @@ export function getProfile() {
         email: response.artist_profile.email,
         artistId: response.artist_id,
         displayName: response.name,
-        artistImage: response.artist_uri+"."+response.ext,
+        images: {
+          small: response.images[1] ? response.images[1].url : "",
+          medium: response.images[2] ? response.images[2].url : "",
+          large: response.images[3] ? response.images[3].url : "",
+        },
         country: response.artist_profile.country,
         state: response.artist_profile.state,
         city: response.artist_profile.city,

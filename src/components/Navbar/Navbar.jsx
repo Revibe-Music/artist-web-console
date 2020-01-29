@@ -38,7 +38,6 @@ import {
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {logout} from '../../redux/authentication/actions.js';
-import { API_STORAGE } from 'api/config.js'
 
 
 class AdminNavbar extends React.Component {
@@ -93,7 +92,6 @@ class AdminNavbar extends React.Component {
   }
 
   render() {
-
     const LogoutButton = withRouter(({ history }) => (
       <Button
         color="danger"
@@ -155,7 +153,7 @@ class AdminNavbar extends React.Component {
                   onClick={e => e.preventDefault()}
                 >
                   <div className="photo">
-                    <img alt="..." src={this.props.artistImage ? `${API_STORAGE}Artist/${this.props.artistImage}` : require("assets/portal/img/default-avatar.png")} />
+                    <img alt="..." src={this.props.artistImage ? this.props.artistImage : require("assets/portal/img/default-avatar.png")} />
                   </div>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
@@ -177,7 +175,7 @@ class AdminNavbar extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    artistImage: state.authentication.user.artistImage,
+    artistImage: state.authentication.user.images.small,
   }
 };
 

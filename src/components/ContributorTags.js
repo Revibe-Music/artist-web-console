@@ -22,7 +22,6 @@ import { compact } from 'lodash';
 
 import InviteArtist from "components/Modals/InviteArtist.js";
 import RevibeAPI from 'api/revibe.js';
-import { API_STORAGE } from 'api/config.js'
 
 const revibe = new RevibeAPI()
 
@@ -200,7 +199,7 @@ class ContributorTags extends Component {
            <img
            alt="..."
            style={{height:"80%", width: "80%",borderRadius: "50%"}}
-           src={artist.ext ? `${API_STORAGE}Artist/${artist.artist_uri}.${artist.ext}` : require("assets/portal/img/default-avatar.png")} />
+           src={artist.images.length > 0 ? artist.images[1].url : require("assets/portal/img/default-avatar.png")} />
          </Col>
          <Col style={{textAlign: "left"}} xs={8} md={8}>
            {artist.name}

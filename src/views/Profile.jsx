@@ -45,7 +45,6 @@ import csc from 'country-state-city'
 import zip from 'zippo'
 
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
-import { API_STORAGE } from 'api/config.js'
 import { editArtistProfile } from 'redux/authentication/actions.js'
 
 
@@ -555,7 +554,7 @@ class Profile extends React.Component {
                   <div className="block block-four" />
                   <ImageUpload
                     defaultImage={require("../assets/portal/img/default-avatar.png")}
-                    uploadedImage={this.props.user.artistImage === "" ? null : `${API_STORAGE}Artist/${this.props.user.artistImage}`}
+                    uploadedImage={this.props.user.images.large === "" ? null : this.props.user.images.large}
                     btnText="Change Artist Image"
                     addBtnColor="primary"
                     changeBtnColor="default"

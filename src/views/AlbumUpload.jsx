@@ -90,9 +90,10 @@ class AlbumUpload extends Component {
         songNameError: "",
         songContributionError: "",
         songDurationError: "",  // not currently used
-        songQualityError: "",   // not currently used
 
       };
+
+      this.songTable = React.createRef()
 
       // Table Edit Methods
       this.editRow = this.editRow.bind(this)
@@ -169,10 +170,6 @@ class AlbumUpload extends Component {
     return minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) ;
   }
 
-  formatQuality(bitrate) {
-    return Math.round(bitrate / 1000).toString() + " kb/s"
-  }
-
   async onDrop(files) {
     var songs = [...this.state.songs]
     for(var x=0; x<files.length; x++) {
@@ -180,7 +177,6 @@ class AlbumUpload extends Component {
       var formattedSong = {
         title: metadata.common.title ? metadata.common.title : files[x].name,
         duration: Math.round(metadata.format.duration),
-        quality: metadata.format.bitrate,
         file: files[x],
         explicit: false,
         uploaded: false,
@@ -206,12 +202,10 @@ class AlbumUpload extends Component {
     if(isNaN(newData[index].duration)){
       this.setState({songDurationError: ""})
     }
-    if(isNaN(newData[index].quality)){
-      this.setState({songQualityError: ""})
-    }
     newData.splice(index, 1);
     this.setState({songs: newData})
   }
+
 
   async onSubmit() {
 
@@ -244,10 +238,6 @@ class AlbumUpload extends Component {
       }
       if(isNaN(this.state.songs[x].duration)) {
         this.setState({songDurationError: "Song does not have valid duration."});
-        validFields = false
-      }
-      if(isNaN(this.state.songs[x].quality)) {
-        this.setState({songQualityError: "Song does not have valid bitrate."});
         validFields = false
       }
       for(var i=0; i<this.state.songs[x].contributors.length; i++) {
@@ -330,7 +320,6 @@ class AlbumUpload extends Component {
 
 
   render() {
-
     var columns = [
         {
           id: "title",
@@ -411,7 +400,6 @@ class AlbumUpload extends Component {
             />
           ),
           filterable: false,
-          width: 200
         },
         {
           id: "duration",
@@ -435,31 +423,7 @@ class AlbumUpload extends Component {
             </div>
           ),
           accessor: row => this.formatDuration(row.duration),
-          filterable: false
-        },
-        {
-          id: "quality",
-          Header: () => (
-            <div>
-              Quality
-              {this.state.songQualityError ?
-                <>
-                <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id="quality-error"/>
-                  <UncontrolledTooltip
-                    style={{backgroundColor: "red", color: "white"}}
-                    placement="top"
-                    target="quality-error"
-                  >
-                    {this.state.songQualityError}
-                  </UncontrolledTooltip>
-                </>
-              :
-                null
-              }
-            </div>
-          ),
-          accessor: row => this.formatQuality(row.quality),
-          filterable: false
+          filterable: false,
         },
         {
           id: "explicit",
@@ -627,6 +591,7 @@ class AlbumUpload extends Component {
                 {this.state.songs.length > 0 ?
                   <>
                   <ReactTable
+                    ref={this.songTable}
                     data={this.state.songs}
                     resizable={true}
                     columns={columns}
