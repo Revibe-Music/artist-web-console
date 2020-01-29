@@ -199,6 +199,7 @@ class RegisterArtist extends React.Component {
                 </CardBody>
                 <CardFooter>
                   <SubmitButton/>
+                  <p>*For best results, please use an image that is square and at least 750x750 pixels.</p>
                 </CardFooter>
               </Card>
               </Form>

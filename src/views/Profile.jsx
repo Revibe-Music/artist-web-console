@@ -562,19 +562,11 @@ class Profile extends React.Component {
                   />
                 </div>
               </CardBody>
-              {/*<CardFooter>
-                <div className="button-container">
-                  <Button className="btn-icon btn-round" color="facebook">
-                    <i className="fab fa-facebook" />
-                  </Button>
-                  <Button className="btn-icon btn-round" color="twitter">
-                    <i className="fab fa-twitter" />
-                  </Button>
-                  <Button className="btn-icon btn-round" color="google">
-                    <i className="fab fa-google-plus" />
-                  </Button>
+              <CardFooter>
+                <div style={{margin: "2%"}}>
+                  <p>*For best results, please use an image that is square and at least 750x750 pixels.</p>
                 </div>
-              </CardFooter>*/}
+              </CardFooter>
             </Card>
           </Col>
         </Row>

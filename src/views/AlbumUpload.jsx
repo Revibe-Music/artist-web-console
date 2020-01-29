@@ -24,6 +24,7 @@ import {
   Card,
   CardBody,
   CardTitle,
+  CardFooter,
   Label,
   Form,
   FormGroup,
@@ -482,7 +483,7 @@ class AlbumUpload extends Component {
                         />
                       </a>
                       <ReactTooltip id="albumArtTooltip" effect='solid' delayShow={1500}>
-                        <span>Upload an album cover</span>
+                        <span>For best results, please use an image that is square and at least 750x750 pixels.</span>
                       </ReactTooltip>
                     </div>
                   </Row>
@@ -580,6 +581,11 @@ class AlbumUpload extends Component {
               </Row>
 
             </CardBody>
+            <CardFooter>
+              <div style={{margin: "2%"}}>
+                <p>*For best results, please use an image that is square and at least 750x750 pixels.</p>
+              </div>
+            </CardFooter>
           </Card>
         </Col>
       <a data-tip data-for="cloudUploadTooltip">
