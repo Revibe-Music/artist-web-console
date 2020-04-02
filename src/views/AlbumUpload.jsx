@@ -170,7 +170,6 @@ class AlbumUpload extends Component {
       this.setState({ albumNameState: "has-danger", albumNameError: "This field may not be blank."});
     }
     if (!this.state.ignoreContributionWarning) {
-      console.log(this.contributionStringTests.some(contributionString=>this.state.albumName.toLowerCase().includes(contributionString)));
       if (this.contributionStringTests.some(contributionString=>this.state.albumName.toLowerCase().includes(contributionString))) {
         validFields = false
         this.setState({showContributionWarning: true, contributionWarningObjectType: "album"})
@@ -235,7 +234,6 @@ class AlbumUpload extends Component {
       this.setState({showContributionWarning: true, contributionWarningObjectType: "song", contributionWarningOccurances: songContributionWarningOccurances})
     }
     else if(showFileExtensionWarning && !this.state.ignoreContributionWarning) {
-      console.log("WASSUHH");
       this.setState({showFileExtensionWarning: true, fileExtensionWarningOccurances: fileExtensionWarningOccurances})
     }
     return validFields
