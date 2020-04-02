@@ -64,7 +64,7 @@ class VideoHeader extends React.Component {
               <div className="video-text">
                 <h2 className="title">
                   Revibe guides you from your first song to your first check.
-                  Use our software to manage your hosting, districution, collaboration,
+                  Use our software to manage your hosting, distribution, collaboration,
                   merchandise marketing, and more for one low price.
                   </h2>
                   <h3>
