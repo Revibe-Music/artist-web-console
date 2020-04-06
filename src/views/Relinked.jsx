@@ -50,6 +50,7 @@ const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
+  userSelect: "none",
   margin: `0 ${grid}px 0 0`,
   // change background colour if dragging
   background: isDragging ? "#7248BD" : "transparent",
@@ -145,11 +146,13 @@ class Relinked extends React.Component {
   }
 
   getDraggableServices() {
+    console.log(this.state.socialMedia.filter(x => !!x.handle && x.social_media !== "venmo" && x.social_media !== "cash_app").sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0)));
     return this.state.socialMedia.filter(x => !!x.handle && x.social_media !== "venmo" && x.social_media !== "cash_app").sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
   }
 
   onDragEnd(result) {
     // dropped outside the list
+    console.log(result);
     if (!result.destination) {
       return;
     }
