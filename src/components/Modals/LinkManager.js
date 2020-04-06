@@ -160,7 +160,7 @@ class LinkManager extends Component {
                 <Input
                   type="text"
                   placeholder={"Link Description ex: 'Merchandise'"}
-                  onChange={e => this.change(e)}
+                  onChange={e => this.updateDesciption(e)}
                 />
                 {this.state.descriptionState === "has-danger" ? (
                   <label className="error">

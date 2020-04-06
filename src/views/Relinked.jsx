@@ -145,7 +145,7 @@ class Relinked extends React.Component {
   }
 
   getDraggableServices() {
-    return this.state.socialMedia.filter(x => !!x.handle).sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
+    return this.state.socialMedia.filter(x => !!x.handle && x.social_media !== "venmo" && x.social_media !== "cash_app").sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
   }
 
   onDragEnd(result) {
@@ -202,11 +202,16 @@ class Relinked extends React.Component {
     var links = []
     var savedHandle
     for(var x=0; x<this.state.socialMedia.length; x++) {
-      links.push({
+      var link = {
         service: this.state.socialMedia[x].social_media,
         handle: this.state.socialMedia[x].handle,
         order: this.state.socialMedia[x].order
-      })
+      }
+      if(this.state.socialMedia[x].social_media === "other") {
+        link.description = this.state.socialMedia[x].description
+      }
+      links.push(link)
+
     }
     if(links.length > 0 || this.state.deletedLinks) {
       await this.props.editSocialMediaLinks(links)
@@ -225,99 +230,116 @@ class Relinked extends React.Component {
           <Card>
             <CardHeader>
               <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h3">Relink</CardTitle>
-              <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h5">{this.state.socialMedia.length > 0 ? "*Drag & drop services to change the order they appear on your Relinked page." : ""}</CardTitle>
+              <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h5">{this.getDraggableServices().length > 0 ? "*Drag & drop services to change the order they appear on your Relinked page." : ""}</CardTitle>
             </CardHeader>
-            <CardBody>
-            <Button
-              className="btn-fill"
-              color="success"
-              onClick={() => this.setState({addingLink: true})}
-            >
-              <Row style={{justifyContent: "center", alignItems: "center"}}>
-                <FiPlus style={{fontSize: 15, color: "white"}}/>
-                Link
-              </Row>
-            </Button>
-            <CopyToClipboard text={`https://revibe.tech/artists/${this.props.user.artistId}`}
-              onCopy={() => this.onCopyLink()}>
+            {this.getDraggableServices().length > 0 ?
+              <>
+              <CardBody>
               <Button
                 className="btn-fill"
-                color="primary"
+                color="success"
+                onClick={() => this.setState({addingLink: true})}
               >
                 <Row style={{justifyContent: "center", alignItems: "center"}}>
-                  <i style={{fontSize: 15, color: "white"}} className="tim-icons icon-single-copy-04" />
-                  Copy
+                  <FiPlus style={{fontSize: 15, color: "white"}}/>
+                  Link
                 </Row>
               </Button>
-            </CopyToClipboard>
+              <CopyToClipboard text={`https://revibe.tech/artists/${this.props.user.artistId}`}
+                onCopy={() => this.onCopyLink()}>
+                <Button
+                  className="btn-fill"
+                  color="primary"
+                >
+                  <Row style={{justifyContent: "center", alignItems: "center"}}>
+                    <i style={{fontSize: 15, color: "white"}} className="tim-icons icon-single-copy-04" />
+                    Copy
+                  </Row>
+                </Button>
+              </CopyToClipboard>
 
-            <div style={{justifyContent: "center", alignItems: "center", minHeight: "100%", display: "flex"}}>
-              <DragDropContext onDragEnd={this.onDragEnd} >
-                <Droppable droppableId="droppable">
-                  {(provided, snapshot) => (
-                    <div
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      style={getListStyle(snapshot.isDraggingOver)}
-                    >
-                      {this.getDraggableServices().map((item, index) => (
-                        <Draggable key={`service-${item.id}`} draggableId={`service-${item.id}`} index={index}>
-                          {(provided, snapshot) => (
+              <div style={{justifyContent: "center", alignItems: "center", minHeight: "100%", display: "flex"}}>
+                <DragDropContext onDragEnd={this.onDragEnd} >
+                  <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={getListStyle(snapshot.isDraggingOver)}
+                      >
+                        {this.getDraggableServices().map((item, index) => (
+                          <Draggable key={`service-${item.id}`} draggableId={`service-${item.id}`} index={index}>
+                            {(provided, snapshot) => (
 
-                            <div
-                              style={{margin: 20}}
-                            >
                               <div
-                                onClick={() => this.setState({addingLink: true, selectedLink: item})}
-                                className="btn-simple" color="primary"
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                style={getItemStyle(
-                                  snapshot.isDragging,
-                                  provided.draggableProps.style
-                                )}
+                                style={{margin: 20}}
                               >
-                                {this._toTitleCase(item.social_media)}
+                                <div
+                                  onClick={() => this.setState({addingLink: true, selectedLink: item})}
+                                  className="btn-simple" color="primary"
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={getItemStyle(
+                                    snapshot.isDragging,
+                                    provided.draggableProps.style
+                                  )}
+                                >
+                                  {item.social_media === "other"? this._toTitleCase(item.description) : this._toTitleCase(item.social_media)}
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-              </div>
-            </CardBody>
-            <CardFooter>
-            <a data-tip data-for="saveButtonTooltip">
-              <Button
-              className="btn-fill"
-              color="primary"
-              style={{margin: 20}}
-              onClick={this.onSubmit}
-              >
-                Save
-                {this.state.saving ?
-                  <div className="pull-right" style={{position: "absolute", right: "10%"}}>
-                    <ClipLoader
-                    style={{paddingTop: 0, paddingBottom: 0, marginTop: 0, marginBottom: 0, }}
-                    size={15}
-                    color={"white"}
-                    loading={this.state.saving && Object.keys(this.props.editSocialMediaLinksErrors).length < 1}
-                    />
-                  </div>
-                :
-                  null
-                }
-              </Button>
-              </a>
-            <ReactTooltip id="saveButtonTooltip" effect='solid' delayShow={1500}>
-              <span>Save changes to profile</span>
-            </ReactTooltip>
-            </CardFooter>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+                </div>
+                </CardBody>
+                <CardFooter>
+                <a data-tip data-for="saveButtonTooltip">
+                  <Button
+                  className="btn-fill"
+                  color="primary"
+                  style={{margin: 20}}
+                  onClick={this.onSubmit}
+                  >
+                    Save
+                    {this.state.saving ?
+                      <div className="pull-right" style={{position: "absolute", right: "10%"}}>
+                        <ClipLoader
+                        style={{paddingTop: 0, paddingBottom: 0, marginTop: 0, marginBottom: 0, }}
+                        size={15}
+                        color={"white"}
+                        loading={this.state.saving && Object.keys(this.props.editSocialMediaLinksErrors).length < 1}
+                        />
+                      </div>
+                    :
+                      null
+                    }
+                  </Button>
+                  </a>
+                <ReactTooltip id="saveButtonTooltip" effect='solid' delayShow={1500}>
+                  <span>Save changes to profile</span>
+                </ReactTooltip>
+                </CardFooter>
+                </>
+              :
+              <CardBody style={{display: "flex", alignItems: "center", justifyContent: "center", padding: 30, marginBottom: 50}}>
+                <Button
+                  className="btn-fill"
+                  color="primary"
+                  onClick={() => this.setState({addingLink: true})}
+                >
+                  <Row style={{justifyContent: "center", alignItems: "center", fontSize: 20}}>
+                    Add link to get started!
+                  </Row>
+                </Button>
+              </CardBody>
+              }
+
           </Card>
         </Form>
         <LinkManager

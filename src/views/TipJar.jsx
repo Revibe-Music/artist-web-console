@@ -20,12 +20,13 @@ import {
 } from "reactstrap";
 import ReactTooltip from 'react-tooltip';
 import ClipLoader from "react-spinners/ClipLoader";
+import { Link } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { connect } from 'react-redux';
 import validator from 'validator';
 
-import { editSocialMediaLinks } from 'redux/authentication/actions.js'
+import { editTipJarLinks } from 'redux/authentication/actions.js'
 
 
 class TipJar extends React.Component {
@@ -59,11 +60,26 @@ class TipJar extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "venmo").length > 0) {
-      var venmo = Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "venmo")[0]
-      this.setState({venmoHandle: venmo.handle})
-      if(this.state.venmoHandle !== venmo.handle) {
+    if(this.props.user.socialMedia.filter(x => x.social_media === "venmo").length > 0) {
+      var venmo = this.props.user.socialMedia.filter(x => x.social_media === "venmo")[0]
+      if(prevProps.user.socialMedia.filter(x => x.social_media === "venmo").length > 0) {
+        if(venmo.handle !== prevProps.user.socialMedia.filter(x => x.social_media === "venmo")[0].handle) {
+          this.setState({venmoHandle: venmo.handle})
+        }
+      }
+      else {
         this.setState({venmoHandle: venmo.handle})
+      }
+    }
+    if(this.props.user.socialMedia.filter(x => x.social_media === "cash_app").length > 0) {
+      var cashApp = this.props.user.socialMedia.filter(x => x.social_media === "cash_app")[0]
+      if(prevProps.user.socialMedia.filter(x => x.social_media === "cash_app").length > 0) {
+        if(cashApp.handle !== prevProps.user.socialMedia.filter(x => x.social_media === "cash_app")[0].handle) {
+          this.setState({cashAppHandle: cashApp.handle})
+        }
+      }
+      else {
+        this.setState({cashAppHandle: cashApp.handle})
       }
     }
   }
@@ -80,7 +96,7 @@ class TipJar extends React.Component {
 
   async onSubmit() {
 
-    if(!this.state.venmoError && this.state.cashappError) {
+    if(!this.state.venmoError && !this.state.cashappError) {
       this.setState({saving: true})
       var links = []
       if(Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "venmo").length > 0) {
@@ -101,7 +117,7 @@ class TipJar extends React.Component {
       }
 
       if(links.length > 0) {
-        await this.props.editSocialMediaLinks(links)
+        await this.props.editTipJarLinks(links)
       }
       this.setState({saving: false})
     }
@@ -119,6 +135,7 @@ class TipJar extends React.Component {
                   <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h5">*Adding Venmo/Cash App info will allow tip jar to appear on your Revibe Music artist page and on your Relink profile.</CardTitle>
                 </CardHeader>
                 <CardBody>
+                  <Row>
                     <Col className="pr-md-1" md="4">
                       <FormGroup className={`has-label ${this.state.venmoState}`}>
                         <label>Venmo</label>
@@ -135,42 +152,45 @@ class TipJar extends React.Component {
                         ) : null}
                       </FormGroup>
                     </Col>
+                    <Col className="pr-md-1" md="2" style={{display: "flex", alignItems: "center"}}>
                     {this.state.venmoHandle ?
-                      <a className="nav-link"
-                         target="_blank"
-                         style={{padding: 0, margin:0}}
-                         href={this.state.venmoHandle}>
-                        <i style={{color: "#7482BD", padding: 0, margin:0}} className="tim-icons icon-link-72" />
-                      </a>
+                        <a href={`https://venmo.com/${this.state.venmoHandle}`} target="_blank" style={{marginTop: 10}}>
+                        Test Account
+                        </a>
                     :
                       null
                     }
-                    <Col className="pr-md-1" md="4">
-                      <FormGroup className={`has-label ${this.state.cashAppState}`}>
-                        <label>Cash App</label>
-                        <Input
-                          defaultValue={this.state.cashAppHandle}
-                          type="text"
-                          placeholder={`Cash App Handle ex: John-cash-app`}
-                          onChange={e => this.change(e, "venmo")}
-                        />
-                        {this.state.cashAppState === "has-danger" ? (
-                          <label className="error">
-                            {this.state.cashAppError}
-                          </label>
-                        ) : null}
-                      </FormGroup>
                     </Col>
-                    {this.state.cashAppHandle ?
-                      <a className="nav-link"
-                         target="_blank"
-                         style={{padding: 0, margin:0}}
-                         href={this.state.cashAppHandle}>
-                        <i style={{color: "#7482BD", padding: 0, margin:0}} className="tim-icons icon-link-72" />
-                      </a>
-                    :
-                      null
-                    }
+                  </Row>
+                  <Row>
+                    <Col className="pr-md-1" md="4">
+                        <FormGroup className={`has-label ${this.state.cashAppState}`}>
+                          <label>Cash App</label>
+                          <Input
+                            defaultValue={this.state.cashAppHandle}
+                            type="text"
+                            placeholder={`Cash App Handle ex: John-cash-app`}
+                            onChange={e => this.change(e, "cashApp")}
+                          />
+                          {this.state.cashAppState === "has-danger" ? (
+                            <label className="error">
+                              {this.state.cashAppError}
+                            </label>
+                          ) : null}
+                        </FormGroup>
+                        </Col>
+
+                        <Col className="pr-md-1" md="2" style={{display: "flex", alignItems: "center"}}>
+                        {this.state.cashAppHandle ?
+                          <a href={`https://cash.me/$${this.state.cashAppHandle}/${0}`} target="_blank" style={{marginTop: 10}}>
+                            Test Account
+                          </a>
+                        :
+                          null
+                        }
+                        </Col>
+                    </Row>
+
                 </CardBody>
                 <CardFooter>
                 <a data-tip data-for="saveButtonTooltip">
@@ -187,7 +207,7 @@ class TipJar extends React.Component {
                         style={{paddingTop: 0, paddingBottom: 0, marginTop: 0, marginBottom: 0, }}
                         size={15}
                         color={"white"}
-                        loading={this.state.saving && Object.keys(this.props.editSocialMediaLinksErrors).length < 1}
+                        loading={this.state.saving && Object.keys(this.props.editTipJarLinksErrors).length < 1}
                         />
                       </div>
                     :
@@ -211,12 +231,12 @@ class TipJar extends React.Component {
 function mapStateToProps(state) {
   return {
     user: state.authentication.user,
-    editSocialMediaLinksErrors: state.authentication.editSocialMediaLinksErrors,
+    editTipJarLinksErrors: state.authentication.editTipJarLinksErrors,
   }
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    editSocialMediaLinks: (data) => dispatch(editSocialMediaLinks(data)),
+    editTipJarLinks: (data) => dispatch(editTipJarLinks(data)),
 });
 
 

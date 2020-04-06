@@ -319,3 +319,53 @@ export function editSocialMediaLinks(data) {
 
   }
 }
+
+export function editTipJarLinks(data) {
+  return async (dispatch, getState) => {
+    dispatch(clearErrors("addTipJarLinks"));
+    dispatch(clearErrors("editTipJarLinks"));
+    var newLinks = []
+    var existingLinks = []
+    var existingSocialMedia = getState().authentication.user.socialMedia
+    var checkedLinks = []
+    for(var x=0; x<data.length; x++) {
+      if(existingSocialMedia.filter(y => y.social_media === data[x].service).length > 0) {
+        var savedObject = existingSocialMedia.filter(y => y.social_media === data[x].service)[0]
+        if(data[x].handle !== savedObject.handle || data[x].order !== savedObject.order) {
+          console.log("updating",data[x].service);
+          data[x].socialmedia_id = savedObject.id
+          Object.keys(data[x]).forEach((key) => {if(data[x][key] == null) delete data[x][key]});
+          existingLinks.push(revibe.editSocialMediaLink(data[x]))
+        }
+        checkedLinks.push(data[x])
+      }
+      else {
+        console.log("adding",data[x].service);
+        Object.keys(data[x]).forEach((key) => {if(data[x][key] == null) delete data[x][key]});
+        newLinks.push(revibe.addSocialMediaLink(data[x]))
+      }
+    }
+
+    if(existingLinks.length > 0) {
+      var existingLinksResponse = await Promise.all(existingLinks)
+      for(var x=0; x<existingLinksResponse.length; x++) {
+        if(!String(existingLinksResponse[x].status).charAt(0)=="2") {
+          dispatch(error("editSocialMediaLinks", existingLinksResponse[x].data))
+        }
+      }
+    }
+
+    if(newLinks.length > 0) {
+      var newLinksResponse = await Promise.all(newLinks)
+      console.log(newLinksResponse);
+      for(var x=0; x<newLinksResponse.length; x++) {
+        if(!String(newLinksResponse[x].status).charAt(0)=="2") {
+          dispatch(error("addSocialMediaLinks", newLinksResponse[x].data))
+        }
+      }
+    }
+
+    dispatch(getProfile());
+
+  }
+}
