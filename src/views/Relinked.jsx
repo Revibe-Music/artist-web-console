@@ -52,6 +52,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: "none",
   margin: `0 ${grid}px 0 0`,
+  padding: grid * 2,
   // change background colour if dragging
   background: isDragging ? "#7248BD" : "transparent",
   justifyContent: "center",
@@ -115,7 +116,7 @@ class Relinked extends React.Component {
 
 
   addLink(name, handle, description=null) {
-    var newLink = {social_media: name, handle: handle}
+    var newLink = {social_media: name, handle: handle, id: Math.floor(Math.random() * 10000000)}
     if(description !== null) {
       newLink.description = description
     }
