@@ -85,11 +85,11 @@ class ScrollNavbar extends React.Component {
                   Why Revibe?
                 </NavLink>
               </NavItem>
-              <NavItem>
+              {/*<NavItem>
                 <NavLink to="/about-us" tag={Link}>
                   About Us
                 </NavLink>
-              </NavItem>
+              </NavItem>*/}
               <NavItem>
                 <NavLink to="/contact-us" tag={Link}>
                   Contact
@@ -98,8 +98,8 @@ class ScrollNavbar extends React.Component {
               {this.props.hideLogin ?
                 null
               :
-              <Link to="/account/register">
-                <Button color="primary">Sign Up</Button>
+              <Link to="/account/login">
+                <Button color="primary">Login</Button>
               </Link>
               }
             </Nav>

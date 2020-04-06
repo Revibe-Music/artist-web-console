@@ -66,11 +66,11 @@ class Footer extends React.Component {
                       Contact Us
                     </NavLink>
                   </NavItem>
-                  <NavItem>
-                  <NavLink to="/about-us" tag={Link}>
+                  {/*<NavItem>
+                    <NavLink to="/about-us" tag={Link}>
                       About Us
                     </NavLink>
-                  </NavItem>
+                  </NavItem>*/}
                 </Nav>
               </Col>
               <Col md="3">
