@@ -49,12 +49,12 @@ class TipJar extends React.Component {
   }
 
   componentDidMount() {
-    if(Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "venmo").length > 0) {
-      var venmo = Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "venmo")[0]
+    if(this.props.user.socialMedia.filter(x => x.social_media === "venmo").length > 0) {
+      var venmo = this.props.user.socialMedia.filter(x => x.social_media === "venmo")[0]
       this.setState({venmoHandle: venmo.handle})
     }
-    if(Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "cash_app").length > 0) {
-      var cashApp = Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "cash_app")[0]
+    if(this.props.user.socialMedia.filter(x => x.social_media === "cash_app").length > 0) {
+      var cashApp = this.props.user.socialMedia.filter(x => x.social_media === "cash_app")[0]
       this.setState({cashAppHandle: cashApp.handle})
     }
   }
