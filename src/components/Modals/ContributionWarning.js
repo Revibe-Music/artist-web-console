@@ -50,7 +50,7 @@ class ContributionWarning extends Component {
     return (
       <Modal
         isOpen={this.props.show}
-        toggle={this.props.toggle}
+        toggle={this.onClose}
         modalClassName="modal-grey"
       >
         <ModalHeader cssModule={{'modal-title': 'w-100 text-center'}}>

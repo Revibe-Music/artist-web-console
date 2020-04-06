@@ -76,13 +76,10 @@ class Profile extends React.Component {
       stateOptions: [],
       cityOptions: [],
 
-      requireContributionApproval: this.props.user.requireContributionApproval,
-      shareDataWithContributors: this.props.user.shareDataWithContributors,
-      shareAdvancedDataWithContributors: this.props.user.shareAdvancedDataWithContributors,
-      allowContributorsToEditContributions: this.props.user.allowContributorsToEditContributions,
-
       saving: false
     }
+
+    // console.log(this.props.user);
 
     if(this.state.countryOptions.filter(option => option.label === this.props.user.country).length > 0) {
       this.state.country = this.state.countryOptions.filter(option => option.label === this.props.user.country)[0]
@@ -103,7 +100,6 @@ class Profile extends React.Component {
     this.selectCountry = this.selectCountry.bind(this)
     this.selectState = this.selectState.bind(this)
     this.selectCity = this.selectCity.bind(this)
-    this.toggleSetting = this.toggleSetting.bind(this)
   }
 
   componentDidMount() {
@@ -142,18 +138,6 @@ class Profile extends React.Component {
         }
       }
     }
-    if(this.props.user.requireContributionApproval !== prevProps.user.requireContributionApproval) {
-      this.setState({requireContributionApproval: this.props.user.requireContributionApproval})
-    }
-    if(this.props.user.shareDataWithContributors !== prevProps.user.shareDataWithContributors) {
-      this.setState({shareDataWithContributors:this.props.user.shareDataWithContributors})
-    }
-    if(this.props.user.shareAdvancedDataWithContributors !== prevProps.user.shareAdvancedDataWithContributors) {
-      this.setState({shareAdvancedDataWithContributors:this.props.user.shareAdvancedDataWithContributors})
-    }
-    if(this.props.user.allowContributorsToEditContributions !== prevProps.user.allowContributorsToEditContributions) {
-      this.setState({allowContributorsToEditContributions:this.props.user.allowContributorsToEditContributions})
-    }
   }
 
   async onSubmit() {
@@ -168,10 +152,6 @@ class Profile extends React.Component {
         city: this.state.city ? this.state.city.label : null,
         zipcode: this.state.zipcode,
         aboutMe: this.state.aboutMe,
-        requireContributionApproval: this.state.requireContributionApproval,
-        shareDataWithContributors: this.state.shareDataWithContributors,
-        shareAdvancedDataWithContributors: this.state.shareAdvancedDataWithContributors,
-        allowContributorsToEditContributions: this.state.allowContributorsToEditContributions,
       }
       Object.keys(user).forEach((key) => {if(user[key] == null) delete user[key]});
       await this.props.editArtistProfile(user)
@@ -292,16 +272,12 @@ class Profile extends React.Component {
     this.setState({city: city})
   }
 
-  toggleSetting(name, value) {
-    this.setState({[name]: value})
-  }
 
   render() {
 
 
     return (
       <div className="content">
-      <Container>
         <Row>
           <Col md="8">
             <Form className="form">
@@ -417,108 +393,13 @@ class Profile extends React.Component {
                       />
                     </Col>
                   </Row>
-                  <Row style={{marginTop: "5%"}}>
-                    <Col xs="4" md="2">
-                      <Switch
-                        value={this.state.requireContributionApproval}
-                        offColor=""
-                        onColor=""
-                        onChange={(el, state) => this.toggleSetting("requireContributionApproval", state)}
-                      />
-                    </Col>
-                    <Col xs="8" md="7">
-                      <p>
-                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting1-question"/>
-                        Require Contribution Approval
-                      </p>
-                      <UncontrolledTooltip
-                        style={{backgroundColor: "#7248BD", color: "white"}}
-                        placement="bottom"
-                        target="setting1-question"
-                        hideArrow={true}
-                      >
-                        Enabling this will prevent others from automatically adding you as a contributor on a song/album.
-                      </UncontrolledTooltip>
-                    </Col>
-                  </Row>
-                  <Row style={{marginTop: "5%"}}>
-                    <Col xs="4" md="2">
-                      <Switch
-                        value={this.state.shareDataWithContributors}
-                        offColor=""
-                        onColor=""
-                        onChange={(el, state) => this.toggleSetting("shareDataWithContributors", state)}
-                      />
-                    </Col>
-                    <Col xs="8" md="7">
-                      <p>
-                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting2-question"/>
-                        Share Data With Contributors
-                      </p>
-                      <UncontrolledTooltip
-                        style={{backgroundColor: "#7248BD", color: "white"}}
-                        placement="bottom"
-                        target="setting2-question"
-                        hideArrow={true}
-                      >
-                        Enabling this will allow contributors on your songs/albums to view basic streaming data.
-                      </UncontrolledTooltip>
-                    </Col>
-                  </Row>
-                  <Row style={{marginTop: "5%"}}>
-                    <Col xs="4" md="2">
-                      <Switch
-                        value={this.state.shareAdvancedDataWithContributors}
-                        offColor=""
-                        onColor=""
-                        onChange={(el, state) => this.toggleSetting("shareAdvancedDataWithContributors", state)}
-                      />
-                    </Col>
-                    <Col xs="8" md="7">
-                      <p>
-                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting3-question"/>
-                        Share Advanced Data With Contributors
-                      </p>
-                      <UncontrolledTooltip
-                        style={{backgroundColor: "#7248BD", color: "white"}}
-                        placement="bottom"
-                        target="setting3-question"
-                        hideArrow={true}
-                      >
-                        Enabling this will allow contributors on your songs/albums to view advanced streaming data.
-                      </UncontrolledTooltip>
-                    </Col>
-                  </Row>
-                  <Row style={{marginTop: "5%"}}>
-                    <Col xs="4" md="2">
-                      <Switch
-                        value={this.state.allowContributorsToEditContributions}
-                        offColor=""
-                        onColor=""
-                        onChange={(el, state) => this.toggleSetting("allowContributorsToEditContributions", state)}
-                      />
-                    </Col>
-                    <Col xs="8" md="7">
-                      <p>
-                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting4-question"/>
-                        Allow Contributors To Edit Contributions
-                      </p>
-                      <UncontrolledTooltip
-                        style={{backgroundColor: "#7248BD", color: "white"}}
-                        placement="bottom"
-                        target="setting4-question"
-                        hideArrow={true}
-                      >
-                        Enabling this will allow contributors on one of your songs/albums to edit their contribution type after you have set it.
-                      </UncontrolledTooltip>
-                    </Col>
-                  </Row>
                 </CardBody>
                 <CardFooter>
                 <a data-tip data-for="saveButtonTooltip">
                   <Button
                   className="btn-fill"
                   color="primary"
+                  style={{margin: 20}}
                   onClick={this.onSubmit}
                   >
                     Save
@@ -570,7 +451,6 @@ class Profile extends React.Component {
             </Card>
           </Col>
         </Row>
-        </Container>
       </div>
     );
   }

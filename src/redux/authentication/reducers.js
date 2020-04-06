@@ -20,6 +20,7 @@ var initialState = {
     shareDataWithContributors: true,
     shareAdvancedDataWithContributors: false,
     allowContributorsToEditContributions: false,
+    socialMedia: []
   },
   registerErrors: {},
   registerArtistErrors: {},
@@ -27,6 +28,8 @@ var initialState = {
   logoutErrors: {},
   getProfileErrors: {},
   editProfileErrors: {},
+  editSettingErrors: {},
+  editSocialMediaLinksErrors: {},
 }
 
 
@@ -61,22 +64,7 @@ export const authenticationReducer = (state=initialState, action) => {
         case 'REMOVE_USER_DATA':
           return {
             ...state,
-            user: {
-              username: "",
-              email: "",
-              artistId: "",
-              displayName: "",
-              images: {
-                small: "",
-                medium: "",
-                large: "",
-              },
-              artistAboutMe: "",
-              country: "",
-              state: "",
-              city: "",
-              zipcode: "",
-            },
+            initialState
           }
         case 'ERROR':
             return {

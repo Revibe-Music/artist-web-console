@@ -109,6 +109,7 @@ export function registerArtist(name, image, history) {
         shareDataWithContributors: true,
         shareAdvancedDataWithContributors: false,
         allowContributorsToEditContributions: false,
+        socialMedia: []
       }
       dispatch(updateUser(user));
       history.push('/dashboard');
@@ -182,6 +183,7 @@ export function getProfile() {
         shareDataWithContributors: response.artist_profile.share_data_with_contributors,
         shareAdvancedDataWithContributors: response.artist_profile.share_advanced_data_with_contributors,
         allowContributorsToEditContributions: response.artist_profile.allow_contributors_to_edit_contributions,
+        socialMedia: response.artist_profile.social_media
       }
       dispatch(updateUser(user));
     }
@@ -204,14 +206,10 @@ export function editArtistProfile(data) {
     var city = Object.keys(data).filter(x=> x==="city").length > 0 ? data.city : null
     var zipcode = Object.keys(data).filter(x=> x==="zipcode").length > 0 ? data.zipcode : null
     var aboutMe = Object.keys(data).filter(x=> x==="aboutMe").length > 0 ? data.aboutMe : null
-    var requireContributionApproval = Object.keys(data).filter(x=> x==="requireContributionApproval").length > 0 ? data.requireContributionApproval : null
-    var shareDataWithContributors = Object.keys(data).filter(x=> x==="shareDataWithContributors").length > 0 ? data.shareDataWithContributors : null
-    var shareAdvancedDataWithContributors = Object.keys(data).filter(x=> x==="shareAdvancedDataWithContributors").length > 0 ? data.shareAdvancedDataWithContributors : null
-    var allowContributorsToEditContributions = Object.keys(data).filter(x=> x==="allowContributorsToEditContributions").length > 0 ? data.allowContributorsToEditContributions : null
 
     // check to see if user has edited user or artist profile data and make requests accordingly
-    if(name || email || image || country || state || city || zipcode || aboutMe || requireContributionApproval || shareDataWithContributors || shareAdvancedDataWithContributors || allowContributorsToEditContributions) {
-      var response = await revibe.editArtistProfile(name,email,image,country,state,city,zipcode,aboutMe,requireContributionApproval,shareDataWithContributors,shareAdvancedDataWithContributors,allowContributorsToEditContributions)
+    if(name || email || image || country || state || city || zipcode || aboutMe ) {
+      var response = await revibe.editArtistProfile(name,email,image,country,state,city,zipcode,aboutMe)
       if(String(response.status).charAt(0)=="2") {
         response = response.data
         dispatch(getProfile());
@@ -220,5 +218,104 @@ export function editArtistProfile(data) {
         dispatch(error("editProfile", response.data))
       }
     }
+  }
+}
+
+export function editSettings(data) {
+  return async (dispatch) => {
+    dispatch(clearErrors("editSettings"));
+    // check to see if variables are in data
+    var requireContributionApproval = Object.keys(data).filter(x=> x==="requireContributionApproval").length > 0 ? data.requireContributionApproval : null
+    var shareDataWithContributors = Object.keys(data).filter(x=> x==="shareDataWithContributors").length > 0 ? data.shareDataWithContributors : null
+    var shareAdvancedDataWithContributors = Object.keys(data).filter(x=> x==="shareAdvancedDataWithContributors").length > 0 ? data.shareAdvancedDataWithContributors : null
+    var allowContributorsToEditContributions = Object.keys(data).filter(x=> x==="allowContributorsToEditContributions").length > 0 ? data.allowContributorsToEditContributions : null
+
+    // check to see if user has edited user or artist profile data and make requests accordingly
+    if(requireContributionApproval || shareDataWithContributors || shareAdvancedDataWithContributors || allowContributorsToEditContributions) {
+      var response = await revibe.editSettings(requireContributionApproval,shareDataWithContributors,shareAdvancedDataWithContributors,allowContributorsToEditContributions)
+      if(String(response.status).charAt(0)=="2") {
+        response = response.data
+        dispatch(getProfile());
+      }
+      else {
+        dispatch(error("editSettings", response.data))
+      }
+    }
+  }
+}
+
+export function editSocialMediaLinks(data) {
+  return async (dispatch, getState) => {
+    dispatch(clearErrors("addSocialMediaLinks"));
+    dispatch(clearErrors("editSocialMediaLinks"));
+    var newLinks = []
+    var deletedLinks = []
+    var existingLinks = []
+    var existingSocialMedia = getState().authentication.user.socialMedia
+    var checkedLinks = []
+    for(var x=0; x<data.length; x++) {
+      if(existingSocialMedia.filter(y => y.social_media === data[x].service).length > 0) {
+        var savedObject = existingSocialMedia.filter(y => y.social_media === data[x].service)[0]
+        if(data[x].handle !== savedObject.handle || data[x].order !== savedObject.order) {
+          console.log("updating",data[x].service);
+          data[x].socialmedia_id = savedObject.id
+          Object.keys(data[x]).forEach((key) => {if(data[x][key] == null) delete data[x][key]});
+          existingLinks.push(revibe.editSocialMediaLink(data[x]))
+        }
+        checkedLinks.push(data[x])
+      }
+      else {
+        console.log("adding",data[x].service);
+        Object.keys(data[x]).forEach((key) => {if(data[x][key] == null) delete data[x][key]});
+        newLinks.push(revibe.addSocialMediaLink(data[x]))
+      }
+    }
+    if(checkedLinks.length !== existingSocialMedia.length) {
+      for(var x=0; x<existingSocialMedia.length; x++) {
+        var wasRemoved = true
+        for(var y=0; y<checkedLinks.length; y++) {
+          // console.log(existingSocialMedia[x].social_media, updatingLinks[y].service);
+          if(existingSocialMedia[x].social_media === checkedLinks[y].service) {
+            wasRemoved = false
+            break
+          }
+        }
+        if(wasRemoved) {
+          console.log("removing", existingSocialMedia[x].social_media);
+          deletedLinks.push(revibe.deleteSocialMediaLink(existingSocialMedia[x].id))
+        }
+      }
+    }
+
+    if(existingLinks.length > 0) {
+      var existingLinksResponse = await Promise.all(existingLinks)
+      for(var x=0; x<existingLinksResponse.length; x++) {
+        if(!String(existingLinksResponse[x].status).charAt(0)=="2") {
+          dispatch(error("editSocialMediaLinks", existingLinksResponse[x].data))
+        }
+      }
+    }
+
+    if(newLinks.length > 0) {
+      var newLinksResponse = await Promise.all(newLinks)
+      console.log(newLinksResponse);
+      for(var x=0; x<newLinksResponse.length; x++) {
+        if(!String(newLinksResponse[x].status).charAt(0)=="2") {
+          dispatch(error("addSocialMediaLinks", newLinksResponse[x].data))
+        }
+      }
+    }
+
+    if(deletedLinks.length > 0) {
+      var deletedLinksResponse = await Promise.all(deletedLinks)
+      console.log(deletedLinksResponse);
+      for(var x=0; x<deletedLinksResponse.length; x++) {
+        if(!String(deletedLinksResponse[x].status).charAt(0)=="2") {
+          dispatch(error("deleteSocialMediaLinks", deletedLinksResponse[x].data))
+        }
+      }
+    }
+    dispatch(getProfile());
+
   }
 }
