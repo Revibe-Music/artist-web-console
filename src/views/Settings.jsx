@@ -15,6 +15,7 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
+import NotificationAlert from "react-notification-alert";
 import ReactTooltip from 'react-tooltip';
 import Switch from "react-bootstrap-switch";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -76,6 +77,14 @@ class Settings extends React.Component {
       allowContributorsToEditContributions: this.state.allowContributorsToEditContributions,
     }
     await this.props.editSettings(settings)
+    var options = {
+      place: "tr",
+      icon: "tim-icons icon-check-2",
+      autoDismiss: 2,
+      type: "primary",
+      message: "Successfully saved settings."
+    }
+    this.refs.notificationAlert.notificationAlert(options);
     this.setState({saving: false})
   }
 
@@ -87,6 +96,10 @@ class Settings extends React.Component {
 
 
     return (
+      <>
+      <div className="rna-container">
+        <NotificationAlert ref="notificationAlert" />
+      </div>
       <div className="content">
         <Row>
           <Col md="10">
@@ -225,6 +238,7 @@ class Settings extends React.Component {
           </Col>
         </Row>
       </div>
+      </>
     );
   }
 }

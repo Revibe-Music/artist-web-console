@@ -257,7 +257,6 @@ export function editSocialMediaLinks(data) {
       if(existingSocialMedia.filter(y => y.social_media === data[x].service).length > 0) {
         var savedObject = existingSocialMedia.filter(y => y.social_media === data[x].service)[0]
         if(data[x].handle !== savedObject.handle || data[x].order !== savedObject.order) {
-          console.log("updating",data[x].service);
           data[x].socialmedia_id = savedObject.id
           Object.keys(data[x]).forEach((key) => {if(data[x][key] == null) delete data[x][key]});
           existingLinks.push(revibe.editSocialMediaLink(data[x]))
@@ -265,7 +264,6 @@ export function editSocialMediaLinks(data) {
         checkedLinks.push(data[x])
       }
       else {
-        console.log("adding",data[x].service);
         Object.keys(data[x]).forEach((key) => {if(data[x][key] == null) delete data[x][key]});
         newLinks.push(revibe.addSocialMediaLink(data[x]))
       }
@@ -274,14 +272,12 @@ export function editSocialMediaLinks(data) {
       for(var x=0; x<existingSocialMedia.length; x++) {
         var wasRemoved = true
         for(var y=0; y<checkedLinks.length; y++) {
-          // console.log(existingSocialMedia[x].social_media, updatingLinks[y].service);
           if(existingSocialMedia[x].social_media === checkedLinks[y].service) {
             wasRemoved = false
             break
           }
         }
         if(wasRemoved) {
-          console.log("removing", existingSocialMedia[x].social_media);
           deletedLinks.push(revibe.deleteSocialMediaLink(existingSocialMedia[x].id))
         }
       }
@@ -298,7 +294,6 @@ export function editSocialMediaLinks(data) {
 
     if(newLinks.length > 0) {
       var newLinksResponse = await Promise.all(newLinks)
-      console.log(newLinksResponse);
       for(var x=0; x<newLinksResponse.length; x++) {
         if(!String(newLinksResponse[x].status).charAt(0)=="2") {
           dispatch(error("addSocialMediaLinks", newLinksResponse[x].data))
@@ -308,7 +303,6 @@ export function editSocialMediaLinks(data) {
 
     if(deletedLinks.length > 0) {
       var deletedLinksResponse = await Promise.all(deletedLinks)
-      console.log(deletedLinksResponse);
       for(var x=0; x<deletedLinksResponse.length; x++) {
         if(!String(deletedLinksResponse[x].status).charAt(0)=="2") {
           dispatch(error("deleteSocialMediaLinks", deletedLinksResponse[x].data))
@@ -332,7 +326,6 @@ export function editTipJarLinks(data) {
       if(existingSocialMedia.filter(y => y.social_media === data[x].service).length > 0) {
         var savedObject = existingSocialMedia.filter(y => y.social_media === data[x].service)[0]
         if(data[x].handle !== savedObject.handle || data[x].order !== savedObject.order) {
-          console.log("updating",data[x].service);
           data[x].socialmedia_id = savedObject.id
           Object.keys(data[x]).forEach((key) => {if(data[x][key] == null) delete data[x][key]});
           existingLinks.push(revibe.editSocialMediaLink(data[x]))
@@ -340,7 +333,6 @@ export function editTipJarLinks(data) {
         checkedLinks.push(data[x])
       }
       else {
-        console.log("adding",data[x].service);
         Object.keys(data[x]).forEach((key) => {if(data[x][key] == null) delete data[x][key]});
         newLinks.push(revibe.addSocialMediaLink(data[x]))
       }
@@ -357,7 +349,6 @@ export function editTipJarLinks(data) {
 
     if(newLinks.length > 0) {
       var newLinksResponse = await Promise.all(newLinks)
-      console.log(newLinksResponse);
       for(var x=0; x<newLinksResponse.length; x++) {
         if(!String(newLinksResponse[x].status).charAt(0)=="2") {
           dispatch(error("addSocialMediaLinks", newLinksResponse[x].data))

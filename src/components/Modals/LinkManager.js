@@ -38,7 +38,7 @@ class LinkManager extends Component {
 
     }
 
-    this.availableStreamingServices = ["spotify", "apple_music", "amazon_music", "tidal", "soundcloud", "google_play_music"]
+    this.availableStreamingServices = ["spotify", "applemusic", "amazonmusic", "tidal", "soundcloud", "googleplaymusic"]
     this.availableSocialServices = ["facebook", "instagram", "twitter"]
 
     this.onClose = this.onClose.bind(this)
@@ -49,16 +49,48 @@ class LinkManager extends Component {
 
   componentDidMount() {
     if(this.props.link) {
-      this.setState({selectedService: this.props.link.social_media, handle: this.props.link.handle})
+      var state = {selectedService: this.props.link.social_media, handle: this.props.link.handle}
+      if(this.props.link.description) {
+        state.description = this.props.link.description
+      }
+      this.setState(state)
     }
   }
 
   componentDidUpdate(prevProps) {
     if(this.props.link) {
       if(prevProps.link !== this.props.link) {
-        console.log();
-        this.setState({selectedService: this.props.link.social_media, handle: this.props.link.handle})
+        var state = {selectedService: this.props.link.social_media, handle: this.props.link.handle}
+        if(this.props.link.description) {
+          state.description = this.props.link.description
+        }
+        this.setState(state)
       }
+    }
+  }
+
+  getTitle(service) {
+    switch (service) {
+      case "applemusic":
+        return "Apple Music";
+      case "amazonmusic":
+        return "Amazon Music";
+      case "googleplaymusic":
+        return "Google Play Music"
+      case "spotify":
+        return "Spotify"
+      case "soundcloud":
+        return "Soundcloud"
+      case "tidal":
+        return "Tidal"
+      case "facebook":
+        return "Facebook"
+      case "instagram":
+        return "Instagram"
+      case "twitter":
+        return "Twitter"
+      default:
+        return this._toTitleCase(service)
     }
   }
 
@@ -101,12 +133,21 @@ class LinkManager extends Component {
   }
 
   onSave() {
-    this.props.onSave(this.state.selectedService, this.state.handle, this.state.description)
+    var handle = this.state.handle.slice()
+
+    if(!handle.includes("https://") && !handle.includes("http://")) {
+      var handle = "https://"+handle
+    }
+    this.props.onSave(this.state.selectedService, handle, this.state.description)
     this.onClose()
   }
 
   onAdd() {
-    this.props.onAdd(this.state.selectedService, this.state.handle, this.state.description)
+    var handle = this.state.handle.slice()
+    if(!handle.includes("https://") && !handle.includes("http://")) {
+      var handle = "https://"+handle
+    }
+    this.props.onAdd(this.state.selectedService, handle, this.state.description)
     this.onClose()
   }
 
@@ -117,7 +158,7 @@ class LinkManager extends Component {
 
   render() {
     var serviceOptions = this.availableStreamingServices.concat(this.availableSocialServices)
-    serviceOptions = serviceOptions.map((value, index) => ({ label: this._toTitleCase(value), value: value }))
+    serviceOptions = serviceOptions.map((value, index) => ({ label: this.getTitle(value), value: value }))
     serviceOptions.push({ label: "Other", value: "other" })
     return (
       <Modal
@@ -133,7 +174,7 @@ class LinkManager extends Component {
           </a>
           </Col>
           <Col md="8">
-          <h1 style={{color: "white", textAlign: "center"}}>{this.props.link !== null? `Edit ${this._toTitleCase(this.props.link.social_media)}` : "Add New Link"}</h1>
+          <h1 style={{color: "white", textAlign: "center"}}>{this.props.link !== null? `Edit ${this.getTitle(this.props.link.social_media)}` : "Add New Link"}</h1>
           </Col>
           </Row>
         </ModalHeader>
@@ -159,6 +200,7 @@ class LinkManager extends Component {
               <FormGroup className={`has-label ${this.state.descriptionState}`}>
                 <Input
                   type="text"
+                  defaultValue={this.state.description}
                   placeholder={"Link Description ex: 'Merchandise'"}
                   onChange={e => this.updateDesciption(e)}
                 />
@@ -178,7 +220,7 @@ class LinkManager extends Component {
                 disabled={!this.state.selectedService}
                 defaultValue={this.state.handle}
                 type="text"
-                placeholder={`${this._toTitleCase(this.state.selectedService)} Share Link`}
+                placeholder={`${this.getTitle(this.state.selectedService)} Share Link`}
                 onChange={e => this.change(e)}
               />
               {this.state.fieldState === "has-danger" ? (

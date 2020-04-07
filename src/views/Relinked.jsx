@@ -107,6 +107,33 @@ class Relinked extends React.Component {
     }
   }
 
+  getTitle(service) {
+    switch (service.social_media) {
+      case "applemusic":
+        return "Apple Music";
+      case "amazonmusic":
+        return "Amazon Music";
+      case "googleplaymusic":
+        return "Google Play Music"
+      case "spotify":
+        return "Spotify"
+      case "soundcloud":
+        return "Soundcloud"
+      case "tidal":
+        return "Tidal"
+      case "facebook":
+        return "Facebook"
+      case "instagram":
+        return "Instagram"
+      case "twitter":
+        return "Twitter"
+      case "other":
+        return this._toTitleCase(service.description)
+      default:
+        return this._toTitleCase(service.social_media)
+    }
+  }
+
   _toTitleCase(str) {
       str = str.split('_').join(' ')
       return str.replace(/\w\S*/g, function(txt){
@@ -147,13 +174,16 @@ class Relinked extends React.Component {
   }
 
   getDraggableServices() {
-    console.log(this.state.socialMedia.filter(x => !!x.handle && x.social_media !== "venmo" && x.social_media !== "cash_app").sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0)));
-    return this.state.socialMedia.filter(x => !!x.handle && x.social_media !== "venmo" && x.social_media !== "cash_app").sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
+    var socialMedia = this.state.socialMedia.filter(x => !!x.handle && x.social_media !== "venmo" && x.social_media !== "cashapp").sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
+    socialMedia = socialMedia.map((item, index) => {
+      item.order = index + 1
+      return item
+    })
+    return socialMedia
   }
 
   onDragEnd(result) {
     // dropped outside the list
-    console.log(result);
     if (!result.destination) {
       return;
     }
@@ -220,6 +250,14 @@ class Relinked extends React.Component {
     if(links.length > 0 || this.state.deletedLinks) {
       await this.props.editSocialMediaLinks(links)
     }
+    var options = {
+      place: "tr",
+      icon: "tim-icons icon-check-2",
+      autoDismiss: 2,
+      type: "primary",
+      message: "Successfully saved Relink."
+    }
+    this.refs.notificationAlert.notificationAlert(options);
     this.setState({saving: false})
   }
 
@@ -234,7 +272,7 @@ class Relinked extends React.Component {
           <Card>
             <CardHeader>
               <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h3">Relink</CardTitle>
-              <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h5">{this.getDraggableServices().length > 0 ? "*Drag & drop services to change the order they appear on your Relinked page." : ""}</CardTitle>
+              <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h5">{this.getDraggableServices().length > 0 ? "*Drag & drop services to change the order they appear on your Relink page (will be available starting April 9th)." : "Your Relink page will be available starting April 9th!"}</CardTitle>
             </CardHeader>
             {this.getDraggableServices().length > 0 ?
               <>
@@ -254,6 +292,7 @@ class Relinked extends React.Component {
                 <Button
                   className="btn-fill"
                   color="primary"
+                  disabled={true}
                 >
                   <Row style={{justifyContent: "center", alignItems: "center"}}>
                     <i style={{fontSize: 15, color: "white"}} className="tim-icons icon-single-copy-04" />
@@ -289,7 +328,7 @@ class Relinked extends React.Component {
                                     provided.draggableProps.style
                                   )}
                                 >
-                                  {item.social_media === "other"? this._toTitleCase(item.description) : this._toTitleCase(item.social_media)}
+                                  {this.getTitle(item)}
                                 </div>
                               </div>
                             )}

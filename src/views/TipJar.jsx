@@ -18,6 +18,7 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
+import NotificationAlert from "react-notification-alert";
 import ReactTooltip from 'react-tooltip';
 import ClipLoader from "react-spinners/ClipLoader";
 import { Link } from 'react-router-dom';
@@ -53,8 +54,8 @@ class TipJar extends React.Component {
       var venmo = this.props.user.socialMedia.filter(x => x.social_media === "venmo")[0]
       this.setState({venmoHandle: venmo.handle})
     }
-    if(this.props.user.socialMedia.filter(x => x.social_media === "cash_app").length > 0) {
-      var cashApp = this.props.user.socialMedia.filter(x => x.social_media === "cash_app")[0]
+    if(this.props.user.socialMedia.filter(x => x.social_media === "cashapp").length > 0) {
+      var cashApp = this.props.user.socialMedia.filter(x => x.social_media === "cashapp")[0]
       this.setState({cashAppHandle: cashApp.handle})
     }
   }
@@ -71,10 +72,10 @@ class TipJar extends React.Component {
         this.setState({venmoHandle: venmo.handle})
       }
     }
-    if(this.props.user.socialMedia.filter(x => x.social_media === "cash_app").length > 0) {
-      var cashApp = this.props.user.socialMedia.filter(x => x.social_media === "cash_app")[0]
-      if(prevProps.user.socialMedia.filter(x => x.social_media === "cash_app").length > 0) {
-        if(cashApp.handle !== prevProps.user.socialMedia.filter(x => x.social_media === "cash_app")[0].handle) {
+    if(this.props.user.socialMedia.filter(x => x.social_media === "cashapp").length > 0) {
+      var cashApp = this.props.user.socialMedia.filter(x => x.social_media === "cashapp")[0]
+      if(prevProps.user.socialMedia.filter(x => x.social_media === "cashapp").length > 0) {
+        if(cashApp.handle !== prevProps.user.socialMedia.filter(x => x.social_media === "cashapp")[0].handle) {
           this.setState({cashAppHandle: cashApp.handle})
         }
       }
@@ -107,24 +108,36 @@ class TipJar extends React.Component {
       else if(this.state.venmoHandle) {
         links.push({service: "venmo", handle: this.state.venmoHandle})
       }
-      if(Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "cash_app").length > 0) {
-        if(this.state.cashAppHandle !== Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "cash_app")[0].handle) {
-          links.push({service: "cash_app", handle: this.state.cashAppHandle})
+      if(Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "cashapp").length > 0) {
+        if(this.state.cashAppHandle !== Object.keys(this.props.user.socialMedia).filter(x => x.social_media === "cashapp")[0].handle) {
+          links.push({service: "cashapp", handle: this.state.cashAppHandle})
         }
       }
       else if(this.state.cashAppHandle) {
-        links.push({service: "cash_app", handle: this.state.cashAppHandle})
+        links.push({service: "cashapp", handle: this.state.cashAppHandle})
       }
 
       if(links.length > 0) {
         await this.props.editTipJarLinks(links)
       }
+      var options = {
+        place: "tr",
+        icon: "tim-icons icon-check-2",
+        autoDismiss: 2,
+        type: "primary",
+        message: "Successfully saved Tip Jar."
+      }
+      this.refs.notificationAlert.notificationAlert(options);
       this.setState({saving: false})
     }
   }
 
   render() {
     return (
+      <>
+      <div className="rna-container">
+        <NotificationAlert ref="notificationAlert" />
+      </div>
       <div className="content">
         <Row>
           <Col md="10">
@@ -224,6 +237,7 @@ class TipJar extends React.Component {
           </Col>
         </Row>
       </div>
+      </>
     );
   }
 }

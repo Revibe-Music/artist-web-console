@@ -34,6 +34,7 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
+import NotificationAlert from "react-notification-alert";
 import ReactTooltip from 'react-tooltip';
 import Select from "react-select";
 import Switch from "react-bootstrap-switch";
@@ -78,8 +79,6 @@ class Profile extends React.Component {
 
       saving: false
     }
-
-    // console.log(this.props.user);
 
     if(this.state.countryOptions.filter(option => option.label === this.props.user.country).length > 0) {
       this.state.country = this.state.countryOptions.filter(option => option.label === this.props.user.country)[0]
@@ -155,6 +154,14 @@ class Profile extends React.Component {
       }
       Object.keys(user).forEach((key) => {if(user[key] == null) delete user[key]});
       await this.props.editArtistProfile(user)
+      var options = {
+        place: "tr",
+        icon: "tim-icons icon-check-2",
+        autoDismiss: 2,
+        type: "primary",
+        message: "Successfully saved Artist Profile."
+      }
+      this.refs.notificationAlert.notificationAlert(options);
       this.setState({saving: false})
     }
   }
@@ -277,13 +284,17 @@ class Profile extends React.Component {
 
 
     return (
+      <>
+      <div className="rna-container">
+        <NotificationAlert ref="notificationAlert" />
+      </div>
       <div className="content">
         <Row>
           <Col md="8">
             <Form className="form">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h3">Edit Profile</CardTitle>
+                  <CardTitle tag="h3">Artist Profile</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Row>
@@ -452,6 +463,7 @@ class Profile extends React.Component {
           </Col>
         </Row>
       </div>
+      </>
     );
   }
 }
