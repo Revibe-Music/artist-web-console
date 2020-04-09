@@ -498,13 +498,11 @@ class Home extends React.Component {
                           <i className="fa fa-quote-right" />
                         </div>
                         <p className="description text-white">
-                          I didn't really think they would bring everything
-                          I already do every day into one platform.
+                          If you are serious about your career, I suggest you hop
+                          on Revibe.
                           <br/><br/>
-                          One of the most important features Revibe has to offer
-                          is the collaboration feature. Being able to credit everyone
-                          who had a role in making the music wheter it be engineers, producers,
-                          all the way to graphic designers.
+                          This independent route is not as easy as it seems, but
+                          it can be done.
                         </p>
                         <div className="author">
                           <img
@@ -512,7 +510,7 @@ class Home extends React.Component {
                             className="avatar img-raised"
                             src={require("assets/site/img/p10.jpg")}
                           />
-                          <span>Kidnap</span>
+                          <span>DJ Cmix</span>
                         </div>
                       </div>
                       <Card
