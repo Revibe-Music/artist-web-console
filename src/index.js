@@ -11,6 +11,7 @@ import App from 'App.js';
 
 import "assets/site/scss/blk-design-system-pro-react.scss?v1.0.0";
 import "assets/site/css/nucleo-icons.css";
+import "assets/site/css/revibe.css";
 import "react-notification-alert/dist/animate.css";
 
 // The ones below were used previously for the artist portal

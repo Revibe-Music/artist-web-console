@@ -71,7 +71,7 @@ class ScrollNavbar extends React.Component {
                 </Col>
               </Row>
             </div>
-            <Nav className="ml-auto" navbar>
+            <Nav className="ml-auto align-items-center" navbar>
               {/* Will ADD CODE BELOW WHEN WE KNOW WHAT WE WANT FOR THIS TAB */}
               {/* <NavItem className="active">
               <NavLink
@@ -80,27 +80,37 @@ class ScrollNavbar extends React.Component {
                 Artist of the Week
               </NavLink>
               </NavItem> */}
-              <NavItem className="active">
+              {/*<NavItem className="active">
                 <NavLink to="/why-revibe" tag={Link}>
                   Why Revibe?
                 </NavLink>
-              </NavItem>
+              </NavItem>*/}
               {/*<NavItem>
                 <NavLink to="/about-us" tag={Link}>
                   About Us
                 </NavLink>
               </NavItem>*/}
               <NavItem>
-                <NavLink to="/contact-us" tag={Link}>
-                  Contact
-                </NavLink>
+                <a href="https://revibe.tech/blogs" target="_blank">
+                  Blog
+                </a>
+              </NavItem>
+              <NavItem>
+                <a href="https://revibe.tech" target="_blank">
+                  Revibe Music
+                </a>
               </NavItem>
               {this.props.hideLogin ?
                 null
               :
-              <Link to="/account/login">
-                <Button color="primary">Login</Button>
-              </Link>
+              <>
+                <Link to="/account/login">
+                  <Button color="primary" className="btn-simple text-white">Login</Button>
+                </Link>
+                <Link to="/account/register">
+                  <Button color="primary">Sign Up</Button>
+                </Link>
+              </>
               }
             </Nav>
             </UncontrolledCollapse>

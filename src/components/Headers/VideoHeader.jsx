@@ -44,21 +44,21 @@ class VideoHeader extends React.Component {
     return (
       <>
       <div className="header header-4">
-          <div className="page-header header-video header-filter">
-            <video fluid
-              autoPlay="autoplay"
-              loop="loop"
-              muted="muted"
-              playsInline="playsinline"
-            >
-              <source
-                src={require("../../assets/site/img/video.mp4")}
-                type="video/mp4"
-              />
-            </video>
-            <Container style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+        <div className="page-header header-video header-filter">
+          <video fluid
+            autoPlay="autoplay"
+            loop="loop"
+            muted="muted"
+            playsInline="playsinline"
+          >
+            <source
+              src={require("../../assets/site/img/video.mp4")}
+              type="video/mp4"
+            />
+          </video>
+          <Container style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
             <Row>
-                <Col lg="8">
+              <Col lg="6">
                 <div className="card-image" >
                       <a to="/account/register" onClick={e => e.preventDefault()}>
                         <img
@@ -69,23 +69,25 @@ class VideoHeader extends React.Component {
                       </a>
                     </div>
                 </Col>
-              <Col lg="4" style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-              <div className="video-text">
-                <h1 className="title">Run your entire music career in one place</h1>
-                <br />
-                <Link to="/account/register">
-                <Button
-                  className="btn-round btn-primary"
-                  size="lg"
-                >
-                  Sign Up
-                </Button>
-                </Link>
-              </div>
+              <Col lg="6" className="d-flex align-items-center justify-content-center">
+                <div className="video-text text-md-left text-center">
+                  <h1 className="title" style={{ textTransform: "none" }}>The all-in-one platform independent artists need.</h1>
+                  <br />
+                  <div style={{ width: "100%" }} className="d-flex justify-content-center">
+                    <Link to="/account/register" className="ml-auto mr-auto">
+                      <Button
+                        className="btn-round btn-primary"
+                        size="lg"
+                      >
+                        Sign Up Now
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </Col>
-              </Row>
-            </Container>
-            </div>
+            </Row>
+          </Container>
+        </div>
       </div>
       </>
     );
