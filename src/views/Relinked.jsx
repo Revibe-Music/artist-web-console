@@ -37,14 +37,6 @@ import { editSocialMediaLinks } from 'redux/authentication/actions.js'
 import LinkManager from 'components/Modals/LinkManager.js'
 
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
 
 const grid = 8;
 
@@ -272,7 +264,7 @@ class Relinked extends React.Component {
           <Card>
             <CardHeader>
               <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h3">Relink</CardTitle>
-              <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h5">{this.getDraggableServices().length > 0 ? "*Drag & drop services to change the order they appear on your Relink page (will be available starting April 9th)." : "Your Relink page will be available starting April 9th!"}</CardTitle>
+              <CardTitle style={{alignItems: "center", marginRight: 20}} tag="h5">{this.getDraggableServices().length > 0 ? "*Drag & drop services to change the order they appear on your Relink page" : ""}</CardTitle>
             </CardHeader>
             {this.getDraggableServices().length > 0 ?
               <>
@@ -287,12 +279,11 @@ class Relinked extends React.Component {
                   Link
                 </Row>
               </Button>
-              <CopyToClipboard text={`https://revibe.tech/artists/${this.props.user.artistId}`}
+              <CopyToClipboard text={`https://revibe.tech/relink/${this.props.user.artistId}`}
                 onCopy={() => this.onCopyLink()}>
                 <Button
                   className="btn-fill"
                   color="primary"
-                  disabled={true}
                 >
                   <Row style={{justifyContent: "center", alignItems: "center"}}>
                     <i style={{fontSize: 15, color: "white"}} className="tim-icons icon-single-copy-04" />
@@ -364,12 +355,10 @@ class Relinked extends React.Component {
                     }
                   </Button>
                   </a>
-                <ReactTooltip id="saveButtonTooltip" effect='solid' delayShow={1500}>
-                  <span>Save changes to profile</span>
-                </ReactTooltip>
                 </CardFooter>
                 </>
               :
+              <>
               <CardBody style={{display: "flex", alignItems: "center", justifyContent: "center", padding: 30, marginBottom: 50}}>
                 <Button
                   className="btn-fill"
@@ -381,10 +370,41 @@ class Relinked extends React.Component {
                   </Row>
                 </Button>
               </CardBody>
+              {this.props.user.socialMedia.filter(x => !!x.handle && x.social_media !== "venmo" && x.social_media !== "cashapp").length > 0 ?
+                <CardFooter>
+                  <a data-tip data-for="saveButtonTooltip">
+                    <Button
+                    className="btn-fill"
+                    color="primary"
+                    style={{margin: 20}}
+                    onClick={this.onSubmit}
+                    >
+                      Save
+                      {this.state.saving ?
+                        <div className="pull-right" style={{position: "absolute", right: "10%"}}>
+                          <ClipLoader
+                          style={{paddingTop: 0, paddingBottom: 0, marginTop: 0, marginBottom: 0, }}
+                          size={15}
+                          color={"white"}
+                          loading={this.state.saving && Object.keys(this.props.editSocialMediaLinksErrors).length < 1}
+                          />
+                        </div>
+                      :
+                        null
+                      }
+                    </Button>
+                    </a>
+                </CardFooter>
+              :
+                null
               }
-
+              </>
+            }
           </Card>
         </Form>
+        <ReactTooltip id="saveButtonTooltip" effect='solid' delayShow={1500}>
+          <span>Save changes to profile</span>
+        </ReactTooltip>
         <LinkManager
           show={this.state.addingLink}
           onClose={() => this.setState({addingLink: false, selectedLink: null})}
