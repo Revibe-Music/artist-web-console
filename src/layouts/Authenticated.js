@@ -55,7 +55,7 @@ class Authenticated extends Component {
 
     // default to stats page if user just goes to dashboard
     if(window.location.pathname==="/dashboard" || window.location.pathname==="/dashboard/") {
-       this.props.history.push('/dashboard/stats')
+       this.props.history.push('/dashboard/uploads')
     }
 
   }

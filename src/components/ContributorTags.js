@@ -237,7 +237,7 @@ class ContributorTags extends Component {
     var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
     if(contributorIndex == -1) {
         this.setState({contributions: [...this.state.contributions, {contributor: contributor, type: []}]})
-        this.props.onAddContributor(contributor, this.props.owner)
+        this.props.onAddContributor(contributor)
         this.toggleModal({contributor: contributor, type: []})
     }
   }
@@ -247,7 +247,7 @@ class ContributorTags extends Component {
     var contributorIndex = contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
     contributions.splice(contributorIndex, 1)
     this.setState({contributions: contributions})
-    this.props.onRemoveContributor(contributor, this.props.owner)
+    this.props.onRemoveContributor(contributor)
   }
 
   render() {
@@ -257,7 +257,6 @@ class ContributorTags extends Component {
         renderInput={({addTag,...props}) => {
           if(!props.disabled) {
             return (
-              <div style={this.state.contributions.length > 0 ? {position: "absolute"} : {position: "absolute", marginTop: 20}}>
               <Autosuggest
                 theme={theme}
                 suggestions={this.state.searchResults}
@@ -274,26 +273,46 @@ class ContributorTags extends Component {
                 renderSuggestionsContainer={this.renderResultsContainer}
                 inputProps={{
                   ...props,
-                   placeholder: 'Add Contributors...',
-                   type: 'search',
+
+                   // className: 'react-tagsinput-input',
+                   // placeholder: 'Add Contributors',
+                   // type: 'search',
                  }}
               />
-              </div>
             )
           }
           else {
             return null
           }
-        }}
+      }}
+      renderLayout={(tagComponents, inputComponent) => (
+        <div>
+        {this.state.contributions.length > 0 ?
+          <div style={{border: "1px solid #7248BD", borderRadius: "5px", marginBottom: "5px"}}>
+            <div style={{marginRight: "5px", marginLeft: "5px"}}>
+              {tagComponents}
+            </div>
+          </div>
+        :
+          <>
+          {tagComponents}
+          </>
+        }
+        <div style={{position: "absolute"}}>
+        {inputComponent}
+        </div>
+        </div>
+      )}
       inputProps={{
-          className: 'react-tagsinput-input',
-          placeholder: 'Add Contributor',
+          // className: 'react-tagsinput-input',
+          placeholder: 'Tag Contributor',
           disabled: this.props.disabled
       }}
       onChange={() => console.log()}
       renderTag={props => this.renderTags(props)}
-      tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled }}
+      tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled, }}
       value={this.state.contributions}
+      style={{background: "yellow"} }
       />
 
       {this.state.isOpen ?

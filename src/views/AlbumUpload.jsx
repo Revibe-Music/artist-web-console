@@ -22,6 +22,8 @@ import classNames from "classnames";
 import {
   Button,
   Card,
+  Collapse,
+  CardHeader,
   CardBody,
   CardTitle,
   CardFooter,
@@ -31,9 +33,10 @@ import {
   Input,
   Row,
   Col,
-  UncontrolledTooltip
+  UncontrolledTooltip,
 } from "reactstrap";
 import ReactTable from "react-table";
+import TagsInput from "react-tagsinput";
 import Select from "react-select";
 import ReactTooltip from 'react-tooltip';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
@@ -71,6 +74,8 @@ class AlbumUpload extends Component {
         uploading: false,
         attemptedUpload: false, // indicates if the user pressed upload buttun
 
+        openedCollapses: ["collapse0"],
+
 
         // form State
         albumName: "Test",
@@ -103,6 +108,8 @@ class AlbumUpload extends Component {
         fileExtensionWarningOccurances: 0,
       };
 
+      this.genreOptions = ["Blues","Classical","Country","Electronic","Folk","Hip-hop","Jazz","New age","Reggae","Rock",]
+
       this.contributionStringTests = [
         " ft ", "ft.", "ft:", "ft-",
         " feat ", "feat.", "feat-", "feat:",
@@ -123,8 +130,8 @@ class AlbumUpload extends Component {
       this._removeFileExtensions = this._removeFileExtensions.bind(this)
 
       // Table Edit Methods
-      this.editRow = this.editRow.bind(this)
-      this.removeRow = this.removeRow.bind(this)
+      this.editSong = this.editSong.bind(this)
+      this.removeSong = this.removeSong.bind(this)
       this.onDrop = this.onDrop.bind(this)
 
       // Album Edit/State Methods
@@ -157,9 +164,7 @@ class AlbumUpload extends Component {
       return <UploadStatus loading={song.uploaded} />
     }
     return (
-      <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
-        <i style={{fontSize: "20px", cursor: 'pointer', color: "red"}} className="tim-icons icon-simple-remove" onClick={() => this.removeRow(song.index)}/>
-      </div>
+        <i style={{fontSize: "20px", cursor: 'pointer', color: "red"}} className="tim-icons icon-simple-remove" onClick={() => this.removeSong(song.index)}/>
     )
   }
 
@@ -263,35 +268,89 @@ class AlbumUpload extends Component {
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
       var formattedSong = {
+
         title: metadata.common.title ? metadata.common.title : files[x].name,
         duration: Math.round(metadata.format.duration),
         file: files[x],
         explicit: false,
         uploaded: false,
         contributors: [],
+        genres: [],
+        tags: [],
+        id: Math.floor(Math.random() * 1000000000),       // temp id for referening
+        error: "",
+        state: ""
       }
       songs.push(formattedSong)
     }
     this.setState({songs:songs})
   }
 
-  /// TABLE ROW EDIT METHODS
-  editRow(index, key, value) {
-    var newData = [... this.state.songs]
-    newData[index][key] = value
-    if(key === "title") {
-      this.setState({songNameError: ""})
-    }
-    this.setState({songs: newData, attemptedUpload: false})
+
+  editSong(songId, value, callback) {
+    var songs = [... this.state.songs]
+    var index = songs.map(function(x) {return x.id; }).indexOf(songId)
+    songs[index] = callback(songs[index], value)
+    this.setState({songs: songs, attemptedUpload: false})
   }
 
-  removeRow(index) {
-    var newData = [... this.state.songs]
-    if(isNaN(newData[index].duration)){
-      this.setState({songDurationError: ""})
-    }
-    newData.splice(index, 1);
-    this.setState({songs: newData})
+  removeSong(index) {
+    this.setState({songs: [... this.state.songs].splice(index, 1) })
+  }
+
+  editTitle(song, title) {
+    song.title = title
+    return song
+  }
+
+  /// SONG CONTRIBUTOR OPRERATIONS ///
+  addSongContributor(song, contributor) {
+    song.contributors = [...song.contributors, {contributor: contributor, type: []}]
+    return song
+  }
+
+  removeSongContributor(song, contributor) {
+    var contributorIndex = song.contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
+    song.contributors.splice(contributorIndex, 1)
+    return song
+  }
+
+  updateSongContributions(song, contribution) {
+    var contributorIndex = song.contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contribution.artist_id)
+    song.contributors[contributorIndex] = contribution
+    return song
+  }
+
+  /// SONG GENRE OPRERATIONS ///
+  addGenre(song, genre) {
+    song.genres = [...song.genres, genre]
+    return song
+  }
+
+  removeGenre(song, genre) {
+    song.genres = song.genres.filter(x => x !== genre)
+    return song
+  }
+
+  /// SONG TAG OPRERATIONS ///
+  addTag(song, tag) {
+    song.tags = [...song.tags, tag]
+    return song
+  }
+
+  editTags(song, tags) {
+    song.tags = tags
+    return song
+  }
+
+  removeTag(song, tag) {
+    song.tags = song.tags.filter(x => x !== tag)
+    return song
+  }
+
+  toggleExplicit(song, isExplicit) {
+    song.explicit = isExplicit
+    return song
   }
 
   async onSubmit() {
@@ -304,32 +363,6 @@ class AlbumUpload extends Component {
     this.setState({attemptedUpload:true})
   }
 
-
-
-  /// SONG CONTRIBUTOR OPRERATIONS ///
-  addSongContributor(contributor, song) {
-    var newSongs = [ ...this.state.songs]
-    newSongs[song.index].contributors.push({contributor: contributor, type: []})
-    this.setState({songs: newSongs})
-  }
-
-  removeSongContributor(contributor, song) {
-    var newSongs = [ ...this.state.songs]
-    var contributorIndex = newSongs[song.index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
-    newSongs[song.index].contributors.splice(contributorIndex, 1)
-    this.setState({songs: newSongs})
-  }
-
-  updateSongContributions(contribution, song) {
-    var newSongs = [ ...this.state.songs]
-    var contributorIndex = newSongs[song.index].contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contribution.contributor.artist_id)
-    newSongs[song.index].contributors[contributorIndex] = contribution
-    this.setState({
-      songs: newSongs,
-      songContributionError: "",
-      attemptedUpload: false,
-    })
-  }
 
   /// ALBUM CONTRIBUTOR OPRERATIONS ///
   addAlbumContributor(contributor) {
@@ -354,150 +387,27 @@ class AlbumUpload extends Component {
     })
   }
 
+  // with this function we create an array with the opened collapses
+  // it is like a toggle function for all collapses from this page
+  collapsesToggle = (e, collapse) => {
+    e.preventDefault();
+    let openedCollapses = this.state.openedCollapses;
+    if (openedCollapses.includes(collapse)) {
+      this.setState({
+        openedCollapses: openedCollapses.filter(item => item !== collapse)
+      });
+    } else {
+      openedCollapses.push(collapse);
+      this.setState({
+        openedCollapses: openedCollapses
+      });
+    }
+  };
+
 
 
 
   render() {
-    var columns = [
-        {
-          id: "title",
-          Header: () => (
-            <div>
-              Title
-              {this.state.songNameError ?
-                <>
-                <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id="name-error"/>
-                  <UncontrolledTooltip
-                    style={{backgroundColor: "red", color: "white"}}
-                    placement="top"
-                    target="name-error"
-                  >
-                    {this.state.songNameError}
-                  </UncontrolledTooltip>
-                </>
-              :
-                null
-              }
-            </div>
-          ),
-          accessor: row => (
-            <>
-              <FormGroup id={"SongName"+row.index}>
-                <Input
-                  placeholder="Song Title"
-                  disabled={this.state.uploading}
-                  value={row.title}
-                  onChange={event => this.editRow(row.index,"title", event.target.value)}
-                />
-              </FormGroup>
-            </>
-          ),
-          filterable: false,
-        },
-        {
-          id: "contributors",
-          Header: () => (
-            <>
-            <div>
-              Contributors
-              <AiOutlineQuestionCircle style={{color: "#7248BD", marginLeft: "5px"}} id="contribution-question"/>
-              {this.state.songContributionError ?
-                <>
-                <MdErrorOutline style={{color: "red", marginLeft: "25px"}} id="contribution-error"/>
-                  <UncontrolledTooltip
-                    style={{backgroundColor: "red", color: "white"}}
-                    placement="top"
-                    target="contribution-error"
-                  >
-                    {this.state.songContributionError}
-                  </UncontrolledTooltip>
-                </>
-              :
-                null
-              }
-            </div>
-            <UncontrolledTooltip
-              style={{backgroundColor: "#7248BD", color: "white"}}
-              placement="bottom"
-              target="contribution-question"
-              hideArrow={true}
-            >
-              Tag other artists that had a roll
-            </UncontrolledTooltip>
-            </>
-          ),
-          style: this.state.uploading ? {overflowX:"scroll"} : {paddingTop: 0, marginTop: 0,overflowX:"scroll"},
-          accessor: row => (
-            <ContributorTags
-              artist_id={this.props.artist_id}
-              owner={row}
-              onAddContributor={this.addSongContributor}
-              onRemoveContributor={this.removeSongContributor}
-              updateContributionTypes={this.updateSongContributions}
-              disabled={this.state.uploading}
-            />
-          ),
-          filterable: false,
-        },
-        {
-          id: "duration",
-          Header: () => (
-            <div>
-              Duration
-              {this.state.songDurationError ?
-                <>
-                <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id="duration-error"/>
-                  <UncontrolledTooltip
-                    style={{backgroundColor: "red", color: "white"}}
-                    placement="top"
-                    target="duration-error"
-                  >
-                    {this.state.songDurationError}
-                  </UncontrolledTooltip>
-                </>
-              :
-                null
-              }
-            </div>
-          ),
-          accessor: row => this.formatDuration(row.duration),
-          filterable: false,
-        },
-        {
-          id: "explicit",
-          Header: () => (
-            <div style={{textAlign: "center"}}>
-              Explicit
-            </div>
-            ),
-          style:{margin: 0},
-          accessor: row => (
-              <FormGroup check style={{flex: 1, alignItems: "center", justifyContent: "center", textAlign: "center",padding: 0,margin:0}}>
-              <Label check>
-                <Input
-                  disabled={this.state.uploading}
-                  type="checkbox"
-                  value={row.explicit}
-                  onChange={event => this.editRow(row.index,"explicit", event.target.checked)}
-                />
-                <span className="form-check-sign" />
-              </Label>
-            </FormGroup>),
-          sortable: false,
-          filterable: false
-        },
-        {
-          id: "actions",
-          Header: () => (
-            <div style={{textAlign: "center"}}>
-              {this.state.uploading ? "Upload Status" : "Actions"}
-            </div>
-            ),
-          accessor: row => this.uploadStatus(row),
-          sortable: false,
-          filterable: false
-        }
-      ]
 
     return (
       <>
@@ -600,9 +510,9 @@ class AlbumUpload extends Component {
                         target="album-contribution-question"
                         hideArrow={true}
                       >
-                      Tag other artists that had a roll
+                      Tag others (by their display name) that had a roll in creating this album.
                       </UncontrolledTooltip>
-                      <label>Add Album Contributors</label>
+                      <label>Album Contributors</label>
                       </Row>
                       <ContributorTags
                         artist_id={this.props.artist_id}
@@ -629,24 +539,148 @@ class AlbumUpload extends Component {
         <Col className="m-auto mr-auto">
           <Card>
             <CardBody>
-              <CardTitle tag="h4">Upload Songs</CardTitle>
+              <CardTitle tag="h3">Upload Songs</CardTitle>
                 <p>*Please note that we only accept MP3, WAV, FLAC, and OGG files at this time.</p>
                 {this.state.songs.length > 0 ?
                   <>
-                  <ReactTable
-                    ref={this.songTable}
-                    data={this.state.songs}
-                    resizable={true}
-                    columns={columns}
-                    defaultPageSize = { this.state.songs.length > 20 ? 20 : this.state.songs.length }
-                    pageSize = { this.state.songs.length > 20 ? 20 : this.state.songs.length }
-                    showPagination  = { this.state.songs.length > 20 ? true : false}
-                    showPageSizeOptions = {false}
+                  <div
+                    aria-multiselectable={true}
+                    className="card-collapse"
+                    id="accordion"
+                    role="tablist"
+                  >
+                    {this.state.songs.map((song, index) => (
+                      <Card className="card-plain">
+                        <CardHeader role="tab">
+                          <a
+                            aria-expanded={this.state.openedCollapses.includes(`collapse${index}`)}
+                            data-parent="#accordion"
+                            data-toggle="collapse"
+                            onClick={e => this.collapsesToggle(e, `collapse${index}`)}
+                          >
+                            {song.error ?
+                              <>
+                              <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id={`Song:${song.id}:error`}/>
+                                <UncontrolledTooltip
+                                  style={{backgroundColor: "red", color: "white"}}
+                                  placement="top"
+                                  target={`Song:${song.id}:error`}
+                                >
+                                  {song.error}
+                                </UncontrolledTooltip>
+                              </>
+                            :
+                              null
+                            }
+                            <CardTitle tag="h4">
+                              <div style={{float: "left", marginRight: "5%"}} >
+                                {this.uploadStatus(song)}
+                              </div>
+                              {song.title}
+                              <i className="tim-icons icon-minimal-down" />
+                            </CardTitle>
+                          </a>
+                        </CardHeader>
+                        <Collapse
+                          role="tabpanel"
+                          isOpen={this.state.openedCollapses.includes(`collapse${index}`)}
+                        >
+                          <CardBody>
+                            <Row>
+                              <Col xs="12" md="6">
+                                <FormGroup id={"SongName:"+song.id}>
+                                  <div>Title</div>
+                                  <Input
+                                    disabled={this.state.uploading}
+                                    value={song.title}
+                                    onChange={event => this.editSong(song.id, event.target.value, this.editTitle)}
+                                  />
+                                </FormGroup>
+                              </Col>
+                              <Col xs="12" md="6">
+                                  <div>
+                                    Contributors
+                                    <AiOutlineQuestionCircle style={{color: "#7248BD", marginLeft: "5px"}} id={`contribution-question${index}`}/>
+                                  </div>
+                                  <ContributorTags
+                                    artist_id={this.props.artist_id}
+                                    owner={song}
+                                    onAddContributor={contributor => this.editSong(song.id, contributor, this.addSongContributor)}
+                                    onRemoveContributor={contributor => this.editSong(song.id, contributor, this.removeSongContributor)}
+                                    updateContributionTypes={contributor => this.editSong(song.id, contributor, this.updateSongContributions)}
+                                    disabled={this.state.uploading}
+                                  />
+                                  <UncontrolledTooltip
+                                    style={{backgroundColor: "#7248BD", color: "white"}}
+                                    placement="top"
+                                    target={`contribution-question${index}`}
+                                    hideArrow={true}
+                                  >
+                                    Tag others (by their display name) that had a roll in creating this song.
+                                  </UncontrolledTooltip>
+                              </Col>
+                            </Row>
 
-                    defaultPageSize={this.state.songs.length}
-                    showPagination={false}
-                    className="-striped -highlight"
-                  />
+                            <Row style={{marginTop: "10px"}}>
+                              <Col xs="6" md="5">
+                                <FormGroup>
+                                  <div>Genre(s)</div>
+                                  <Select
+                                    className="react-select primary"
+                                    classNamePrefix="react-select"
+                                    placeholder="None"
+                                    name="multipleSelect"
+                                    closeMenuOnSelect={true}
+                                    isMulti={true}
+                                    isDisabled={this.state.uploading}
+                                    onChange={option => {
+                                      if(song.genres.includes(option.label)) {
+                                        this.editSong(song.id, option.label, this.removeGenre)
+                                      }
+                                      else {
+                                        this.editSong(song.id, option.label, this.addGenre)
+                                      }
+                                    }}
+                                    options={this.genreOptions.map((genre, index) => ({ value: index, label: genre }))}
+                                  />
+                                </FormGroup>
+                              </Col>
+                              <Col xs="6" md="5">
+                                <div>Tags</div>
+                                <TagsInput
+                                  inputProps={{
+                                      className: 'react-tagsinput-input',
+                                      placeholder: 'Add Tag',
+                                      disabled: this.props.disabled
+                                  }}
+                                  onChange={tags => this.editSong(song.id, tags, this.editTags)}
+                                  tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled }}
+                                  value={song.tags}
+                                />
+                              </Col>
+                              <Col xs="6" md="2" style={{flex: 1, alignItems: "center", justifyContent: "center", textAlign: "center",padding: 0,margin:0}}>
+                                <div>Explicit</div>
+                                <FormGroup check >
+                                <Label check>
+                                  <Input
+                                    disabled={this.state.uploading}
+                                    type="checkbox"
+                                    value={song.explicit}
+                                    onChange={event => this.editSong(song.id, event.target.checked, this.toggleExplicit)}
+                                  />
+                                  <span className="form-check-sign" />
+                                </Label>
+                              </FormGroup>
+                              </Col>
+                            </Row>
+
+
+                          </CardBody>
+                        </Collapse>
+                      </Card>
+                    ))}
+                  </div>
+
                   <SongSelect onFileSelect={this.onDrop} disabled={this.state.uploading} displayDropzone={false}/>
                   <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
                     <Button
@@ -687,6 +721,161 @@ class AlbumUpload extends Component {
   }
 }
 
+// var columns = [
+//     {
+//       id: "title",
+//       Header: () => (
+//         <div>
+//           Title
+//           {this.state.songNameError ?
+//             <>
+//             <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id="name-error"/>
+//               <UncontrolledTooltip
+//                 style={{backgroundColor: "red", color: "white"}}
+//                 placement="top"
+//                 target="name-error"
+//               >
+//                 {this.state.songNameError}
+//               </UncontrolledTooltip>
+//             </>
+//           :
+//             null
+//           }
+//         </div>
+//       ),
+//       accessor: row => (
+//         <>
+//           <FormGroup id={"SongName"+row.index}>
+//             <Input
+//               placeholder="Song Title"
+//               disabled={this.state.uploading}
+//               value={row.title}
+//               onChange={event => this.editRow(row.index,"title", event.target.value)}
+//             />
+//           </FormGroup>
+//         </>
+//       ),
+//       filterable: false,
+//     },
+//     {
+//       id: "contributors",
+//       Header: () => (
+//         <>
+//         <div>
+//           Contributors
+//           <AiOutlineQuestionCircle style={{color: "#7248BD", marginLeft: "5px"}} id="contribution-question"/>
+//           {this.state.songContributionError ?
+//             <>
+//             <MdErrorOutline style={{color: "red", marginLeft: "25px"}} id="contribution-error"/>
+//               <UncontrolledTooltip
+//                 style={{backgroundColor: "red", color: "white"}}
+//                 placement="top"
+//                 target="contribution-error"
+//               >
+//                 {this.state.songContributionError}
+//               </UncontrolledTooltip>
+//             </>
+//           :
+//             null
+//           }
+//         </div>
+//         <UncontrolledTooltip
+//           style={{backgroundColor: "#7248BD", color: "white"}}
+//           placement="bottom"
+//           target="contribution-question"
+//           hideArrow={true}
+//         >
+//           Tag other artists that had a roll
+//         </UncontrolledTooltip>
+//         </>
+//       ),
+//       style: this.state.uploading ? {overflowX:"scroll"} : {paddingTop: 0, marginTop: 0,overflowX:"scroll"},
+//       accessor: row => (
+//         <ContributorTags
+//           artist_id={this.props.artist_id}
+//           owner={row}
+//           onAddContributor={this.addSongContributor}
+//           onRemoveContributor={this.removeSongContributor}
+//           updateContributionTypes={this.updateSongContributions}
+//           disabled={this.state.uploading}
+//         />
+//       ),
+//       filterable: false,
+//     },
+//     {
+//       id: "duration",
+//       Header: () => (
+//         <div>
+//           Duration
+//           {this.state.songDurationError ?
+//             <>
+//             <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id="duration-error"/>
+//               <UncontrolledTooltip
+//                 style={{backgroundColor: "red", color: "white"}}
+//                 placement="top"
+//                 target="duration-error"
+//               >
+//                 {this.state.songDurationError}
+//               </UncontrolledTooltip>
+//             </>
+//           :
+//             null
+//           }
+//         </div>
+//       ),
+//       accessor: row => this.formatDuration(row.duration),
+//       filterable: false,
+//     },
+//     {
+//       id: "explicit",
+//       Header: () => (
+//         <div style={{textAlign: "center"}}>
+//           Explicit
+//         </div>
+//         ),
+//       style:{margin: 0},
+//       accessor: row => (
+//           <FormGroup check style={{flex: 1, alignItems: "center", justifyContent: "center", textAlign: "center",padding: 0,margin:0}}>
+//           <Label check>
+//             <Input
+//               disabled={this.state.uploading}
+//               type="checkbox"
+//               value={row.explicit}
+//               onChange={event => this.editRow(row.index,"explicit", event.target.checked)}
+//             />
+//             <span className="form-check-sign" />
+//           </Label>
+//         </FormGroup>),
+//       sortable: false,
+//       filterable: false
+//     },
+//     {
+//       id: "actions",
+//       Header: () => (
+//         <div style={{textAlign: "center"}}>
+//           {this.state.uploading ? "Upload Status" : "Actions"}
+//         </div>
+//         ),
+//       accessor: row => this.uploadStatus(row),
+//       sortable: false,
+//       filterable: false
+//     }
+//   ]
+
+// <ReactTable
+//   ref={this.songTable}
+//   data={this.state.songs}
+//   resizable={true}
+//   columns={columns}
+//   defaultPageSize = { this.state.songs.length > 20 ? 20 : this.state.songs.length }
+//   pageSize = { this.state.songs.length > 20 ? 20 : this.state.songs.length }
+//   showPagination  = { this.state.songs.length > 20 ? true : false}
+//   showPageSizeOptions = {false}
+//
+//   defaultPageSize={this.state.songs.length}
+//   showPagination={false}
+//   className="-striped -highlight"
+// />
 function mapStateToProps(state) {
   return {
     artist_id: state.authentication.user.artistId,
