@@ -234,7 +234,7 @@ class LinkManager extends Component {
               <a className="nav-link"
                  target="_blank"
                  style={{padding: 0, margin:0}}
-                 href={this.state.handle}>
+                 href={(!this.state.handle.includes("https://") && !this.state.handle.includes("http://")) ? `https://${this.state.handle}` : this.state.handle}>
                 <i style={{color: "#7482BD", padding: 0, margin:0}} className="tim-icons icon-link-72" />
               </a>
             :
