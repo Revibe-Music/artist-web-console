@@ -28,6 +28,7 @@ import VideoHeader from "components/Headers/VideoHeader.jsx";
 import VideoHeader2 from "components/Headers/VideoHeader2.jsx";
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import Footer from "components/Footers/Footer.jsx";
+import QuoteVideo from "components/Features/QuoteVideo.jsx"
 
 // custom previous button for the slick component
 const PrevButton = props => {
@@ -129,6 +130,8 @@ class Home extends React.Component {
   }
 
   render() {
+    const isMobile = window.innerWidth < 576
+
     return (
       <>
       <ScrollNavbar/>
@@ -144,10 +147,10 @@ class Home extends React.Component {
           <div className="section section-pills">
             <Container>
               <Row>
-                <h2 className="title text-md-left text-center">Revibe gives artists one dashboard with all the tools they need to succeed.</h2>
+                <h2 className="title text-center ml-md-auto mr-md-auto ml-1 mr-1">Revibe gives artists one dashboard with all the tools they need to succeed.</h2>
               </Row>
               <Row>
-                <Nav className="nav-pills-primary d-flex justify-content-md-left justify-content-center" pills role="tablist">
+                <Nav className="nav-pills-primary d-flex justify-content-center" pills role="tablist" style={{ width: "100%" }}>
                   <NavItem>
                     <NavLink
                       className={classnames({
@@ -167,7 +170,7 @@ class Home extends React.Component {
                       onClick={e => this.toggleTabs(e, 1, 2)}
                       style={{ cursor: "pointer" }}
                     >
-                      Distribution
+                      Analytics
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -178,7 +181,7 @@ class Home extends React.Component {
                       onClick={e => this.toggleTabs(e, 1, 3)}
                       style={{ cursor: "pointer" }}
                     >
-                      Analytics
+                      Relink
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -189,7 +192,7 @@ class Home extends React.Component {
                       onClick={e => this.toggleTabs(e, 1, 4)}
                       style={{ cursor: "pointer" }}
                     >
-                      Relink
+                      Marketplace
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -200,7 +203,7 @@ class Home extends React.Component {
                       onClick={e => this.toggleTabs(e, 1, 5)}
                       style={{ cursor: "pointer" }}
                     >
-                      Marketplace
+                      Distribution
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -226,27 +229,27 @@ class Home extends React.Component {
                     </NavLink>
                   </NavItem>
                 </Nav>
-                <TabContent className="mt-3 text-md-left text-center ml-md-0 mr-md-0 ml-2 mr-2" style={{ width: "100%" }} activeTab={"tabs1-" + this.state.tabs1}>
+                <TabContent className="mt-3 text-md-left text-center ml-md-auto mr-md-auto ml-2 mr-2" style={!isMobile ? { width: "55%" } : { width: "100%" }} activeTab={"tabs1-" + this.state.tabs1}>
                   <TabPane className="description" tabId="tabs1-1">
                     Upload unlimited tracks to be streamed on Revibe Music for free. Give credit to everyone
                     who contributed and reach new fans through our proprietary tagging mechanism. Let your fans
                     stream your free music and distributed tracks through one app, only on Revibe Music.
                   </TabPane>
                   <TabPane className="description" tabId="tabs1-2">
-                    Customize your own landing page with unlimited links. These links can be dispalyed on your
-                    Revibe Artist Profile, or at a custom URL you can share anywhere, like your Instagram bio!
-                  </TabPane>
-                  <TabPane className="description" tabId="tabs1-3">
                     View integrated analytics to get a wholistic view of your music career. Revibe is the only
                     platform that can combine data from your streams, link clicks, merchandise and collaboration
                     sales, and marketing efforts.
                   </TabPane>
-                  <TabPane className="description" tabId="tabs1-4">
+                  <TabPane className="description" tabId="tabs1-3">
                     Buy and sell beats, features, mixiing and mastering services, and more in our all in one
                     collaboration marketplace. Revibe's marketplace is integrated with our distribution and
                     hosting platforms, making it a breeze to manage contracts, leases, licenses, and royalty splits.
                     Our platform was built around giving credit, and all contributions will be visible to fans in
                     the Revibe Music app.
+                  </TabPane>
+                  <TabPane className="description" tabId="tabs1-4">
+                    Customize your own landing page with unlimited links. These links can be dispalyed on your
+                    Revibe Artist Profile, or at a custom URL you can share anywhere, like your Instagram bio!
                   </TabPane>
                   <TabPane className="description" tabId="tabs1-5">
                     Distribute your tracks to over 100 streaming services and music stores. Keep 100% of your royalties,
@@ -264,7 +267,7 @@ class Home extends React.Component {
                   </TabPane>
                 </TabContent>
                 <br/>
-                <div style={{ width: "100%" }} className="d-flex justify-content-md-start justify-content-center">
+                <div style={{ width: "100%" }} className="d-flex justify-content-center">
                   <Link to="/account/register">
                     <Button
                       className="btn-round btn-primary mt-4"
@@ -402,146 +405,33 @@ class Home extends React.Component {
           <div className="testimonials-3">
             <Container>
               <Row>
-                <div
-                  className="carousel slide carousel-team"
-                  id="carousel-testimonials3"
+                <QuoteVideo
+                  artist="Kidnap"
+                  avatar={require("assets/site/img/Kidnap.JPG")}
+                  video={require("assets/site/img/kidnap-btv.mp4")}
                 >
-                  <div className="carousel-inner">
-                    <div className="carousel-item active">
-                      <div className="info text-left bg-primary">
-                        <div className="icon icon-white">
-                          <i className="fa fa-quote-right" />
-                        </div>
-                        <p className="description text-white">
-                          I didn't really think they would bring everything
-                          I already do every day into one platform.
-                          <br/><br/>
-                          One of the most important features Revibe has to offer
-                          is the collaboration feature. Being able to credit everyone
-                          who had a role in making the music wheter it be engineers, producers,
-                          all the way to graphic designers.
-                        </p>
-                        <div className="author">
-                          <img
-                            alt="..."
-                            className="avatar img-raised"
-                            src={require("assets/site/img/p10.jpg")}
-                          />
-                          <span>Kidnap</span>
-                        </div>
-                      </div>
-                      <Card
-                        className="card-blog card-background"
-                        data-animation={true}
-                      >
-                        <div
-                          className="full-background"
-                          style={{
-                            backgroundImage:
-                              "url(" +
-                              require("assets/site/img/marc-olivier-jodoin.jpg") +
-                              ")"
-                          }}
-                        />
-                        <CardBody>
-                          <div className="content-bottom ml-auto">
-                            <Button
-                              className="btn-round btn-simple btn-neutral"
-                              color="default"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                            >
-                              Read more
-                            </Button>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </div>
-                    <div className="carousel-item">
-                      <Card
-                        className="card-blog card-background"
-                        data-animation={true}
-                      >
-                        <div
-                          className="full-background"
-                          style={{
-                            backgroundImage:
-                              "url(" + require("assets/site/img/contact1.jpg") + ")"
-                          }}
-                        />
-                        <CardBody>
-                          <div className="content-bottom ml-auto">
-                            <Button
-                              className="btn-round btn-simple btn-neutral"
-                              color="default"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                            >
-                              Read more
-                            </Button>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </div>
-                  </div>
-                </div>
+                  I didn't really think they would bring everything
+                  I already do every day into one platform.
+                  <br/><br/>
+                  One of the most important features Revibe has to offer
+                  is the collaboration feature. Being able to credit everyone
+                  who had a role in making the music wheter it be engineers, producers,
+                  all the way to graphic designers.
+                </QuoteVideo>
               </Row>
               <Row>
-                <div
-                  className="carousel slide carousel-team"
-                  id="carousel-testimonials3"
+                <QuoteVideo
+                  artist="DJ Cmix"
+                  avatar={require("assets/site/img/dj-cmix.jpg")}
+                  video={require("assets/site/img/dj-cmix-bdv.mp4")}
+                  right
                 >
-                  <div className="carousel-inner">
-                    <div className="carousel-item active">
-                      <div className="info info-right text-left bg-primary">
-                        <div className="icon icon-white">
-                          <i className="fa fa-quote-right" />
-                        </div>
-                        <p className="description text-white">
-                          If you are serious about your career, I suggest you hop
-                          on Revibe.
-                          <br/><br/>
-                          This independent route is not as easy as it seems, but
-                          it can be done.
-                        </p>
-                        <div className="author">
-                          <img
-                            alt="..."
-                            className="avatar img-raised"
-                            src={require("assets/site/img/p10.jpg")}
-                          />
-                          <span>DJ Cmix</span>
-                        </div>
-                      </div>
-                      <Card
-                        className="card-blog card-background card-left"
-                        data-animation={true}
-                      >
-                        <div
-                          className="full-background"
-                          style={{
-                            backgroundImage:
-                              "url(" +
-                              require("assets/site/img/marc-olivier-jodoin.jpg") +
-                              ")"
-                          }}
-                        />
-                        <CardBody>
-                          <div className="content-bottom ml-auto">
-                            <Button
-                              className="btn-round btn-simple btn-neutral"
-                              color="default"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                            >
-                              Read more
-                            </Button>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </div>
-                  </div>
-                </div>
+                  If you are serious about your career, I suggest you hop
+                  on Revibe.
+                  <br/><br/>
+                  This independent route is not as easy as it seems, but
+                  it can be done.
+                </QuoteVideo>
               </Row>
             </Container>
           </div>

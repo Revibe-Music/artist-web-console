@@ -86,3 +86,43 @@ footer.artist-footer {
 .card.card-background.card-left {
   margin-left: 0 !important;
 }
+
+@media screen and (min-width: 577px) {
+  .card-video {
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 0;
+  }
+  
+  .card-video video {
+    position: inherit;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .card-video {
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 99;
+  }
+  
+  .card-video video {
+    position: inherit;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    z-index: 100;
+  }
+}

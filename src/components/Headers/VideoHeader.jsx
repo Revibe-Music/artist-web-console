@@ -41,6 +41,8 @@ class VideoHeader extends React.Component {
 
 
   render() {
+    const isMobile = window.innerWidth < 576
+
     return (
       <>
       <div className="header header-4">
@@ -50,6 +52,7 @@ class VideoHeader extends React.Component {
             loop="loop"
             muted="muted"
             playsInline="playsinline"
+            style={!isMobile ? { width: "100%", height: "auto" } : {}}
           >
             <source
               src={require("../../assets/site/img/video.mp4")}
@@ -58,20 +61,20 @@ class VideoHeader extends React.Component {
           </video>
           <Container style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
             <Row>
-              <Col lg="6">
+              <Col lg="9">
                 <div className="card-image" >
                       <a to="/account/register" onClick={e => e.preventDefault()}>
                         <img
                           alt="..."
                           className="img rounded"
-                          src={require("assets/site/img/laptop-image-1.png")}
+                          src={require("assets/site/img/laptop-image-4.png")}
                         />
                       </a>
                     </div>
                 </Col>
-              <Col lg="6" className="d-flex align-items-center justify-content-center">
-                <div className="video-text text-md-left text-center">
-                  <h1 className="title" style={{ textTransform: "none" }}>The all-in-one platform independent artists need.</h1>
+              <Col lg="3" className="d-flex align-items-center justify-content-center">
+                <div className="video-text text-center">
+                  <h1 className="title" style={{ textTransform: "none", fontFamily: "FuturaHeavy", fontSize: "2.15rem" }}>More streams.<br/>More Fans.<br/>More Money.</h1>
                   <br />
                   <div style={{ width: "100%" }} className="d-flex justify-content-center">
                     <Link to="/account/register" className="ml-auto mr-auto">
