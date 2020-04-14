@@ -62,6 +62,16 @@ class Footer extends React.Component {
                       </a>
                     </li>
                     <li>
+                      <a href="https://revibe.tech/blogs" target="_blank" className="ml-1">
+                        Blog
+                      </a>
+                    </li>
+                    <li>
+                    <NavLink to="/contact-us" tag={Link} className="ml-1">
+                        Contact Us
+                      </NavLink>
+                    </li>
+                    <li>
                       <NavLink to="/account/login" tag={Link} className="ml-1">
                         Login
                       </NavLink>

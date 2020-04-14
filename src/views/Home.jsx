@@ -29,6 +29,8 @@ import VideoHeader2 from "components/Headers/VideoHeader2.jsx";
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import Footer from "components/Footers/Footer.jsx";
 import QuoteVideo from "components/Features/QuoteVideo.jsx"
+import Icon from "components/Icons/icons.js"
+import MailChimpForm from "components/Forms/Mailchimp";
 
 // custom previous button for the slick component
 const PrevButton = props => {
@@ -241,15 +243,15 @@ class Home extends React.Component {
                     sales, and marketing efforts.
                   </TabPane>
                   <TabPane className="description" tabId="tabs1-3">
-                    Buy and sell beats, features, mixiing and mastering services, and more in our all in one
+                    Customize your own landing page with unlimited links. These links can be dispalyed on your
+                    Revibe Artist Profile, or at a custom URL you can share anywhere, like your Instagram bio!
+                  </TabPane>
+                  <TabPane className="description" tabId="tabs1-4">
+                    Buy and sell beats, features, mixing and mastering services, and more in our all in one
                     collaboration marketplace. Revibe's marketplace is integrated with our distribution and
                     hosting platforms, making it a breeze to manage contracts, leases, licenses, and royalty splits.
                     Our platform was built around giving credit, and all contributions will be visible to fans in
                     the Revibe Music app.
-                  </TabPane>
-                  <TabPane className="description" tabId="tabs1-4">
-                    Customize your own landing page with unlimited links. These links can be dispalyed on your
-                    Revibe Artist Profile, or at a custom URL you can share anywhere, like your Instagram bio!
                   </TabPane>
                   <TabPane className="description" tabId="tabs1-5">
                     Distribute your tracks to over 100 streaming services and music stores. Keep 100% of your royalties,
@@ -412,7 +414,7 @@ class Home extends React.Component {
                 >
                   I didn't really think they would bring everything
                   I already do every day into one platform.
-                  <br/><br/>
+                  <br/>. . . <br/>
                   One of the most important features Revibe has to offer
                   is the collaboration feature. Being able to credit everyone
                   who had a role in making the music wheter it be engineers, producers,
@@ -428,7 +430,7 @@ class Home extends React.Component {
                 >
                   If you are serious about your career, I suggest you hop
                   on Revibe.
-                  <br/><br/>
+                  <br/>. . . <br/>
                   This independent route is not as easy as it seems, but
                   it can be done.
                 </QuoteVideo>
@@ -436,6 +438,63 @@ class Home extends React.Component {
             </Container>
           </div>
           {/* ********* END TESTIMONIALS 3 ********* */}
+          <MailChimpForm />
+          <div className="social-line social-line-big-icons mb-lg">
+            <Container>
+              <Row className="d-flex justify-content-center">
+                <Col md="2" className={`${isMobile ? "border-right-0" : ""}`}>
+                  <Button
+                    className="btn-simple btn-icon btn-footer"
+                    color="primary"
+                    href="https://instagram.com/revibemusic8"
+                    target="_blank"
+                  >
+                    <i className="fab fa-instagram" />
+                  </Button>
+                </Col>
+                <Col md="2" className={`${isMobile ? "border-right-0" : ""}`}>
+                  <Button
+                    className="btn-simple btn-icon btn-footer"
+                    color="primary"
+                    href="https://twitter.com/revibemusic8"
+                    target="_blank"
+                  >
+                    <i className="fab fa-twitter" />
+                  </Button>
+                </Col>
+                <Col md="2" className={`${isMobile ? "border-right-0" : ""}`}>
+                  <Button
+                    className="btn-simple btn-icon btn-footer"
+                    color="primary"
+                    href="https://facebook.com/revibemusic8"
+                    target="_blank"
+                  >
+                    <i className="fab fa-facebook-square" />
+                  </Button>
+                </Col>
+                <Col md="2" className={`${isMobile ? "border-right-0" : ""}`}>
+                  <Button
+                    className="btn-simple btn-icon btn-footer"
+                    color="primary"
+                    href="https://vm.tiktok.com/GYQojE/"
+                    target="_blank"
+                  >
+                    <Icon icon="tiktok" width="24px" height="24px" color="#7248BD" />
+                  </Button>
+                </Col>
+                <Col md="2" className={`${isMobile ? "border-right-0" : ""}`}>
+                  <Button
+                    className="btn-simple btn-icon btn-footer"
+                    color="primary"
+                    href="https://www.youtube.com/channel/UCGSz0umIQ-xCKB8UsGKDK3A"
+                    target="_blank"
+                  >
+                    <i className="fab fa-youtube" />
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+          </div>
         {/* ********* FEATURES 1 *********
         <div className="features-1" style={{paddingBottom: "0px"}}>
           <Container fluid>
