@@ -73,11 +73,11 @@ export default class QuoteVideo extends React.Component {
               <p className="description text-white">
                 {this.props.children}
               </p>
-              <div className="author d-inline-flex">
+              <div className="author d-inline-flex" style={{ height: "50px" }}>
                 <img
                   alt="..."
-                  className="avatar img-raised"
-                  style={{ width: "40px", height: "auto" }}
+                  className="avatar img-raised mt-auto mb-auto"
+                  style={{ width: "40px", height: "40px" }}
                   src={this.props.avatar ? this.props.avatar : require("../../assets/site/img/p10.jpg")}
                 />
                 <p className="mt-auto mb-auto description text-white pt-0 pb-0 pl-3 pr-0" style={{ fontSize:"24px" }}>{this.props.artist ? this.props.artist : "No artist"}</p>
