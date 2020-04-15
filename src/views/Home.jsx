@@ -301,6 +301,7 @@ class Home extends React.Component {
                             color="link"
                             aria-expanded={this.state.collapse === 1}
                             onClick={() => this.openCollapse(1)}
+                            style={{ whiteSpace: "normal" }}
                           >
                             How much does Revibe Music cost?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />
@@ -322,6 +323,7 @@ class Home extends React.Component {
                             color="link"
                             aria-expanded={this.state.collapse === 2}
                             onClick={() => this.openCollapse(2)}
+                            style={{ whiteSpace: "normal" }}
                           >
                             What if I don't have a premium subscription?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />
@@ -342,6 +344,7 @@ class Home extends React.Component {
                             color="link"
                             aria-expanded={this.state.collapse === 3}
                             onClick={() => this.openCollapse(3)}
+                            style={{ whiteSpace: "normal" }}
                           >
                             What music services are available through Revibe Music?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />
@@ -363,6 +366,7 @@ class Home extends React.Component {
                             color="link"
                             aria-expanded={this.state.collapse === 4}
                             onClick={() => this.openCollapse(4)}
+                            style={{ whiteSpace: "normal" }}
                           >
                             Can I play YouTube videos in the background? {" "}
                             <i className="tim-icons icon-minimal-down float-right" />
@@ -385,6 +389,7 @@ class Home extends React.Component {
                             color="link"
                             aria-expanded={this.state.collapse === 5}
                             onClick={() => this.openCollapse(5)}
+                            style={{ whiteSpace: "normal" }}
                           >
                             How do I upload my music to Revibe?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />

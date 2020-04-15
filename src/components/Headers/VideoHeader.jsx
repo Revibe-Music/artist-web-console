@@ -61,7 +61,7 @@ class VideoHeader extends React.Component {
           </video>
           <Container style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
             <Row>
-              <Col lg="9">
+              <Col lg="8">
                 <div className="card-image" >
                       <a to="/account/register" onClick={e => e.preventDefault()}>
                         <img
@@ -72,9 +72,9 @@ class VideoHeader extends React.Component {
                       </a>
                     </div>
                 </Col>
-              <Col lg="3" className="d-flex align-items-center justify-content-center">
+              <Col lg="4" className="d-flex align-items-center justify-content-center">
                 <div className="video-text text-center">
-                  <h1 className="title" style={{ textTransform: "none", fontFamily: "FuturaHeavy", fontSize: "2.15rem" }}>More streams.<br/>More Fans.<br/>More Money.</h1>
+                  <h1 className="title text-md-left text-center" style={{ textTransform: "none", fontFamily: "FuturaHeavy", fontSize: (isMobile ? "1.85rem" : "2.2rem") }}>You handle the music.<br/><br/>Revibe handles the business.</h1>
                   <br />
                   <div style={{ width: "100%" }} className="d-flex justify-content-center">
                     <Link to="/account/register" className="ml-auto mr-auto">
@@ -82,7 +82,7 @@ class VideoHeader extends React.Component {
                         className="btn-round btn-primary"
                         size="lg"
                       >
-                        Sign Up Now
+                        <h3 className="text-white m-0">Sign Up Now</h3>
                       </Button>
                     </Link>
                   </div>

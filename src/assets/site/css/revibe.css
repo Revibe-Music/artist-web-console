@@ -78,18 +78,31 @@ footer.artist-footer {
   background: 0
 }
 
+.testimonials-3 .info-left {
+  margin-left: -50px;
+}
+
 .testimonials-3 .info-right {
   margin-left: auto;
   margin-right: -50px;
 }
 
 .card.card-background.card-left {
-  margin-left: 0 !important;
+  margin-left: 0px;
+  margin-right: 100px !important;
+}
+
+.card.card-background.card-right {
+  margin-left: 100px !important;
 }
 
 @media screen and (min-width: 577px) {
+  .card.video-card {
+    width: 90%;
+  }
+
   .card-video {
-    min-width: 100%;
+    width: fit-content;
     min-height: 100%;
   }
   

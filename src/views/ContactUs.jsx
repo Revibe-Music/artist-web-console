@@ -73,13 +73,29 @@ class ContactUs extends React.Component {
 
   async onSubmit()
   {
+    if(this.state.first_name === ""
+      || this.state.last_name === ""
+      || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email))
+      || this.state.subject === ""
+      || this.state.message === "") {
+        MySwal.fire({
+          title: 'Fields Not Filled Out!',
+          text: 'Please make sure all of the fields in the form are filled out!',
+          icon: 'error',
+          showCloseButton: true,
+          background: "#303030"
+        })
+
+        return
+    }
+
     var response = await revibe.contactUs(this.state)
 
     if(response != undefined)
     {
       MySwal.fire({
-        title: 'Thank you for contacting us!',
-        text: 'Someone from our team will get back to you soon :)',
+        title: 'Thank You for Contacting Us!',
+        text: 'Someone from our team will get back to you soon!',
         icon: 'success',
         showCloseButton: true,
         background: "#303030"
@@ -88,8 +104,8 @@ class ContactUs extends React.Component {
     else
     {
       MySwal.fire({
-        title: 'Form not submitted',
-        text: 'Please make sure all of the fields in the form are filled out',
+        title: 'Form Not Submitted',
+        text: 'Please make sure all of the fields in the form are filled out!',
         icon: 'error',
         showCloseButton: true,
         background: "#303030"
@@ -170,7 +186,7 @@ class ContactUs extends React.Component {
                     <CardBody>
                       <Row>
                         <Col md="6">
-                          <label>First name</label>
+                          <label>*First Name</label>
                           <InputGroup>
                             <Input
                               type="text"
@@ -178,7 +194,7 @@ class ContactUs extends React.Component {
                           </InputGroup>
                         </Col>
                         <Col md="6">
-                            <label>Last name</label>
+                            <label>*Last Name</label>
                             <InputGroup>
                               <Input
                                 type="text"
@@ -186,25 +202,26 @@ class ContactUs extends React.Component {
                             </InputGroup>
                         </Col>
                       </Row>
-                        <label>Email address</label>
+                        <label>*Email Address</label>
                         <InputGroup>
                           <Input
                             type="text"
                             onChange={event => this.onChange( "email", event.target.value)}/>
                         </InputGroup>
-                        <label>Subject</label>
+                        <label>*Subject</label>
                         <InputGroup>
                           <Input
                             type="text"
                             onChange={event => this.onChange( "subject", event.target.value)}
                           />
                         </InputGroup>
-                        <label>Your message</label>
+                        <label>*Your Message</label>
                         <Input
                           id="message"
                           name="message"
                           rows="20"
                           type="textarea"
+                          className="pl-3 pr-3 pb-2"
                           onChange={event => this.onChange( "message", event.target.value)}
                         />
                       <Row>

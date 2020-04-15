@@ -39,18 +39,6 @@ export default class QuoteVideo extends React.Component {
     }
   }
 
-  playVidOnVisible = visible => {
-    const { vid } = this.refs
-
-    if(visible && vid.paused) {
-      vid.play()
-      this.setState({ ...this.state, paused: false })
-    } else if(!visible && !vid.paused) {
-      vid.pause()
-      this.setState({ ...this.state, paused: true })
-    }
-  }
-
   buttonPlay = e => {
     e.preventDefault();
     this.playVid();
@@ -66,7 +54,7 @@ export default class QuoteVideo extends React.Component {
       >
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <div className={`info ${this.props.right && !isMobile ? "info-right" : ""} text-left bg-primary`}>
+            <div className={`info info-${this.props.right && !isMobile ? "right" : "left"} text-left bg-primary`}>
               <div className="icon icon-white">
                 <i className="fa fa-quote-right" />
               </div>
@@ -84,26 +72,21 @@ export default class QuoteVideo extends React.Component {
               </div>
             </div>
             <Card
-              className={`card-blog card-background ${this.props.right && !isMobile ? "card-left" : ""} ${isMobile ? " mt-0" : ""}`}
-              style={!isMobile ? { height: "641px" } : { minHeight: "200px", height: "auto" }}
+              className={`card-blog card-background video-card ${this.props.right && !isMobile ? "card-left" : "card-right"} ${isMobile ? " mt-0" : ""}`}
+              style={!isMobile ? { height: "auto" } : { minHeight: "200px", height: "auto" }}
               data-animation={true}
             >
-              <div className="header-video overlay card-video" style={!isMobile ? { height: "641px" } : {}}>
-                <VisibilitySensor
-                  onChange={!isMobile ? this.playVidOnVisible : null}
-                  intervalDelay={100}
-                > 
-                  <video fluid
-                    ref="vid"
-                    controls={isMobile ? true : false}
-                    preload="metadata"
-                  >
-                    <source
-                      src={this.props.video ? this.props.video : require("../../assets/site/img/dj-cmix-bdv.mp4")}
-                      type="video/mp4"
-                    />
-                  </video>
-                </VisibilitySensor>
+              <div className="header-video overlay card-video" style={!isMobile ? { height: "auto" } : {}}>
+                <video fluid
+                  ref="vid"
+                  controls={isMobile ? true : false}
+                  preload="metadata"
+                >
+                  <source
+                    src={this.props.video ? this.props.video : require("../../assets/site/img/dj-cmix-bdv.mp4")}
+                    type="video/mp4"
+                  />
+                </video>
                 {!isMobile ? <div className={`d-flex justify-content-${this.state.paused ? "center" : "start"} align-items-${this.state.paused ? "center" : "end"} card-video-controls ${this.state.paused ? "" : "playing"}`}>
                   <Button
                     className={`btn-icon btn-neutral btn-round btn-simple ${this.state.paused ? "ml-0" : "ml-2 mb-2"}`}
