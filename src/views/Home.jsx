@@ -303,15 +303,19 @@ class Home extends React.Component {
                             onClick={() => this.openCollapse(1)}
                             style={{ whiteSpace: "normal" }}
                           >
-                            How much does Revibe Music cost?{" "}
+                            How much does Revibe cost?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />
                           </Button>
                         </h5>
                       </CardHeader>
                       <Collapse isOpen={this.state.collapse === 1}>
                         <CardBody className="text-white">
-                          Nothing! Revibe Music is free and always will be.
-                          For the best experience, connect your premium Spotify account.
+                        Revibe is free right now! Ultimately, Revibe will have a freemium model where artists can use
+                        most of the features and keep 80-90% of the revenue they generate,
+                        or pay us a monthly subscription to keep 100% of the revenue. We expect Revibe's premium plan to cost around $15 per month
+                        and include unlimited hosting, unlimited distribution, unlimited marketplace transactions,
+                        and unlimited merchandise sales with the artist keeping 100% of all revenues.
+                        Please <a href="/contact-us">reach out here</a> if you have any questions, comments, or concernse regarding our model, we are in it to help people like you!
                         </CardBody>
                       </Collapse>
                     </Card>
@@ -325,14 +329,20 @@ class Home extends React.Component {
                             onClick={() => this.openCollapse(2)}
                             style={{ whiteSpace: "normal" }}
                           >
-                            What if I don't have a premium subscription?{" "}
+                            What features are available now? What features does Revibe have planned for the future?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />
                           </Button>
                         </h5>
                       </CardHeader>
                       <Collapse isOpen={this.state.collapse === 2}>
                         <CardBody className="text-white">
-                          It's okay! You can still use Revibe to stream our uploads and YouTube's catalog.
+                        Revibe currently allows you to upload tracks to be streamed on Revibe Music,
+                        tag contributors, and set up your tip jar and links to display on your Revibe Artist
+                        profile and Relink page. We are currently building out our marketplace,
+                        which will allow you to buy and sell beats, mixing and mastering services, cover art,
+                        and more with other artists! The marketplace will be ready next month,
+                        after which we will focus on improving our analytics and adding digital distribution.
+                        We also plan on adding merchandise, marketing, and booking features to the Revibe Artist platform in the future.
                         </CardBody>
                       </Collapse>
                     </Card>
@@ -346,15 +356,16 @@ class Home extends React.Component {
                             onClick={() => this.openCollapse(3)}
                             style={{ whiteSpace: "normal" }}
                           >
-                            What music services are available through Revibe Music?{" "}
+                            Does Revibe own the music that is uploaded?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />
                           </Button>
                         </h5>
                       </CardHeader>
                       <Collapse isOpen={this.state.collapse === 3}>
                         <CardBody className="text-white">
-                          Revibe Music currently supports Spotify, with Apple Music coming soon.
-                          If you would like us to add any other services, please let us know <a href="https://revibe.tech/contact" target="_blank">here</a>.
+                        No! You retain 100% of the rights to your music. By uploading your music,
+                        you grant Revibe and Revibe Music users a license to listen to your music
+                        royalty free. You can read more information in our <a href="https://revibe-media.s3.us-east-2.amazonaws.com/Terms+and+Conditions.pdf">Terms and Conditions</a>.
                         </CardBody>
                       </Collapse>
                     </Card>
@@ -368,16 +379,19 @@ class Home extends React.Component {
                             onClick={() => this.openCollapse(4)}
                             style={{ whiteSpace: "normal" }}
                           >
-                            Can I play YouTube videos in the background? {" "}
+                            Does Revibe pay royalties for songs streamed through Revibe Music?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />
                           </Button>
                         </h5>
                       </CardHeader>
                       <Collapse isOpen={this.state.collapse === 4}>
                         <CardBody className="text-white">
-                          Unfortunately YouTube videos cannot be played in the background in accordance with their terms of service.
-                          To provide a smooth user experience Revibe Music offers a setting to skip
-                          YouTube videos when shufﬂing or playing a playlist if the device is locked.
+                        Artists do not receive royalties on tracks that they upload to Revibe. However,
+                        all Spotify and YouTube tracks played through Revibe Music are counted as streams
+                        on the respective sources and royalties will be paid accordingly. For example,
+                        if you stream a Spotify song on Revibe Music, that stream will be reflected
+                        in your Spotify for Artists data and royalties for it will be paid out through
+                        your distributor.
                         </CardBody>
                       </Collapse>
                     </Card>
@@ -391,15 +405,69 @@ class Home extends React.Component {
                             onClick={() => this.openCollapse(5)}
                             style={{ whiteSpace: "normal" }}
                           >
-                            How do I upload my music to Revibe?{" "}
+                            What is a contributor? {" "}
                             <i className="tim-icons icon-minimal-down float-right" />
                           </Button>
                         </h5>
                       </CardHeader>
                       <Collapse isOpen={this.state.collapse === 5}>
                         <CardBody className="text-white">
-                          If you are an artist you can upload your music to Revibe,
-                          view analytics, and more on Revibe Artists!
+                        Contributors on Revibe represent everyone who had a part in creating a song.
+                        We believe everyone should receive credit, from the producer to the engineer
+                        to the graphic designer and contributions are our way of giving them credit.
+                        It's just like tagging someone in a picture on Instgram. Once they accept the
+                        contribution, their profile will also display the track and their contribution.
+                        Contributors are also able to see analytics on tracks they contributed to,
+                        depending on each user's settings. If someone doesn't have a Revibe account
+                        yet, please invite them! You can tag them as a contributor and they will
+                        receive credit upon signing up for an account with the same email address.
+                        </CardBody>
+                      </Collapse>
+                    </Card>
+                    <Card className="custom-accordion other-cards">
+                      <CardHeader>
+                        <h5 className="mb-0">
+                          <Button
+                            className="w-100 text-left text-primary"
+                            color="link"
+                            aria-expanded={this.state.collapse === 6}
+                            onClick={() => this.openCollapse(6)}
+                            style={{ whiteSpace: "normal" }}
+                          >
+                            How does (donations / the tip jar) work?{" "}
+                            <i className="tim-icons icon-minimal-down float-right" />
+                          </Button>
+                        </h5>
+                      </CardHeader>
+                      <Collapse isOpen={this.state.collapse === 6}>
+                        <CardBody className="text-white">
+                        The tip jar was designed to be a direct way to draw support from your fans.
+                        It's pretty simple, enter your Venmo and Cashapp username, and we will provide
+                        a link for your fans to donate directly to you!
+                        </CardBody>
+                      </Collapse>
+                    </Card>
+                    <Card className="custom-accordion other-cards">
+                      <CardHeader>
+                        <h5 className="mb-0">
+                          <Button
+                            className="w-100 text-left text-primary"
+                            color="link"
+                            aria-expanded={this.state.collapse === 7}
+                            onClick={() => this.openCollapse(7)}
+                            style={{ whiteSpace: "normal" }}
+                          >
+                            Why should I upload my music to Revibe?{" "}
+                            <i className="tim-icons icon-minimal-down float-right" />
+                          </Button>
+                        </h5>
+                      </CardHeader>
+                      <Collapse isOpen={this.state.collapse === 7}>
+                        <CardBody className="text-white">
+                        Uploading your music to Revibe makes it available to fans on Revibe Music alongside
+                        YouTube and Spotify. This makes it a great place to upload your tracks that aren't on
+                        those platforms, so that your fans don't have to switch back and forth between apps to
+                        enjoy all of your tracks! 
                         </CardBody>
                       </Collapse>
                     </Card>

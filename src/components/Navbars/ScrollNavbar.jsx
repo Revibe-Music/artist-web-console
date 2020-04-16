@@ -90,11 +90,11 @@ class ScrollNavbar extends React.Component {
                   About Us
                 </NavLink>
               </NavItem>*/}
-              <NavItem>
+              {/*<NavItem>
                 <a href="https://revibe.tech/blogs" target="_blank">
                   Blog
                 </a>
-              </NavItem>
+              </NavItem>*/}
               <NavItem>
                 <a href="https://revibe.tech" target="_blank">
                   Revibe Music
