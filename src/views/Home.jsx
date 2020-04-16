@@ -434,7 +434,7 @@ class Home extends React.Component {
                             onClick={() => this.openCollapse(6)}
                             style={{ whiteSpace: "normal" }}
                           >
-                            How does (donations / the tip jar) work?{" "}
+                            How does the Tip Jar work?{" "}
                             <i className="tim-icons icon-minimal-down float-right" />
                           </Button>
                         </h5>
