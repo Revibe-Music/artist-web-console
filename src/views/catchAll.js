@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import { BuilderComponent } from '@builder.io/react';
 
 import Error404 from "./Error404";
-import { BuilderComponent } from '@builder.io/react';
+import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
+import Footer from "components/Footers/Footer.jsx";
 
 
 export default class CatchAllPage extends Component {
@@ -13,6 +15,7 @@ export default class CatchAllPage extends Component {
 
       {!this.state.notFound ?
         <>
+          <ScrollNavbar/>
           <BuilderComponent
             apiKey="c4efecdddef14d36a98d2756c1d5f56b"
             model="page"
@@ -23,7 +26,7 @@ export default class CatchAllPage extends Component {
               }
             }}
             />
-          <div className="loading">Loading...</div>
+          <Footer />
       </>
       :
         <Error404 />
