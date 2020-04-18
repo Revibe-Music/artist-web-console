@@ -1,0 +1,169 @@
+/*!
+
+ =========================================================
+ * BLK Design System PRO React - v1.0.0 based on BLK Design System PRO - v1.0.0
+ =========================================================
+
+ * Product Page: https://www.creative-tim.com/product/blk-design-system-pro-react
+ * Copyright 2019 Creative Tim (http://www.creative-tim.com)
+
+ * Designed by www.invisionapp.com Coded by www.creative-tim.com
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+ */
+
+/*    Custom Revibe Styling for Specific Pages      */
+@font-face {
+  font-family: "FuturaDemi";
+  src: url("../fonts/FuturaPTDemi.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "FuturaHeavy";
+  src: url("../fonts/FuturaPTHeavy.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*    Custom CSS Elements      */
+.accordion-1 .accordion .card.custom-accordion { 
+  background-color: transparent; 
+  border: 1px solid #7248BD !important;
+  margin-bottom: 0;
+}
+
+.accordion-1 .accordion .card.custom-accordion.other-cards {
+  border-top: 0 !important;
+}
+
+.blog-post p {
+  margin-bottom: 15px;
+}
+
+.blog-post h2 {
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.blog-post h1, h2, h3, h4 {
+  color: #7248BD
+}
+
+@media screen and (max-width: 576px) {
+  .blog-post .social-line-big-icons [class*="col-"] {
+    border-right: 0
+  }
+}
+
+body.artist-page div#root .wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+}
+
+footer.artist-footer {
+  background: 0
+}
+
+.testimonials-3 .info-left {
+  margin-left: -50px;
+}
+
+.testimonials-3 .info-right {
+  margin-left: auto;
+  margin-right: -50px;
+}
+
+.card.card-background.card-left {
+  margin-left: 0px;
+  margin-right: 100px !important;
+}
+
+.card.card-background.card-right {
+  margin-left: 100px !important;
+}
+
+@media screen and (min-width: 577px) {
+  .card.video-card {
+    width: 90%;
+  }
+
+  .card-video {
+    width: fit-content;
+    min-height: 100%;
+  }
+  
+  .card-video video {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+  }
+
+  .card-video-controls {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+  }
+
+  .card-video.controls.playing {
+    visibility: hidden;
+  }
+
+  .card-video.controls.playing:hover {
+    visibility: visible;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .card-video {
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 99;
+  }
+  
+  .card-video video {
+    position: inherit;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    z-index: 100;
+  }
+}
+
+body.login-page div#root .content, body.register-page div#root .content {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url("../img/dots.png");
+  background-size: contain;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+}

@@ -156,68 +156,67 @@ class Login extends Component {
     return (
       <>
       <ScrollNavbar hideLogin/>
-      <div className="content" style={{paddingTop: "10%"}}>
-
-        <Container>
-        <Row>
-          <Col className="m-auto mr-auto" md="7">
-            <Form className="form">
-              <Card className="card-login card-gray">
-                <CardHeader>
-                  <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h3">Login</CardTitle>
-                </CardHeader>
-                <div style={{textAlign:"center"}}>
-                  {Object.keys(this.props.loginErrors).filter(x => x === "non_field_errors").length > 0 ? (
-                    <label style={{color:"red"}}>
-                      {this.props.loginErrors.non_field_errors}
-                    </label>
-                  ) : null}
-                </div>
-                <CardBody>
-                <div>
-                <FormGroup className={`has-label ${this.state.usernameState}`}>
-                  <label>Username *</label>
-                  <Input
-                    id="username"
-                    name="username"
-                    type="text"
-                    onChange={e => this.onChange( "username", e.target.value)}
-                  />
-                  {this.state.usernameState === "has-danger" ? (
-                    <label className="error">
-                      {this.state.usernameError}
-                    </label>
-                  ) : null}
-                </FormGroup>
-                </div>
-                <div>
-                <FormGroup className={`has-label ${this.state.passwordState}`}>
-                  <label>Password *</label>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="off"
-                    onChange={e => this.onChange( "password", e.target.value)}
-                  />
-                  {this.state.passwordState === "has-danger" ? (
-                    <label className="error">{this.state.passwordError}</label>
-                  ) : null}
-                </FormGroup>
-                </div>
-                </CardBody>
-                <CardFooter>
-
-                <SubmitButton />
-                  <div className="pull-right">
-                    <h6>
-                      <Link to="/account/register">Create Account</Link>
-                    </h6>
+      <div className="content">
+        <Container className="mt-lg">
+          <Row>
+            <Col className="ml-auto mr-auto" md="7">
+              <Form className="form">
+                <Card className="card-login card-gray">
+                  <CardHeader className="pb-1">
+                    <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center", textTransform: "none"}} tag="h3">Login</CardTitle>
+                  </CardHeader>
+                  <div style={{textAlign:"center"}}>
+                    {Object.keys(this.props.loginErrors).filter(x => x === "non_field_errors").length > 0 ? (
+                      <label style={{color:"red"}}>
+                        {this.props.loginErrors.non_field_errors}
+                      </label>
+                    ) : null}
                   </div>
-                </CardFooter>
-              </Card>
-            </Form>
-          </Col>
+                  <CardBody>
+                  <div>
+                  <FormGroup className={`has-label ${this.state.usernameState}`}>
+                    <label>Username *</label>
+                    <Input
+                      id="username"
+                      name="username"
+                      type="text"
+                      onChange={e => this.onChange( "username", e.target.value)}
+                    />
+                    {this.state.usernameState === "has-danger" ? (
+                      <label className="error">
+                        {this.state.usernameError}
+                      </label>
+                    ) : null}
+                  </FormGroup>
+                  </div>
+                  <div>
+                  <FormGroup className={`has-label ${this.state.passwordState}`}>
+                    <label>Password *</label>
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="off"
+                      onChange={e => this.onChange( "password", e.target.value)}
+                    />
+                    {this.state.passwordState === "has-danger" ? (
+                      <label className="error">{this.state.passwordError}</label>
+                    ) : null}
+                  </FormGroup>
+                  </div>
+                  </CardBody>
+                  <CardFooter>
+
+                  <SubmitButton />
+                    <div className="pull-right">
+                      <h6>
+                        <Link to="/account/register">Create Account</Link>
+                      </h6>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Form>
+            </Col>
           </Row>
         </Container>
       </div>

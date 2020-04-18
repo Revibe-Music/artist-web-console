@@ -287,13 +287,13 @@ class Register extends React.Component {
     return (
       <>
       <ScrollNavbar hideLogin/>
-      <div className="content" style={{paddingTop: "10%"}}>
-        <Container>
+      <div className="content">
+        <Container className="mt-lg">
           <Row>
             <Col className="m-auto" md="7">
             <Form className="form">
               <Card className="card-register card-gray">
-                <CardHeader>
+                <CardHeader className="pb-0">
                   <CardTitle style={{color: "#7248bd", display: "flex", alignItems: "center", justifyContent: "center"}} tag="h3">Register</CardTitle>
                 </CardHeader>
                 <div style={{textAlign:"center"}}>

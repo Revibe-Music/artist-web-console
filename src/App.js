@@ -1,7 +1,7 @@
 // This component handles the App template used on every page.
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch, Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
 import { connect } from 'react-redux';
@@ -16,9 +16,13 @@ import Error400 from 'views/Error400.jsx'
 import Error404 from 'views/Error404.jsx'
 import AboutUs from "views/AboutUs.jsx"
 import WhyRevibe from "views/WhyRevibe.jsx"
+import CatchAllPage from "views/catchAll.js"
+
+import { builder, BuilderComponent } from '@builder.io/react';
+builder.init("c4efecdddef14d36a98d2756c1d5f56b");
+
 
 const history = createBrowserHistory();
-
 
 const hostname = window && window.location && window.location.hostname;
 
@@ -32,7 +36,9 @@ if(hostname === "artist.revibe.tech") {
 
 const App = ({ authenticated, checked }) => (
   <Router history={history}>
+    <div>
     { checked &&
+      <>
       <Switch>
       <Route path="/account/register" component={Register}/>
       <Route path="/account/create-profile" component={RegisterArtist}/>
@@ -43,10 +49,12 @@ const App = ({ authenticated, checked }) => (
       <Route path="/about-us" component={AboutUs}/>
       <Route path="/why-revibe" component={WhyRevibe}/>
       <PrivateRoute path="/dashboard" component={Authenticated} authenticated={authenticated}/>
+      <Route path="/page/*" component={CatchAllPage} />
       <Route path="/" component={Home}/>
-
      </Switch>
+     </>
     }
+    </div>
   </Router>
 );
 
