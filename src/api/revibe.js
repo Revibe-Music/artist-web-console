@@ -305,8 +305,39 @@ export default class RevibeAPI {
   }
 
   async deleteUploadedAlbumContributor(contribution_id) {
-    var data = {contribution_id: contribution_id}
-    return await this._request("account/artist/contributions/albums/", data, "DELETE", true)
+
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED ALBUM GENRES ///
+  ////////////////////////////////////
+
+  async addUploadedAlbumGenres(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {album_id: album_id, tags: tags}
+    return await this._request("account/artist/albums/tags/", data, "POST", true)
+  }
+
+  async removeUploadedAlbumGenres(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {album_id: album_id, tags: tags}
+    return await this._request("account/artist/albums/tags/", data, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED ALBUM TAGS ///
+  ////////////////////////////////////
+
+  async addUploadedAlbumTags(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {album_id: album_id, tags: tags}
+    return await this._request("account/artist/albums/tags/", data, "POST", true)
+  }
+
+  async removeUploadedAlbumTags(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {album_id: album_id, tags: tags}
+    return await this._request("account/artist/albums/tags/", data, "DELETE", true)
   }
 
   ////////////////////////////////////

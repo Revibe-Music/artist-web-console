@@ -44,6 +44,7 @@
     "react-ga": "^2.7.0",
     "react-google-maps": "9.4.5",
     "react-icons": "^3.8.0",
+    "react-iframe": "^1.8.0",
     "react-image": "^2.4.0",
     "react-jvectormap": "0.0.4",
     "react-lottie": "^1.2.3",
