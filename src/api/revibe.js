@@ -262,11 +262,13 @@ export default class RevibeAPI {
     return await this._request("account/artist/albums/", null, "GET", true)
   }
 
-  async createUploadedAlbum(name, image, type, displayed=true) {
+  async createUploadedAlbum(name, image, type, displayed, releaseDate) {
+    console.log(displayed);
     var data = new FormData();
     data.set("name", name)
     data.set("type", type)
-    data.set("displayed", displayed)
+    data.set("is_displayed", displayed)
+    if(releaseDate !== null) data.set("date_published", releaseDate)
     data.append("image", image)
     return await this. _request("account/artist/albums/", data, "POST", true, 'multipart/form-data')
   }
@@ -277,7 +279,7 @@ export default class RevibeAPI {
     // only add variables to form if they arent null
     if(name !== null) data.set("name", name)
     if(type !== null) data.set("type", type)
-    if(displayed !== null) data.set("displayed", displayed)
+    if(displayed !== null) data.set("is_displayed", displayed)
     if(image !== null) data.append("image", image)
     return await this. _request("account/artist/albums/", data, "PATCH", true, 'multipart/form-data')
   }
@@ -317,13 +319,15 @@ export default class RevibeAPI {
     return await this._request("account/artist/songs/", data, "GET", true)
   }
 
-  async createUploadedSong(title, file, duration, album_id, explicit, genre=null, display=true) {
+  async createUploadedSong(album_id, title, file, duration, explicit, order, genre=null, tags=null, display=true) {
+    console.log(display);
     var data = new FormData();
     data.set("title", title)
     data.set("duration", duration)
     data.set("album_id", album_id)
-    data.set("_explicit", explicit)
-    data.set("display", display)
+    data.set("is_explicit", explicit)
+    data.set("album_order", order)
+    data.set("is_displayed", display)
     data.append("file", file)
     if(genre !== null) data.set("genre", genre)  // only add if this is not null
     return await this. _request("account/artist/songs/", data, "POST", true, 'multipart/form-data')

@@ -1,24 +1,13 @@
-/*!
+import Dashboard from "views/Stats/Dashboard";
 
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
+import YourSongs from "views/YourSongs/index";
+import Uploads from "views/YourSongs/Uploads";
+import Contributions from "views/YourSongs/Contributions";
+import AlbumUpload from "views/YourSongs/AlbumUpload";
 
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
+import Account from "views/Account/index";
+import Relink from "views/Relink/index";
 
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-import Dashboard from "views/Dashboard";
-import Contributions from "views/Contributions";
-import Uploads from "views/Uploads";
-import Account from "views/Account";
 import Feedback from "views/Feedback";
 
 const routes = [
@@ -28,15 +17,25 @@ const routes = [
     icon: "tim-icons icon-chart-bar-32",
     component: Dashboard,
     layout: "",
-    toolTipMessage: "Page to view metrics"
+    toolTipMessage: "Page to view metrics",
+    showInSidebar: true
   },
   {
     path: "/dashboard/uploads",
-    name: "Uploads",
-    icon: "tim-icons icon-cloud-upload-94",
-    component: Uploads,
+    name: "Your Songs",
+    icon: "tim-icons icon-headphones",
+    component: YourSongs,
     layout: "",
-    toolTipMessage: "Upload/Edit songs & albums"
+    toolTipMessage: "Upload/Edit songs & albums",
+    showInSidebar: true
+  },
+  {
+    path: "/dashboard/uploads/new",
+    name: "New Upload",
+    icon: "tim-icons icon-cloud-upload-94",
+    component: AlbumUpload,
+    layout: "",
+    showInSidebar: false
   },
   {
     path: "/dashboard/contributions",
@@ -44,7 +43,17 @@ const routes = [
     icon: "tim-icons icon-vector",
     component: Contributions,
     layout: "",
-    toolTipMessage: "View/Edit contributions"
+    toolTipMessage: "View/Edit contributions",
+    showInSidebar: false
+  },
+  {
+    path: "/dashboard/relink",
+    name: "Relink",
+    icon: "tim-icons icon-link-72",
+    component: Relink,
+    layout: "",
+    toolTipMessage: "View/Edit profile",
+    showInSidebar: true
   },
   {
     path: "/dashboard/account",
@@ -52,7 +61,8 @@ const routes = [
     icon: "tim-icons icon-single-02",
     component: Account,
     layout: "",
-    toolTipMessage: "View/Edit profile"
+    toolTipMessage: "View/Edit profile",
+    showInSidebar: true
   },
   {
     path: "/dashboard/feedback",
@@ -60,7 +70,8 @@ const routes = [
     icon: "tim-icons icon-notes",
     component: Feedback,
     layout: "",
-    toolTipMessage: "Tell us what you think!"
+    toolTipMessage: "Tell us what you think!",
+    showInSidebar: true
   },
 ];
 

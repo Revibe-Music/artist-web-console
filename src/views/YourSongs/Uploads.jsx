@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 
 // reactstrap components
@@ -33,13 +17,15 @@ import { FaArrowLeft } from "react-icons/fa";
 import { connect } from 'react-redux';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { NavLink } from "react-router-dom";
 
 import UploadedAlbumsTable from "components/Tables/UploadedAlbumsTable.jsx";
 import UploadedSongsTable from "components/Tables/UploadedSongsTable.jsx";
-import EditAlbum from "views/EditAlbum.jsx";
-import AlbumUpload from "views/AlbumUpload.jsx";
+import EditAlbum from "./EditAlbum.jsx";
+import AlbumUpload from "./AlbumUpload.jsx";
 import { selectAlbum, deleteAlbum } from 'redux/media/actions.js'
 import ReactTooltip from 'react-tooltip';
+import { Beforeunload } from 'react-beforeunload';
 
 const MySwal = withReactContent(Swal)
 
@@ -56,7 +42,6 @@ class Uploads extends React.Component {
     if(this.props.selectedAlbum) {
       return (
         <div className="content">
-          <Container>
             <a onClick={e => this.props.selectAlbum(null)}>
               <FaArrowLeft style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD"}} />
             </a>
@@ -85,50 +70,19 @@ class Uploads extends React.Component {
               Delete
             </Button>
             <EditAlbum />
-          </Container>
         </div>
       )
     }
     return (
-      <div className="content">
-      <Container>
-      {!this.state.uploading ?
-        <>
-        <a data-tip data-for="uploadToolTip">
-          <Button
-            color="primary"
-            onClick={() => this.setState({uploading:true})}
-          >
-            Upload
-          </Button>
-          </a>
-              <ReactTooltip id="uploadToolTip" effect='solid' delayShow={1500}>
-                <span>Upload new songs/albums</span>
-              </ReactTooltip>
-
-          <Row className="mt-5">
-            <Col xs={12} md={12}>
-              <UploadedAlbumsTable />
-            </Col>
-          </Row>
-          <Row className="mt-5">
-            <Col xs={12} md={12}>
-              <UploadedSongsTable />
-            </Col>
-          </Row>
-        </>
-      :
-        <>
-          <a onClick={e => this.setState({uploading:false})} data-tip data-for="backButtonTooltip">
-            <FaArrowLeft style={{fontSize: "30px", marginBottom: "50px", color: "#7248BD",cursor: 'pointer'}} />
-          </a>
-          <ReactTooltip id="backButtonTooltip" effect='solid' delayShow={1500}>
-            <span>Back to view catalog</span>
-          </ReactTooltip>
-          <AlbumUpload />
-        </>
-      }
-      </Container>
+      <div>
+        <Row>
+            <UploadedAlbumsTable />
+        </Row>
+        <Row >
+          <Col xs="12" md="12">
+            <UploadedSongsTable />
+          </Col>
+        </Row>
       </div>
     );
   }

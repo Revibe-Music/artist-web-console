@@ -37,7 +37,7 @@
   --cyan: #2bffc6;
   --white: #ffffff;
   --gray: #6c757d;
-  --gray-dark: #32325d;
+  --gray-dark: #242424;
   --light: #ced4da;
   --lighter: #e9ecef;
   --primary: #7248BD;
@@ -76,13 +76,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "FuturaDemi", "Poppins", sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
   color: #525f7f;
   text-align: left;
-  background-color: #000000; }
+  background-color: #0a0a0a; }
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
@@ -328,7 +328,7 @@ h1, h2, h3, h4, h5, h6,
   font-family: inherit;
   font-weight: 400;
   line-height: 1.2;
-  color: #32325d; }
+  color: #242424; }
 
 h1, .h1 {
   font-size: 2.0625rem; }
@@ -422,7 +422,7 @@ mark,
 
 .img-thumbnail {
   padding: 0.25rem;
-  background-color: #000000;
+  background-color: #0a0a0a;
   border: 0.0625rem solid #e3e3e3;
   border-radius: 0.25rem;
   box-shadow: 0 1px 2px rgba(34, 42, 66, 0.075);
@@ -1318,7 +1318,7 @@ pre {
     background-color: rgba(25, 31, 49, 0.075); }
 
 .table .thead-dark th {
-  color: #000000;
+  color: #0a0a0a;
   background-color: #212529;
   border-color: #32383e; }
 
@@ -1328,7 +1328,7 @@ pre {
   border-color: #e3e3e3; }
 
 .table-dark {
-  color: #000000;
+  color: #0a0a0a;
   background-color: #212529; }
   .table-dark th,
   .table-dark td,
@@ -1339,7 +1339,7 @@ pre {
   .table-dark.table-striped tbody tr:nth-of-type(odd) {
     background-color: rgba(255, 255, 255, 0.05); }
   .table-dark.table-hover tbody tr:hover {
-    color: #000000;
+    color: #0a0a0a;
     background-color: rgba(255, 255, 255, 0.075); }
 
 @media (max-width: 575.98px) {
@@ -1569,7 +1569,7 @@ textarea.form-control {
 .was-validated .custom-select:valid, .custom-select.is-valid {
   border-color: #00f2c3;
   padding-right: calc((1em + 1rem) * 3 / 4 + 1.7rem);
-  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%2332325d' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.7rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2300f2c3' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") transparent no-repeat center right 1.7rem/calc(0.71429em + 0.5rem) calc(0.71429em + 0.5rem); }
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23242424' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.7rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2300f2c3' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") transparent no-repeat center right 1.7rem/calc(0.71429em + 0.5rem) calc(0.71429em + 0.5rem); }
   .was-validated .custom-select:valid:focus, .custom-select.is-valid:focus {
     border-color: #00f2c3;
     box-shadow: 0 0 0 0 rgba(0, 242, 195, 0.25); }
@@ -1666,7 +1666,7 @@ textarea.form-control {
 .was-validated .custom-select:invalid, .custom-select.is-invalid {
   border-color: #ff8d72;
   padding-right: calc((1em + 1rem) * 3 / 4 + 1.7rem);
-  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%2332325d' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.7rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff8d72' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23ff8d72' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E") transparent no-repeat center right 1.7rem/calc(0.71429em + 0.5rem) calc(0.71429em + 0.5rem); }
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23242424' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.7rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff8d72' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23ff8d72' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E") transparent no-repeat center right 1.7rem/calc(0.71429em + 0.5rem) calc(0.71429em + 0.5rem); }
   .was-validated .custom-select:invalid:focus, .custom-select.is-invalid:focus {
     border-color: #ff8d72;
     box-shadow: 0 0 0 0 rgba(255, 141, 114, 0.25); }
@@ -2962,7 +2962,7 @@ input[type="button"].btn-block {
   line-height: 1.42857;
   color: rgba(255, 255, 255, 0.8);
   vertical-align: middle;
-  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%2332325d' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.7rem center/8px 10px;
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23242424' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.7rem center/8px 10px;
   background-color: transparent;
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
@@ -3063,11 +3063,11 @@ input[type="button"].btn-block {
   .custom-range:focus {
     outline: none; }
     .custom-range:focus::-webkit-slider-thumb {
-      box-shadow: 0 0 0 1px #000000, none; }
+      box-shadow: 0 0 0 1px #0a0a0a, none; }
     .custom-range:focus::-moz-range-thumb {
-      box-shadow: 0 0 0 1px #000000, none; }
+      box-shadow: 0 0 0 1px #0a0a0a, none; }
     .custom-range:focus::-ms-thumb {
-      box-shadow: 0 0 0 1px #000000, none; }
+      box-shadow: 0 0 0 1px #0a0a0a, none; }
   .custom-range::-moz-focus-outer {
     border: 0; }
   .custom-range::-webkit-slider-thumb {
@@ -3205,8 +3205,8 @@ input[type="button"].btn-block {
   .nav-tabs .nav-link.active,
   .nav-tabs .nav-item.show .nav-link {
     color: #525f7f;
-    background-color: #000000;
-    border-color: #e3e3e3 #e3e3e3 #000000; }
+    background-color: #0a0a0a;
+    border-color: #e3e3e3 #e3e3e3 #0a0a0a; }
   .nav-tabs .dropdown-menu {
     margin-top: -0.0625rem;
     border-top-left-radius: 0;
@@ -4549,7 +4549,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "FuturaDemi", "Poppins", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4634,7 +4634,7 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Poppins", sans-serif;
+  font-family: "FuturaDemi", "Poppins", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4739,7 +4739,7 @@ a.close.disabled {
   padding: 0.75rem 0.75rem;
   margin-bottom: 0;
   font-size: 0.875rem;
-  color: #32325d;
+  color: #242424;
   background-color: #ffffff;
   border-bottom: 1px solid #f2f2f2;
   border-top-left-radius: calc(0.4285rem - 1px);
@@ -8658,10 +8658,10 @@ a.text-darker:hover, a.text-darker:focus {
 
 .btn-primary {
   background: #7248BD;
-  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
   background-size: 210% 210%;
   background-position: top right;
   background-color: #7248BD;
@@ -8672,11 +8672,11 @@ a.text-darker:hover, a.text-darker:focus {
     background-position: bottom left;
     transition: 0.3s ease-in-out; }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:focus, .btn-primary.active:hover {
-    background-color: #ba54f5 !important;
-    background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
-    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
-    background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
-    background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+    background-color: #7248BD !important;
+    background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+    background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+    background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
     color: #ffffff;
     box-shadow: none; }
   .btn-primary:active {
@@ -8711,11 +8711,11 @@ a.text-darker:hover, a.text-darker:focus {
       .btn-primary.btn-simple.active:hover, .btn-primary.btn-simple.active:focus, .btn-primary.btn-simple.active:active, .btn-primary.btn-simple.active:not(:disabled):not(.disabled):active {
         color: #ffffff;
         border-color: #7248BD;
-        background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
-        background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
-        background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
-        background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
-        background-color: #ba54f5 !important;
+        background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+        background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+        background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+        background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+        background-color: #7248BD !important;
         box-shadow: none; }
   .btn-primary.btn-link {
     color: #7248BD; }
@@ -9073,10 +9073,10 @@ a.text-darker:hover, a.text-darker:focus {
   .show > .btn-neutral.dropdown-toggle:focus,
   .show > .btn-neutral.dropdown-toggle:hover {
     background-color: #ffffff;
-    color: #ba54f5;
+    color: #7248BD;
     box-shadow: none; }
   .btn-neutral:hover, .btn-neutral:focus {
-    color: #ba54f5; }
+    color: #7248BD; }
     .btn-neutral:hover:not(.nav-link), .btn-neutral:focus:not(.nav-link) {
       box-shadow: none; }
   .btn-neutral.btn-simple {
@@ -9700,7 +9700,7 @@ fieldset[disabled]
 .footer {
   padding: 50px 0;
   border-top: 2px solid #435DB5;
-  background: radial-gradient(ellipse at bottom, #292D61 30%, #000000 80%); }
+  background: radial-gradient(ellipse at bottom, #292D61 30%, #0a0a0a 80%); }
   .footer [class*="container-"] {
     padding: 0; }
   .footer .nav {
@@ -10016,32 +10016,32 @@ img {
 
 .modal.modal-default .input-group-prepend .input-group-text,
 .modal.modal-default .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-default .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-default .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-default .form-group.no-border .form-control,
 .modal.modal-default .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   color: #ffffff; }
   .modal.modal-default .form-group.no-border .form-control:focus, .modal.modal-default .form-group.no-border .form-control:active, .modal.modal-default .form-group.no-border .form-control:active,
   .modal.modal-default .input-group.no-border .form-control:focus,
   .modal.modal-default .input-group.no-border .form-control:active,
   .modal.modal-default .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-default .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-default .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-default .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-default .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(10, 10, 10, 0.2); }
   .modal.modal-default .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-default .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-default .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-default .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-default .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -10052,21 +10052,21 @@ img {
   .modal.modal-default .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-default .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-default .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-default .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-default .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-default .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-default .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-default .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-default .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-default .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-default .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -10074,7 +10074,7 @@ img {
 .modal.modal-default .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-default .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-default .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-primary .modal-content {
@@ -10124,32 +10124,32 @@ img {
 
 .modal.modal-primary .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-primary .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-primary .form-group.no-border .form-control,
 .modal.modal-primary .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   color: #ffffff; }
   .modal.modal-primary .form-group.no-border .form-control:focus, .modal.modal-primary .form-group.no-border .form-control:active, .modal.modal-primary .form-group.no-border .form-control:active,
   .modal.modal-primary .input-group.no-border .form-control:focus,
   .modal.modal-primary .input-group.no-border .form-control:active,
   .modal.modal-primary .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-primary .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-primary .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-primary .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(10, 10, 10, 0.2); }
   .modal.modal-primary .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-primary .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-primary .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-primary .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-primary .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -10160,21 +10160,21 @@ img {
   .modal.modal-primary .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-primary .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-primary .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-primary .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-primary .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-primary .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-primary .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-primary .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-primary .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -10182,7 +10182,7 @@ img {
 .modal.modal-primary .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-primary .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-primary .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-danger .modal-content {
@@ -10232,32 +10232,32 @@ img {
 
 .modal.modal-danger .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-danger .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-danger .form-group.no-border .form-control,
 .modal.modal-danger .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   color: #ffffff; }
   .modal.modal-danger .form-group.no-border .form-control:focus, .modal.modal-danger .form-group.no-border .form-control:active, .modal.modal-danger .form-group.no-border .form-control:active,
   .modal.modal-danger .input-group.no-border .form-control:focus,
   .modal.modal-danger .input-group.no-border .form-control:active,
   .modal.modal-danger .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-danger .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-danger .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-danger .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(10, 10, 10, 0.2); }
   .modal.modal-danger .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-danger .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-danger .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-danger .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-danger .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -10268,21 +10268,21 @@ img {
   .modal.modal-danger .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-danger .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-danger .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-danger .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-danger .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-danger .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-danger .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-danger .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-danger .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -10290,7 +10290,7 @@ img {
 .modal.modal-danger .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-danger .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-danger .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-warning .modal-content {
@@ -10340,32 +10340,32 @@ img {
 
 .modal.modal-warning .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-warning .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-warning .form-group.no-border .form-control,
 .modal.modal-warning .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   color: #ffffff; }
   .modal.modal-warning .form-group.no-border .form-control:focus, .modal.modal-warning .form-group.no-border .form-control:active, .modal.modal-warning .form-group.no-border .form-control:active,
   .modal.modal-warning .input-group.no-border .form-control:focus,
   .modal.modal-warning .input-group.no-border .form-control:active,
   .modal.modal-warning .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-warning .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-warning .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-warning .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(10, 10, 10, 0.2); }
   .modal.modal-warning .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-warning .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-warning .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-warning .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-warning .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -10376,21 +10376,21 @@ img {
   .modal.modal-warning .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-warning .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-warning .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-warning .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-warning .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-warning .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-warning .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-warning .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-warning .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -10398,7 +10398,7 @@ img {
 .modal.modal-warning .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-warning .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-warning .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-success .modal-content {
@@ -10448,32 +10448,32 @@ img {
 
 .modal.modal-success .input-group-prepend .input-group-text,
 .modal.modal-success .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-success .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-success .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-success .form-group.no-border .form-control,
 .modal.modal-success .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   color: #ffffff; }
   .modal.modal-success .form-group.no-border .form-control:focus, .modal.modal-success .form-group.no-border .form-control:active, .modal.modal-success .form-group.no-border .form-control:active,
   .modal.modal-success .input-group.no-border .form-control:focus,
   .modal.modal-success .input-group.no-border .form-control:active,
   .modal.modal-success .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-success .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-success .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-success .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-success .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(10, 10, 10, 0.2); }
   .modal.modal-success .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-success .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-success .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-success .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-success .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -10484,21 +10484,21 @@ img {
   .modal.modal-success .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-success .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-success .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-success .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-success .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-success .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-success .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-success .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-success .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-success .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-success .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -10506,7 +10506,7 @@ img {
 .modal.modal-success .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-success .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-success .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-info .modal-content {
@@ -10556,32 +10556,32 @@ img {
 
 .modal.modal-info .input-group-prepend .input-group-text,
 .modal.modal-info .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff; }
 
 .modal.modal-info .input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-info .input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   border-color: #ffffff;
   color: #ffffff; }
 
 .modal.modal-info .form-group.no-border .form-control,
 .modal.modal-info .input-group.no-border .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   color: #ffffff; }
   .modal.modal-info .form-group.no-border .form-control:focus, .modal.modal-info .form-group.no-border .form-control:active, .modal.modal-info .form-group.no-border .form-control:active,
   .modal.modal-info .input-group.no-border .form-control:focus,
   .modal.modal-info .input-group.no-border .form-control:active,
   .modal.modal-info .input-group.no-border .form-control:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-info .form-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-info .form-group.no-border .form-control + .input-group-append .input-group-text,
 .modal.modal-info .input-group.no-border .form-control + .input-group-prepend .input-group-text,
 .modal.modal-info .input-group.no-border .form-control + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(10, 10, 10, 0.2); }
   .modal.modal-info .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, .modal.modal-info .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, .modal.modal-info .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
   .modal.modal-info .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-info .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -10592,21 +10592,21 @@ img {
   .modal.modal-info .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
   .modal.modal-info .input-group.no-border .form-control + .input-group-append .input-group-text:active,
   .modal.modal-info .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
 
 .modal.modal-info .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-info .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
 .modal.modal-info .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
 .modal.modal-info .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal.modal-info .form-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-info .form-group.no-border .input-group-append .input-group-text,
 .modal.modal-info .input-group.no-border .input-group-prepend .input-group-text,
 .modal.modal-info .input-group.no-border .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 10, 10, 0.2);
   border: none;
   color: #ffffff; }
 
@@ -10614,7 +10614,7 @@ img {
 .modal.modal-info .form-group.no-border.input-group-focus .input-group-append .input-group-text,
 .modal.modal-info .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
 .modal.modal-info .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(10, 10, 10, 0.3);
   color: #ffffff; }
 
 .modal .modal-header .close {
@@ -10641,8 +10641,11 @@ img {
   .modal.modal-mini .modal-footer button:first-child {
     opacity: .5; }
 
+.modal.modal-black .modal-dialog {
+  border-radius: 10px; }
+
 .modal.modal-black .modal-content {
-  background: #1f2251;
+  background: #242424;
   color: rgba(255, 255, 255, 0.8); }
   .modal.modal-black .modal-content .modal-header .modal-title, .modal.modal-black .modal-content .modal-header .title {
     color: rgba(255, 255, 255, 0.9); }
@@ -10650,6 +10653,23 @@ img {
     color: rgba(255, 255, 255, 0.8); }
 
 .modal.modal-black h1, .modal.modal-black h2, .modal.modal-black h3, .modal.modal-black h4, .modal.modal-black h5, .modal.modal-black h6, .modal.modal-black p {
+  color: #ffffff; }
+
+.modal.modal-grey .modal-dialog {
+  border-radius: 10px; }
+
+.modal.modal-grey .modal-content {
+  background: #242424;
+  color: rgba(255, 255, 255, 0.8);
+  border-color: #7248BD;
+  border-width: medium;
+  border-radius: 10px; }
+  .modal.modal-grey .modal-content .modal-header .modal-title, .modal.modal-grey .modal-content .modal-header .title {
+    color: rgba(255, 255, 255, 0.9); }
+  .modal.modal-grey .modal-content .modal-body p {
+    color: rgba(255, 255, 255, 0.8); }
+
+.modal.modal-grey h1, .modal.modal-grey h2, .modal.modal-grey h3, .modal.modal-grey h4, .modal.modal-grey h5, .modal.modal-grey h6, .modal.modal-grey p {
   color: #ffffff; }
 
 .modal-search .modal-dialog {
@@ -11113,7 +11133,7 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: "Poppins", sans-serif; }
+  font-family: "FuturaDemi", "Poppins", sans-serif; }
 
 .card h1, .card h2, .card h3, .card h4, .card h5, .card h6, .card p {
   color: rgba(255, 255, 255, 0.8); }
@@ -11123,7 +11143,7 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(255, 255, 255, 0.8); }
 
 a {
-  color: #ba54f5;
+  color: #7248BD;
   font-weight: 300; }
   a:hover, a:focus {
     color: #7248BD; }
@@ -11378,7 +11398,7 @@ hr {
 .form-check input[type="checkbox"]:checked + .form-check-sign::before,
 .form-check input[type="checkbox"]:checked + .form-check-sign::before {
   border: none;
-  background-color: #7248BD; }
+  background-color: yellow; }
 
 .form-check .form-check-sign::after {
   font-family: 'nucleo';
@@ -11712,10 +11732,10 @@ hr {
   box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1); }
   .pagination .page-item.active > .page-link, .pagination .page-item.active > .page-link:focus, .pagination .page-item.active > .page-link:hover {
     background: #7248BD;
-    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-    background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-    background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-    background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
     background-size: 210% 210%;
     background-position: top right;
     color: #ffffff; }
@@ -11743,10 +11763,10 @@ hr {
 
 .pagination.pagination-primary .page-item.active > .page-link, .pagination.pagination-primary .page-item.active > .page-link:focus, .pagination.pagination-primary .page-item.active > .page-link:hover {
   background: #7248BD;
-  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
   background-size: 210% 210%;
   background-position: top right; }
 
@@ -11963,7 +11983,7 @@ code {
       padding: 0 10px; } }
 
 .profile-page .btcwdgt {
-  background-color: #000000 !important; }
+  background-color: #0a0a0a !important; }
   .profile-page .btcwdgt .btcwdgt-header {
     background-color: transparent !important; }
 
@@ -12487,7 +12507,7 @@ textarea.form-control {
     .progress-container .progress .progress-bar {
       border-radius: 0.875rem;
       box-shadow: none;
-      background: #1f2251; }
+      background: #242424; }
       .progress-container .progress .progress-bar .progress-value {
         position: absolute;
         top: 2px;
@@ -12501,11 +12521,11 @@ textarea.form-control {
   .progress-container.progress-neutral .progress-bar {
     background: #ffffff; }
   .progress-container.progress-primary .progress-bar {
-    background: #ba54f5;
-    background-image: -webkit-linear-gradient(to bottom left, #ba54f5, #7248BD, #ba54f5);
-    background-image: -o-linear-gradient(to bottom left, #ba54f5, #7248BD, #ba54f5);
-    background-image: -moz-linear-gradient(to bottom left, #ba54f5, #7248BD, #ba54f5);
-    background-image: linear-gradient(to bottom left, #ba54f5, #7248BD, #ba54f5);
+    background: #7248BD;
+    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
     background-size: 210% 210%;
     background-position: top right; }
   .progress-container.progress-info .progress-bar {
@@ -12598,9 +12618,9 @@ textarea.form-control {
   min-width: 100px;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.5);
-  background-color: #1f2251; }
+  background-color: #242424; }
   .nav-pills .nav-item .nav-link:hover {
-    background-color: #1c1f4a; }
+    background-color: #1f1f1f; }
   .nav-pills .nav-item .nav-link.active, .nav-pills .nav-item .nav-link.active:focus, .nav-pills .nav-item .nav-link.active:hover {
     background-color: #9A9A9A;
     color: #ffffff;
@@ -12622,10 +12642,10 @@ textarea.form-control {
 
 .nav-pills.nav-pills-primary .nav-item .nav-link.active, .nav-pills.nav-pills-primary .nav-item .nav-link.active:focus, .nav-pills.nav-pills-primary .nav-item .nav-link.active:hover {
   background: #7248BD;
-  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
-  background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
   background-size: 210% 210%;
   background-position: top right; }
 
@@ -12943,7 +12963,7 @@ html {
   border-top: none; }
 
 .table-pricing tbody tr:nth-child(odd) {
-  background: #1f2251; }
+  background: #242424; }
 
 .table-pricing .background {
   width: 260px; }
@@ -13109,7 +13129,7 @@ html {
     margin-bottom: 30px; }
 
 .header-4 .navbar {
-  z-index: 2;
+  z-index: 2000;
   position: absolute; }
 
 .header-4 .header-video video {
@@ -13181,7 +13201,6 @@ html {
   margin-top: 100px; }
 
 .header-6 {
-  background-image: url("../img/dots.png");
   background-size: contain; }
   .header-6 .path {
     right: 3%;
@@ -13874,7 +13893,7 @@ html {
     text-align: center !important; } }
 
 .table td {
-  border-top-color: #1f2251; }
+  border-top-color: #242424; }
 
 .table > thead > tr > th {
   border-bottom-width: 1px;
@@ -14092,11 +14111,11 @@ html {
 .login-page .squares,
 .reset-page .squares {
   animation: move-left-right 1s infinite;
-  background: #ba54f5;
-  background: -webkit-linear-gradient(0deg, #ba54f5 0%, #7248BD 100%);
-  background: -o-linear-gradient(0deg, #ba54f5 0%, #7248BD 100%);
-  background: -moz-linear-gradient(0deg, #ba54f5 0%, #7248BD 100%);
-  background: linear-gradient(0deg, #ba54f5 0%, #7248BD 100%);
+  background: #7248BD;
+  background: -webkit-linear-gradient(0deg, #7248BD 0%, #7248BD 100%);
+  background: -o-linear-gradient(0deg, #7248BD 0%, #7248BD 100%);
+  background: -moz-linear-gradient(0deg, #7248BD 0%, #7248BD 100%);
+  background: linear-gradient(0deg, #7248BD 0%, #7248BD 100%);
   position: absolute;
   transition: 0.5s ease-out;
   overflow: hidden;
@@ -14475,7 +14494,7 @@ html {
   border-radius: 50%;
   z-index: 2;
   border: 2px solid #7248BD;
-  background: #000000; }
+  background: #0a0a0a; }
 
 .presentation-page .section-examples img {
   border: 1px solid #344675; }
@@ -14490,14 +14509,14 @@ html {
   margin-top: 20px; }
 
 .register-page {
-  background-color: #000000; }
+  background-color: #0a0a0a; }
   .register-page .link {
     font-size: 10px;
     color: #ffffff;
     text-decoration: none; }
   .register-page .register-bg {
     height: 700px;
-    background: linear-gradient(to bottom, transparent 0%, #1f2251 100%);
+    background: linear-gradient(to bottom, transparent 0%, #242424 100%);
     width: 700px;
     position: relative;
     right: -600px;
@@ -14513,55 +14532,47 @@ html {
   .register-page .square-1 {
     height: 300px;
     width: 300px;
-    background-image: url("../../assets/site/img/square1.png");
     top: 175px;
     right: 150px;
     opacity: 0.8; }
   .register-page .square-2 {
     height: 120px;
     width: 120px;
-    background-image: url("../../assets/site/img/square2.png");
     opacity: 0.9;
     top: 310px;
     right: 390px; }
   .register-page .square-3 {
     width: 200px;
     height: 200px;
-    background-image: url("../../assets/site/img/square3.png");
     opacity: 0.3;
     top: -50px;
     right: 400px; }
   .register-page .square-4 {
     height: 200px;
     width: 200px;
-    background-image: url("../../assets/site/img/square4.png");
     right: -50px;
     top: 525px; }
   .register-page .square-5 {
     height: 150px;
     width: 150px;
-    background-image: url("../../assets/site/img/square5.png");
     opacity: 0.5;
     top: 500px;
     right: 470px; }
   .register-page .square-6 {
     height: 70px;
     width: 70px;
-    background-image: url("../../assets/site/img/square5.png");
     opacity: 0.9;
     top: 105px;
     right: 20px; }
   .register-page .square-7 {
     height: 200px;
     width: 200px;
-    background-image: url("../../assets/site/img/square5.png");
     left: -100px;
     top: 100px;
     opacity: .4; }
   .register-page .square-8 {
     height: 100px;
     width: 100px;
-    background-image: url("../../assets/site/img/square1.png");
     left: 300px;
     top: 400px;
     opacity: .4; }
@@ -14757,7 +14768,7 @@ html {
 .reset-page,
 .product-page,
 .presentation-page {
-  background-image: url("../../assets/site/img/dots.png");
+  background-image: url("../../img/dots.png");
   background-size: contain; }
 
 .login-page .footer {
@@ -15288,7 +15299,7 @@ html {
   margin-bottom: 20px; }
 
 .media .media-heading small {
-  font-family: "Poppins", sans-serif; }
+  font-family: "FuturaDemi", "Poppins", sans-serif; }
 
 .media .media-body {
   padding-right: 10px; }
@@ -15318,7 +15329,7 @@ html {
 
 .modal .modal-login {
   max-width: 320px;
-  background: #1f2251; }
+  background: #242424; }
   .modal .modal-login .card-login .logo-container {
     width: 65px;
     margin-bottom: 38px;
@@ -15607,7 +15618,6 @@ html {
   .section-signup .square-1 {
     height: 300px;
     width: 300px;
-    background-image: url("../../assets/site/img/square1.png");
     top: 80px;
     left: 100px;
     opacity: 0.3;
@@ -15615,7 +15625,6 @@ html {
   .section-signup .square-2 {
     height: 200px;
     width: 200px;
-    background: url("../../assets/site/img/square3.png");
     background-size: cover;
     bottom: 40px;
     left: 600px;
@@ -15624,7 +15633,6 @@ html {
   .section-signup .square-3 {
     height: 100px;
     width: 100px;
-    background: url("../../assets/site/img/square2.png");
     background-size: cover;
     top: 300px;
     left: 700px;
@@ -15632,7 +15640,6 @@ html {
   .section-signup .square-4 {
     height: 250px;
     width: 250px;
-    background: url("../../assets/site/img/square3.png");
     background-size: cover;
     top: 0px;
     right: 100px;
@@ -16045,29 +16052,29 @@ html {
     margin-right: 0; }
   [data-background-color]:not([data-background-color="gray"]) .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(10, 10, 10, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
     color: #ffffff; }
   [data-background-color]:not([data-background-color="gray"]) .input-group-focus .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group-focus .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     border-color: #ffffff;
     color: #ffffff; }
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(10, 10, 10, 0.2);
     color: #ffffff; }
     [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control:focus, [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control:active, [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control:active,
     [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control:focus,
     [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control:active,
     [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control:active {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(10, 10, 10, 0.3);
       color: #ffffff; }
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control + .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control + .input-group-append .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control + .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control + .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.2); }
+    background-color: rgba(10, 10, 10, 0.2); }
     [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control + .input-group-prepend .input-group-text:focus, [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control + .input-group-prepend .input-group-text:active, [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control + .input-group-prepend .input-group-text:active,
     [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control + .input-group-append .input-group-text:focus,
     [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control + .input-group-append .input-group-text:active,
@@ -16078,26 +16085,26 @@ html {
     [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control + .input-group-append .input-group-text:focus,
     [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control + .input-group-append .input-group-text:active,
     [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control + .input-group-append .input-group-text:active {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(10, 10, 10, 0.3);
       color: #ffffff; }
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .form-control:focus + .input-group-append .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control:focus + .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .form-control:focus + .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border .input-group-append .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(10, 10, 10, 0.2);
     border: none;
     color: #ffffff; }
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border.input-group-focus .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .form-group.no-border.input-group-focus .input-group-append .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border.input-group-focus .input-group-prepend .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .input-group.no-border.input-group-focus .input-group-append .input-group-text {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 10, 10, 0.3);
     color: #ffffff; }
   [data-background-color]:not([data-background-color="gray"]) .input-group-text,
   [data-background-color]:not([data-background-color="gray"]) .form-group.form-group-no-border .input-group-text,
@@ -17622,62 +17629,6 @@ input.datetimepicker[data-color="yellow"] + .bootstrap-datetimepicker-widget {
 .bootstrap-datetimepicker-widget.dropdown-black table td .btn[data-action="togglePeriod"] {
   background: transparent; }
 
-/*
- * bootstrap-tagsinput v0.8.0
- *
- */
-.bootstrap-tagsinput {
-  display: inline-block;
-  padding: 4px 6px;
-  max-width: 100%;
-  line-height: 22px; }
-  .bootstrap-tagsinput input {
-    border: none;
-    color: #9A9A9A;
-    box-shadow: none;
-    outline: none;
-    background-color: transparent;
-    margin: 0;
-    width: 74px;
-    max-width: inherit; }
-    .bootstrap-tagsinput input:focus {
-      border: none;
-      box-shadow: none; }
-  .bootstrap-tagsinput.form-control input::-moz-placeholder {
-    color: #777;
-    opacity: 1; }
-  .bootstrap-tagsinput.form-control input:-ms-input-placeholder,
-  .bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
-    color: #777; }
-  .bootstrap-tagsinput .badge {
-    cursor: pointer;
-    margin: 5px 3px 5px 0;
-    position: relative;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-weight: 500;
-    font-size: 0.75em;
-    text-transform: uppercase;
-    display: inline-block;
-    line-height: 1.5em;
-    padding-left: 0.8em; }
-    .bootstrap-tagsinput .badge:hover {
-      padding-right: 22px; }
-      .bootstrap-tagsinput .badge:hover [data-role="remove"] {
-        opacity: 1;
-        padding-right: 4px; }
-    .bootstrap-tagsinput .badge [data-role="remove"] {
-      cursor: pointer;
-      position: absolute;
-      top: 3px;
-      right: 0px;
-      opacity: 0;
-      background-color: transparent; }
-    .bootstrap-tagsinput .badge [data-role="remove"]:after {
-      font-family: 'Nucleo';
-      content: "\ea48";
-      padding: 0px 2px; }
-
 /*!
  * Bootstrap-select v1.13.2 (https://developer.snapappointments.com/bootstrap-select)
  *
@@ -18292,7 +18243,7 @@ select.selectpicker {
   display: none; }
 
 .card {
-  background: #1f2251;
+  background: #242424;
   border: 0;
   position: relative;
   width: 100%;
@@ -18442,8 +18393,7 @@ select.selectpicker {
     margin-top: 30px;
     padding: 0 10px; }
   .card-chart .chart-area {
-    width: 100%;
-    height: 500px; }
+    width: 100%; }
   .card-chart .card-footer {
     margin-top: 15px; }
     .card-chart .card-footer .stats {
@@ -18694,8 +18644,7 @@ select.selectpicker {
     margin-top: 30px;
     padding: 0 10px; }
   .card-chart .chart-area {
-    width: 100%;
-    height: 500px; }
+    width: 100%; }
   .card-chart .card-footer {
     margin-top: 15px; }
     .card-chart .card-footer .stats {
@@ -19203,7 +19152,7 @@ select.selectpicker {
 .avatar-group .avatar {
   position: relative;
   z-index: 2;
-  border: 2px solid #1f2251; }
+  border: 2px solid #242424; }
   .avatar-group .avatar:hover {
     z-index: 3; }
 
@@ -20206,6 +20155,7 @@ This file was modified entirely by Creative Tim for React-Select v2.0.0
   display: inline-block;
   padding: 4px 6px;
   max-width: 100%;
+  width: 100%;
   line-height: 22px; }
 
 .react-tagsinput-tag {
@@ -20352,11 +20302,11 @@ This file was modified entirely by Creative Tim for React-Select v2.0.0
 .form-check input[type="checkbox"]:checked + .form-check-sign::before,
 .form-check input[type="checkbox"]:checked + .form-check-sign::before,
 .form-check-radio input[type="radio"]:checked + .form-check-sign::after {
-  background-color: #1d8cf8; }
+  background-color: #7248BD; }
 
 .form-check-radio input[type="radio"]:checked + .form-check-sign::after,
 .form-check-radio input[type="radio"]:checked + .form-check-sign::before {
-  border-color: #1d8cf8; }
+  border-color: #7248BD; }
 
 .index-page .squares {
   background: #3358f4;
@@ -20476,7 +20426,7 @@ button:focus, *:focus {
 
 .modal.modal-login .modal-dialog {
   max-width: 320px;
-  background: #1f2251; }
+  background: #242424; }
   .modal.modal-login .modal-dialog .card-login .logo-container {
     width: 65px;
     margin-bottom: 38px;

@@ -34,7 +34,7 @@ class SongSelect extends Component {
       <div style={this.props.displayDropzone ? basestyle : uploadBtnstyle}>
       <Dropzone
         onDrop={this.props.onFileSelect}
-        accept=".mp3,.wav,.flac,.ogg"
+        accept=".mp3,mp4,.wav,.flac,.ogg"
         minSize={0}
         multiple
       >

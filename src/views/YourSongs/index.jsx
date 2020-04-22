@@ -18,6 +18,7 @@ import React from "react";
 
 // reactstrap components
 import {
+  Button,
   Container,
   Card,
   CardHeader,
@@ -32,17 +33,17 @@ import {
   Row,
   Col
 } from "reactstrap";
+import { NavLink as Link } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 
-import Profile from './Profile'
-import Settings from './Settings'
-import Relinked from './Relinked'
-import TipJar from './TipJar'
+import Uploads from './Uploads'
+import Contributions from './Contributions'
 
-class Account extends React.Component {
+class YourSongs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabs: "profile",
+      tabs: "uploads",
     };
   }
 
@@ -57,70 +58,60 @@ class Account extends React.Component {
   render() {
     return (
       <div className="content">
+      <Container>
+        <Row style={{justifyContent: "space-between", alignItems: "center"}}>
         <Nav className="nav-pills-primary" pills>
-
           <NavItem>
             <NavLink
               data-toggle="tab"
-              className={this.state.tabs === "profile" ? "active" : ""}
-              onClick={e => this.changeActiveTab(e, "tabs", "profile")}
+              className={this.state.tabs === "uploads" ? "active" : ""}
+              onClick={e => this.changeActiveTab(e, "tabs", "uploads")}
             >
-              Profile
+              Uploads
             </NavLink>
           </NavItem>
-
           <NavItem>
             <NavLink
               data-toggle="tab"
-              className={this.state.tabs === "relinked" ? "active" : "" }
-              onClick={e => this.changeActiveTab(e, "tabs", "relinked") }
+              className={this.state.tabs === "contributions" ? "active" : "" }
+              onClick={e => this.changeActiveTab(e, "tabs", "contributions") }
             >
-              Relink
-            </NavLink>
-          </NavItem>
-
-          <NavItem>
-            <NavLink
-              data-toggle="tab"
-              className={this.state.tabs === "tipJar" ? "active" : "" }
-              onClick={e => this.changeActiveTab(e, "tabs", "tipJar") }
-            >
-              Tip Jar
-            </NavLink>
-          </NavItem>
-
-          <NavItem>
-            <NavLink
-              data-toggle="tab"
-              className={this.state.tabs === "settings" ? "active" : "" }
-              onClick={e => this.changeActiveTab(e, "tabs", "settings") }
-            >
-              Settings
+              Contributions
             </NavLink>
           </NavItem>
 
         </Nav>
+        <a data-tip data-for="uploadToolTip">
+          <Link to={'uploads/new'} activeClassName="">
+            <Button
+              style={{margin: 0}}
+              color="primary"
+              onClick={() => this.setState({uploading:true})}
+            >
+              New Upload
+            </Button>
+          </Link>
+        </a>
+        <ReactTooltip id="uploadToolTip" effect='solid' delayShow={1500} direction="right">
+          <span>Upload new songs/albums</span>
+        </ReactTooltip>
+        </Row>
 
         <TabContent
           className="tab-space"
           activeTab={this.state.tabs}
         >
-          <TabPane tabId="profile">
-            <Profile />
+          <TabPane tabId="uploads">
+            <Uploads />
           </TabPane>
-          <TabPane tabId="relinked">
-            <Relinked />
-          </TabPane>
-          <TabPane tabId="tipJar">
-            <TipJar />
-          </TabPane>
-          <TabPane tabId="settings">
-            <Settings />
+          <TabPane tabId="contributions">
+            <Contributions />
           </TabPane>
         </TabContent>
+        </Container>
       </div>
     );
   }
 }
 
-export default Account;
+export default YourSongs;

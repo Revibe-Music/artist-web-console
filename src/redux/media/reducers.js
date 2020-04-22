@@ -7,6 +7,7 @@ var initialState = {
   songContributions: [],
   selectedAlbum: null,  // this is used to determine which album a user is editing/previewing
   selectedSong: null,   // this is used to determine which song a user is editing/previewing
+  uploadInProgress: true,
   error: null,
 }
 
@@ -106,6 +107,11 @@ export const mediaReducer = (state=initialState, action) => {
             return {
               ...state,
               selectedSong: action.song_id
+            };
+        case 'UPLOAD_IN_PROGRESS':
+            return {
+              ...state,
+              uploadInProgress: action.bool
             };
         case 'ERROR':
             return {

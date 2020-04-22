@@ -64,27 +64,25 @@ class Contributions extends React.Component {
 
     return (
       <div className="content">
-        <Container>
-          {this.shouldDisplayPendingContributions(this.props.songContributions, this.props.albumContributions) ?
-            <Row className="mt-5">
-              <Col xs={12} md={12}>
-                <PendingContributions />
-              </Col>
-            </Row>
-          :
-          null
-          }
+        {this.shouldDisplayPendingContributions(this.props.songContributions, this.props.albumContributions) ?
           <Row className="mt-5">
             <Col xs={12} md={12}>
-              <AlbumContributionsTable />
+              <PendingContributions />
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Col xs={12} md={12}>
-              <SongContributionsTable />
-            </Col>
-          </Row>
-        </Container>
+        :
+        null
+        }
+        <Row className="mt-5">
+          <Col xs={12} md={12}>
+            <AlbumContributionsTable />
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col xs={12} md={12}>
+            <SongContributionsTable />
+          </Col>
+        </Row>
       </div>
     );
   }

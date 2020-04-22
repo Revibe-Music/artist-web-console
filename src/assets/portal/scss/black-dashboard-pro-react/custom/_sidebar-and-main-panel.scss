@@ -17,7 +17,8 @@
 .sidebar,
 .off-canvas-sidebar {
   @include linear-gradient($primary-states, $primary);
-  height: calc(100vh - 90px);
+  // height: calc(100vh - 90px);
+  height: 100vh;
   width: 230px;
   position: fixed;
   top: 0;
@@ -27,8 +28,8 @@
   background-position: center center;
   display: block;
   box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
-  margin-top: 82px;
-  margin-left: 20px;
+  // margin-top: 82px;
+  // margin-left: 20px;
   border-radius: 5px;
 
   .sidebar-wrapper {

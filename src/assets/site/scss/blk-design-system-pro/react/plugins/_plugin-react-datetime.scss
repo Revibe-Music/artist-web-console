@@ -136,7 +136,7 @@
       height: 20px;
     }
     .rdtDay {
-      color: $default;
+      color: black;
       &.rdtOld,
       &.rdtNew {
         color: $dark-gray;
@@ -220,7 +220,7 @@
   th.rdtNext,
   th.rdtPrev,
   .rdtTimeToggle {
-    color: $info;
+    color: $primary;
   }
 }
 
@@ -313,14 +313,15 @@ td.rdtYear:hover {
     padding: 7px;
     height: 40px;
     border: 1px solid transparent;
+    color: black;
   }
 }
 .rdtCounters {
   .rdtCounter:last-child {
     .rdtCount {
-      color: $info;
+      color: $primary;
       border-radius: 50%;
-      border: 1px solid $info;
+      border: 1px solid $primary;
     }
   }
 }

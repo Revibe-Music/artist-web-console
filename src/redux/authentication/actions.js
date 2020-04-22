@@ -170,9 +170,9 @@ export function getProfile() {
         artistId: response.artist_id,
         displayName: response.name,
         images: {
-          small: response.images[1] ? response.images[1].url : "",
-          medium: response.images[2] ? response.images[2].url : "",
-          large: response.images[3] ? response.images[3].url : "",
+          small: response.images[0] ? response.images[0].url : "",
+          medium: response.images[1] ? response.images[1].url : "",
+          large: response.images[2] ? response.images[2].url : "",
         },
         country: response.artist_profile.country,
         state: response.artist_profile.state,

@@ -17,8 +17,8 @@
 import React from "react";
 // used for making the prop types of this component
 import PropTypes from "prop-types";
-
 import { Button } from "reactstrap";
+import Img from 'react-image'
 
 // import defaultImage from "assets/img/image_placeholder.jpg";
 
@@ -87,9 +87,8 @@ class ImageUpload extends React.Component {
       <div className="fileinput text-center">
         <input type="file" accept='image/*' onChange={this.handleImageChange} ref="fileInput" />
         <div className={"thumbnail" + (this.props.defaultImage ? "img-circle" : "img-square")}>
-          <img
+          <Img src="https://www.example.com/foo.jpg"
           src={this.state.imagePreviewUrl}
-          alt="..."
           style={{width: "100%"}}
           />
         </div>

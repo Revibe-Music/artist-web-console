@@ -290,9 +290,9 @@ class Profile extends React.Component {
       </div>
       <div className="content">
         <Row>
-          <Col md="8">
+          <Col md="8" style={{height: "100%"}}>
             <Form className="form">
-              <Card>
+              <Card style={{height: "100%"}}>
                 <CardHeader>
                   <CardTitle tag="h3">Artist Profile</CardTitle>
                 </CardHeader>
@@ -435,17 +435,17 @@ class Profile extends React.Component {
               </Card>
             </Form>
           </Col>
-          <Col md="4">
+          <Col md="4" style={{height: "100%"}}>
             <Card className="card-user">
               <CardBody>
                 <CardText />
-                <div className="author">
+                <div className="author" style={{height: "20%"}}>
                   <div className="block block-one" />
                   <div className="block block-two" />
                   <div className="block block-three" />
                   <div className="block block-four" />
                   <ImageUpload
-                    defaultImage={require("../assets/portal/img/default-avatar.png")}
+                    defaultImage={require("assets/portal/img/default-avatar.png")}
                     uploadedImage={this.props.user.images.large === "" ? null : this.props.user.images.large}
                     btnText="Change Artist Image"
                     addBtnColor="primary"

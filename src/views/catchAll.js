@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { BuilderComponent } from '@builder.io/react';
 import { Badge, Button, Container, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane, Card, CardBody, CardHeader, Collapse } from "reactstrap";
 
-import Error404 from "./Error404";
+import Error404 from "./Site/Error404";
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import Footer from "components/Footers/Footer.jsx";
 import MailChimpForm from "components/Forms/Mailchimp";

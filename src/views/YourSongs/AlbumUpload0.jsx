@@ -51,6 +51,7 @@ import FileExtensionWarning from "components/Modals/FileExtensionWarning.js";
 import UploadStatus from "components/ActivityIndicators/UploadStatus.js";
 import { uploadAlbum } from 'redux/media/actions.js'
 import * as savedAnimation from 'assets/portal/img/check.json'
+import Song from 'models/Song.js'
 
 const musicMetadata = require('music-metadata-browser');
 
@@ -74,8 +75,7 @@ class AlbumUpload extends Component {
         uploading: false,
         attemptedUpload: false, // indicates if the user pressed upload buttun
 
-        openedCollapses: ["collapse0"],
-
+        openedCollapses: [],
 
         // form State
         albumName: "Test",
@@ -164,7 +164,7 @@ class AlbumUpload extends Component {
       return <UploadStatus loading={song.uploaded} />
     }
     return (
-        <i style={{fontSize: "20px", cursor: 'pointer', color: "red"}} className="tim-icons icon-simple-remove" onClick={() => this.removeSong(song.index)}/>
+        <i style={{fontSize: "20px", cursor: 'pointer', color: "red"}} className="tim-icons icon-simple-remove" onClick={() => this.removeSong(song.id)}/>
     )
   }
 
@@ -256,19 +256,12 @@ class AlbumUpload extends Component {
     this.setState({songs: songs})
   }
 
-  /// FILE HANDLING METHODS
-  formatDuration(time) {
-    var minutes = Math.floor(time / 60);
-    var seconds = Math.round(time - minutes * 60);
-    return minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) ;
-  }
-
   async onDrop(files) {
     var songs = [...this.state.songs]
+    var songAccordians = [...this.state.openedCollapses]
     for(var x=0; x<files.length; x++) {
       var metadata = await musicMetadata.parseBlob(files[x]);
       var formattedSong = {
-
         title: metadata.common.title ? metadata.common.title : files[x].name,
         duration: Math.round(metadata.format.duration),
         file: files[x],
@@ -281,11 +274,18 @@ class AlbumUpload extends Component {
         error: "",
         state: ""
       }
+      for(var y=0; y<this.fileExtensionTests.length; y++) {
+        if (formattedSong.title.toLowerCase().includes(this.fileExtensionTests[y])) {
+          formattedSong.title = formattedSong.title.replace(this.fileExtensionTests[y],'')
+        }
+      }
+      var yee = new Song(formattedSong)
+      console.log(yee);
       songs.push(formattedSong)
+      songAccordians.push(`collapse${formattedSong.id}`)
     }
-    this.setState({songs:songs})
+    this.setState({songs:songs, openedCollapses: songAccordians})
   }
-
 
   editSong(songId, value, callback) {
     var songs = [... this.state.songs]
@@ -294,8 +294,11 @@ class AlbumUpload extends Component {
     this.setState({songs: songs, attemptedUpload: false})
   }
 
-  removeSong(index) {
-    this.setState({songs: [... this.state.songs].splice(index, 1) })
+  removeSong(songId) {
+    var songs = [... this.state.songs]
+    var index = songs.map(function(x) {return x.id; }).indexOf(songId)
+    songs.splice(index, 1)
+    this.setState({songs: songs, attemptedUpload: false })
   }
 
   editTitle(song, title) {
@@ -393,14 +396,10 @@ class AlbumUpload extends Component {
     e.preventDefault();
     let openedCollapses = this.state.openedCollapses;
     if (openedCollapses.includes(collapse)) {
-      this.setState({
-        openedCollapses: openedCollapses.filter(item => item !== collapse)
-      });
-    } else {
-      openedCollapses.push(collapse);
-      this.setState({
-        openedCollapses: openedCollapses
-      });
+      this.setState({openedCollapses: openedCollapses.filter(item => item !== collapse)});
+    }
+    else {
+      this.setState({openedCollapses: [...openedCollapses, collapse]});
     }
   };
 
@@ -420,7 +419,7 @@ class AlbumUpload extends Component {
                     <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                       <a data-tip data-for="albumArtTooltip">
                         <ImageUpload
-                          defaultImage={require("../assets/portal/img/album-img.jpg")}
+                          defaultImage={require("assets/portal/img/album-img.jpg")}
                           uploadedImage={null}
                           btnText="Album Art"
                           addBtnColor="primary"
@@ -540,7 +539,7 @@ class AlbumUpload extends Component {
           <Card>
             <CardBody>
               <CardTitle tag="h3">Upload Songs</CardTitle>
-                <p>*Please note that we only accept MP3, WAV, FLAC, and OGG files at this time.</p>
+                <p>*Please note that we only accept MP3, MP4, WAV, FLAC, and OGG files at this time.</p>
                 {this.state.songs.length > 0 ?
                   <>
                   <div
@@ -552,38 +551,39 @@ class AlbumUpload extends Component {
                     {this.state.songs.map((song, index) => (
                       <Card className="card-plain">
                         <CardHeader role="tab">
-                          <a
-                            aria-expanded={this.state.openedCollapses.includes(`collapse${index}`)}
-                            data-parent="#accordion"
-                            data-toggle="collapse"
-                            onClick={e => this.collapsesToggle(e, `collapse${index}`)}
-                          >
-                            {song.error ?
-                              <>
-                              <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id={`Song:${song.id}:error`}/>
-                                <UncontrolledTooltip
-                                  style={{backgroundColor: "red", color: "white"}}
-                                  placement="top"
-                                  target={`Song:${song.id}:error`}
-                                >
-                                  {song.error}
-                                </UncontrolledTooltip>
-                              </>
-                            :
-                              null
-                            }
                             <CardTitle tag="h4">
                               <div style={{float: "left", marginRight: "5%"}} >
                                 {this.uploadStatus(song)}
                               </div>
+                              <a
+                                aria-expanded={this.state.openedCollapses.includes(`collapse${song.id}`)}
+                                data-parent="#accordion"
+                                data-toggle="collapse"
+                                style={{cursor: "pointer"}}
+                                onClick={e => this.collapsesToggle(e, `collapse${song.id}`)}
+                              >
+                                {song.error ?
+                                  <>
+                                  <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id={`Song:${song.id}:error`}/>
+                                    <UncontrolledTooltip
+                                      style={{backgroundColor: "red", color: "white"}}
+                                      placement="top"
+                                      target={`Song:${song.id}:error`}
+                                    >
+                                      {song.error}
+                                    </UncontrolledTooltip>
+                                  </>
+                                :
+                                  null
+                                }
                               {song.title}
                               <i className="tim-icons icon-minimal-down" />
+                              </a>
                             </CardTitle>
-                          </a>
                         </CardHeader>
                         <Collapse
                           role="tabpanel"
-                          isOpen={this.state.openedCollapses.includes(`collapse${index}`)}
+                          isOpen={this.state.openedCollapses.includes(`collapse${song.id}`)}
                         >
                           <CardBody>
                             <Row>
@@ -600,7 +600,7 @@ class AlbumUpload extends Component {
                               <Col xs="12" md="6">
                                   <div>
                                     Contributors
-                                    <AiOutlineQuestionCircle style={{color: "#7248BD", marginLeft: "5px"}} id={`contribution-question${index}`}/>
+                                    <AiOutlineQuestionCircle style={{color: "#7248BD", marginLeft: "5px"}} id={`contribution-question${song.id}`}/>
                                   </div>
                                   <ContributorTags
                                     artist_id={this.props.artist_id}
@@ -613,7 +613,7 @@ class AlbumUpload extends Component {
                                   <UncontrolledTooltip
                                     style={{backgroundColor: "#7248BD", color: "white"}}
                                     placement="top"
-                                    target={`contribution-question${index}`}
+                                    target={`contribution-question${song.id}`}
                                     hideArrow={true}
                                   >
                                     Tag others (by their display name) that had a roll in creating this song.

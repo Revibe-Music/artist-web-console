@@ -260,6 +260,7 @@ class Relinked extends React.Component {
         <NotificationAlert ref="notificationAlert" />
       </div>
       <div className="content" >
+      <Container>
         <Form className="form">
           <Card>
             <CardHeader>
@@ -413,6 +414,7 @@ class Relinked extends React.Component {
           onDelete={this.deleteLink}
           link={this.state.selectedLink}
         />
+      </Container>
       </div>
       </>
     );

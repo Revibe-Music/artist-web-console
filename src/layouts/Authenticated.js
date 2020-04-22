@@ -35,6 +35,7 @@ import logo from "assets/portal/img/revibe-logo.jpg";
 
 import "assets/portal/scss/black-dashboard-pro-react.scss?v=1.0.1";
 
+
 var ps;
 
 class Authenticated extends Component {
@@ -162,6 +163,7 @@ class Authenticated extends Component {
 
     return (
       <div className="wrapper">
+
         <div className="rna-container">
           <NotificationAlert ref="notificationAlert" />
         </div>
@@ -183,7 +185,7 @@ class Authenticated extends Component {
         >
           <Navbar
             {...this.props}
-            brandText={this.getActiveRoute(routes)}
+            // brandText={this.getActiveRoute(routes)}
             sidebarOpened={this.state.sidebarOpened}
             toggleSidebar={this.toggleSidebar}
           />

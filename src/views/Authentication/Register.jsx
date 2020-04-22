@@ -43,7 +43,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import ReactTooltip from 'react-tooltip';
 
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
-import { register } from '../redux/authentication/actions.js';
+import { register } from 'redux/authentication/actions.js';
 
 const termAndConditionsLink = "https://revibe-media.s3.us-east-2.amazonaws.com/Terms+and+Conditions.pdf"
 
