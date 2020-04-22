@@ -440,8 +440,7 @@ class Relinked extends React.Component {
           <ModalBody cssModule={{'modal-body': 'w-100 text-center'}}>
             <div style={{marginBottom: "10%", height: "70vh"}}>
               <Iframe
-                  // url={`https://revibe.tech/relink/${this.props.user.artistId}`}
-                  url={`https://revibe.tech/relink/stay-woke`}
+                  url={`https://revibe.tech/relink/${this.props.user.artistId}`}
                   width="90%"
                   height="100%"
                   id="relink-preview"
@@ -452,7 +451,7 @@ class Relinked extends React.Component {
               <a className="nav-link"
                  target="_blank"
                  style={{padding: 0, margin:0}}
-                 href={"https://revibe.tech/relink/stay-woke"}
+                 href={`https://revibe.tech/relink/${this.props.user.artistId}`}
               >
               <p style={{fontSize: "1rem"}}>View in new tab</p>
               </a>
