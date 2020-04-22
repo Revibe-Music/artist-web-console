@@ -220,13 +220,25 @@ export default class RevibeAPI {
     return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')
   }
 
-  async editSettings(requireContributionApproval=null,shareDataWithContributors=null,shareAdvancedDataWithContributors=null,allowContributorsToEditContributions=null) {
+  async editSettings(
+    requireContributionApproval=null,
+    requireContributionApprovalOnEdit=null,
+    shareDataWithContributors=null,
+    shareAdvancedDataWithContributors=null,
+    allowContributorsToEditContributions=null,
+    allowContributorsToEditTags=null,
+    displayOtherPlatformContentOnRevibePage=null
+  ) {
+
     var data = new FormData();
     // only add variables to form if they arent null
     if(requireContributionApproval !== null) data.set("require_contribution_approval", requireContributionApproval)
+    if(requireContributionApprovalOnEdit !== null) data.set("require_contribution_approval_on_edit", requireContributionApprovalOnEdit)
     if(shareDataWithContributors !== null) data.set("share_data_with_contributors", shareDataWithContributors)
     if(shareAdvancedDataWithContributors !== null) data.set("share_advanced_data_with_contributors", shareAdvancedDataWithContributors)
     if(allowContributorsToEditContributions !== null) data.set("allow_contributors_to_edit_contributions", allowContributorsToEditContributions)
+    if(allowContributorsToEditTags !== null) data.set("allow_contributors_to_edit_tags", allowContributorsToEditTags)
+    if(displayOtherPlatformContentOnRevibePage !== null) data.set("display_other_platform_content_on_revibe_page", displayOtherPlatformContentOnRevibePage)
 
     return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')
   }
@@ -308,21 +320,6 @@ export default class RevibeAPI {
 
   }
 
-  ////////////////////////////////////
-  //// UPLOADED ALBUM GENRES ///
-  ////////////////////////////////////
-
-  async addUploadedAlbumGenres(album_id, tags) {
-    tags = typeof tags !== "array" ? [tags] : tags
-    var data = {album_id: album_id, tags: tags}
-    return await this._request("account/artist/albums/tags/", data, "POST", true)
-  }
-
-  async removeUploadedAlbumGenres(album_id, tags) {
-    tags = typeof tags !== "array" ? [tags] : tags
-    var data = {album_id: album_id, tags: tags}
-    return await this._request("account/artist/albums/tags/", data, "DELETE", true)
-  }
 
   ////////////////////////////////////
   //// UPLOADED ALBUM TAGS ///
@@ -398,6 +395,52 @@ export default class RevibeAPI {
   async deleteUploadedSongContributor(contribution_id) {
     var data = {contribution_id: contribution_id}
     return await this._request("account/artist/contributions/songs/", data, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED SONG GENRES ///
+  ////////////////////////////////////
+
+  async addUploadedSongGenres(song_id, genres) {
+    genres = typeof genres !== "array" ? [genres] : genres
+    return await this._request(`account/artist/songs/${song_id}/genres/`, {genres: genres}, "POST", true)
+  }
+
+  async removeUploadedSongGenres(song_id, genres) {
+    genres = typeof genres !== "array" ? [genres] : genres
+    return await this._request(`account/artist/songs/${song_id}/genres/`, {genres: genres}, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED SONG TAGS ///
+  ////////////////////////////////////
+
+  async addUploadedSongTags(song_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {song_id: song_id, tags: tags}
+    return await this._request("account/artist/songs/tags/", data, "POST", true)
+  }
+
+  async removeUploadedSongTags(song_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {song_id: song_id, tags: tags}
+    return await this._request("account/artist/songs/tags/", data, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED ALBUM TAGS ///
+  ////////////////////////////////////
+
+  async addUploadedAlbumTags(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {album_id: album_id, tags: tags}
+    return await this._request("account/artist/albums/tags/", data, "POST", true)
+  }
+
+  async removeUploadedAlbumTags(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {album_id: album_id, tags: tags}
+    return await this._request("account/artist/albums/tags/", data, "DELETE", true)
   }
 
   ////////////////////////////////////

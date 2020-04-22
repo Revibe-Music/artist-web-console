@@ -33,10 +33,12 @@ class Settings extends React.Component {
     this.state = {
 
       requireContributionApproval: this.props.user.requireContributionApproval,
+      requireContributionApprovalOnEdit: this.props.user.requireContributionApprovalOnEdit,
       shareDataWithContributors: this.props.user.shareDataWithContributors,
       shareAdvancedDataWithContributors: this.props.user.shareAdvancedDataWithContributors,
       allowContributorsToEditContributions: this.props.user.allowContributorsToEditContributions,
-
+      allowContributorsToEditTags: this.props.user.allowContributorsToEditTags,
+      displayOtherPlatformContentOnRevibePage: this.props.user.displayOtherPlatformContentOnRevibePage,
       saving: false
     }
 
@@ -57,6 +59,9 @@ class Settings extends React.Component {
     if(this.props.user.requireContributionApproval !== prevProps.user.requireContributionApproval) {
       this.setState({requireContributionApproval: this.props.user.requireContributionApproval})
     }
+    if(this.props.user.requireContributionApprovalOnEdit !== prevProps.user.requireContributionApprovalOnEdit) {
+      this.setState({requireContributionApprovalOnEdit: this.props.user.requireContributionApprovalOnEdit})
+    }
     if(this.props.user.shareDataWithContributors !== prevProps.user.shareDataWithContributors) {
       this.setState({shareDataWithContributors:this.props.user.shareDataWithContributors})
     }
@@ -66,15 +71,24 @@ class Settings extends React.Component {
     if(this.props.user.allowContributorsToEditContributions !== prevProps.user.allowContributorsToEditContributions) {
       this.setState({allowContributorsToEditContributions:this.props.user.allowContributorsToEditContributions})
     }
+    if(this.props.user.allowContributorsToEditTags !== prevProps.user.allowContributorsToEditTags) {
+      this.setState({allowContributorsToEditTags:this.props.user.allowContributorsToEditTags})
+    }
+    if(this.props.user.displayOtherPlatformContentOnRevibePage !== prevProps.user.displayOtherPlatformContentOnRevibePage) {
+      this.setState({displayOtherPlatformContentOnRevibePage:this.props.user.displayOtherPlatformContentOnRevibePage})
+    }
   }
 
   async onSubmit() {
     this.setState({saving: true})
     var settings = {
       requireContributionApproval: this.state.requireContributionApproval,
+      requireContributionApprovalOnEdit: this.state.requireContributionApprovalOnEdit,
       shareDataWithContributors: this.state.shareDataWithContributors,
       shareAdvancedDataWithContributors: this.state.shareAdvancedDataWithContributors,
       allowContributorsToEditContributions: this.state.allowContributorsToEditContributions,
+      allowContributorsToEditTags: this.state.allowContributorsToEditTags,
+      displayOtherPlatformContentOnRevibePage: this.state.displayOtherPlatformContentOnRevibePage,
     }
     await this.props.editSettings(settings)
     var options = {
@@ -102,7 +116,7 @@ class Settings extends React.Component {
       </div>
       <div className="content">
         <Row>
-          <Col md="10">
+          <Col md="12">
             <Form className="form">
               <Card>
                 <CardHeader>
@@ -136,6 +150,30 @@ class Settings extends React.Component {
                   <Row style={{marginTop: "5%"}}>
                     <Col xs="4" md="2">
                       <Switch
+                        value={this.state.requireContributionApprovalOnEdit}
+                        offColor=""
+                        onColor=""
+                        onChange={(el, state) => this.toggleSetting("requireContributionApprovalOnEdit", state)}
+                      />
+                    </Col>
+                    <Col xs="8" md="7">
+                      <p>
+                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting2-question"/>
+                        Require Contribution Approval On Edit
+                      </p>
+                      <UncontrolledTooltip
+                        style={{backgroundColor: "#7248BD", color: "white"}}
+                        placement="bottom"
+                        target="setting2-question"
+                        hideArrow={true}
+                      >
+                        Enabling this will prevent others from automatically changing your contribution on a song/album after you have approved it.
+                      </UncontrolledTooltip>
+                    </Col>
+                  </Row>
+                  <Row style={{marginTop: "5%"}}>
+                    <Col xs="4" md="2">
+                      <Switch
                         value={this.state.shareDataWithContributors}
                         offColor=""
                         onColor=""
@@ -144,13 +182,13 @@ class Settings extends React.Component {
                     </Col>
                     <Col xs="8" md="7">
                       <p>
-                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting2-question"/>
+                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting3-question"/>
                         Share Data With Contributors
                       </p>
                       <UncontrolledTooltip
                         style={{backgroundColor: "#7248BD", color: "white"}}
                         placement="bottom"
-                        target="setting2-question"
+                        target="setting3-question"
                         hideArrow={true}
                       >
                         Enabling this will allow contributors on your songs/albums to view basic streaming data.
@@ -168,13 +206,13 @@ class Settings extends React.Component {
                     </Col>
                     <Col xs="8" md="7">
                       <p>
-                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting3-question"/>
+                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting4-question"/>
                         Share Advanced Data With Contributors
                       </p>
                       <UncontrolledTooltip
                         style={{backgroundColor: "#7248BD", color: "white"}}
                         placement="bottom"
-                        target="setting3-question"
+                        target="setting4-question"
                         hideArrow={true}
                       >
                         Enabling this will allow contributors on your songs/albums to view advanced streaming data.
@@ -192,16 +230,64 @@ class Settings extends React.Component {
                     </Col>
                     <Col xs="8" md="7">
                       <p>
-                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting4-question"/>
-                        Allow Contributors To Edit Contributions
+                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting5-question"/>
+                        Allow Contributors To Edit Contributions (COMING SOON)
                       </p>
                       <UncontrolledTooltip
                         style={{backgroundColor: "#7248BD", color: "white"}}
                         placement="bottom"
-                        target="setting4-question"
+                        target="setting5-question"
                         hideArrow={true}
                       >
                         Enabling this will allow contributors on one of your songs/albums to edit their contribution type after you have set it.
+                      </UncontrolledTooltip>
+                    </Col>
+                  </Row>
+                  <Row style={{marginTop: "5%"}}>
+                    <Col xs="4" md="2">
+                      <Switch
+                        value={this.state.allowContributorsToEditTags}
+                        offColor=""
+                        onColor=""
+                        onChange={(el, state) => this.toggleSetting("allowContributorsToEditTags", state)}
+                      />
+                    </Col>
+                    <Col xs="8" md="7">
+                      <p>
+                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting6-question"/>
+                        Allow Contributors To Edit Genres/Tags (COMING SOON)
+                      </p>
+                      <UncontrolledTooltip
+                        style={{backgroundColor: "#7248BD", color: "white"}}
+                        placement="bottom"
+                        target="setting6-question"
+                        hideArrow={true}
+                      >
+                        Enabling this will allow contributors to add/remove genres and tags from the song/album they contributed to.
+                      </UncontrolledTooltip>
+                    </Col>
+                  </Row>
+                  <Row style={{marginTop: "5%"}}>
+                    <Col xs="4" md="2">
+                      <Switch
+                        value={this.state.displayOtherPlatformContentOnRevibePage}
+                        offColor=""
+                        onColor=""
+                        onChange={(el, state) => this.toggleSetting("displayOtherPlatformContentOnRevibePage", state)}
+                      />
+                    </Col>
+                    <Col xs="8" md="7">
+                      <p>
+                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting7-question"/>
+                         Display Other Platform Content On Revibe Page (COMING SOON)
+                      </p>
+                      <UncontrolledTooltip
+                        style={{backgroundColor: "#7248BD", color: "white"}}
+                        placement="bottom"
+                        target="setting7-question"
+                        hideArrow={true}
+                      >
+                       Enabling this will allow Spotify/YouTube content to be displayed on the artist's Revibe artist page.
                       </UncontrolledTooltip>
                     </Col>
                   </Row>
