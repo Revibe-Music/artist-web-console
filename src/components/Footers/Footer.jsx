@@ -38,7 +38,7 @@ class Footer extends React.Component {
         <footer className="footer" style={{ borderColor: "#7248BD", background: "none" }}>
           <Container>
             <Row>
-              <Col md="3"> 
+              <Col md="3">
                 <NavLink to="/home" tag={Link}>
                   <img src={require("../../assets/site/img/revibetransparent.png")} style={{ width: 175 }} className="mt-4" />
                 </NavLink>
@@ -62,7 +62,7 @@ class Footer extends React.Component {
                       </a>
                     </li>
                     <li>
-                      <a href="https://revibe.tech/blogs" target="_blank" className="ml-1">
+                      <a href="https://revibe.tech/blog" target="_blank" className="ml-1">
                         Blog
                       </a>
                     </li>
@@ -160,7 +160,7 @@ class Footer extends React.Component {
                   </Button>
                   <UncontrolledTooltip delay={0} target="tooltip-insta">
                     Instagram
-                  </UncontrolledTooltip>                  
+                  </UncontrolledTooltip>
                   <Button
                     className="btn-icon btn-neutral btn-round btn-simple ml-1"
                     color="default"

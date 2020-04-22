@@ -76,12 +76,10 @@ class Uploads extends React.Component {
     return (
       <div>
         <Row>
-            <UploadedAlbumsTable />
+          <UploadedAlbumsTable />
         </Row>
         <Row >
-          <Col xs="12" md="12">
-            <UploadedSongsTable />
-          </Col>
+          <UploadedSongsTable />
         </Row>
       </div>
     );

@@ -77,7 +77,7 @@ class Relinked extends React.Component {
     this.state = {
       socialMedia: [],
       addingLink: false,
-      previewing: true,
+      previewing: false,
       selectedLink: null,
       deletedLinks: false,
       saving: false,
