@@ -149,66 +149,9 @@ export function getSongContributions() {
   }
 }
 
-// export function uploadAlbum(album, songs, uploadStatusFn) {
-//   return async (dispatch) => {
-//     var response = await revibe.createUploadedAlbum(album.name, album.image, album.type)
-//     if(String(response.status).charAt(0)=="2") {
-//       response = response.data
-//       const newAlbum = response
-//       var albumContributionPromises = []
-//       for(var i=0; i<album.contributors.length; i++) {
-//         for(var j=0; j<album.contributors[i].type.length; j++) {
-//           var albumContributor = revibe.addUploadedAlbumContributor(newAlbum.album_id, album.contributors[i].contributor.artist_id, album.contributors[i].type[j])
-//           albumContributionPromises.push(albumContributor)
-//         }
-//       }
-//       Promise.all(albumContributionPromises)
-//         .then((albumContributionResult) => {
-//           var allAlbumContributions = albumContributionResult.map(function(x) {return x.data})
-//           newAlbum.contributors = allAlbumContributions
-//           newAlbum.total_streams = 0
-//           dispatch(addUploadedAlbum(newAlbum));
-//         });
-//       for(var x=0; x<songs.length; x++) {
-//         const song = songs[x]
-//         const contributors = songs[x].contributors
-//         revibe.createUploadedSong(song.title, song.file, song.duration, newAlbum.album_id, song.explicit)
-//           .then((savedSong) => {
-//             // need to check for response errors here
-//             const savedSongData = savedSong.data
-//             var contributionPromises = []
-//             for(var i=0; i<contributors.length; i++) {
-//               for(var j=0; j<contributors[i].type.length; j++){
-//                 var contribution = revibe.addUploadedSongContributor(savedSongData.song_id, contributors[i].contributor.artist_id, contributors[i].type[j])
-//                 contributionPromises.push(contribution)
-//               }
-//             }
-//             Promise.all(contributionPromises)
-//               .then((contributionResult) => {
-//                 // need to check for response errors here
-//                 var allContributions = contributionResult.map(function(x) {return x.data})
-//                 uploadStatusFn(song.index, "uploaded", true)
-//                 savedSongData.album = newAlbum
-//                 savedSongData.contributors = allContributions
-//                 savedSongData.total_streams = 0
-//                 dispatch(addUploadedSong(savedSongData));
-//               });
-//           })
-//       }
-//       dispatch(error(null));
-//     }
-//     else {
-//       // need to dispatch appropriate error here
-//       dispatch(error("An error occured while uploading an album."));
-//     }
-//   }
-// }
-
 export function uploadAlbum(album, callback) {
   return async (dispatch) => {
-    // console.log(album);
     var response = await revibe.createUploadedAlbum(album.name, album.image, album.type, album.displayed, album.releaseDate)
-    console.log(response);
     if(String(response.status).charAt(0)=="2") {
       const newAlbum = response.data
       var albumContributionPromises = []
@@ -239,9 +182,7 @@ export function uploadAlbum(album, callback) {
 export function uploadAlbumSong(album, song) {
   return async (dispatch) => {
     const contributors = song.contributors
-    // console.log(song);
     var savedSong = await revibe.createUploadedSong(album.album_id, song.title, song.file, song.duration, song.explicit, song.order,song.displayed)
-    console.log(savedSong);
     if(String(savedSong.status).charAt(0)=="2") {
       const savedSongData = savedSong.data
       var contributionPromises = []

@@ -184,7 +184,6 @@ class ContributorTags extends Component {
   async searchArtists({ value }) {
     if(value.length > 0) {
       value = value.charAt(0) === "@" ? value.slice(1) : value
-      console.log(value);
       if(value.length > 0) {
         var results = await revibe.searchArtists(value)
         var artists = results.data.filter(artist => artist.artist_id !== this.props.artist_id)
@@ -296,7 +295,7 @@ class ContributorTags extends Component {
       }}
       renderLayout={(tagComponents, inputComponent) => {
         return (
-          <div style={{border: `1px solid ${this.state.inputColor}`, fontSize: "0.75rem",  borderRadius: "0.4285rem", marginBottom: "5px", transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out"}}>
+          <div style={{border: `1px solid ${this.state.inputColor}`, fontSize: "0.75rem",  borderRadius: "0.4285rem", paddingTop: "4px", paddingBottom: "4px", marginBottom: "5px", transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out"}}>
             <Row>
               <Col xs="6" md="4">
                 {inputComponent}

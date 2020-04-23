@@ -31,7 +31,6 @@ class Confirmation extends React.Component {
         this.setState({releaseDate: datetime})
         var album = this.props.album
         album.releaseDate = datetime.format("YYYY-MM-DD[T]HH:mm:ss");
-        console.log(album.releaseDate);
         this.props.onAlbumChange(album)
       }
       this.setState({dateIsValid: datetime.isValid()})
@@ -85,6 +84,7 @@ class Confirmation extends React.Component {
             <FormGroup>
               <ReactDatetime
                 onChange={this.onReleaseDateChange}
+                isValidDate={(current) =>  current.isAfter( moment(new Date()).subtract( 1, 'day' ) ) }
                 inputProps={{
                   disabled: this.props.album.hasOwnProperty("displayed") ? !this.props.album.displayed : false,
                   className: "primary form-control",

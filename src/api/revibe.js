@@ -244,12 +244,10 @@ export default class RevibeAPI {
   }
 
   async addSocialMediaLink(data) {
-    console.log(data);
     return await this._request("account/artist/social-media/", data, "POST", true)
   }
 
   async editSocialMediaLink(data) {
-    console.log(data);
     return await this._request("account/artist/social-media/", data, "PATCH", true)
   }
 
@@ -275,7 +273,6 @@ export default class RevibeAPI {
   }
 
   async createUploadedAlbum(name, image, type, displayed, releaseDate) {
-    console.log(displayed);
     var data = new FormData();
     data.set("name", name)
     data.set("type", type)
@@ -360,7 +357,6 @@ export default class RevibeAPI {
   }
 
   async createUploadedSong(album_id, title, file, duration, explicit, order, display=true) {
-    console.log(display);
     var data = new FormData();
     data.set("title", title)
     data.set("duration", duration)
@@ -415,13 +411,11 @@ export default class RevibeAPI {
   async addUploadedSongGenres(song_id, genres) {
     genres = typeof genres !== "array" ? [genres] : genres
     var response = await this._request(`account/artist/songs/${song_id}/genres/`, {genres: genres}, "POST", true)
-    console.log(response);
   }
 
   async removeUploadedSongGenres(song_id, genres) {
     genres = typeof genres !== "array" ? [genres] : genres
     var response =  await this._request(`account/artist/songs/${song_id}/genres/`, {genres: genres}, "DELETE", true)
-    console.log(response);
   }
 
   ////////////////////////////////////
@@ -431,13 +425,11 @@ export default class RevibeAPI {
   async addUploadedSongTags(song_id, tags) {
     tags = typeof tags !== "array" ? [tags] : tags
     var response =  await this._request(`account/artist/songs/${song_id}/tags/`, {tags: tags}, "POST", true)
-    console.log(response);
   }
 
   async removeUploadedSongTags(song_id, tags) {
     tags = typeof tags !== "array" ? [tags] : tags
     var response =  await this._request(`account/artist/songs/${song_id}/tags/`, {tags: tags}, "DELETE", true)
-    console.log(response);
   }
 
   ////////////////////////////////////

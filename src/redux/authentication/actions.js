@@ -168,7 +168,6 @@ export function getProfile() {
   return async (dispatch) => {
     dispatch(clearErrors("getProfile"));
     var response = await revibe.getProfile()
-    console.log(response);
     if(String(response.status).charAt(0)=="2") {
       response = response.data
       var user = {

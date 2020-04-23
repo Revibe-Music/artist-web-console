@@ -257,7 +257,6 @@ class Relinked extends React.Component {
   }
 
   render() {
-    console.log(this.props.user.artistId);
     return (
       <>
       <div className="rna-container">

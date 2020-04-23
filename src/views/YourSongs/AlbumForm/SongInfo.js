@@ -24,14 +24,11 @@ class SongInfo extends Component {
       this.state = {
         songs: [],
         uploading: false,
-        attemptedUpload: false, // indicates if the user pressed upload buttun
-
         openedCollapses: [],
 
         showContributionWarning: false,
         ignoreContributionWarning: false,
-        contributionWarningObjectType: "",
-        contributionWarningOccurances: "",
+        contributionWarningOccurances: 0,
 
         showFileExtensionWarning: false,
         ignoreFileExtensionWarning: false,
@@ -100,7 +97,7 @@ class SongInfo extends Component {
     var songs = [... this.state.songs]
     var index = songs.map(function(x) {return x.id; }).indexOf(songId)
     songs[index][callback](...values)
-    this.setState({songs: songs, attemptedUpload: false})
+    this.setState({songs: songs})
     this.props.onSongsChange(songs)
   }
 
@@ -112,7 +109,7 @@ class SongInfo extends Component {
       song.order = index
       return song
     })
-    this.setState({songs: songs, attemptedUpload: false })
+    this.setState({songs: songs})
     this.props.onSongsChange(songs)
   }
 
@@ -131,25 +128,44 @@ class SongInfo extends Component {
   };
 
   isValidated = () => {
+    if(this.state.songs.length < 1) return false
     var isValid = true
-    var showSongContributionWarning = false
-    var songContributionWarningOccurances = 0
+    var showContributionWarning = false
+    var contributionWarningOccurances = 0
     var showFileExtensionWarning = false
     var fileExtensionWarningOccurances = 0
     var songs = [...this.state.songs]
     for(var x=0; x<songs.length; x++) {
       songs[x].clearErrors()
       songs[x].validate()
+
       if (this.fileExtensionTests.some(fileExtension=>songs[x].title.toLowerCase().includes(fileExtension))) {
-        showFileExtensionWarning = true
-        fileExtensionWarningOccurances ++
+        if(!this.state.ignoreFileExtensionWarning) {
+          showFileExtensionWarning = true
+          fileExtensionWarningOccurances ++
+
+          var isValid = false
+        }
       }
-      if(songs[x].errors.filter(error => error.message.includes("Must actually tag contributors in order to give them create.")).length > 0) {
-        showSongContributionWarning=true
-        songContributionWarningOccurances++
+      if (this.contributionStringTests.some(contributionString => songs[x].title.toLowerCase().includes(contributionString))) {
+        if(!this.state.ignoreContributionWarning) {
+          showContributionWarning=true
+          contributionWarningOccurances++
+        }
       }
+      isValid = !isValid ? isValid : songs[x].isValid()
     }
     this.setState({songs: songs})
+    if(showFileExtensionWarning) {
+      this.setState({showFileExtensionWarning: showFileExtensionWarning, fileExtensionWarningOccurances: fileExtensionWarningOccurances})
+      return false
+    }
+    if(showContributionWarning) {
+      this.setState({showContributionWarning: showContributionWarning, contributionWarningOccurances: contributionWarningOccurances})
+      return false
+    }
+
+    return isValid
   }
 
   render() {
@@ -187,7 +203,6 @@ class SongInfo extends Component {
                                 >
                                   <ul>
                                     {song.errors.map(error => {
-                                      console.log(error);
                                       return (
                                         <li>{error.message}</li>
                                       )
@@ -253,9 +268,9 @@ class SongInfo extends Component {
                       </Row>
 
                       <Row style={{marginTop: "10px"}}>
-                        <Col xs="6" md="5">
+                        <Col xs="12" md="5">
                           <FormGroup>
-                            <div>Genre(s)</div>
+                            <div>Genres (optional)</div>
                             <Select
                               className="react-select primary"
                               classNamePrefix="react-select"
@@ -269,16 +284,18 @@ class SongInfo extends Component {
                             />
                           </FormGroup>
                         </Col>
-                        <Col xs="6" md="5">
-                          <div>Tags</div>
+                        <Col xs="8" md="5">
+                          <div>Tags (optional)</div>
                           <TagsInput
+                            onlyUnique={true}
                             inputProps={{
-                                // className: 'form-control',
                                 placeholder: 'Add Tag',
-                                disabled: this.props.disabled
+                                disabled: this.props.disabled,
+                                onFocus: () => this.setState({[song.id+"tagInputColor"]: "#7248BD"}),
+                                onBlur: () => this.setState({[song.id+"tagInputColor"]: "#2b3553"})
                             }}
                             renderLayout={(tagComponents, inputComponent) => (
-                              <div style={{border: `1px solid ${this.state.inputColor}`, fontSize: "0.75rem",  borderRadius: "0.4285rem", marginBottom: "5px", transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out"}}>
+                              <div style={{border: `1px solid ${this.state[song.id+"tagInputColor"] ?this.state[song.id+"tagInputColor"] : "#2b3553"}`, fontSize: "0.75rem",  borderRadius: "0.4285rem", marginBottom: "5px",paddingTop: "7px",paddingBottom: "7px", transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out"}}>
                                 <Row>
                                   <Col xs="6" md="4">
                                     {inputComponent}
@@ -294,9 +311,9 @@ class SongInfo extends Component {
                             value={song.tags}
                           />
                         </Col>
-                        <Col xs="6" md="2" style={{flex: 1, alignItems: "center", justifyContent: "center", textAlign: "center",padding: 0,margin:0}}>
+                        <Col xs="4" md="2" style={{flex: 1, alignItems: "center", justifyContent: "center", textAlign: "center",padding: 0,margin:0}}>
                           <div>Explicit</div>
-                          <FormGroup check >
+                          <FormGroup check style={{marginTop: 0}}>
                           <Label check>
                             <Input
                               disabled={this.state.uploading}
@@ -323,7 +340,7 @@ class SongInfo extends Component {
         }
       <ContributionWarning
         show={this.state.showContributionWarning}
-        objectType={this.state.contributionWarningObjectType}
+        objectType="song"
         occurances={this.state.contributionWarningOccurances}
         onClose={() => this.setState({showContributionWarning: false})}
         onIgnore={() => this.setState({showContributionWarning: false, ignoreContributionWarning: true, contributionWarningOccurances: 0})}

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
-import { Prompt } from 'react-router'
 
 const PrivateRoute = ({ component, path, authenticated}) => (
   <Route
@@ -20,10 +19,6 @@ const PrivateRoute = ({ component, path, authenticated}) => (
       )
     )}
   >
-  <Prompt
-    when={true}
-    message='STOP BITCH'
-  />
 </Route>
 );
 

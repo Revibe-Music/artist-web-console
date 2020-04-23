@@ -66,11 +66,8 @@ class AlbumUpload extends Component {
   }
 
   async onSubmit() {
-    console.log(this.state.album);
-    console.log(this.state.songs);
     this.setState({beganUploading: true, uploadingAlbum: true})
     await this.props.uploadAlbum(this.state.album, (album) => this.setState({uploadedAlbum: album}))
-    console.log(this.state.uploadedAlbum);
     this.setState({uploadAlbumComplete: true, uploadingSongs: true})
     var songPromises = this.state.songs.map(song => this.props.uploadAlbumSong(this.state.uploadedAlbum, song))
     var uploadedSongs = await Promise.all(songPromises)
@@ -78,12 +75,8 @@ class AlbumUpload extends Component {
     setTimeout(() => this.setState({finalizingComplete: true}), 2000)
   }
 
-  async onDone() {
-    this.setState({beganUploading: true})
-    setTimeout(() => this.setState({uploadAlbumComplete: true, uploadSongComplete: true}), 2000)
-    // var uploads = this.state.songs
-    // this.props.uploadAlbum(this.state.album, this.state.songs, this.editRow)
-    this.setState({attemptedUpload:true})
+  onDone() {
+    window.location.href="/dashboard/uploads"
   }
 
   render() {
@@ -137,9 +130,9 @@ class AlbumUpload extends Component {
         </NavLink>
         <Prompt
           when={true}
-          message='STOP BITCH'
+          message={"Are you sure you want to leave? " + (this.state.beganUploading && !this.state.finalizingComplete ? "Your upload will be interupted, which could result in losing your album :(" : "Your progress will not be saved.")}
         />
-      {true ? <Beforeunload onBeforeunload={() => "You'll lose your data!"} /> : null}
+        {this.state.beganUploading && !this.state.finalizingComplete ? <Beforeunload onBeforeunload={() => "You'll lose your data!"} /> : null}
 
         <Col className="mr-auto ml-auto" md="12">
           <ReactWizard
@@ -147,7 +140,7 @@ class AlbumUpload extends Component {
             displayButtons={!this.state.beganUploading || (this.state.finalizingComplete)}
             complete={this.state.finalizingComplete}
             navSteps
-            // validate
+            validate
             title="Upload Your Album"
             headerTextCenter
             finishButtonClasses="btn-wd btn-primary"

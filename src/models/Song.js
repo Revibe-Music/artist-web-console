@@ -40,10 +40,10 @@ export default class Song extends Model {
       this.hasError = true
       this.errors.push({location: "title", message: "Title may not be blank.", critial: true})
     }
-    if (Song.contributionStringTests.some(contributionString => this.title.trim().toLowerCase().includes(contributionString))) {
-      this.hasError = true
-      this.errors.push({location: "contributors", message: "Must actually tag contributors in order to give them create.", critial: false})
-    }
+    // if (Song.contributionStringTests.some(contributionString => this.title.trim().toLowerCase().includes(contributionString))) {
+    //   this.hasError = true
+    //   this.errors.push({location: "contributors", message: "Must actually tag contributors in order to give them create.", critial: false})
+    // }
     if(isNaN(this.duration)) {
       this.hasError = true
       this.errors.push({location: "duration", message: "Duration is invalid.", critial: true})
@@ -135,13 +135,11 @@ export default class Song extends Model {
 
   addGenre = (genre) => {
     this.genres = [...this.genres, genre]
-    console.log(this.genres);
     this.clearErrors("genres")
   }
 
   removeGenre = (genre) => {
     this.genres = [...this.genres].filter(x => x !== genre)
-    console.log(this.genres);
     this.clearErrors("genres")
   }
 

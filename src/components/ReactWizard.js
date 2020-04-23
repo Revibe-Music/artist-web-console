@@ -342,7 +342,7 @@ class ReactWizard extends React.Component {
                       [this.props.doneButtonClasses]:
                         this.props.doneButtonClasses !== undefined
                     })}
-                    onClick={() => this.doneButtonClick()}
+                    onClick={() => this.props.doneButtonClick()}
                   >
                     {this.props.doneButtonText !== undefined
                       ? this.props.doneButtonText
