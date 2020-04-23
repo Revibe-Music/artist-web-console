@@ -218,6 +218,9 @@ export function uploadAlbum(album, callback) {
           albumContributionPromises.push(albumContributor)
         }
       }
+      // if(album.genres.length > 0) await revibe.addUploadedAlbumGenres(newAlbum.album_id, album.genres)
+      // if(album.tags.length > 0) await revibe.addUploadedAlbumTags(newAlbum.album_id, album.tags)
+
       var albumContributionResult = await Promise.all(albumContributionPromises)
       var allAlbumContributions = albumContributionResult.map(function(x) {return x.data})
       newAlbum.contributors = allAlbumContributions
@@ -237,7 +240,7 @@ export function uploadAlbumSong(album, song) {
   return async (dispatch) => {
     const contributors = song.contributors
     // console.log(song);
-    var savedSong = await revibe.createUploadedSong(album.album_id, song.title, song.file, song.duration, song.explicit, song.order, song.genres, song.tags, song.displayed)
+    var savedSong = await revibe.createUploadedSong(album.album_id, song.title, song.file, song.duration, song.explicit, song.order,song.displayed)
     console.log(savedSong);
     if(String(savedSong.status).charAt(0)=="2") {
       const savedSongData = savedSong.data
@@ -248,6 +251,9 @@ export function uploadAlbumSong(album, song) {
           contributionPromises.push(contribution)
         }
       }
+      if(song.genres.length > 0) await revibe.addUploadedSongGenres(savedSongData.song_id, song.genres)
+      if(song.tags.length > 0) await revibe.addUploadedSongTags(savedSongData.song_id, song.tags)
+
       var contributionResult = await Promise.all(contributionPromises)
       // need to check for response errors here
       var allContributions = contributionResult.map(function(x) {return x.data})
