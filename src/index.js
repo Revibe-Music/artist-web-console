@@ -3,7 +3,6 @@ import ReactGA from 'react-ga';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
-import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 import { authenticationReducer } from './redux/authentication/reducers.js'
 import { mediaReducer } from './redux/media/reducers.js'

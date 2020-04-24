@@ -14,7 +14,6 @@ import {
   ListGroup,
   ListGroupItem
 } from 'reactstrap';
-import SearchBar from '@opuscapita/react-searchbar';
 import Select from "react-select";
 import { FaTimes, FaUserPlus } from "react-icons/fa";
 
