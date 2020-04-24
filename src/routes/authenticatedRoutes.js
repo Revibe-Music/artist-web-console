@@ -4,6 +4,7 @@ import YourSongs from "views/YourSongs/index";
 import Uploads from "views/YourSongs/Uploads";
 import Contributions from "views/YourSongs/Contributions";
 import AlbumUpload from "views/YourSongs/AlbumUpload";
+import EditAlbum from "views/YourSongs/EditAlbum";
 
 import Account from "views/Account/index";
 import Relink from "views/Relink/index";
@@ -31,9 +32,17 @@ const routes = [
   },
   {
     path: "/dashboard/uploads/new",
-    name: "New Upload",
+    name: "Upload Album",
     icon: "tim-icons icon-cloud-upload-94",
     component: AlbumUpload,
+    layout: "",
+    showInSidebar: false
+  },
+  {
+    path: "/dashboard/uploads/edit/:album_id",
+    name: "Edit Album",
+    icon: "tim-icons icon-cloud-upload-94",
+    component: EditAlbum,
     layout: "",
     showInSidebar: false
   },

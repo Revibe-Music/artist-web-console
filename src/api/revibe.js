@@ -36,6 +36,55 @@ export default class RevibeAPI {
     return !!Cookies.get(cookieName)
   }
 
+  _parseAlbum(album) {
+    return  {
+      id: album.album_id,
+      name: album.name,
+      type: album.type,
+      contributors: album.contributors.map(x => this._parseContributor(x)),
+      images: album.images.length > 0 ? album.images.map(img => img.url) : null,
+      genres: album.genres.map(genre => genre.text),
+      tags: album.tags.map(tag => tag.text),
+      displayed: album.is_displayed,
+      totalStreams: album.total_streams,
+      uploadDate: album.uploaded_date,
+      datePublished: album.date_published,
+      lastChanged: album.last_changed
+    }
+  }
+
+  _parseSong(song) {
+    return  {
+      id: song.song_id,
+      title: song.name,
+      album: this._parseAlbum(song.album),
+      duration: song.duration,
+      explicit: song.is_explicit,
+      order: song.album_order,
+      contributors: song.contributors.map(x => this._parseContributor(x)),
+      genres: song.genres.map(genre => genre.text),
+      tags: song.tags.map(tag => tag.text),
+      displayed: song.is_displayed,
+      totalStreams: song.total_streams,
+      uploadDate: song.uploaded_date,
+      tracks: song.tracks
+    }
+  }
+
+  _parseContributor(contributor) {
+    return  {
+      id: contributor.contribution_id,
+      artist: {
+        id: contributor.artist_id,
+        artistId: contributor.artist_id,
+        artistName: contributor.artist_name,
+      },
+      type: contributor.contribution_type,
+      approved: contributor.approved,
+      pending: contributor.pending,
+    }
+  }
+
   _handleErrors(response) {
     var errors = {}
     if(response.status === 400) {
@@ -269,7 +318,11 @@ export default class RevibeAPI {
   ////////////////////////////////////
 
   async getUploadedAlbums() {
-    return await this._request("account/artist/albums/", null, "GET", true)
+    var response = await this._request("account/artist/albums/", null, "GET", true)
+    if(String(response.status).charAt(0)=="2") {
+      response.data = response.data.map(album => this._parseAlbum(album))
+    }
+    return response
   }
 
   async createUploadedAlbum(name, image, type, displayed, releaseDate) {
@@ -279,7 +332,11 @@ export default class RevibeAPI {
     data.set("is_displayed", displayed)
     if(releaseDate !== null) data.set("date_published", releaseDate)
     data.append("image", image)
-    return await this. _request("account/artist/albums/", data, "POST", true, 'multipart/form-data')
+    var response = await this. _request("account/artist/albums/", data, "POST", true, 'multipart/form-data')
+    if(String(response.status).charAt(0)=="2") {
+      response.data = response.data.map(album => this._parseAlbum(album))
+    }
+    return response
   }
 
   async editUploadedAlbum(album_id, name=null, image=null, type=null, displayed=null) {
@@ -290,7 +347,11 @@ export default class RevibeAPI {
     if(type !== null) data.set("type", type)
     if(displayed !== null) data.set("is_displayed", displayed)
     if(image !== null) data.append("image", image)
-    return await this. _request("account/artist/albums/", data, "PATCH", true, 'multipart/form-data')
+    var response = await this. _request("account/artist/albums/", data, "PATCH", true, 'multipart/form-data')
+    if(String(response.status).charAt(0)=="2") {
+      response.data = response.data.map(album => this._parseAlbum(album))
+    }
+    return response
   }
 
   async deleteUploadedAlbum(album_id) {
@@ -353,7 +414,11 @@ export default class RevibeAPI {
   async getUploadedSongs(album_id=null) {
     // if album_id is passed, then only songs from that ablum will be returned
     var data = album_id !== null ? {album_id: album_id} : null
-    return await this._request("account/artist/songs/", data, "GET", true)
+    var response = await this._request("account/artist/songs/", data, "GET", true)
+    if(String(response.status).charAt(0)=="2") {
+      response.data = response.data.map(song => this._parseSong(song))
+    }
+    return response
   }
 
   async createUploadedSong(album_id, title, file, duration, explicit, order, display=true) {
@@ -365,7 +430,11 @@ export default class RevibeAPI {
     data.set("album_order", order)
     data.set("is_displayed", display)
     data.append("file", file)
-    return await this. _request("account/artist/songs/", data, "POST", true, 'multipart/form-data')
+    var response = await this. _request("account/artist/songs/", data, "POST", true, 'multipart/form-data')
+    if(String(response.status).charAt(0)=="2") {
+      response.data = response.data.map(song => this._parseSong(song))
+    }
+    return response
   }
 
   async editUploadedSong(song_id, title=null, file=null, duration=null, genre=null, displayed=null) {
@@ -377,7 +446,11 @@ export default class RevibeAPI {
     if(genre !== null) data.set("genre", genre)
     if(displayed !== null) data.set("displayed", displayed)
     if(file !== null) data.append("file", file)
-    return await this. _request("account/artist/songs/", data, "PATCH", true, 'multipart/form-data')
+    var response = await this. _request("account/artist/songs/", data, "PATCH", true, 'multipart/form-data')
+    if(String(response.status).charAt(0)=="2") {
+      response.data = response.data.map(song => this._parseSong(song))
+    }
+    return response
   }
 
   async deleteUploadedSong(song_id) {
@@ -433,22 +506,6 @@ export default class RevibeAPI {
   }
 
   ////////////////////////////////////
-  //// UPLOADED ALBUM TAGS ///
-  ////////////////////////////////////
-
-  async addUploadedAlbumTags(album_id, tags) {
-    tags = typeof tags !== "array" ? [tags] : tags
-    var data = {album_id: album_id, tags: tags}
-    return await this._request("account/artist/albums/tags/", data, "POST", true)
-  }
-
-  async removeUploadedAlbumTags(album_id, tags) {
-    tags = typeof tags !== "array" ? [tags] : tags
-    var data = {album_id: album_id, tags: tags}
-    return await this._request("account/artist/albums/tags/", data, "DELETE", true)
-  }
-
-  ////////////////////////////////////
   ////// ALL YOUR CONTRIBUTIONS  /////
   ////////////////////////////////////
 
@@ -461,7 +518,11 @@ export default class RevibeAPI {
   ////////////////////////////////////
 
   async getAlbumContributions() {
-    return await this._request("account/artist/contributions/albums/", null, "GET", true)
+    var response = await this._request("account/artist/contributions/albums/", null, "GET", true)
+    if(String(response.status).charAt(0)=="2") {
+      response.data = response.data.map(album => this._parseAlbum(album))
+    }
+    return response
   }
 
   async editAlbumContribution(contribution_id) {
@@ -488,7 +549,11 @@ export default class RevibeAPI {
   ////////////////////////////////////
 
   async getSongContributions() {
-    return await this._request("account/artist/contributions/songs/", null, "GET", true)
+    var response = await this._request("account/artist/contributions/songs/", null, "GET", true)
+    if(String(response.status).charAt(0)=="2") {
+      response.data = response.data.map(song => this._parseSong(song))
+    }
+    return response
   }
 
   async editSongContribution(contribution_id) {

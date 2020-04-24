@@ -15,8 +15,8 @@ export default class Album extends Model{
 
   constructor(obj) {
     super()
-    this.attributes = ["id", "name", "type", "image", "contributors"]
-    this.requiredAttributes = ["id", "name", "type", "image", "contributors", "displayed"]
+    this.attributes = ["id", "name", "type", "images", "contributors", "displayed", "totalStreams", "uploadDate", "datePublished"]
+    this.requiredAttributes = ["id", "name", "type", "images", "contributors", "displayed"]
     if(obj) this._parse(obj)
     this._setDefaults()
   }
@@ -26,9 +26,10 @@ export default class Album extends Model{
     if(!this.id) this.id = this.generateID()
     if(!this.name) this.name = ""
     if(!this.type) this.type = ""
-    if(!this.image) this.image = null
+    if(!this.images) this.images = []
     if(!this.contributors) this.contributors = []
-    if(!this.displayed) this.displayed =true
+    if(!this.displayed) this.displayed = true
+    if(!this.totalStreams) this.totalStreams = 0
   }
 
   validate = () => {

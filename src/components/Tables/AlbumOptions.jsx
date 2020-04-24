@@ -10,6 +10,7 @@ import {
   Col,
   Button
 } from "reactstrap";
+import { Link, NavLink } from 'react-router-dom'
 import { FaEllipsisH } from "react-icons/fa";
 import DeleteAlbum from "components/Modals/DeleteAlbum.js";
 
@@ -47,11 +48,11 @@ class AlbumOptions extends Component {
       </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem header>Actions</DropdownItem>
-          {/*<DropdownItem
-            onClick={() => this.props.edit(this.props.id)}
-          >
-          Edit
-          </DropdownItem>*/}
+          <Link to={`/dashboard/uploads/edit/${this.props.id}`} activeClassName="">
+            <DropdownItem>
+            Edit
+          </DropdownItem>
+          </Link>
           <DropdownItem
             onClick={() => this.toggleDeleteWarning()}
           >
