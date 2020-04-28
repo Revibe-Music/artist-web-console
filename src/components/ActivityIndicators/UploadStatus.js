@@ -18,16 +18,24 @@ class UploadStatus extends React.Component {
   constructor(props) {
     super(props)
   }
-
+  // <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
+  //   {this.props.loading ?
+  //     <Lottie options={defaultOptions} height={50} width={50} />
+  //   :
+  //     <ClipLoader size={50} color={"#7248BD"} loading={true} />
+  //   }
+  // </div>
   render() {
     return (
-      <div style={{alignItems: "center", justifyContent: "center", textAlign: "center"}}>
-        {this.props.loading ?
-          <Lottie options={defaultOptions} height={50} width={50} />
-        :
-          <ClipLoader size={50} color={"#7248BD"} loading={true} />
-        }
-      </div>
+      <>
+      {this.props.loading ?
+        <Lottie options={defaultOptions} height={50} width={50} style={{margin:0}}/>
+      :
+        <ClipLoader size={50} color={"#7248BD"} loading={true} />
+      }
+      </>
+
+
     );
   }
 }

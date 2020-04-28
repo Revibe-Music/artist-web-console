@@ -1,4 +1,3 @@
-import { sessionService } from 'redux-react-session';
 import RevibeAPI from '../../api/revibe.js';
 
 const revibe = new RevibeAPI()
@@ -74,6 +73,11 @@ const setSelectedSong = song_id => ({
     song_id: song_id,
 });
 
+const setUpload = bool => ({
+    type: 'UPLOAD_IN_PROGRESS',
+    bool: bool,
+});
+
 const error = error => ({
     type: 'ERROR',
     error: error,
@@ -144,58 +148,64 @@ export function getSongContributions() {
   }
 }
 
-
-export function uploadAlbum(name, image, type, albumContributors, songs, uploadStatusFn) {
+export function uploadAlbum(album, callback) {
   return async (dispatch) => {
-    var response = await revibe.createUploadedAlbum(name, image, type)
+    var response = await revibe.createUploadedAlbum(album.name, album.image, album.type, album.displayed, album.releaseDate)
     if(String(response.status).charAt(0)=="2") {
-      response = response.data
-      const album = response
+      const newAlbum = response.data
       var albumContributionPromises = []
-      for(var i=0; i<albumContributors.length; i++) {
-        for(var j=0; j<albumContributors[i].type.length; j++) {
-          var albumContributor = revibe.addUploadedAlbumContributor(album.album_id, albumContributors[i].contributor.artist_id, albumContributors[i].type[j])
+      for(var i=0; i<album.contributors.length; i++) {
+        for(var j=0; j<album.contributors[i].type.length; j++) {
+          var albumContributor = revibe.addUploadedAlbumContributor(newAlbum.album_id, album.contributors[i].contributor.artist_id, album.contributors[i].type[j])
           albumContributionPromises.push(albumContributor)
         }
       }
-      Promise.all(albumContributionPromises)
-        .then((albumContributionResult) => {
-          var allAlbumContributions = albumContributionResult.map(function(x) {return x.data})
-          album.contributors = allAlbumContributions
-          album.total_streams = 0
-          dispatch(addUploadedAlbum(album));
-        });
-      for(var x=0; x<songs.length; x++) {
-        const song = songs[x]
-        const contributors = songs[x].contributors
-        revibe.createUploadedSong(song.title, song.file, song.duration, album.album_id, song.explicit)
-          .then((savedSong) => {
-            // need to check for response errors here
-            const savedSongData = savedSong.data
-            var contributionPromises = []
-            for(var i=0; i<contributors.length; i++) {
-              for(var j=0; j<contributors[i].type.length; j++){
-                var contribution = revibe.addUploadedSongContributor(savedSongData.song_id, contributors[i].contributor.artist_id, contributors[i].type[j])
-                contributionPromises.push(contribution)
-              }
-            }
-            Promise.all(contributionPromises)
-              .then((contributionResult) => {
-                // need to check for response errors here
-                var allContributions = contributionResult.map(function(x) {return x.data})
-                uploadStatusFn(song.index, "uploaded", true)
-                savedSongData.album = album
-                savedSongData.contributors = allContributions
-                savedSongData.total_streams = 0
-                dispatch(addUploadedSong(savedSongData));
-              });
-          })
-      }
+      // if(album.genres.length > 0) await revibe.addUploadedAlbumGenres(newAlbum.album_id, album.genres)
+      // if(album.tags.length > 0) await revibe.addUploadedAlbumTags(newAlbum.album_id, album.tags)
+
+      var albumContributionResult = await Promise.all(albumContributionPromises)
+      var allAlbumContributions = albumContributionResult.map(function(x) {return x.data})
+      newAlbum.contributors = allAlbumContributions
+      newAlbum.total_streams = 0
+      await dispatch(addUploadedAlbum(newAlbum));
+      await callback(newAlbum);
       dispatch(error(null));
     }
     else {
       // need to dispatch appropriate error here
       dispatch(error("An error occured while uploading an album."));
+    }
+  }
+}
+
+export function uploadAlbumSong(album, song) {
+  return async (dispatch) => {
+    const contributors = song.contributors
+    var savedSong = await revibe.createUploadedSong(album.album_id, song.title, song.file, song.duration, song.explicit, song.order,song.displayed)
+    if(String(savedSong.status).charAt(0)=="2") {
+      const savedSongData = savedSong.data
+      var contributionPromises = []
+      for(var i=0; i<contributors.length; i++) {
+        for(var j=0; j<contributors[i].type.length; j++){
+          var contribution = revibe.addUploadedSongContributor(savedSongData.song_id, contributors[i].contributor.artist_id, contributors[i].type[j])
+          contributionPromises.push(contribution)
+        }
+      }
+      if(song.genres.length > 0) await revibe.addUploadedSongGenres(savedSongData.song_id, song.genres)
+      if(song.tags.length > 0) await revibe.addUploadedSongTags(savedSongData.song_id, song.tags)
+
+      var contributionResult = await Promise.all(contributionPromises)
+      // need to check for response errors here
+      var allContributions = contributionResult.map(function(x) {return x.data})
+      savedSongData.album = album
+      savedSongData.contributors = allContributions
+      savedSongData.total_streams = 0
+      dispatch(addUploadedSong(savedSongData));
+      dispatch(error(null));
+    }
+    else {
+      // need to dispatch appropriate error here
+      dispatch(error("An error occured while uploading a song."));
     }
   }
 }
@@ -329,5 +339,11 @@ export function selectAlbum(album_id) {
 export function selectSong(song_id) {
   return async (dispatch) => {
     dispatch(setSelectedSong(song_id));
+  }
+}
+
+export function setUploadInProgress(bool) {
+  return async (dispatch) => {
+    dispatch(setUpload(bool));
   }
 }

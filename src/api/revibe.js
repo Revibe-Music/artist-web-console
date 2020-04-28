@@ -220,24 +220,34 @@ export default class RevibeAPI {
     return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')
   }
 
-  async editSettings(requireContributionApproval=null,shareDataWithContributors=null,shareAdvancedDataWithContributors=null,allowContributorsToEditContributions=null) {
+  async editSettings(
+    requireContributionApproval=null,
+    requireContributionApprovalOnEdit=null,
+    shareDataWithContributors=null,
+    shareAdvancedDataWithContributors=null,
+    allowContributorsToEditContributions=null,
+    allowContributorsToEditTags=null,
+    displayOtherPlatformContentOnRevibePage=null
+  ) {
+
     var data = new FormData();
     // only add variables to form if they arent null
     if(requireContributionApproval !== null) data.set("require_contribution_approval", requireContributionApproval)
+    if(requireContributionApprovalOnEdit !== null) data.set("require_contribution_approval_on_edit", requireContributionApprovalOnEdit)
     if(shareDataWithContributors !== null) data.set("share_data_with_contributors", shareDataWithContributors)
     if(shareAdvancedDataWithContributors !== null) data.set("share_advanced_data_with_contributors", shareAdvancedDataWithContributors)
     if(allowContributorsToEditContributions !== null) data.set("allow_contributors_to_edit_contributions", allowContributorsToEditContributions)
+    if(allowContributorsToEditTags !== null) data.set("allow_contributors_to_edit_tags", allowContributorsToEditTags)
+    if(displayOtherPlatformContentOnRevibePage !== null) data.set("display_other_platform_content_on_revibe_page", displayOtherPlatformContentOnRevibePage)
 
     return await this._request("account/artist/", data, "PATCH", true,'multipart/form-data')
   }
 
   async addSocialMediaLink(data) {
-    console.log(data);
     return await this._request("account/artist/social-media/", data, "POST", true)
   }
 
   async editSocialMediaLink(data) {
-    console.log(data);
     return await this._request("account/artist/social-media/", data, "PATCH", true)
   }
 
@@ -262,11 +272,12 @@ export default class RevibeAPI {
     return await this._request("account/artist/albums/", null, "GET", true)
   }
 
-  async createUploadedAlbum(name, image, type, displayed=true) {
+  async createUploadedAlbum(name, image, type, displayed, releaseDate) {
     var data = new FormData();
     data.set("name", name)
     data.set("type", type)
-    data.set("displayed", displayed)
+    data.set("is_displayed", displayed)
+    if(releaseDate !== null) data.set("date_published", releaseDate)
     data.append("image", image)
     return await this. _request("account/artist/albums/", data, "POST", true, 'multipart/form-data')
   }
@@ -277,7 +288,7 @@ export default class RevibeAPI {
     // only add variables to form if they arent null
     if(name !== null) data.set("name", name)
     if(type !== null) data.set("type", type)
-    if(displayed !== null) data.set("displayed", displayed)
+    if(displayed !== null) data.set("is_displayed", displayed)
     if(image !== null) data.append("image", image)
     return await this. _request("account/artist/albums/", data, "PATCH", true, 'multipart/form-data')
   }
@@ -303,9 +314,37 @@ export default class RevibeAPI {
   }
 
   async deleteUploadedAlbumContributor(contribution_id) {
-    var data = {contribution_id: contribution_id}
-    return await this._request("account/artist/contributions/albums/", data, "DELETE", true)
+
   }
+
+  ////////////////////////////////////
+  //// UPLOADED ALBUM GENRES ///
+  ////////////////////////////////////
+
+  async addUploadedAlbumGenres(album_id, genres) {
+    genres = typeof genres !== "array" ? [genres] : genres
+    return await this._request(`account/artist/album/${album_id}/genres/`, {genres: genres}, "POST", true)
+  }
+
+  async removeUploadedAlbumGenres(album_id, genres) {
+    genres = typeof genres !== "array" ? [genres] : genres
+    return await this._request(`account/artist/album/${album_id}/genres/`, {genres: genres}, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED ALBUM TAGS ///
+  ////////////////////////////////////
+
+  async addUploadedAlbumTags(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    return await this._request(`account/artist/album/${album_id}/tags/`, {tags: tags}, "POST", true)
+  }
+
+  async removeUploadedAlbumTags(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    return await this._request(`account/artist/album/${album_id}/tags/`, {tags: tags}, "DELETE", true)
+  }
+
 
   ////////////////////////////////////
   ////////// UPLOADED SONGS //////////
@@ -317,15 +356,15 @@ export default class RevibeAPI {
     return await this._request("account/artist/songs/", data, "GET", true)
   }
 
-  async createUploadedSong(title, file, duration, album_id, explicit, genre=null, display=true) {
+  async createUploadedSong(album_id, title, file, duration, explicit, order, display=true) {
     var data = new FormData();
     data.set("title", title)
     data.set("duration", duration)
     data.set("album_id", album_id)
-    data.set("_explicit", explicit)
-    data.set("display", display)
+    data.set("is_explicit", explicit)
+    data.set("album_order", order)
+    data.set("is_displayed", display)
     data.append("file", file)
-    if(genre !== null) data.set("genre", genre)  // only add if this is not null
     return await this. _request("account/artist/songs/", data, "POST", true, 'multipart/form-data')
   }
 
@@ -363,6 +402,50 @@ export default class RevibeAPI {
   async deleteUploadedSongContributor(contribution_id) {
     var data = {contribution_id: contribution_id}
     return await this._request("account/artist/contributions/songs/", data, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED SONG GENRES ///
+  ////////////////////////////////////
+
+  async addUploadedSongGenres(song_id, genres) {
+    genres = typeof genres !== "array" ? [genres] : genres
+    var response = await this._request(`account/artist/songs/${song_id}/genres/`, {genres: genres}, "POST", true)
+  }
+
+  async removeUploadedSongGenres(song_id, genres) {
+    genres = typeof genres !== "array" ? [genres] : genres
+    var response =  await this._request(`account/artist/songs/${song_id}/genres/`, {genres: genres}, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED SONG TAGS ///
+  ////////////////////////////////////
+
+  async addUploadedSongTags(song_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var response =  await this._request(`account/artist/songs/${song_id}/tags/`, {tags: tags}, "POST", true)
+  }
+
+  async removeUploadedSongTags(song_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var response =  await this._request(`account/artist/songs/${song_id}/tags/`, {tags: tags}, "DELETE", true)
+  }
+
+  ////////////////////////////////////
+  //// UPLOADED ALBUM TAGS ///
+  ////////////////////////////////////
+
+  async addUploadedAlbumTags(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {album_id: album_id, tags: tags}
+    return await this._request("account/artist/albums/tags/", data, "POST", true)
+  }
+
+  async removeUploadedAlbumTags(album_id, tags) {
+    tags = typeof tags !== "array" ? [tags] : tags
+    var data = {album_id: album_id, tags: tags}
+    return await this._request("account/artist/albums/tags/", data, "DELETE", true)
   }
 
   ////////////////////////////////////

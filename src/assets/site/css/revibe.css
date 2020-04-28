@@ -31,8 +31,8 @@
 }
 
 /*    Custom CSS Elements      */
-.accordion-1 .accordion .card.custom-accordion { 
-  background-color: transparent; 
+.accordion-1 .accordion .card.custom-accordion {
+  background-color: transparent;
   border: 1px solid #7248BD !important;
   margin-bottom: 0;
 }
@@ -105,7 +105,7 @@ footer.artist-footer {
     width: fit-content;
     min-height: 100%;
   }
-  
+
   .card-video video {
     position: absolute;
     left: 0;
@@ -142,7 +142,7 @@ footer.artist-footer {
     min-height: 100%;
     z-index: 99;
   }
-  
+
   .card-video video {
     position: inherit;
     left: 0;
@@ -166,4 +166,34 @@ body.login-page div#root .content, body.register-page div#root .content {
   overflow: auto;
   margin: 0;
   padding: 0;
+}
+
+/* Override */
+.react-tagsinput {
+  display: inline-block;
+  padding: 0;
+  max-width: 100%;
+  width: 100%;
+  line-height: 22px;
+}
+/* Override */
+
+.card-wizard .card-body {
+  background: #242424;
+  border-top-left-radius: 0.4285rem;
+  border-top-right-radius: 0.4285rem;
+  margin-top: 20px;
+}
+
+.card .card-footer {
+    background-color: transparent;
+    border: 0;
+    padding: 0px;
+    background: #242424;
+}
+.card-wizard .card-footer {
+    background-color: #242424 !important;
+    border-bottom-left-radius: 0.4285rem;
+    border-bottom-right-radius: 0.4285rem;
+    margin-top: 0
 }

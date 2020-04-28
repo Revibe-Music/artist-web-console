@@ -56,7 +56,7 @@ import { connect } from 'react-redux';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-import RevibeAPI from '../api/revibe.js';
+import RevibeAPI from 'api/revibe.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { editAlbum, deleteAlbum, deleteSong } from 'redux/media/actions.js'
 
@@ -241,7 +241,7 @@ class EditAlbum extends Component {
                 <Col className="m-auto m-auto" md="4">
                   <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <ImageUpload
-                      defaultImage={require("../assets/portal/img/album-img.jpg")}
+                      defaultImage={require("assets/portal/img/album-img.jpg")}
                       uploadedImage={album.images.large}
                       btnText="Album Art"
                       addBtnColor="default"

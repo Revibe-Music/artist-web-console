@@ -69,9 +69,12 @@ export function register(username, email, password, history) {
         city: "",
         zipcode: "",
         requireContributionApproval: true,
+        requireContributionApprovalOnEdit: true,
         shareDataWithContributors: true,
         shareAdvancedDataWithContributors: false,
         allowContributorsToEditContributions: false,
+        allowContributorsToEditTags: false,
+        displayOtherPlatformContentOnRevibePage: true,
       }
       dispatch(loginUser());
       dispatch(updateUser(user));
@@ -106,9 +109,12 @@ export function registerArtist(name, image, history) {
         city: "",
         zipcode: "",
         requireContributionApproval: true,
+        requireContributionApprovalOnEdit: true,
         shareDataWithContributors: true,
         shareAdvancedDataWithContributors: false,
         allowContributorsToEditContributions: false,
+        allowContributorsToEditTags: false,
+        displayOtherPlatformContentOnRevibePage: true,
         socialMedia: []
       }
       dispatch(updateUser(user));
@@ -170,9 +176,9 @@ export function getProfile() {
         artistId: response.artist_id,
         displayName: response.name,
         images: {
-          small: response.images[1] ? response.images[1].url : "",
-          medium: response.images[2] ? response.images[2].url : "",
-          large: response.images[3] ? response.images[3].url : "",
+          small: response.images[0] ? response.images[0].url : "",
+          medium: response.images[1] ? response.images[1].url : "",
+          large: response.images[2] ? response.images[2].url : "",
         },
         country: response.artist_profile.country,
         state: response.artist_profile.state,
@@ -180,9 +186,12 @@ export function getProfile() {
         zipcode: response.artist_profile.zip_code,
         artistAboutMe: response.artist_profile.about_me,
         requireContributionApproval: response.artist_profile.require_contribution_approval,
+        requireContributionApprovalOnEdit: response.artist_profile.require_contribution_approval_on_edit,
         shareDataWithContributors: response.artist_profile.share_data_with_contributors,
         shareAdvancedDataWithContributors: response.artist_profile.share_advanced_data_with_contributors,
         allowContributorsToEditContributions: response.artist_profile.allow_contributors_to_edit_contributions,
+        allowContributorsToEditTags: response.artist_profile.allow_contributors_to_edit_tags,
+        displayOtherPlatformContentOnRevibePage: response.artist_profile.display_other_platform_content_on_revibe_page,
         socialMedia: response.artist_profile.social_media
       }
       dispatch(updateUser(user));
@@ -224,22 +233,21 @@ export function editArtistProfile(data) {
 export function editSettings(data) {
   return async (dispatch) => {
     dispatch(clearErrors("editSettings"));
-    // check to see if variables are in data
-    var requireContributionApproval = Object.keys(data).filter(x=> x==="requireContributionApproval").length > 0 ? data.requireContributionApproval : null
-    var shareDataWithContributors = Object.keys(data).filter(x=> x==="shareDataWithContributors").length > 0 ? data.shareDataWithContributors : null
-    var shareAdvancedDataWithContributors = Object.keys(data).filter(x=> x==="shareAdvancedDataWithContributors").length > 0 ? data.shareAdvancedDataWithContributors : null
-    var allowContributorsToEditContributions = Object.keys(data).filter(x=> x==="allowContributorsToEditContributions").length > 0 ? data.allowContributorsToEditContributions : null
-
-    // check to see if user has edited user or artist profile data and make requests accordingly
-    if(requireContributionApproval || shareDataWithContributors || shareAdvancedDataWithContributors || allowContributorsToEditContributions) {
-      var response = await revibe.editSettings(requireContributionApproval,shareDataWithContributors,shareAdvancedDataWithContributors,allowContributorsToEditContributions)
-      if(String(response.status).charAt(0)=="2") {
-        response = response.data
-        dispatch(getProfile());
-      }
-      else {
-        dispatch(error("editSettings", response.data))
-      }
+    var response = await revibe.editSettings(
+      data.requireContributionApproval,
+      data.requireContributionApprovalOnEdit,
+      data.shareDataWithContributors,
+      data.shareAdvancedDataWithContributors,
+      data.allowContributorsToEditContributions,
+      data.allowContributorsToEditTags,
+      data.displayOtherPlatformContentOnRevibePage
+    )
+    if(String(response.status).charAt(0)=="2") {
+      response = response.data
+      dispatch(getProfile());
+    }
+    else {
+      dispatch(error("editSettings", response.data))
     }
   }
 }

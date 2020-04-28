@@ -35,7 +35,6 @@ import {
 
 import Profile from './Profile'
 import Settings from './Settings'
-import Relinked from './Relinked'
 import TipJar from './TipJar'
 
 class Account extends React.Component {
@@ -57,6 +56,8 @@ class Account extends React.Component {
   render() {
     return (
       <div className="content">
+        <Container>
+
         <Nav className="nav-pills-primary" pills>
 
           <NavItem>
@@ -68,17 +69,6 @@ class Account extends React.Component {
               Profile
             </NavLink>
           </NavItem>
-
-          <NavItem>
-            <NavLink
-              data-toggle="tab"
-              className={this.state.tabs === "relinked" ? "active" : "" }
-              onClick={e => this.changeActiveTab(e, "tabs", "relinked") }
-            >
-              Relink
-            </NavLink>
-          </NavItem>
-
           <NavItem>
             <NavLink
               data-toggle="tab"
@@ -108,9 +98,6 @@ class Account extends React.Component {
           <TabPane tabId="profile">
             <Profile />
           </TabPane>
-          <TabPane tabId="relinked">
-            <Relinked />
-          </TabPane>
           <TabPane tabId="tipJar">
             <TipJar />
           </TabPane>
@@ -118,6 +105,8 @@ class Account extends React.Component {
             <Settings />
           </TabPane>
         </TabContent>
+      </Container>
+
       </div>
     );
   }

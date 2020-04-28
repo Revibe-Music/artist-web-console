@@ -4297,6 +4297,7 @@ button.close {
   z-index: 1070;
   display: block;
   margin: 0;
+  background-color: transparent;
   font-family: "Poppins", sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -4334,7 +4335,7 @@ button.close {
     .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
       top: 0;
       border-width: 0.4rem 0.4rem 0;
-      border-top-color: #ffffff; }
+      border-top-color: red; }
 
 .bs-tooltip-right, .bs-tooltip-auto[x-placement^="right"] {
   padding: 0 0.4rem; }
@@ -4345,7 +4346,7 @@ button.close {
     .bs-tooltip-right .arrow::before, .bs-tooltip-auto[x-placement^="right"] .arrow::before {
       right: 0;
       border-width: 0.4rem 0.4rem 0.4rem 0;
-      border-right-color: #ffffff; }
+      border-right-color: red; }
 
 .bs-tooltip-bottom, .bs-tooltip-auto[x-placement^="bottom"] {
   padding: 0.4rem 0; }
@@ -4354,7 +4355,7 @@ button.close {
     .bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
       bottom: 0;
       border-width: 0 0.4rem 0.4rem;
-      border-bottom-color: #ffffff; }
+      border-bottom-color: red; }
 
 .bs-tooltip-left, .bs-tooltip-auto[x-placement^="left"] {
   padding: 0 0.4rem; }
@@ -4365,7 +4366,7 @@ button.close {
     .bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^="left"] .arrow::before {
       left: 0;
       border-width: 0.4rem 0 0.4rem 0.4rem;
-      border-left-color: #ffffff; }
+      border-left-color: red; }
 
 .tooltip-inner {
   max-width: 200px;
@@ -8610,10 +8611,10 @@ button.section-darker:focus {
 
 .btn-primary {
   background: #7248BD;
-  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
   background-size: 210% 210%;
   background-position: top right;
   background-color: #7248BD;
@@ -8624,11 +8625,11 @@ button.section-darker:focus {
     background-position: bottom left;
     transition: 0.3s ease-in-out; }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:focus, .btn-primary.active:hover {
-    background-color: #7248BD !important;
-    background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-    background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-    background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+    background-color: #ba54f5 !important;
+    background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+    background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+    background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
     color: #ffffff;
     box-shadow: none; }
   .btn-primary:active {
@@ -8663,11 +8664,11 @@ button.section-darker:focus {
       .btn-primary.btn-simple.active:hover, .btn-primary.btn-simple.active:focus, .btn-primary.btn-simple.active:active, .btn-primary.btn-simple.active:not(:disabled):not(.disabled):active {
         color: #ffffff;
         border-color: #7248BD;
-        background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-        background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-        background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-        background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-        background-color: #7248BD !important;
+        background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+        background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+        background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+        background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+        background-color: #ba54f5 !important;
         box-shadow: none; }
   .btn-primary.btn-link {
     color: #7248BD; }
@@ -9025,10 +9026,10 @@ button.section-darker:focus {
   .show > .btn-neutral.dropdown-toggle:focus,
   .show > .btn-neutral.dropdown-toggle:hover {
     background-color: #ffffff;
-    color: #7248BD;
+    color: #ba54f5;
     box-shadow: none; }
   .btn-neutral:hover, .btn-neutral:focus {
-    color: #7248BD; }
+    color: #ba54f5; }
     .btn-neutral:hover:not(.nav-link), .btn-neutral:focus:not(.nav-link) {
       box-shadow: none; }
   .btn-neutral.btn-simple {
@@ -10580,7 +10581,7 @@ img {
 .form-control[disabled],
 .form-control[readonly],
 fieldset[disabled] .form-control {
-  background-color: #1d253b;
+  background-color: white;
   color: #344675;
   cursor: not-allowed; }
 
@@ -12308,10 +12309,10 @@ textarea.form-control {
   box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1); }
   .pagination .page-item.active > .page-link, .pagination .page-item.active > .page-link:focus, .pagination .page-item.active > .page-link:hover {
     background: #7248BD;
-    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
     background-size: 210% 210%;
     background-position: top right;
     color: #ffffff; }
@@ -12339,10 +12340,10 @@ textarea.form-control {
 
 .pagination.pagination-primary .page-item.active > .page-link, .pagination.pagination-primary .page-item.active > .page-link:focus, .pagination.pagination-primary .page-item.active > .page-link:hover {
   background: #7248BD;
-  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
   background-size: 210% 210%;
   background-position: top right; }
 
@@ -12481,10 +12482,10 @@ textarea.form-control {
 
 .nav-pills.nav-pills-primary .nav-item .nav-link.active, .nav-pills.nav-pills-primary .nav-item .nav-link.active:focus, .nav-pills.nav-pills-primary .nav-item .nav-link.active:hover {
   background: #7248BD;
-  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
   background-size: 210% 210%;
   background-position: top right; }
 
@@ -12814,11 +12815,11 @@ textarea.form-control {
   .progress-container.progress-neutral .progress-bar {
     background: #ffffff; }
   .progress-container.progress-primary .progress-bar {
-    background: #7248BD;
-    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background: #ba54f5;
+    background-image: -webkit-linear-gradient(to bottom left, #ba54f5, #7248BD, #ba54f5);
+    background-image: -o-linear-gradient(to bottom left, #ba54f5, #7248BD, #ba54f5);
+    background-image: -moz-linear-gradient(to bottom left, #ba54f5, #7248BD, #ba54f5);
+    background-image: linear-gradient(to bottom left, #ba54f5, #7248BD, #ba54f5);
     background-size: 210% 210%;
     background-position: top right; }
   .progress-container.progress-info .progress-bar {
@@ -12898,7 +12899,7 @@ h6 {
   color: rgba(255, 255, 255, 0.8); }
 
 a {
-  color: #7248BD;
+  color: #ba54f5;
   font-weight: 300; }
   a:hover, a:focus {
     color: #7248BD; }
@@ -13567,11 +13568,11 @@ table.tablesorter thead tr .header {
 
 .sidebar,
 .off-canvas-sidebar {
-  background: #7248BD;
-  background: -webkit-linear-gradient(0deg, #7248BD 0%, #7248BD 100%);
-  background: -o-linear-gradient(0deg, #7248BD 0%, #7248BD 100%);
-  background: -moz-linear-gradient(0deg, #7248BD 0%, #7248BD 100%);
-  background: linear-gradient(0deg, #7248BD 0%, #7248BD 100%);
+  background: #ba54f5;
+  background: -webkit-linear-gradient(0deg, #ba54f5 0%, #7248BD 100%);
+  background: -o-linear-gradient(0deg, #ba54f5 0%, #7248BD 100%);
+  background: -moz-linear-gradient(0deg, #ba54f5 0%, #7248BD 100%);
+  background: linear-gradient(0deg, #ba54f5 0%, #7248BD 100%);
   height: calc(100vh - 90px);
   width: 230px;
   position: fixed;
@@ -15805,10 +15806,10 @@ NOTE: use percentage font sizes or else old IE chokes
     border: 0; }
   .fc button, .fc button.btn-primary {
     background: #7248BD;
-    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
     background-size: 210% 210%;
     background-position: top right;
     background-color: #7248BD;
@@ -15819,11 +15820,11 @@ NOTE: use percentage font sizes or else old IE chokes
       background-position: bottom left;
       transition: 0.3s ease-in-out; }
     .fc button:hover, .fc button:focus, .fc button:active, .fc button.active, .fc button:active:focus, .fc button:active:hover, .fc button.active:focus, .fc button.active:hover, .fc button.btn-primary:hover, .fc button.btn-primary:focus, .fc button.btn-primary:active, .fc button.btn-primary.active, .fc button.btn-primary:active:focus, .fc button.btn-primary:active:hover, .fc button.btn-primary.active:focus, .fc button.btn-primary.active:hover {
-      background-color: #7248BD !important;
-      background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-      background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-      background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-      background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
+      background-color: #ba54f5 !important;
+      background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+      background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+      background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+      background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
       color: #ffffff;
       box-shadow: none; }
     .fc button:active, .fc button.btn-primary:active {
@@ -15864,11 +15865,11 @@ NOTE: use percentage font sizes or else old IE chokes
         .fc button.btn-simple.active:hover, .fc button.btn-simple.active:focus, .fc button.btn-simple.active:active, .fc button.btn-simple.active:not(:disabled):not(.disabled):active, .fc button.btn-primary.btn-simple.active:hover, .fc button.btn-primary.btn-simple.active:focus, .fc button.btn-primary.btn-simple.active:active, .fc button.btn-primary.btn-simple.active:not(:disabled):not(.disabled):active {
           color: #ffffff;
           border-color: #7248BD;
-          background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-          background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-          background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-          background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD) !important;
-          background-color: #7248BD !important;
+          background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+          background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+          background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+          background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD) !important;
+          background-color: #ba54f5 !important;
           box-shadow: none; }
     .fc button.btn-link, .fc button.btn-primary.btn-link {
       color: #7248BD; }
@@ -18472,6 +18473,7 @@ select.selectpicker {
   display: inline-block;
   padding: 4px 6px;
   max-width: 100%;
+  width: 100%;
   line-height: 22px; }
   .bootstrap-tagsinput input {
     border: none;
@@ -21463,10 +21465,10 @@ Copyright (c) 2015 Daniel Eden
   width: 50px;
   border-radius: 50%;
   background: #7248BD;
-  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-  background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+  background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+  background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
   background-size: 210% 210%;
   background-position: top right; }
   .card-stats .info-icon i {
@@ -21507,10 +21509,10 @@ Copyright (c) 2015 Daniel Eden
     background-position: top right; }
   .card-stats .info-icon.icon-primary {
     background: #7248BD;
-    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: -o-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: -moz-linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
-    background-image: linear-gradient(to bottom left, #7248BD, #7248BD, #7248BD);
+    background-image: -webkit-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: -o-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: -moz-linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
+    background-image: linear-gradient(to bottom left, #7248BD, #ba54f5, #7248BD);
     background-size: 210% 210%;
     background-position: top right; }
 
@@ -23638,11 +23640,11 @@ This file was modified entirely by Creative Tim for React-Select v2.0.0
   display: none; }
 
 .react-select.react-select--is-disabled .react-select__multi-value--is-disabled.react-select__multi-value {
-  background-color: #fcfcfc;
+  background-color: red;
   border: 1px solid #e3e3e3; }
 
 .react-select.react-select--is-disabled .react-select__control--is-disabled {
-  background-color: #f9f9f9; }
+  background-color: white; }
 
 .ReactTable {
   position: relative;
@@ -24182,6 +24184,7 @@ This file was modified entirely by Creative Tim for React-Select v2.0.0
   display: inline-block;
   padding: 4px 6px;
   max-width: 100%;
+  width: 100%;
   line-height: 22px; }
 
 .react-tagsinput-tag {
@@ -25588,7 +25591,7 @@ textarea.form-control {
 
 .form-group:not(.has-danger):not(.has-success) .form-control:focus,
 .input-group-focus:not(.has-danger):not(.has-success) .form-control:focus {
-  border-color: #1d8cf8; }
+  border-color: #7248BD; }
   .form-group:not(.has-danger):not(.has-success) .form-control:focus + .input-group-append .input-group-text,
   .form-group:not(.has-danger):not(.has-success) .form-control:focus ~ .input-group-append .input-group-text,
   .form-group:not(.has-danger):not(.has-success) .form-control:focus + .input-group-prepend .input-group-text,

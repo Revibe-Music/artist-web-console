@@ -41,9 +41,9 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ClipLoader from "react-spinners/ClipLoader";
 
-import {registerArtist} from '../redux/authentication/actions.js';
+import {registerArtist} from 'redux/authentication/actions.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
-import RevibeAPI from '../api/revibe.js';
+import RevibeAPI from 'api/revibe.js';
 
 const revibe = new RevibeAPI()
 
@@ -161,7 +161,7 @@ class RegisterArtist extends React.Component {
                   <Col className="m-auto" md="6">
                     <div style={{display: "flex",alignItems: "center", justifyContent: "center",textAlign: "center"}}>
                       <ImageUpload
-                        defaultImage={require("../assets/portal/img/default-avatar.png")}
+                        defaultImage={require("assets/portal/img/default-avatar.png")}
                         uploadedImage={null}
                         addBtnColor="default"
                         changeBtnColor="default"

@@ -17,9 +17,12 @@ var initialState = {
     city: "",
     zipcode: "",
     requireContributionApproval: true,
+    requireContributionApprovalOnEdit: true,
     shareDataWithContributors: true,
     shareAdvancedDataWithContributors: false,
     allowContributorsToEditContributions: false,
+    allowContributorsToEditTags: false,
+    displayOtherPlatformContentOnRevibePage: true,
     socialMedia: []
   },
   registerErrors: {},

@@ -18,7 +18,8 @@ const PrivateRoute = ({ component, path, authenticated}) => (
         }}/>
       )
     )}
-  />
+  >
+</Route>
 );
 
 const { object, bool, string, func } = PropTypes;

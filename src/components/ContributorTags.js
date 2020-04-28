@@ -31,7 +31,7 @@ const theme = {
     position: 'relative'
   },
   input: {
-    width: '150px',
+    width: '100%',
     height: '30px',
   },
   inputOpen: {
@@ -49,18 +49,19 @@ const theme = {
     position: 'relative',
     top: '-1px',
     width: '100%',
-    minWidth: 150,
-    maxWidth: 280,
+    minWidth: 200,
+    width: "20vw",
+    // maxWidth: 280,
     border: '1px solid #aaa',
     backgroundColor: '#fff',
     fontSize: '16px',
     lineHeight: 1.25,
     borderBottomLeftRadius: '4px',
     borderBottomRightRadius: '4px',
-    zIndex: 2
+    zIndex: 2000
   },
   itemsList: {
-    maxHeight: '150px',
+    // maxHeight: '150px',
     overflowY: "scroll",
     margin: 0,
     padding: 0,
@@ -88,7 +89,9 @@ class ContributorTags extends Component {
         selectedContribution: {},
         editedContributionTypes: [],
 
-        showInviteArtistModal:false
+        showInviteArtistModal:false,
+
+        inputColor: "#2b3553"
 
       };
 
@@ -144,7 +147,7 @@ class ContributorTags extends Component {
     var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(this.state.selectedContribution.contributor.artist_id)
     var contribution = this.state.contributions[contributorIndex]
     contribution.type = this.state.editedContributionTypes
-    this.props.updateContributionTypes(contribution, this.props.owner)
+    this.props.updateContributionTypes(contribution)
     this.toggleModal()
   }
 
@@ -180,13 +183,16 @@ class ContributorTags extends Component {
 
   async searchArtists({ value }) {
     if(value.length > 0) {
-      var results = await revibe.searchArtists(value)
-      var artists = results.data.filter(artist => artist.artist_id !== this.props.artist_id)
-      if(artists.length > 0) {
-        this.setState({searchResults: artists})
-      }
-      else {
-        this.setState({searchResults: [{suggestion: "No Results.", name: "No Results."}]})
+      value = value.charAt(0) === "@" ? value.slice(1) : value
+      if(value.length > 0) {
+        var results = await revibe.searchArtists(value)
+        var artists = results.data.filter(artist => artist.artist_id !== this.props.artist_id)
+        if(artists.length > 0) {
+          this.setState({searchResults: artists})
+        }
+        else {
+          this.setState({searchResults: [{suggestion: "No Results.", name: "No Results."}]})
+        }
       }
     }
   };
@@ -194,14 +200,14 @@ class ContributorTags extends Component {
   renderSearchResults(artist) {
     if(artist.name !== "No Results.") {
       return (
-        <Row style={{color:"black",paddingTop: "10px",cursor: 'pointer',width: "100%"}}>
+        <Row style={{display: "flex", color:"black",cursor: 'pointer'}}>
          <Col xs={4} md={4}>
            <img
            alt="..."
-           style={{height:"80%", width: "80%",borderRadius: "50%"}}
+           style={{aspectRation: "1:1",borderRadius: "50%"}}
            src={artist.images.length > 0 ? artist.images[1].url : require("assets/portal/img/default-avatar.png")} />
          </Col>
-         <Col style={{textAlign: "left"}} xs={8} md={8}>
+         <Col style={{display: "flex", justifyContent: "flex-start", alignItems: "center"}} xs={8} md={8}>
            {artist.name}
          </Col>
        </Row>
@@ -217,27 +223,28 @@ class ContributorTags extends Component {
   }
 
   renderResultsContainer({ containerProps, children }) {
-    return (
-      <div {...containerProps}>
-        {children}
-        <Row style={{display: "flex", alignItems: "center", justifyContent: "center",marginTop: "20px"}}>
-           <Button onClick={() => this.setState({showInviteArtistModal: true})} color="primary">
-             <div style={{display: "flex", alignItems: "center", justifyContent: "space-evenly"}}>
-              <AiOutlineUserAdd />
-              Invite Artist
-            </div>
-          </Button>
-
-       </Row>
-      </div>
-    );
+      return (
+        <div style={{position: "absolute"}}>
+          <div {...containerProps}>
+            {children}
+            <Row style={{alignItems: "center", justifyContent: "center",marginTop: "20px"}}>
+              <Button color="primary" onClick={this.toggleArtistInvite} style={{zIndex: 2000}}>
+                <div style={{display: "flex", alignItems: "center", justifyContent: "space-evenly"}}>
+                 <AiOutlineUserAdd />
+                 Invite Artist
+               </div>
+              </Button>
+           </Row>
+         </div>
+        </div>
+      );
   };
 
   addContributor(contributor) {
     var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
     if(contributorIndex == -1) {
         this.setState({contributions: [...this.state.contributions, {contributor: contributor, type: []}]})
-        this.props.onAddContributor(contributor, this.props.owner)
+        this.props.onAddContributor(contributor)
         this.toggleModal({contributor: contributor, type: []})
     }
   }
@@ -247,7 +254,7 @@ class ContributorTags extends Component {
     var contributorIndex = contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
     contributions.splice(contributorIndex, 1)
     this.setState({contributions: contributions})
-    this.props.onRemoveContributor(contributor, this.props.owner)
+    this.props.onRemoveContributor(contributor)
   }
 
   render() {
@@ -257,7 +264,6 @@ class ContributorTags extends Component {
         renderInput={({addTag,...props}) => {
           if(!props.disabled) {
             return (
-              <div style={this.state.contributions.length > 0 ? {position: "absolute"} : {position: "absolute", marginTop: 20}}>
               <Autosuggest
                 theme={theme}
                 suggestions={this.state.searchResults}
@@ -274,26 +280,40 @@ class ContributorTags extends Component {
                 renderSuggestionsContainer={this.renderResultsContainer}
                 inputProps={{
                   ...props,
-                   placeholder: 'Add Contributors...',
-                   type: 'search',
                  }}
               />
-              </div>
+
             )
           }
           else {
             return null
           }
-        }}
+      }}
+      renderLayout={(tagComponents, inputComponent) => {
+        return (
+          <div style={{border: `1px solid ${this.state.inputColor}`, fontSize: "0.75rem",  borderRadius: "0.4285rem", paddingTop: "4px", paddingBottom: "4px", marginBottom: "5px", transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out"}}>
+            <Row>
+              <Col xs="6" md="4">
+                {inputComponent}
+              </Col>
+              <Col xs="6" md="8">
+                {tagComponents}
+            </Col>
+            </Row>
+          </div>
+        )
+      }}
       inputProps={{
-          className: 'react-tagsinput-input',
-          placeholder: 'Add Contributor',
-          disabled: this.props.disabled
+          placeholder: '@Contributor',
+          disabled: this.props.disabled,
+          onFocus: () => this.setState({inputColor: "#7248BD"}),
+          onBlur: () => this.setState({inputColor: "#2b3553"})
       }}
       onChange={() => console.log()}
       renderTag={props => this.renderTags(props)}
-      tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled }}
+      tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled, }}
       value={this.state.contributions}
+      style={{width: "100%"} }
       />
 
       {this.state.isOpen ?
@@ -338,7 +358,6 @@ class ContributorTags extends Component {
 
 ContributorTags.propTypes = {
   artist_id: PropTypes.string.isRequired,                 // represents current user and is needed in order to exclude form search results
-  owner: PropTypes.object.isRequired,                     // this object "owns" the contributions (will be an album or song most likely)
   onAddContributor: PropTypes.func.isRequired,            // function that is called whenever a tag is added
   onRemoveContributor: PropTypes.func.isRequired,         // function that is called whenever a tag is removed
   updateContributionTypes: PropTypes.func.isRequired,     // function that is called whenever a tag is added

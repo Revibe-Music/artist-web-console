@@ -16,7 +16,10 @@ import {
   InputGroup,
   Row,
   Col,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  Modal,
+  ModalHeader,
+  ModalBody
 } from "reactstrap";
 import ReactTooltip from 'react-tooltip';
 import ClipLoader from "react-spinners/ClipLoader";
@@ -25,9 +28,9 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { FaSpotify, FaAmazon, FaRegCopy } from "react-icons/fa";
 import { AiOutlineApple, AiOutlineAmazon } from "react-icons/ai";
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiEye } from 'react-icons/fi';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-
+import Iframe from 'react-iframe'
 
 import { ReactSVG } from 'react-svg'
 import { connect } from 'react-redux';
@@ -54,8 +57,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   textAlign:"center",
   width: "100%",
   alignSelf:"center",
-
-  // styles we need to apply on draggables
+  color: "white",
   ...draggableStyle
 });
 
@@ -75,6 +77,7 @@ class Relinked extends React.Component {
     this.state = {
       socialMedia: [],
       addingLink: false,
+      previewing: false,
       selectedLink: null,
       deletedLinks: false,
       saving: false,
@@ -260,6 +263,7 @@ class Relinked extends React.Component {
         <NotificationAlert ref="notificationAlert" />
       </div>
       <div className="content" >
+      <Container>
         <Form className="form">
           <Card>
             <CardHeader>
@@ -291,6 +295,16 @@ class Relinked extends React.Component {
                   </Row>
                 </Button>
               </CopyToClipboard>
+              <Button
+                className="btn-fill"
+                color="primary"
+                onClick={() => this.setState({previewing: true})}
+              >
+                <Row style={{justifyContent: "center", alignItems: "center"}}>
+                  <FiEye style={{fontSize: 15, color: "white"}}/>
+                  Preview
+                </Row>
+              </Button>
 
               <div style={{justifyContent: "center", alignItems: "center", minHeight: "100%", display: "flex"}}>
                 <DragDropContext onDragEnd={this.onDragEnd} >
@@ -413,6 +427,38 @@ class Relinked extends React.Component {
           onDelete={this.deleteLink}
           link={this.state.selectedLink}
         />
+
+        <Modal
+          isOpen={this.state.previewing}
+          toggle={() => this.setState({previewing: false})}
+          modalClassName="modal-grey"
+        >
+          <ModalHeader cssModule={{'modal-title': 'w-100 text-center'}}>
+            <h1 style={{color: "#7248BD"}}>Relink Preview</h1>
+          </ModalHeader>
+          <ModalBody cssModule={{'modal-body': 'w-100 text-center'}}>
+            <div style={{marginBottom: "10%", height: "70vh"}}>
+              <Iframe
+                  url={`https://revibe.tech/relink/${this.props.user.artistId}`}
+                  width="90%"
+                  height="100%"
+                  id="relink-preview"
+                  display="initial"
+                  position="relative"
+                />
+              </div>
+              <a className="nav-link"
+                 target="_blank"
+                 style={{padding: 0, margin:0}}
+                 href={`https://revibe.tech/relink/${this.props.user.artistId}`}
+              >
+              <p style={{fontSize: "1rem"}}>View in new tab</p>
+              </a>
+          </ModalBody>
+        </Modal>
+
+
+      </Container>
       </div>
       </>
     );

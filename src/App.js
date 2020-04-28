@@ -4,18 +4,22 @@ import PropTypes from 'prop-types';
 import { Router, Route, Switch, Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
+import { Prompt } from 'react-router'
 import { connect } from 'react-redux';
+
 import Authenticated from './layouts/Authenticated.js';
 import PrivateRoute from './routes/PrivateRoute.js';
-import Login from 'views/Login.jsx';
-import Register from 'views/Register.jsx';
-import Home from 'views/Home.jsx'
-import RegisterArtist from 'views/RegisterArtist.jsx';
-import ContactUs from 'views/ContactUs.jsx';
-import Error400 from 'views/Error400.jsx'
-import Error404 from 'views/Error404.jsx'
-import AboutUs from "views/AboutUs.jsx"
-import WhyRevibe from "views/WhyRevibe.jsx"
+
+import Login from 'views/Authentication/Login.jsx';
+import Register from 'views/Authentication/Register.jsx';
+import RegisterArtist from 'views/Authentication/RegisterArtist.jsx';
+
+import Home from 'views/Site/Home.jsx'
+import ContactUs from 'views/Site/ContactUs.jsx';
+import Error400 from 'views/Site/Error400.jsx'
+import Error404 from 'views/Site/Error404.jsx'
+import AboutUs from "views/Site/AboutUs.jsx"
+import WhyRevibe from "views/Site/WhyRevibe.jsx"
 import CatchAllPage from "views/catchAll.js"
 
 import { builder, BuilderComponent } from '@builder.io/react';
@@ -34,7 +38,7 @@ if(hostname === "artist.revibe.tech") {
   });
 }
 
-const App = ({ authenticated, checked }) => (
+const App = ({ authenticated, checked, uploadInProgress }) => (
   <Router history={history}>
     <div>
     { checked &&
@@ -51,10 +55,13 @@ const App = ({ authenticated, checked }) => (
       <PrivateRoute path="/dashboard" component={Authenticated} authenticated={authenticated}/>
       <Route path="/page/*" component={CatchAllPage} />
       <Route path="/" component={Home}/>
+
      </Switch>
      </>
     }
+
     </div>
+
   </Router>
 );
 
@@ -68,7 +75,8 @@ App.propTypes = {
 function mapStateToProps(state) {
   return {
     checked: state.authentication.checkedLogin,
-    authenticated: state.authentication.isLoggedIn
+    authenticated: state.authentication.isLoggedIn,
+    uploadInProgress: state.media.uploadInProgress,
   }
 };
 
