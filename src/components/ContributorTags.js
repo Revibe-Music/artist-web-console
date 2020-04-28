@@ -223,25 +223,21 @@ class ContributorTags extends Component {
   }
 
   renderResultsContainer({ containerProps, children }) {
-    if(children) {
       return (
         <div style={{position: "absolute"}}>
-        <div {...containerProps}>
-          {children}
-          <Row style={{alignItems: "center", justifyContent: "center",marginTop: "20px"}}>
-             <Button onClick={() => this.setState({showInviteArtistModal: true})} color="primary">
-               <div style={{display: "flex", alignItems: "center", justifyContent: "space-evenly"}}>
-                <AiOutlineUserAdd />
-                Invite Artist
-              </div>
-            </Button>
-         </Row>
-       </div>
+          <div {...containerProps}>
+            {children}
+            <Row style={{alignItems: "center", justifyContent: "center",marginTop: "20px"}}>
+              <Button color="primary" onClick={this.toggleArtistInvite} style={{zIndex: 2000}}>
+                <div style={{display: "flex", alignItems: "center", justifyContent: "space-evenly"}}>
+                 <AiOutlineUserAdd />
+                 Invite Artist
+               </div>
+              </Button>
+           </Row>
+         </div>
         </div>
       );
-    }
-    return null
-
   };
 
   addContributor(contributor) {
