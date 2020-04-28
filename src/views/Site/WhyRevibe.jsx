@@ -36,6 +36,7 @@ import {
 // core components
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import Footer from "components/Footers/Footer.jsx";
+import MetaHelmet from "components/MetaHelmet/MetaHelmet";
 
 class WhyRevibe extends React.Component {
 
@@ -58,6 +59,7 @@ class WhyRevibe extends React.Component {
   render() {
     return (
       <>
+        <MetaHelmet title="Why Revibe? - Revibe Artists" />
         <ScrollNavbar />
         <div className="wrapper" ref="wrapper">
         <div className="page-header page-header-small header-filter">
