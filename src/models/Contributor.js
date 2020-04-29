@@ -5,7 +5,7 @@ export default class Contributor extends Model {
   constructor(obj) {
     super()
     this.attributes = ["id", "contributor", "type"]
-    this.requiredAttributes = ["id", "contributor", "type"]
+    this.requiredAttributes = ["id", "contributor", "type", ]
     this._parse(obj)
     this._setDefaults()
   }

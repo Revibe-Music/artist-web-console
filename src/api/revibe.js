@@ -42,6 +42,10 @@ export default class RevibeAPI {
       name: album.name,
       type: album.type,
       contributors: album.contributors.map(x => this._parseContributor(x)),
+      uploadedBy: {
+        artistId: album.uploaded_by.artist_id,
+        artistName: album.uploaded_by.artist_name,
+      },
       images: album.images.length > 0 ? album.images.map(img => img.url) : null,
       genres: album.genres.map(genre => genre.text),
       tags: album.tags.map(tag => tag.text),
@@ -56,11 +60,15 @@ export default class RevibeAPI {
   _parseSong(song) {
     return  {
       id: song.song_id,
-      title: song.name,
+      title: song.title,
       album: this._parseAlbum(song.album),
       duration: song.duration,
       explicit: song.is_explicit,
       order: song.album_order,
+      uploadedBy: {
+        artistId: song.uploaded_by.artist_id,
+        artistName: song.uploaded_by.artist_name,
+      },
       contributors: song.contributors.map(x => this._parseContributor(x)),
       genres: song.genres.map(genre => genre.text),
       tags: song.tags.map(tag => tag.text),
@@ -75,7 +83,6 @@ export default class RevibeAPI {
     return  {
       id: contributor.contribution_id,
       artist: {
-        id: contributor.artist_id,
         artistId: contributor.artist_id,
         artistName: contributor.artist_name,
       },

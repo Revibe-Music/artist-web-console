@@ -31,6 +31,7 @@ import Footer from "components/Footers/Footer.jsx";
 import QuoteVideo from "components/Features/QuoteVideo.jsx"
 import Icon from "components/Icons/icons.js"
 import MailChimpForm from "components/Forms/Mailchimp";
+import MetaHelmet from "components/MetaHelmet/MetaHelmet";
 
 // custom previous button for the slick component
 const PrevButton = props => {
@@ -136,6 +137,10 @@ class Home extends React.Component {
 
     return (
       <>
+      <MetaHelmet 
+        title="Home - Revibe Artists"
+      
+      />
       <ScrollNavbar/>
       <div className="wrapper" ref="wrapper">
           <div className="header-filter">

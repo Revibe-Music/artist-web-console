@@ -1,4 +1,3 @@
-import { sessionService } from 'redux-react-session';
 import RevibeAPI from '../../api/revibe.js';
 
 const revibe = new RevibeAPI()

@@ -36,6 +36,7 @@ import {
 // core components
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import Footer from "components/Footers/Footer.jsx";
+import MetaHelmet from "components/MetaHelmet/MetaHelmet";
 
 
 const items = [
@@ -274,6 +275,7 @@ class AboutUs extends React.Component {
   render() {
     return (
       <>
+        <MetaHelmet title="About Us - Revibe Artists" />
         <ScrollNavbar />
         <div className="wrapper" ref="wrapper">
           <div className="header-filter">
