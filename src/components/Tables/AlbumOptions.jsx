@@ -35,30 +35,46 @@ class AlbumOptions extends Component {
 
 
   render() {
+    console.log(window.screen.width);
     return (
       <>
-      <Dropdown
-        isOpen={this.state.dropdownOpen}
-        toggle={this.toggleDropdown}
-        direction="left"
-      >
-       <DropdownToggle tag="div">
-        <FaEllipsisH />
-      </DropdownToggle>
-        <DropdownMenu right>
-          <DropdownItem header>Actions</DropdownItem>
-          {/*<DropdownItem
-            onClick={() => this.props.edit(this.props.id)}
-          >
-          Edit
-          </DropdownItem>*/}
-          <DropdownItem
-            onClick={() => this.toggleDeleteWarning()}
-          >
-          Delete
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+      {window.screen.width < 400 ?
+        <Dropdown
+          isOpen={this.state.dropdownOpen}
+          toggle={this.toggleDropdown}
+          direction="left"
+        >
+         <DropdownToggle tag="div">
+          <FaEllipsisH />
+        </DropdownToggle>
+          <DropdownMenu right>
+            <DropdownItem header>Actions</DropdownItem>
+            {/*<DropdownItem
+              onClick={() => this.props.edit(this.props.id)}
+            >
+            Edit
+            </DropdownItem>*/}
+            <DropdownItem
+              onClick={() => this.toggleDeleteWarning()}
+            >
+            Delete
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      :
+        <Row>
+          <a onClick={() => this.toggleDeleteWarning()} style={{cursor: "pointer"}}>
+            <h3 style={{color: "#7248BD"}}>Edit</h3>
+          </a>
+          <h3 style={{color: "#7248BD", marginLeft: "5px", marginRight: "5px"}}> | </h3>
+          <a onClick={() => this.toggleDeleteWarning()} style={{cursor: "pointer"}}>
+            <h3 style={{color: "#7248BD"}}> Delete</h3>
+          </a>
+
+        </Row>
+      }
+
+
       <DeleteAlbum show={this.state.showDeleteWarning} toggle={this.toggleDeleteWarning} album_id={this.props.id} />
       </>
     )
