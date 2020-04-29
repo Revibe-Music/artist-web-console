@@ -79,6 +79,7 @@ export default class Song extends Model {
     this.removeFileExtensionFromTitle()
   }
 
+
   displayTitle = () => {
     var featuring = []
     var producedBy = []

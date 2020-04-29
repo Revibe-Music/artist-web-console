@@ -66,6 +66,13 @@ class Uploads extends React.Component {
     return contributionTypes
   }
 
+  formatDuration(song) {
+    var minutes = "0" + Math.floor(song.duration / 60);
+    var seconds = "0" + (song.duration - minutes * 60);
+    return minutes.substr(-2) + ":" + seconds.substr(-2);
+
+  }
+
   playSong(song) {
     if(song.id === this.state.playingSongId) {
       if(this.state.playing) {
@@ -93,6 +100,7 @@ class Uploads extends React.Component {
       }
     }
   }
+
 
   // with this function we create an array with the opened collapses
   // it is like a toggle function for all collapses from this page
@@ -189,7 +197,7 @@ class Uploads extends React.Component {
                       <h3 style={{color: "white",marginBottom: 0, marginLeft: "20px"}}>{song.title}</h3>
                     </Row>
                   </Col>
-                  <Col xs="12" md="6" style={{marginLeft: window.screen.width < 400 ? "25%" : 0}}>
+                  <Col xs="12" md="4" style={{marginLeft: window.screen.width < 400 ? "25%" : 0}}>
                     {this.getSongContributionTypes(song).map(type => (
                       <Row style={{marginTop: "5px", marginBottom: "5px" }}>
                         <h4 style={{color: "white",marginBottom: "auto", marginRight: 10}}>{type}s: </h4>
@@ -201,6 +209,13 @@ class Uploads extends React.Component {
                       </Row>
                     ))}
                   </Col>
+                  <Col xs="12" md="2" style={{alignItems: "center", marginLeft: window.screen.width < 400 ? "25%" : 0}}>
+                    <Row style={{alignItems: "center",}}>
+                      <i style={{color: "#7248BD", fontSize: "1.5rem", marginRight: "10px"}} className="tim-icons icon-watch-time" />
+                      <h4 style={{color: "white", marginBottom: 0}}>{this.formatDuration(song)}</h4>
+                    </Row>
+                  </Col>
+
                   <Col xs="12" md="2" style={{alignItems: "center", marginLeft: window.screen.width < 400 ? "25%" : 0}}>
                     <Row style={{alignItems: "center",}}>
                       <i style={{color: "#7248BD", fontSize: "1.5rem", marginRight: "10px"}} className="tim-icons icon-headphones" />

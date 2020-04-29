@@ -49,11 +49,11 @@ class AlbumOptions extends Component {
         </DropdownToggle>
           <DropdownMenu right>
             <DropdownItem header>Actions</DropdownItem>
-            {/*<DropdownItem
-              onClick={() => this.props.edit(this.props.id)}
-            >
-            Edit
-            </DropdownItem>*/}
+            <NavLink to={`/dashboard/uploads/edit/${this.props.id}`}>
+              <DropdownItem>
+              Edit
+              </DropdownItem>
+            </NavLink>
             <DropdownItem
               onClick={() => this.toggleDeleteWarning()}
             >
@@ -63,17 +63,16 @@ class AlbumOptions extends Component {
         </Dropdown>
       :
         <Row>
+          <NavLink to={`/dashboard/uploads/edit/${this.props.id}`}>
+            <h4 style={{color: "#7248BD"}}>Edit</h4>
+          </NavLink>
+          <h4 style={{color: "white", marginLeft: "5px", marginRight: "5px"}}> | </h4>
           <a onClick={() => this.toggleDeleteWarning()} style={{cursor: "pointer"}}>
-            <h3 style={{color: "#7248BD"}}>Edit</h3>
-          </a>
-          <h3 style={{color: "#7248BD", marginLeft: "5px", marginRight: "5px"}}> | </h3>
-          <a onClick={() => this.toggleDeleteWarning()} style={{cursor: "pointer"}}>
-            <h3 style={{color: "#7248BD"}}> Delete</h3>
+            <h4 style={{color: "#7248BD"}}> Delete</h4>
           </a>
 
         </Row>
       }
-
 
       <DeleteAlbum show={this.state.showDeleteWarning} toggle={this.toggleDeleteWarning} album_id={this.props.id} />
       </>
