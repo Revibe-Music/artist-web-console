@@ -42,6 +42,7 @@ import RevibeAPI from 'api/revibe.js';
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import MetaHelmet from "components/MetaHelmet/MetaHelmet";
 
 
 const MySwal = withReactContent(Swal)
@@ -134,7 +135,8 @@ class ContactUs extends React.Component {
     ));
 
     return (
-      <>
+      <> 
+        <MetaHelmet title="Contact Us - Revibe Artists" />
           <ScrollNavbar/>
           <div className="content">
           <div className="contactus-3">
