@@ -1,16 +1,11 @@
 import React from "react";
 
 // reactstrap components
-import Image from 'react-graceful-image';
-import moment from 'moment'
-import { Card, CardBody, Row, Col, Collapse} from "reactstrap";
+import {  Collapse} from "reactstrap";
 import { connect } from 'react-redux';
-import { uniq } from 'lodash';
 
 import SongCard from "components/Cards/SongCard.jsx";
 import AlbumCard from "components/Cards/AlbumCard.jsx";
-import AlbumOptions from 'components/Tables/AlbumOptions.jsx'
-import { selectAlbum } from 'redux/media/actions.js'
 
 
 class Uploads extends React.Component {
@@ -118,8 +113,4 @@ function mapStateToProps(state) {
   }
 };
 
-const mapDispatchToProps = dispatch => ({
-    selectAlbum: (album_id) => dispatch(selectAlbum(album_id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Uploads);
+export default connect(mapStateToProps)(Uploads);
