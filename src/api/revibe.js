@@ -2,6 +2,8 @@ import axios from "axios"
 import Fingerprint2 from 'fingerprintjs2'
 import Cookies from 'js-cookie'
 import { API_HOST } from './config.js'
+import Song from 'models/Song.js'
+import Album from 'models/Album.js'
 
 const cookieName = "bshdcce3gcw473q839hxkqabxe3q7qhxbaekc"  // should probably try and set somewhere in env
 
@@ -37,14 +39,14 @@ export default class RevibeAPI {
   }
 
   _parseAlbum(album) {
-    return  {
+    var formattedAlbum = {
       id: album.album_id,
       name: album.name,
       type: album.type,
       contributors: album.contributors.map(x => this._parseContributor(x)),
       uploadedBy: {
         artistId: album.uploaded_by.artist_id,
-        artistName: album.uploaded_by.artist_name,
+        artistName: album.uploaded_by.name,
       },
       images: album.images.length > 0 ? album.images.map(img => img.url) : null,
       genres: album.genres.map(genre => genre.text),
@@ -55,10 +57,11 @@ export default class RevibeAPI {
       datePublished: album.date_published,
       lastChanged: album.last_changed
     }
+    return new Album(formattedAlbum)
   }
 
   _parseSong(song) {
-    return  {
+    var formattedSong = {
       id: song.song_id,
       title: song.title,
       album: this._parseAlbum(song.album),
@@ -67,7 +70,7 @@ export default class RevibeAPI {
       order: song.album_order,
       uploadedBy: {
         artistId: song.uploaded_by.artist_id,
-        artistName: song.uploaded_by.artist_name,
+        artistName: song.uploaded_by.name,
       },
       contributors: song.contributors.map(x => this._parseContributor(x)),
       genres: song.genres.map(genre => genre.text),
@@ -77,6 +80,7 @@ export default class RevibeAPI {
       uploadDate: song.uploaded_date,
       tracks: song.tracks
     }
+    return new Song(formattedSong)
   }
 
   _parseContributor(contributor) {

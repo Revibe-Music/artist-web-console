@@ -126,7 +126,9 @@ class AlbumUpload extends Component {
 
       <Container>
         <NavLink to={'/dashboard/uploads'} activeClassName="">
-          <FaArrowLeft style={{fontSize: "30px",color: "#7248BD",cursor: 'pointer'}} />
+          <div style={{cursor: 'pointer', backgroundColor: "#7248BD", width: "3.5rem", height: "3.5rem", borderRadius: "1.75rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <i style={{color: "white", fontSize: "1.5rem", marginRight: ".25rem"}} className="tim-icons icon-minimal-left" />
+          </div>
         </NavLink>
         <Prompt
           when={true}
@@ -153,7 +155,6 @@ class AlbumUpload extends Component {
             progressbar
             color="primary"
           />
-
         </Col>
       </Container>
       </div>

@@ -15,7 +15,7 @@ export default class Album extends Model{
 
   constructor(obj) {
     super()
-    this.attributes = ["id", "name", "type", "images", "uploaded_by", "contributors", "displayed", "totalStreams", "uploadDate", "datePublished"]
+    this.attributes = ["id", "name", "type", "images", "uploadedBy", "contributors", "displayed", "totalStreams", "uploadDate", "datePublished"]
     this.requiredAttributes = ["id", "name", "type", "images", "contributors", "displayed"]
     if(obj) this._parse(obj)
     this._setDefaults()

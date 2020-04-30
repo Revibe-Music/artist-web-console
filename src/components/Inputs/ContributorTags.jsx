@@ -115,6 +115,7 @@ class ContributorTags extends Component {
   /// CONTRIBUTION MODAL OPERATIONS ///
   toggleModal(contribution=null) {
     var updatedState = {isOpen: !this.state.isOpen}
+    console.log(contribution);
     if(contribution) {
       updatedState.selectedContribution = contribution
       updatedState.editedContributionTypes = contribution.type
@@ -139,12 +140,12 @@ class ContributorTags extends Component {
 
   contributionHasBeenSelected(type) {
     // check whether contribution has type
-    var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(this.props.artist_id)
+    var contributorIndex = this.state.contributions.map(function(x) {return x.artist.id; }).indexOf(this.props.artist_id)
     return this.state.contributions[contributorIndex].type.filter(x=>x===type).length>0
   }
 
   modalSaveButtonPressed() {
-    var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(this.state.selectedContribution.contributor.artist_id)
+    var contributorIndex = this.state.contributions.map(function(x) {return x.artist.id; }).indexOf(this.state.selectedContribution.artist.id)
     var contribution = this.state.contributions[contributorIndex]
     contribution.type = this.state.editedContributionTypes
     this.props.updateContributionTypes(contribution)
@@ -188,6 +189,7 @@ class ContributorTags extends Component {
         var results = await revibe.searchArtists(value)
         var artists = results.data.filter(artist => artist.artist_id !== this.props.artist_id)
         if(artists.length > 0) {
+          console.log(artists);
           this.setState({searchResults: artists})
         }
         else {
@@ -241,17 +243,17 @@ class ContributorTags extends Component {
   };
 
   addContributor(contributor) {
-    var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
+    var contributorIndex = this.state.contributions.map(function(x) {return x.artist.id; }).indexOf(contributor.id)
     if(contributorIndex == -1) {
         this.setState({contributions: [...this.state.contributions, {contributor: contributor, type: []}]})
         this.props.onAddContributor(contributor)
-        this.toggleModal({contributor: contributor, type: []})
+        this.toggleModal({artist: contributor, type: []})
     }
   }
 
   removeContributor(contributor) {
     var contributions = [...this.state.contributions]
-    var contributorIndex = contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
+    var contributorIndex = contributions.map(function(x) {return x.artist.id; }).indexOf(contributor.id)
     contributions.splice(contributorIndex, 1)
     this.setState({contributions: contributions})
     this.props.onRemoveContributor(contributor)

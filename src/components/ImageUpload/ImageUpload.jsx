@@ -87,7 +87,7 @@ class ImageUpload extends React.Component {
       <div className="fileinput text-center">
         <input type="file" accept='image/*' onChange={this.handleImageChange} ref="fileInput" />
         <div className={"thumbnail" + (this.props.defaultImage ? "img-circle" : "img-square")}>
-          <Img src="https://www.example.com/foo.jpg"
+          <Img
           src={this.state.imagePreviewUrl}
           style={{width: "100%"}}
           />
@@ -96,6 +96,7 @@ class ImageUpload extends React.Component {
           <div>
             {this.state.file === null ? (
               <Button
+                style={{marginTop: "5%"}}
                 color={this.props.addBtnColor}
                 className={this.props.addBtnClasses}
                 onClick={() => this.handleClick()}

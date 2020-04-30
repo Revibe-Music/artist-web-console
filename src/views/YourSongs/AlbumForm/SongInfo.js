@@ -10,7 +10,7 @@ import { Button, Card, Collapse, CardHeader, CardBody, CardTitle, Label, Form, F
 import { connect } from 'react-redux';
 
 import SongSelect from "components/SongSelect.js";
-import ContributorTags from "components/ContributorTags.js";
+import ContributorTags from "components/Inputs/ContributorTags.jsx";
 import ContributionWarning from "components/Modals/ContributionWarning.js";
 import FileExtensionWarning from "components/Modals/FileExtensionWarning.js";
 import Song from 'models/Song.js'
