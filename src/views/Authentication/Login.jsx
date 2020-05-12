@@ -15,6 +15,7 @@
 
 */
 import React, {Component} from "react";
+import classnames from "classnames";
 
 // reactstrap components
 import {
@@ -58,7 +59,11 @@ class Login extends Component {
       usernameError: "",
       passwordError: "",
 
-      SubmitButtonClicked:false
+      //Input focus fields
+      usernameFocus: false,
+      passwordFocus: false,
+
+      SubmitButtonClicked: false
 
     };
 
@@ -117,6 +122,12 @@ class Login extends Component {
     }
   }
 
+  setFocus(key, value) {
+    this.setState({
+      [key + "Focus"]: value
+    })
+  }
+
   onChange(key, value)
   {
     this.setState({
@@ -130,33 +141,22 @@ class Login extends Component {
 
     const SubmitButton = withRouter(({ history }) => (
       <Button
-        block
-        className="mb-3"
-        color="primary"
+        className="btn-round btn-primary w-100"
         onClick={() => this.onSubmit(history)}
-        size="lg"
+        size="md"
         type="submit"
       >
-        Login
-        {this.state.SubmitButtonClicked ?
-          <div className="pull-right" >
-            <ClipLoader
-            style={{paddingTop: 0, paddingBottom: 0}}
-            size={20}
-            color={"white"}
-            loading={this.state.SubmitButtonClicked && Object.keys(this.props.loginErrors).length < 1}
-            />
-          </div>
-        :
-          null
-        }
+        <h4 className="mt-auto mb-auto">Sign In</h4>
       </Button>
     ));
+
+    const isMobile = window.innerWidth < 576;
 
     return (
       <>
       <ScrollNavbar hideLogin/>
       <div className="content">
+        {/*
         <Container className="mt-lg">
           <Row>
             <Col className="ml-auto mr-auto" md="7">
@@ -214,6 +214,118 @@ class Login extends Component {
                       </h6>
                     </div>
                   </CardFooter>
+                </Card>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+        */}
+        <Container className="mt-lg">
+          <Row>
+            <Col md="8" className="ml-auto mr-auto">
+              <Form className="form">
+                <Card className="card-login card-gray">
+                  <CardBody>
+                    <Container>
+                      <Row>
+                        {!isMobile ? <Col md="6">
+
+                        </Col> : null}
+                        <Col md="6">
+                          {!isMobile ?
+                            <h4 className="text-white w-50 text-right ml-auto mr-0"><Link to="/account/register">Skip</Link></h4>
+                          :
+                            <h1 className="w-100 text-white text-center">Welcome back!</h1>
+                          }
+                          <div className="w-100 mt-md mb-sm">
+                            <h2 className="mt-0 mb-0 w-50">Sign In</h2>
+                            {this.state.SubmitButtonClicked ?
+                              <div className="d-inline-block" style={{ float: "right" }}>
+                                <ClipLoader
+                                  style={{paddingTop: 0, paddingBottom: 0}}
+                                  size={20}
+                                  color={"white"}
+                                  loading={this.state.SubmitButtonClicked && Object.keys(this.props.loginErrors).length < 1}
+                                />
+                              </div>
+                            :
+                              null
+                            }
+                          </div>
+                          <div>
+                            <FormGroup className={`has-label ${this.state.usernameState}`}>
+                              <label>Username *</label>
+                              <Input
+                                id="username"
+                                name="username"
+                                type="text"
+                                onChange={e => this.onChange( "username", e.target.value)}
+                              />
+                              {this.state.usernameState === "has-danger" ? (
+                                <label className="error">
+                                  {this.state.usernameError}
+                                </label>
+                              ) : null}
+                            </FormGroup>
+                          </div>
+                          <div>
+                            <FormGroup className={`has-label ${this.state.passwordState}`}>
+                              <label>Password *</label>
+                              <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                autoComplete="off"
+                                onChange={e => this.onChange( "password", e.target.value)}
+                              />
+                              {this.state.passwordState === "has-danger" ? (
+                                <label className="error">{this.state.passwordError}</label>
+                              ) : null}
+                            </FormGroup>
+                          </div>
+                          <h6 className="w-100 text-center description" style={{ textTransform: "none" }}><Link to="/account/register">Forgot Password?</Link></h6>
+                          <div className="ml-auto mr-auto mt-4" style={{ width: "80%" }}>
+                            <SubmitButton />
+                          </div>
+                          <h6 className="w-100 text-center description" style={{ textTransform: "none" }}>or</h6>
+                          <div className="w-100 d-flex justify-content-center align-items-center">
+                            <Button
+                              className="btn-primary btn-icon btn-round mr-2"
+                              color="default"
+                              size="lg"
+                              href=""
+                              target="_blank"
+                            >
+                              <i className="fab fa-facebook" />
+                            </Button>
+                            <Button
+                              className="btn-primary btn-icon btn-round ml-2 mr-2"
+                              color="default"
+                              size="lg"
+                              href=""
+                              target="_blank"
+                            >
+                              <i className="fab fa-twitter" />
+                            </Button>
+                            <Button
+                              className="btn-primary btn-icon btn-round ml-2"
+                              color="default"
+                              size="lg"
+                              href=""
+                              target="_blank"
+                            >
+                              <i className="fab fa-spotify" />
+                            </Button>
+                          </div>
+                          {isMobile ? <div className="w-100 d-flex mb-1">
+                            <h2 className="text-center title ml-auto mr-sm mb-0"><Link to="/account/register">Sign Up</Link></h2>
+                            <h2 className="text-center title ml-sm mr-auto mb-0"><Link to="/account/register">Skip</Link></h2>
+                          </div>
+                          : <h2 className="text-center title ml-auto mr-auto mb-1"><Link to="/account/register">Sign Up</Link></h2>}
+                        </Col>
+                      </Row>
+                    </Container>
+                  </CardBody>
                 </Card>
               </Form>
             </Col>
