@@ -40,7 +40,9 @@ import { connect } from 'react-redux';
 import ClipLoader from "react-spinners/ClipLoader";
 
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
-import { login } from 'redux/authentication/actions.js'
+import { login, signInViaGoogle } from 'redux/authentication/actions.js';
+import { BuilderComponent } from "@builder.io/react";
+import SocialButton from "components/Buttons/SocialAuth.jsx";
 
 class Login extends Component {
 
@@ -63,12 +65,14 @@ class Login extends Component {
       usernameFocus: false,
       passwordFocus: false,
 
-      SubmitButtonClicked: false
-
+      SubmitButtonClicked: false,
+      popupIsFailure: Math.random()
     };
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.socialAuthErr = this.socialAuthErr.bind(this);
+    this.googleAuthSuccess = this.googleAuthSuccess.bind(this);
   }
 
   componentDidMount() {
@@ -137,6 +141,17 @@ class Login extends Component {
      });
   }
 
+  socialAuthErr(err) {
+    console.log(err)
+    this.setState({ popupIsFailure: Math.random() })
+  }
+
+  googleAuthSuccess(user, history) {
+    var token = user._token.accessToken
+
+    this.props.signInViaGoogle(token, history)
+  }
+
   render() {
 
     const SubmitButton = withRouter(({ history }) => (
@@ -148,6 +163,15 @@ class Login extends Component {
       >
         <h4 className="mt-auto mb-auto">Sign In</h4>
       </Button>
+    ));
+
+    const SocialAuthButton = withRouter(({ history, ...props }) => (
+      <SocialButton
+        onLoginSuccess={user => props.loginOnSuccess(user, history)}
+        {...props}
+      >
+        {props.children}
+      </SocialButton>
     ));
 
     const isMobile = window.innerWidth < 576;
@@ -228,12 +252,16 @@ class Login extends Component {
                   <CardBody>
                     <Container>
                       <Row>
-                        {!isMobile ? <Col md="6">
-
+                        {!isMobile ? <Col md="6" className="d-flex align-items-center">
+                          <div className="mt-auto mb-auto">
+                            <BuilderComponent modelName="Sign in" model="component" />
+                          </div>
                         </Col> : null}
                         <Col md="6">
                           {!isMobile ?
-                            <h4 className="text-white w-50 text-right ml-auto mr-0"><Link to="/account/register">Skip</Link></h4>
+                            <>
+                              {/*<h4 className="text-white w-50 text-right ml-auto mr-0"><Link to="/account/create-profile" disabled>Skip</Link></h4>*/}
+                            </>
                           :
                             <h1 className="w-100 text-white text-center">Welcome back!</h1>
                           }
@@ -289,16 +317,18 @@ class Login extends Component {
                           </div>
                           <h6 className="w-100 text-center description" style={{ textTransform: "none" }}>or</h6>
                           <div className="w-100 d-flex justify-content-center align-items-center">
-                            <Button
+                            {/*<SocialButton
                               className="btn-primary btn-icon btn-round mr-2"
                               color="default"
                               size="lg"
-                              href=""
-                              target="_blank"
+                              provider="facebook"
+                              appId="TBD"
+                              onLoginSuccess={user => console.log(user)}
+                              onLoginFailure={err => console.log(err)}
                             >
                               <i className="fab fa-facebook" />
-                            </Button>
-                            <Button
+                            </SocialButton>*/}
+                            {/*<Button
                               className="btn-primary btn-icon btn-round ml-2 mr-2"
                               color="default"
                               size="lg"
@@ -306,20 +336,24 @@ class Login extends Component {
                               target="_blank"
                             >
                               <i className="fab fa-twitter" />
-                            </Button>
-                            <Button
+                            </Button>*/}
+                            <SocialAuthButton
+                              provider="google"
+                              appId="377937989327-52gam844ctp3j0fukme2v106g7frtlhh.apps.googleusercontent.com"
+                              loginOnSuccess={(user, history) => this.googleAuthSuccess(user, history)}
+                              onLoginFailure={this.socialAuthErr}
                               className="btn-primary btn-icon btn-round ml-2"
                               color="default"
                               size="lg"
-                              href=""
-                              target="_blank"
+                              key={this.state.popupIsFailure}
                             >
-                              <i className="fab fa-spotify" />
-                            </Button>
+                              <i className="fab fa-google" />
+                            </SocialAuthButton>
                           </div>
                           {isMobile ? <div className="w-100 d-flex mb-1">
-                            <h2 className="text-center title ml-auto mr-sm mb-0"><Link to="/account/register">Sign Up</Link></h2>
-                            <h2 className="text-center title ml-sm mr-auto mb-0"><Link to="/account/register">Skip</Link></h2>
+                            <h2 className="text-center title ml-auto mr-auto mb-0"><Link to="/account/register">Sign Up</Link></h2>
+                            {/*<h2 className="text-center title ml-auto mr-sm mb-0"><Link to="/account/register">Sign Up</Link></h2>
+                            <h2 className="text-center title ml-sm mr-auto mb-0"><Link to="/account/register">Skip</Link></h2>*/}
                           </div>
                           : <h2 className="text-center title ml-auto mr-auto mb-1"><Link to="/account/register">Sign Up</Link></h2>}
                         </Col>
@@ -346,6 +380,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => ({
     login: (username, password, history, fn) => dispatch(login(username, password, history, fn)),
+    signInViaGoogle: (access_token, history) => dispatch(signInViaGoogle(access_token, history)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

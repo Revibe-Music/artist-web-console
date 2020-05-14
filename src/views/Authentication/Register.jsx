@@ -43,7 +43,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 import ReactTooltip from 'react-tooltip';
 
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
-import { register } from 'redux/authentication/actions.js';
+import { register, signInViaGoogle } from 'redux/authentication/actions.js';
+import { BuilderComponent } from "@builder.io/react";
+import SocialButton from "components/Buttons/SocialAuth.jsx";
 
 const termAndConditionsLink = "https://revibe-media.s3.us-east-2.amazonaws.com/Terms+and+Conditions.pdf"
 
@@ -74,12 +76,15 @@ class Register extends React.Component {
       confirmPasswordError: "",
       agreedToTermsError: "",
 
-      SubmitButtonClicked:false
+      SubmitButtonClicked:false,
+      popupIsFailure: Math.random()
 
     };
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChangeUserFields = this.onChangeUserFields.bind(this);
+    this.socialAuthErr = this.socialAuthErr.bind(this);
+    this.googleAuthSuccess = this.googleAuthSuccess.bind(this);
   }
 
   componentDidMount() {
@@ -257,38 +262,45 @@ class Register extends React.Component {
     this.setState(newState)
   }
 
+  socialAuthErr(err) {
+    console.log(err)
+    this.setState({ popupIsFailure: Math.random() })
+  }
+
+  googleAuthSuccess(user, history) {
+    var token = user._token.accessToken
+
+    this.props.signInViaGoogle(token, history)
+  }
 
   render() {
     const SubmitButton = withRouter(({ history }) => (
       <Button
-        block
-        className="mb-3"
-        color="primary"
+        className="btn-round btn-primary w-100"
         onClick={() => this.onSubmit(history)}
-        size="lg"
+        size="md"
         type="submit"
       >
-        Register
-        {this.state.SubmitButtonClicked ?
-          <div className="pull-right" >
-            <ClipLoader
-            style={{paddingTop: 0, paddingBottom: 0}}
-            size={20}
-            color={"white"}
-            loading={this.state.SubmitButtonClicked && Object.keys(this.props.registerErrors).length < 1}
-            />
-          </div>
-        :
-          null
-        }
+        <h4 className="mt-auto mb-auto">Register</h4>
       </Button>
     ));
+
+    const SocialAuthButton = withRouter(({ history, ...props }) => (
+      <SocialButton
+        onLoginSuccess={user => props.loginOnSuccess(user, history)}
+        {...props}
+      >
+        {props.children}
+      </SocialButton>
+    ));
+
+    const isMobile = window.innerWidth < 576;
 
     return (
       <>
       <ScrollNavbar hideLogin/>
       <div className="content">
-        <Container className="mt-lg">
+        {/*<Container className="mt-lg">
           <Row>
             <Col className="m-auto" md="7">
             <Form className="form">
@@ -400,6 +412,180 @@ class Register extends React.Component {
               </Form>
             </Col>
           </Row>
+        </Container>*/}
+        <Container className={`${isMobile ? "mt-2" : "mt-lg"}`}>
+          <Row>
+            <Col md="8" className="ml-auto mr-auto">
+              <Form className="form">
+                <Card className="card-login card-gray">
+                  <CardBody>
+                    <Container>
+                      <Row>
+                        {!isMobile ? <Col md="6" className="d-flex align-items-center">
+                          <div className="mt-auto mb-auto">
+                            <BuilderComponent modelName="Sign up" model="component" />
+                          </div>
+                        </Col> : null}
+                        <Col md="6">
+                          {!isMobile ?
+                            <>
+                              {/*<h4 className="text-white w-50 text-right ml-auto mr-0"><Link to="/account/register">Skip</Link></h4>*/}
+                            </>
+                          :
+                            <h1 className="w-100 text-white text-center">Welcome to Revibe!</h1>
+                          }
+                          <div className="w-100 mt-md mb-sm">
+                            <h2 className="mt-0 mb-0 w-50">Sign Up</h2>
+                            {this.state.SubmitButtonClicked ?
+                              <div className="d-inline-block" style={{ float: "right" }}>
+                                <ClipLoader
+                                  style={{paddingTop: 0, paddingBottom: 0}}
+                                  size={20}
+                                  color={"white"}
+                                  loading={this.state.SubmitButtonClicked && Object.keys(this.props.registerErrors).length < 1}
+                                />
+                              </div>
+                            :
+                              null
+                            }
+                          </div>
+                          <div>
+                          <FormGroup className={`has-label ${this.state.usernameState}`}>
+                            <label>Username *</label>
+                            <Input
+                              placeholder="(Not your Artist or Display Name)"
+                              name="username"
+                              type="text"
+                              onChange={e => this.change(e, "username", "username")}
+                            />
+                            {this.state.usernameState === "has-danger" ? (
+                              <label className="error">
+                                {this.state.usernameError}
+                              </label>
+                            ) : null}
+                          </FormGroup>
+                          <FormGroup className={`has-label ${this.state.emailState}`}>
+                            <label>Email Address *</label>
+                            <Input
+                              name="email"
+                              type="email"
+                              onChange={e => this.change(e, "email", "email")}
+                            />
+                            {this.state.emailState === "has-danger" ? (
+                              <label className="error">
+                                {this.state.emailError}
+                              </label>
+                            ) : null}
+                          </FormGroup>
+                          <FormGroup className={`has-label ${this.state.passwordState}`}>
+                            <label>Password *</label>
+                            <Input
+                              id="password"
+                              name="password"
+                              type="password"
+                              autoComplete="off"
+                              onChange={e =>
+                                this.change(e, "password", "password")
+                              }
+                            />
+                            {this.state.passwordState === "has-danger" ? (
+                              <label className="error">{this.state.passwordError}</label>
+                            ) : null}
+                          </FormGroup>
+                          <FormGroup
+                            className={`has-label ${this.state.confirmPasswordState}`}
+                          >
+                            <label>Confirm Password *</label>
+                            <Input
+                              equalto="#password"
+                              id="passwordConfirmation"
+                              name="password_confirmation"
+                              type="password"
+                              autoComplete="off"
+                              onChange={e => this.change(e, "confirmPassword", "equalTo", "password")}
+                            />
+                            {this.state.confirmPasswordState ===
+                            "has-danger" ? (
+                              <label className="error">{this.state.confirmPasswordError}</label>
+                            ) : null}
+                          </FormGroup>
+
+                          <FormGroup
+                            check
+                            className={`text-left`}
+                          >
+                            <Label check>
+                              <Input
+                                type="checkbox"
+                                onClick= {event => this.onChangeUserFields("agreedToTerms", event.target.checked)}
+                              />
+                              <span className="form-check-sign" />I agree to the{" "}
+                              <a
+                                target="_blank"
+                                href={termAndConditionsLink}
+                              >
+                                terms and conditions
+                              </a>
+                              .
+                            </Label>
+                            {this.state.agreedToTermsState ===
+                            "has-danger" ? (
+                              <label style={{color: "red"}} className="error">{this.state.agreedToTermsError}</label>
+                            ) : null}
+                          </FormGroup>
+                          </div>
+                          <div className="ml-auto mr-auto mt-4" style={{ width: "80%" }}>
+                            <SubmitButton />
+                          </div>
+                          <h6 className="w-100 text-center description" style={{ textTransform: "none" }}>or</h6>
+                          <div className="w-100 d-flex justify-content-center align-items-center">
+                            {/*<SocialButton
+                              className="btn-primary btn-icon btn-round mr-2"
+                              color="default"
+                              size="lg"
+                              provider="facebook"
+                              appId="TBD"
+                              onLoginSuccess={user => console.log(user)}
+                              onLoginFailure={err => console.log(err)}
+                            >
+                              <i className="fab fa-facebook" />
+                            </SocialButton>*/}
+                            {/*<Button
+                              className="btn-primary btn-icon btn-round ml-2 mr-2"
+                              color="default"
+                              size="lg"
+                              href=""
+                              target="_blank"
+                            >
+                              <i className="fab fa-twitter" />
+                            </Button>*/}
+                            <SocialAuthButton
+                              provider="google"
+                              appId="377937989327-52gam844ctp3j0fukme2v106g7frtlhh.apps.googleusercontent.com"
+                              loginOnSuccess={(user, history) => this.googleAuthSuccess(user, history)}
+                              onLoginFailure={this.socialAuthErr}
+                              className="btn-primary btn-icon btn-round ml-2"
+                              color="default"
+                              size="lg"
+                              key={this.state.popupIsFailure}
+                            >
+                              <i className="fab fa-google" />
+                            </SocialAuthButton>
+                          </div>
+                          {isMobile ? <div className="w-100 d-flex mb-1">
+                            <h2 className="text-center title ml-auto mr-auto mb-0"><Link to="/account/login">Sign In</Link></h2>
+                            {/*<h2 className="text-center title ml-auto mr-sm mb-0"><Link to="/account/login">Sign In</Link></h2>
+                            <h2 className="text-center title ml-sm mr-auto mb-0"><Link to="/account/register">Skip</Link></h2>*/}
+                          </div>
+                          : <h2 className="text-center title ml-auto mr-auto mb-1"><Link to="/account/login">Sign In</Link></h2>}
+                        </Col>
+                      </Row>
+                    </Container>
+                  </CardBody>
+                </Card>
+              </Form>
+            </Col>
+          </Row>
         </Container>
       </div>
       </>
@@ -415,6 +601,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => ({
     register: (username, email, password, history) =>dispatch(register(username, email, password, history)),
+    signInViaGoogle: (access_token, history) => dispatch(signInViaGoogle(access_token, history)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);
