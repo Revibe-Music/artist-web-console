@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@builder.io/react": "^1.1.13",
+    "amplitude-js": "^6.1.0-debug-cookie.1",
     "axios": "^0.19.0",
     "chart.js": "2.7.3",
     "classnames": "2.2.6",
