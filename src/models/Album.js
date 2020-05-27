@@ -74,14 +74,14 @@ export default class Album extends Model{
   }
 
   addContributor = (contributor)  => {
-    contributor = contributor.constructor.name !== "Contributor" ? new Contributor({contributor: contributor}) : contributor
+    contributor = contributor.constructor.name !== "Contributor" ? new Contributor({artist: contributor}) : contributor
     this.contributors = [...this.contributors, contributor]
     this.clearErrors("contributors")
   }
 
   removeContributor = (artistId) => {
     const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artistId)
+    var contributorIndex = contributors.map(function(x) {return x.artist.artistId; }).indexOf(artistId)
     contributors.splice(contributorIndex, 1)
     this.contributors = contributors
     this.clearErrors("contributors")
@@ -89,32 +89,7 @@ export default class Album extends Model{
 
   updateContribution = (contribution) => {
     const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contribution.contributor.artist_id)
-    contributors[contributorIndex] = contribution
-    this.contributors = contributors
-    this.clearErrors("contributors")
-  }
-
-
-  addContributor(contributor) {
-    if(contributor.constructor.name !== "Contributor") {
-      contributor = new Contributor(contributor)
-    }
-    this.contributors = [...this.contributors, contributor]
-    this.clearErrors("contributors")
-  }
-
-  removeContributor(artistId) {
-    const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artistId)
-    contributors.splice(contributorIndex, 1)
-    this.contributors = contributors
-    this.clearErrors("contributors")
-  }
-
-  updateContribution(artistId, contribution) {
-    const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artistId)
+    var contributorIndex = contributors.map(function(x) {return x.artist.artistId; }).indexOf(contribution.artist.artistId)
     contributors[contributorIndex] = contribution
     this.contributors = contributors
     this.clearErrors("contributors")

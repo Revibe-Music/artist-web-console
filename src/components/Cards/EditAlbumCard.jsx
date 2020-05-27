@@ -104,6 +104,7 @@ class AlbumCard extends Component {
                   <label>Album Contributors</label>
                   </Row>
                   <ContributorTags
+                    contributions={this.props.album.contributors}
                     artist_id={this.props.artist_id}
                     onAddContributor={contributor => this.props.onEditAlbum(contributor, "addContributor")}
                     onRemoveContributor={contributor => this.props.onEditAlbum(contributor, "removeContributor")}

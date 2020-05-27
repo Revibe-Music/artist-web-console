@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 import { API_HOST } from './config.js'
 import Song from 'models/Song.js'
 import Album from 'models/Album.js'
+import Contributor from 'models/Contributor.js'
 
 const cookieName = "bshdcce3gcw473q839hxkqabxe3q7qhxbaekc"  // should probably try and set somewhere in env
 
@@ -43,7 +44,9 @@ export default class RevibeAPI {
       id: album.album_id,
       name: album.name,
       type: album.type,
-      contributors: album.contributors.map(x => this._parseContributor(x)),
+      // contributors: album.contributors.map(x => this._parseContributor(x)),
+      contributors: this._parseContributor(album.contributors),
+
       uploadedBy: {
         artistId: album.uploaded_by.artist_id,
         artistName: album.uploaded_by.name,
@@ -72,7 +75,8 @@ export default class RevibeAPI {
         artistId: song.uploaded_by.artist_id,
         artistName: song.uploaded_by.name,
       },
-      contributors: song.contributors.map(x => this._parseContributor(x)),
+      // contributors: song.contributors.map(x => this._parseContributor(x)),
+      contributors: this._parseContributor(song.contributors),
       genres: song.genres.map(genre => genre.text),
       tags: song.tags.map(tag => tag.text),
       displayed: song.is_displayed,
@@ -83,17 +87,52 @@ export default class RevibeAPI {
     return new Song(formattedSong)
   }
 
-  _parseContributor(contributor) {
-    return  {
-      id: contributor.contribution_id,
-      artist: {
-        artistId: contributor.artist_id,
-        artistName: contributor.artist_name,
-      },
-      type: contributor.contribution_type,
-      approved: contributor.approved,
-      pending: contributor.pending,
+  _parseContributor(contributors) {
+    var formattedContributors = []
+    for(var x=0; x<contributors.length; x++) {
+      if(formattedContributors.length > 0) {
+        if(formattedContributors.filter(contrib => contrib.artist.artistId === contributors[x].artist_id).length < 1) {
+          var types = contributors.filter(contrib => contrib.artist_id === contributors[x].artist_id).map(contrib => contrib.contribution_type)
+          var formattedContributor = {
+            id: contributors[x].contribution_id,
+            artist: {
+              artistId: contributors[x].artist_id,
+              artistName: contributors[x].artist_name,
+            },
+            type: types,
+            approved: contributors[x].approved,
+            pending: contributors[x].pending,
+          }
+          formattedContributors.push(new Contributor(formattedContributor))
+        }
+      }
+      else {
+        var types = contributors.filter(contrib => contrib.artist_id === contributors[x].artist_id).map(contrib => contrib.contribution_type)
+        var formattedContributor = {
+          id: contributors[x].contribution_id,
+          artist: {
+            artistId: contributors[x].artist_id,
+            artistName: contributors[x].artist_name,
+          },
+          type: types,
+          approved: contributors[x].approved,
+          pending: contributors[x].pending,
+        }
+        formattedContributors.push(new Contributor(formattedContributor))
+      }
     }
+    // var formattedContributor = {
+    //   id: contributor.contribution_id,
+    //   artist: {
+    //     artistId: contributor.artist_id,
+    //     artistName: contributor.artist_name,
+    //   },
+    //   type: contributor.contribution_type,
+    //   approved: contributor.approved,
+    //   pending: contributor.pending,
+    // }
+    // return new Contributor(formattedContributor)
+    return formattedContributors
   }
 
   _handleErrors(response) {

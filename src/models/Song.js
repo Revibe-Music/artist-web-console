@@ -108,7 +108,7 @@ export default class Song extends Model {
   }
 
   addContributor = (contributor)  => {
-    contributor = contributor.constructor.name !== "Contributor" ? new Contributor({contributor: contributor}) : contributor
+    contributor = contributor.constructor.name !== "Contributor" ? new Contributor({artist: contributor}) : contributor
     this.contributors = [...this.contributors, contributor]
     this.clearErrors("contributors")
   }
@@ -123,14 +123,13 @@ export default class Song extends Model {
 
   updateContribution = (contribution) => {
     const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.artist.id; }).indexOf(contribution.artist.id)
+    var contributorIndex = contributors.map(function(x) {return x.artist.id; }).indexOf(contribution.artist.artistId)
     contributors[contributorIndex] = contribution
     this.contributors = contributors
     this.clearErrors("contributors")
   }
 
   /// SONG GENRE OPRERATIONS ///
-
   setGenres = (genres) => {
     this.genres = genres
     this.clearErrors("genres")

@@ -4,6 +4,7 @@ import classNames from "classnames";
 // reactstrap components
 import {
   Container,
+  Button,
   Card,
   CardBody,
   Label,
@@ -280,11 +281,21 @@ class EditAlbum extends Component {
       </div>
       <div className="content">
         <Container>
-          <NavLink to={'/dashboard/uploads'} activeClassName="">
-            <div style={{cursor: 'pointer', backgroundColor: "#7248BD", width: "3.5rem", height: "3.5rem", borderRadius: "1.75rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
-              <i style={{color: "white", fontSize: "1.5rem", marginRight: ".25rem"}} className="tim-icons icon-minimal-left" />
-            </div>
-          </NavLink>
+          <Row style={{justifyContent: "space-between", alignItems: "center"}}>
+            <NavLink to={'/dashboard/uploads'} activeClassName="">
+              <div style={{cursor: 'pointer', backgroundColor: "#7248BD", width: "3rem", height: "3rem", borderRadius: "1.5rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <i style={{color: "white", fontSize: "1.25rem", marginRight: ".2rem"}} className="tim-icons icon-minimal-left" />
+              </div>
+            </NavLink>
+              <Button
+                style={{margin: 0, height: "fit-content"}}
+                color="primary"
+                onClick={this.onSubmit}
+              >
+                Save
+              </Button>
+          </Row>
+
           <EditAlbumCard
             album={this.state.album}
             onEditAlbum={this.editAlbum}

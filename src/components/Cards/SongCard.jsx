@@ -159,6 +159,7 @@ class SongCard extends React.Component {
                   <AiOutlineQuestionCircle style={{color: "#7248BD", marginLeft: "5px"}} id={`contribution-question${this.props.song.id}`}/>
                 </div>
                 <ContributorTags
+                  contributions={this.props.song.contributors}
                   artist_id={this.props.artist_id}
                   onAddContributor={contributor => this.props.onEditSong(this.props.song.id, contributor, "addContributor")}
                   onRemoveContributor={contributor => this.props.onEditSong(this.props.song.id, contributor, "removeContributor")}
