@@ -49,11 +49,11 @@ class AlbumOptions extends Component {
         </DropdownToggle>
           <DropdownMenu right>
             <DropdownItem header>Actions</DropdownItem>
-            <NavLink to={`/dashboard/uploads/edit/${this.props.id}`}>
+            {/*<NavLink to={`/dashboard/uploads/edit/${this.props.id}`}>
               <DropdownItem>
               Edit
               </DropdownItem>
-            </NavLink>
+            </NavLink>*/}
             <DropdownItem
               onClick={() => this.toggleDeleteWarning()}
             >
@@ -63,10 +63,10 @@ class AlbumOptions extends Component {
         </Dropdown>
       :
         <Row>
-          <NavLink to={`/dashboard/uploads/edit/${this.props.id}`}>
+          {/*<NavLink to={`/dashboard/uploads/edit/${this.props.id}`}>
             <h4 style={{color: "#7248BD"}}>Edit</h4>
           </NavLink>
-          <h4 style={{color: "white", marginLeft: "5px", marginRight: "5px"}}> | </h4>
+          <h4 style={{color: "white", marginLeft: "5px", marginRight: "5px"}}> | </h4>*/}
           <a onClick={() => this.toggleDeleteWarning()} style={{cursor: "pointer"}}>
             <h4 style={{color: "#7248BD"}}> Delete</h4>
           </a>
