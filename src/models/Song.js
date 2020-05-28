@@ -17,11 +17,10 @@ export default class Song extends Model {
 
   constructor(obj) {
     super()
-    this.attributes = ["id", "title", "duration", "file", "explicit", "contributors", "genres", "tags","displayed"]
+    this.attributes = ["id", "title", "duration", "file", "album", "uploadedBy", "explicit", "contributors", "genres", "tags","displayed", "order", "tracks"]
     this.requiredAttributes = ["id", "title", "duration", "file", "explicit", "contributors", "displayed"]
     if(obj) this._parse(obj)
     this._setDefaults()
-
   }
 
   _setDefaults(obj) {
@@ -32,6 +31,8 @@ export default class Song extends Model {
     if(!this.genres) this.genres = []
     if(!this.tags) this.tags = []
     if(!this.displayed) this.displayed = true
+    if(!this.order) this.order = 0
+    if(!this.tracks) this.tracks = []
   }
 
   validate = () => {
@@ -61,6 +62,7 @@ export default class Song extends Model {
   }
 
   setTitle = (title) => {
+    console.log("YEE",title);
     this.title = title
     this.clearErrors("title")
   }
@@ -77,15 +79,16 @@ export default class Song extends Model {
     this.removeFileExtensionFromTitle()
   }
 
+
   displayTitle = () => {
     var featuring = []
     var producedBy = []
     for(var x=0; x<this.contributors.length; x++) {
       if(this.contributors[x].type.includes("Feature")) {
-        featuring.push(this.contributors[x].contributor.name)
+        featuring.push(this.contributors[x].artist.artistName)
       }
       if(this.contributors[x].type.includes("Producer")) {
-        producedBy.push(this.contributors[x].contributor.name)
+        producedBy.push(this.contributors[x].artist.artistName)
       }
     }
     var title = this.title
@@ -105,14 +108,14 @@ export default class Song extends Model {
   }
 
   addContributor = (contributor)  => {
-    contributor = contributor.constructor.name !== "Contributor" ? new Contributor({contributor: contributor}) : contributor
+    contributor = contributor.constructor.name !== "Contributor" ? new Contributor({artist: contributor}) : contributor
     this.contributors = [...this.contributors, contributor]
     this.clearErrors("contributors")
   }
 
   removeContributor = (artistId) => {
     const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artistId)
+    var contributorIndex = contributors.map(function(x) {return x.artist.id; }).indexOf(artistId)
     contributors.splice(contributorIndex, 1)
     this.contributors = contributors
     this.clearErrors("contributors")
@@ -120,14 +123,13 @@ export default class Song extends Model {
 
   updateContribution = (contribution) => {
     const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contribution.contributor.artist_id)
+    var contributorIndex = contributors.map(function(x) {return x.artist.id; }).indexOf(contribution.artist.artistId)
     contributors[contributorIndex] = contribution
     this.contributors = contributors
     this.clearErrors("contributors")
   }
 
   /// SONG GENRE OPRERATIONS ///
-
   setGenres = (genres) => {
     this.genres = genres
     this.clearErrors("genres")
