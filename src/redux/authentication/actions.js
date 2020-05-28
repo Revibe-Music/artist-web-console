@@ -1,4 +1,6 @@
-import RevibeAPI from '../../api/revibe.js';
+import RevibeAPI from 'api/revibe.js';
+import { logEvent } from 'amplitude/amplitude';
+
 const revibe = new RevibeAPI()
 
 
@@ -50,6 +52,7 @@ const clearErrors = (errorName) => ({
 export function register(username, email, password, history) {
   return async (dispatch) => {
     dispatch(clearErrors("register"))
+    logEvent("Signup", "Clicked")
     var response = await revibe.register(username, email, password)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
@@ -79,8 +82,10 @@ export function register(username, email, password, history) {
       dispatch(loginUser());
       dispatch(updateUser(user));
       history.push("create-profile/")
+      logEvent("Signup", "Success")
     }
     else {
+      logEvent("Signup", "Failure")
       dispatch(error("register", response.data))
     }
   }
@@ -92,8 +97,10 @@ export function registerArtist(name, image, history) {
     var email = getState().authentication.user.email
     var response = await revibe.registerArtist(name, image, email)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Onboarding", "Completed")
       response = response.data
       var user = {
+        id: response.user.user_id,
         username: response.user.username,
         email: response.user.email,
         artistId: response.artist_id,
@@ -129,8 +136,10 @@ export function registerArtist(name, image, history) {
 export function login(username, password, history) {
   return async (dispatch) => {
     dispatch(clearErrors("login"))
+    logEvent("Login", "Clicked")
     var response = await revibe.login(username, password)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Login", "Success")
       response = response.data
       if (response.user.is_artist) {
         await history.push('/dashboard');
@@ -142,23 +151,26 @@ export function login(username, password, history) {
       dispatch(getProfile());
     }
     else {
+      logEvent("Login", "Failure")
       dispatch(error("login", response.data))
     }
-
   }
 }
 
 export function logout(history) {
   return async (dispatch) => {
     dispatch(clearErrors("logout"));
+    logEvent("Logout", "Clicked")
     var response = await revibe.logout()
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Logout", "Success")
       response = response.data
       await history.push('/account/login');
       dispatch(logoutUser());
       dispatch(removeUser());
     }
     else {
+      logEvent("Logout", "Failure")
       dispatch(error("logout", response.data))
     }
   }
@@ -171,6 +183,7 @@ export function getProfile() {
     if(String(response.status).charAt(0)=="2") {
       response = response.data
       var user = {
+        id: response.user.user_id,
         username: response.user.username,
         email: response.artist_profile.email,
         artistId: response.artist_id,
@@ -206,6 +219,7 @@ export function getProfile() {
 export function editArtistProfile(data) {
   return async (dispatch) => {
     dispatch(clearErrors("editProfile"));
+    logEvent("Profile", "Saved")
     // check to see if variables are in data
     var name = Object.keys(data).filter(x=> x==="name").length > 0 ? data.name : null
     var email = Object.keys(data).filter(x=> x==="email").length > 0 ? data.email : null
@@ -233,6 +247,7 @@ export function editArtistProfile(data) {
 export function editSettings(data) {
   return async (dispatch) => {
     dispatch(clearErrors("editSettings"));
+    logEvent("Settings", "Saved")
     var response = await revibe.editSettings(
       data.requireContributionApproval,
       data.requireContributionApprovalOnEdit,
@@ -256,6 +271,7 @@ export function editSocialMediaLinks(data) {
   return async (dispatch, getState) => {
     dispatch(clearErrors("addSocialMediaLinks"));
     dispatch(clearErrors("editSocialMediaLinks"));
+    logEvent("Relink", "Saved")
     var newLinks = []
     var deletedLinks = []
     var existingLinks = []
@@ -318,7 +334,6 @@ export function editSocialMediaLinks(data) {
       }
     }
     dispatch(getProfile());
-
   }
 }
 
@@ -326,6 +341,7 @@ export function editTipJarLinks(data) {
   return async (dispatch, getState) => {
     dispatch(clearErrors("addTipJarLinks"));
     dispatch(clearErrors("editTipJarLinks"));
+    logEvent("Tip Jar", "Saved")
     var newLinks = []
     var existingLinks = []
     var existingSocialMedia = getState().authentication.user.socialMedia
@@ -363,8 +379,6 @@ export function editTipJarLinks(data) {
         }
       }
     }
-
     dispatch(getProfile());
-
   }
 }

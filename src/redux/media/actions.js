@@ -1,4 +1,5 @@
 import RevibeAPI from '../../api/revibe.js';
+import { logEvent } from 'amplitude/amplitude';
 
 const revibe = new RevibeAPI()
 
@@ -150,6 +151,7 @@ export function getSongContributions() {
 
 export function uploadAlbum(album, callback) {
   return async (dispatch) => {
+    logEvent("New Upload", "Submitted")
     var response = await revibe.createUploadedAlbum(album.name, album.image, album.type, album.displayed, album.releaseDate)
     if(String(response.status).charAt(0)=="2") {
       const newAlbum = response.data
@@ -173,6 +175,7 @@ export function uploadAlbum(album, callback) {
     }
     else {
       // need to dispatch appropriate error here
+      logEvent("New Upload", "Album Submission Failure")
       dispatch(error("An error occured while uploading an album."));
     }
   }
@@ -204,6 +207,7 @@ export function uploadAlbumSong(album, song) {
       dispatch(error(null));
     }
     else {
+      logEvent("New Upload", "Song Submission Failure")
       // need to dispatch appropriate error here
       dispatch(error("An error occured while uploading a song."));
     }
@@ -270,6 +274,7 @@ export function approveAlbumContribution(album, contribution_id) {
   return async (dispatch, getState) => {
     var response = await revibe.approveAlbumContribution(contribution_id)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Contributions", "Approve", {type: "Album"})
       var index = album.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
       album.contributors[index].approved = true
       album.contributors[index].pending = false
@@ -286,6 +291,7 @@ export function rejectAlbumContribution(album, contribution_id) {
   return async (dispatch, getState) => {
     var response = await revibe.rejectAlbumContribution(contribution_id)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Contributions", "Reject", {type: "Album"})
       var index = album.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
       album.contributors[index].approved = false
       album.contributors[index].pending = false
@@ -302,6 +308,7 @@ export function approveSongContribution(song, contribution_id) {
   return async (dispatch, getState) => {
     var response = await revibe.approveSongContribution(contribution_id)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Contributions", "Approve", {type: "Song"})
       var index = song.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
       song.contributors[index].approved = true
       song.contributors[index].pending = false
@@ -318,6 +325,7 @@ export function rejectSongContribution(song, contribution_id) {
   return async (dispatch, getState) => {
     var response = await revibe.rejectSongContribution(contribution_id)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Contributions", "Reject", {type: "Song"})
       var index = song.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
       song.contributors[index].approved = false
       song.contributors[index].pending = false

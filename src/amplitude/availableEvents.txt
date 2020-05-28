@@ -1,26 +1,45 @@
-(NOT DONE) Signup - Clicks Register
-(NOT DONE) Signup - Success
+(DONE) Signup - Clicked
+(DONE) Signup - Success
+(DONE) Signup - Failure
+
+(DONE) Login - Clicked
+(DONE) Login - Success
+(DONE) Login - Failure
+
+(DONE) Logout - Clicked
+(DONE) Logout - Success
+(DONE) Logout - Failure
+
+(DONE) Onboarding - Started
+(NOT IMPLEMENTED) Onboarding - Skipped
+(DONE) Onboarding - Completed
 
 (NOT DONE) Navigate - Tab
 (NOT DONE) Navigate - Page
 
-(NOT DONE) Tutorial - Welcome Screen
-(NOT DONE) Tutorial - Make Profile
-(NOT DONE) Tutorial - Upload Song
-(NOT DONE) Tutorial - Contributions
-(NOT DONE) Tutorial - Analytics
-(NOT DONE) Tutorial - Relink
-(NOT DONE) Tutorial - Tip Jar
-(NOT DONE) Tutorial - Settings
-(NOT DONE) Tutorial - Skip Tutorial
-(NOT DONE) Tutorial - Finish Tutorial
+(NOT IMPLEMENTED) Tutorial - Welcome Screen
+(NOT IMPLEMENTED) Tutorial - Make Profile
+(NOT IMPLEMENTED) Tutorial - Upload Song
+(NOT IMPLEMENTED) Tutorial - Contributions
+(NOT IMPLEMENTED) Tutorial - Analytics
+(NOT IMPLEMENTED) Tutorial - Relink
+(NOT IMPLEMENTED) Tutorial - Tip Jar
+(NOT IMPLEMENTED) Tutorial - Settings
+(NOT IMPLEMENTED) Tutorial - Skip Tutorial
+(NOT IMPLEMENTED) Tutorial - Finish Tutorial
 
-(NOT DONE) Profile - Update Saved
 (NOT DONE) Profile - Field Edited
+(DONE) Profile - Saved
+
+(NOT DONE) Settings - Toggle
+(DONE) Settings - Save
+
+(DONE) Tip Jar - Save
+(NOT DONE) Tip Jar - Field Edited
 
 (NOT DONE) Relink - Add Link Clicked
 (NOT DONE) Relink - Add Link Success
-(NOT DONE) Relink - Add link canceled
+(NOT DONE) Relink - Add Link Canceled
 (NOT DONE) Relink - Add Link Previewed
 (NOT DONE) Relink - Edit Field
 (NOT DONE) Relink - Link Selected
@@ -28,14 +47,7 @@
 (NOT DONE) Relink - Rearrange
 (NOT DONE) Relink - Preview Page
 (NOT DONE) Relink - Copy Link
-(NOT DONE) Relink - Save
-
-(NOT DONE) Settings - Save
-(NOT DONE) Settings - Toggle
-
-(NOT DONE) Tip Jar - Save
-(NOT DONE) Tip Jar - Field Edited
-
+(DONE) Relink - Save
 
 (NOT DONE) Uploads - Collapse
 (NOT DONE) Uploads - Click Edit
@@ -50,13 +62,17 @@
 (NOT DONE) Edit Album - Cancelled
 (NOT DONE) Edit Album - Reorder
 
-(NOT DONE) Contributions - Accept
-(NOT DONE) Contributions - Decline
+(DONE) Contributions - Approve
+(DONE) Contributions - Reject
 (NOT DONE) Contributions - Edit
 (NOT DONE) Contributions - Delete
 
-(NOT DONE) New Upload - Clicked
+(NOT DONE) New Upload - Started
+(NOT DONE) New Upload - Exited
 (NOT DONE) New Upload - Album Field Edited
+(NOT DONE) New Upload - Album Field Error
+(NOT DONE) New Upload - Song Field Edited
+(NOT DONE) New Upload - Song Field Error
 (NOT DONE) New Upload - Contributor Searched
 (NOT DONE) New Upload - Contributor Result Selected
 (NOT DONE) New Upload - Contributor Type Selected
@@ -68,14 +84,11 @@
 (NOT DONE) New Upload - File Dropped
 (NOT DONE) New Upload - Next Button Clicked
 (NOT DONE) New Upload - Previous Button Clicked
-(NOT DONE) New Upload - Song Field Edited
 (NOT DONE) New Upload - Song Played
-(NOT DONE) New Upload - Confirm Field Edited
 (NOT IMPLEMENTED) New Upload - Save Draft
-(NOT DONE) New Upload - Album Field Error
-(NOT DONE) New Upload - Song Field Error
-(NOT DONE) New Upload - Failed
-(NOT DONE) New Upload - Exit
+(NOT DONE) New Upload - Submitted
+(NOT DONE) New Upload - Submission Successful
+(NOT DONE) New Upload - Submission Failure
 
 (NOT DONE) Stats - Period Changed
 (NOT DONE) Stats - Metric Changed

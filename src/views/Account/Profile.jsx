@@ -47,6 +47,7 @@ import zip from 'zippo'
 
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { editArtistProfile } from 'redux/authentication/actions.js'
+import { logEvent } from 'amplitude/amplitude';
 
 
 class Profile extends React.Component {
@@ -265,6 +266,7 @@ class Profile extends React.Component {
       city: null,
       stateOptions: csc.getStatesOfCountry(country.value).map(function(x) { return {value: x.id, label: x.name}})
     })
+    logEvent("Profile", "Field Edited", {Field: "Country"})
   }
 
   selectState(state) {
@@ -273,16 +275,16 @@ class Profile extends React.Component {
       city: null,
       cityOptions: csc.getCitiesOfState(state.value).map(function(x) { return {value: x.id, label: x.name}}),
     })
+    logEvent("Profile", "Field Edited", {Field: "State"})
   }
 
   selectCity(city) {
     this.setState({city: city})
+    logEvent("Profile", "Field Edited", {Field: "City"})
   }
 
 
   render() {
-
-
     return (
       <>
       <div className="rna-container">
@@ -306,6 +308,7 @@ class Profile extends React.Component {
                           name="name"
                           type="text"
                           onChange={e => this.change(e, "name", "name")}
+                          onBlur={() => logEvent("Profile", "Field Edited", {Field: "Name"})}
                         />
                         {this.state.nameState === "has-danger" ? (
                           <label className="error">

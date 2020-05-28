@@ -44,6 +44,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import {registerArtist} from 'redux/authentication/actions.js';
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import RevibeAPI from 'api/revibe.js';
+import { logEvent } from 'amplitude/amplitude'
 
 const revibe = new RevibeAPI()
 
@@ -65,6 +66,10 @@ class RegisterArtist extends React.Component {
     this.ImageUploader = React.createRef();
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidMount() {
+    logEvent("Onboarding", "Started")
   }
 
   componentDidUpdate(prevProps, prevState) {
