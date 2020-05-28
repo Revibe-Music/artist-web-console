@@ -170,6 +170,7 @@ class Authenticated extends Component {
 
         <Sidebar
           {...this.props}
+          closeSidebar={this.toggleSidebar}
           routes={routes}
           activeColor={this.state.activeColor}
           logo={{

@@ -245,6 +245,16 @@ export default class RevibeAPI {
 
   }
 
+  async signInGoogle(access_token) {
+    var data = {
+      access_token: access_token
+    }
+
+    var response = await this. _request("account/google-authentication/", data, "POST", false)
+    this._setCookie(response.data.access_token)
+    return response
+  }
+
   async registerArtist(name, image, email) {
     var data = new FormData();
     data.set("name", name)
