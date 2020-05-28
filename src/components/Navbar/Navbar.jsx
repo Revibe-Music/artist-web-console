@@ -110,7 +110,7 @@ class AdminNavbar extends React.Component {
         expand="lg"
       >
         <Container fluid>
-          <div className="navbar-wrapper">
+          <div className="navbar-wrapper mt-3 mb-auto">
             {<div
               className={classNames("navbar-toggle d-inline", {
                 toggled: this.props.sidebarOpened
@@ -151,6 +151,7 @@ class AdminNavbar extends React.Component {
                   data-toggle="dropdown"
                   nav
                   onClick={e => e.preventDefault()}
+                  className="w-100 d-flex justify-content-end"
                 >
                   <div className="photo">
                     <img alt="..." src={this.props.artistImage ? this.props.artistImage : require("assets/portal/img/default-avatar.png")} />

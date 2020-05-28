@@ -91,6 +91,27 @@ export function register(username, email, password, history) {
   }
 }
 
+export function signInViaGoogle(access_token, history) {
+  return async (dispatch) => {
+    dispatch(clearErrors("register"))
+    var response = await revibe.signInGoogle(access_token)
+    if(String(response.status).charAt(0)=="2") {
+      response = response.data
+      if (response.user.is_artist) {
+        await history.push('/dashboard');
+      }
+      else {
+        await history.push('/account/create-profile');
+      }
+      dispatch(loginUser());
+      dispatch(getProfile());
+    }
+    else {
+      dispatch(error("register", response.data))
+    }
+  }
+}
+
 export function registerArtist(name, image, history) {
   return async (dispatch, getState) => {
     dispatch(clearErrors("registerArtist"))

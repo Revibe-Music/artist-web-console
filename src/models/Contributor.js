@@ -4,8 +4,8 @@ export default class Contributor extends Model {
 
   constructor(obj) {
     super()
-    this.attributes = ["id", "contributor", "type"]
-    this.requiredAttributes = ["id", "contributor", "type"]
+    this.attributes = ["id", "artist", "type"]
+    this.requiredAttributes = ["id", "artist", "type", "approved", "pending"]
     this._parse(obj)
     this._setDefaults()
   }
@@ -14,6 +14,8 @@ export default class Contributor extends Model {
     if(!this.id) this.id = this.generateID()
     if(!this.contributor) this.contributor = {}
     if(!this.type) this.type = []
+    if(!this.approved) this.approved = false
+    if(!this.pending) this.pending = true
   }
 
   validate() {
