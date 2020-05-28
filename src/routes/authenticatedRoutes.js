@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: "/dashboard/uploads",
-    name: "Your Songs",
+    name: "Tracks",
     icon: "tim-icons icon-headphones",
     component: YourSongs,
     layout: "",
