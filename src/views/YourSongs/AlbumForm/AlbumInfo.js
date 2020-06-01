@@ -10,7 +10,7 @@ import { Form, FormGroup, Input, Row, Col, UncontrolledTooltip} from "reactstrap
 import { connect } from 'react-redux';
 
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
-import ContributorTags from "components/ContributorTags.js";
+import ContributorTags from "components/Inputs/ContributorTags.jsx";
 import Album from 'models/Album.js'
 
 
