@@ -24,7 +24,7 @@ class Contributions extends React.Component {
     var shouldDisplay = false
     for(var x=0; x<songs.length; x++) {
       for(var i=0; i<songs[x].contributors.length; i++) {
-        if(songs[x].contributors[i].artist_id === this.props.artist_id) {
+        if(songs[x].contributors[i].artistId === this.props.artist_id) {
           if(songs[x].contributors[i].pending) {
             shouldDisplay = true
             break
@@ -35,7 +35,7 @@ class Contributions extends React.Component {
     if(!shouldDisplay) {
       for(var x=0; x<albums.length; x++) {
         for(var i=0; i<albums[x].contributors.length; i++) {
-          if(albums[x].contributors[i].artist_id === this.props.artist_id) {
+          if(albums[x].contributors[i].artistId === this.props.artist_id) {
             if(albums[x].contributors[i].pending) {
               shouldDisplay = true
               break
@@ -48,15 +48,15 @@ class Contributions extends React.Component {
   }
 
   getContributionType(album) {
-    const contributionIndexes = album.contributors.map((contribution, i) => contribution.artist_id === this.props.artist_id ? i : -1).filter(index => index !== -1);
+    const contributionIndexes = album.contributors.map((contribution, i) => contribution.artistId === this.props.artistId ? i : -1).filter(index => index !== -1);
     var contributionTypes = []
     for(var i=0; i<contributionIndexes.length; i++) {
       var index = contributionIndexes[i]
       if(album.contributors[index].approved) {
-        contributionTypes.push(album.contributors[index].contribution_type)
+        contributionTypes.push(album.contributors[index].type)
       }
     }
-    return contributionTypes.length > 0 ? contributionTypes : ""
+    return contributionTypes.length > 0 ? contributionTypes.join(", ") : ""
   }
 
   render() {
@@ -78,7 +78,7 @@ class Contributions extends React.Component {
                 <CardBody>
                   <Row style={{alignItems: "center", margin: "auto"}}>
                     <Image
-                      src={album.images.length > 0 ? album.images[1].url : null}
+                      src={album.images.length > 0 ? album.images[1] : null}
                       width='15%'
                       height='15%'
                       alt='My awesome image'
@@ -86,9 +86,9 @@ class Contributions extends React.Component {
                     />
                   <div style={{marginLeft: "5%"}}>
                     <h3 style={{color: "white",marginBottom: "auto"}}>{album.name}•{album.type}</h3>
-                    <p style={{color: "white"}}>Uploaded By: {album.uploaded_by.name}</p>
+                    <p style={{color: "white"}}>Uploaded By: {album.uploadedBy.artistName}</p>
                     <p style={{color: "white"}}>Your Contributions: {this.getContributionType(album)}</p>
-                    <p style={{color: "white"}}>{moment(album.uploaded_date).format("MM/DD/YYYY HH:mm")}</p>
+                    <p style={{color: "white"}}>{moment(album.uploadDate).format("MM/DD/YYYY HH:mm")}</p>
                   </div>
                   </Row>
                 </CardBody>
@@ -96,13 +96,12 @@ class Contributions extends React.Component {
             )
         })}
         {this.props.songContributions.map(song => {
-          console.log(song);
             return (
               <Card>
                 <CardBody>
                   <Row style={{alignItems: "center", margin: "auto"}}>
                     <Image
-                      src={song.album.images.length > 0 ? song.album.images[1].url : null}
+                      src={song.album.images ? song.album.images.length > 0 ? song.album.images[1] : null : null}
                       width='15%'
                       height='15%'
                       alt='My awesome image'
@@ -110,9 +109,9 @@ class Contributions extends React.Component {
                     />
                   <div style={{marginLeft: "5%"}}>
                     <h3 style={{color: "white",marginBottom: "auto"}}>{song.title}•Song</h3>
-                    <p style={{color: "white"}}>Uploaded By: {song.uploaded_by.name}</p>
+                    <p style={{color: "white"}}>Uploaded By: {song.uploadedBy.artistName}</p>
                     <p style={{color: "white"}}>Your Contributions: {this.getContributionType(song)}</p>
-                    <p style={{color: "white"}}>{moment(song.album.uploaded_date).format("MM/DD/YYYY HH:mm")}</p>
+                    <p style={{color: "white"}}>{moment(song.album.uploadDate).format("MM/DD/YYYY HH:mm")}</p>
                   </div>
                   </Row>
                 </CardBody>

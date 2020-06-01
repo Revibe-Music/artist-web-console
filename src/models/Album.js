@@ -15,8 +15,8 @@ export default class Album extends Model{
 
   constructor(obj) {
     super()
-    this.attributes = ["id", "name", "type", "image", "contributors"]
-    this.requiredAttributes = ["id", "name", "type", "image", "contributors", "displayed"]
+    this.attributes = ["id", "name", "type", "images", "uploadedBy", "contributors", "displayed", "totalStreams", "uploadDate", "datePublished"]
+    this.requiredAttributes = ["id", "name", "type", "images", "contributors", "displayed"]
     if(obj) this._parse(obj)
     this._setDefaults()
   }
@@ -26,9 +26,11 @@ export default class Album extends Model{
     if(!this.id) this.id = this.generateID()
     if(!this.name) this.name = ""
     if(!this.type) this.type = ""
-    if(!this.image) this.image = null
+    if(!this.images) this.images = []
+    if(!this.uploadedBy) this.uploadedBy = null
     if(!this.contributors) this.contributors = []
-    if(!this.displayed) this.displayed =true
+    if(!this.displayed) this.displayed = true
+    if(!this.totalStreams) this.totalStreams = 0
   }
 
   validate = () => {
@@ -72,14 +74,14 @@ export default class Album extends Model{
   }
 
   addContributor = (contributor)  => {
-    contributor = contributor.constructor.name !== "Contributor" ? new Contributor({contributor: contributor}) : contributor
+    contributor = contributor.constructor.name !== "Contributor" ? new Contributor({artist: contributor}) : contributor
     this.contributors = [...this.contributors, contributor]
     this.clearErrors("contributors")
   }
 
   removeContributor = (artistId) => {
     const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artistId)
+    var contributorIndex = contributors.map(function(x) {return x.artist.artistId; }).indexOf(artistId)
     contributors.splice(contributorIndex, 1)
     this.contributors = contributors
     this.clearErrors("contributors")
@@ -87,32 +89,7 @@ export default class Album extends Model{
 
   updateContribution = (contribution) => {
     const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(contribution.contributor.artist_id)
-    contributors[contributorIndex] = contribution
-    this.contributors = contributors
-    this.clearErrors("contributors")
-  }
-
-
-  addContributor(contributor) {
-    if(contributor.constructor.name !== "Contributor") {
-      contributor = new Contributor(contributor)
-    }
-    this.contributors = [...this.contributors, contributor]
-    this.clearErrors("contributors")
-  }
-
-  removeContributor(artistId) {
-    const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artistId)
-    contributors.splice(contributorIndex, 1)
-    this.contributors = contributors
-    this.clearErrors("contributors")
-  }
-
-  updateContribution(artistId, contribution) {
-    const contributors = [...this.contributors]
-    var contributorIndex = contributors.map(function(x) {return x.contributor.artist_id; }).indexOf(artistId)
+    var contributorIndex = contributors.map(function(x) {return x.artist.artistId; }).indexOf(contribution.artist.artistId)
     contributors[contributorIndex] = contribution
     this.contributors = contributors
     this.clearErrors("contributors")
