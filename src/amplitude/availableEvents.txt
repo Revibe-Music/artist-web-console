@@ -37,16 +37,18 @@
 (DONE) Tip Jar - Save
 (DONE) Tip Jar - Field Edited
 
-(NOT DONE) Relink - Add Link Clicked
-(NOT DONE) Relink - Add Link Success
-(NOT DONE) Relink - Add Link Canceled
-(NOT DONE) Relink - Add Link Previewed
-(NOT DONE) Relink - Edit Field
-(NOT DONE) Relink - Link Selected
-(NOT DONE) Relink - Link Deleted
-(NOT DONE) Relink - Rearrange
-(NOT DONE) Relink - Preview Page
-(NOT DONE) Relink - Copy Link
+(DONE) Relink - Add Link Clicked
+(DONE) Relink - Preview Page Clicked
+(DONE) Relink - Copy Link Clicked
+(DONE) Relink - Link Manager Add
+(DONE) Relink - Link Manager Close        (clicked the "X" button)
+(DONE) Relink - Link Manager Cancel   (clicked the "Cancel" button)
+(DONE) Relink - Link Manager Save
+(DONE) Relink - Link Manager Delete
+(NOT DONE) Relink - Link Manager Preview
+(NOT DONE) Relink - Link Manager Edit Field
+(NOT DONE) Relink - Select Link
+(NOT DONE) Relink - Reorder Link
 (DONE) Relink - Save
 
 (NOT DONE) Uploads - Collapse
