@@ -46,14 +46,6 @@ class Settings extends React.Component {
     this.toggleSetting = this.toggleSetting.bind(this)
   }
 
-  componentDidMount() {
-    document.body.classList.toggle("profile-page");
-  }
-
-  componentWillUnmount() {
-    document.body.classList.toggle("profile-page");
-  }
-
   componentDidUpdate(prevProps, prevState) {
 
     if(this.props.user.requireContributionApproval !== prevProps.user.requireContributionApproval) {

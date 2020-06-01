@@ -28,7 +28,7 @@
 (NOT IMPLEMENTED) Tutorial - Skip Tutorial
 (NOT IMPLEMENTED) Tutorial - Finish Tutorial
 
-(NOT DONE) Profile - Field Edited
+(DONE) Profile - Field Edited
 (DONE) Profile - Saved
 
 (NOT DONE) Settings - Toggle
@@ -97,6 +97,9 @@
 (NOT DONE) Toolbar - Sign Out
 
 (NOT DONE) Tool Tip - Hover
+
+(NOT DONE) Ads - Referrer
+
 
 (NOT IMPLEMENTED) Copy Revibe Music URL
 (NOT IMPLEMENTED) Social Share

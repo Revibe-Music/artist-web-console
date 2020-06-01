@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 
 // reactstrap components
@@ -24,27 +8,21 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardText,
   Container,
-  FormGroup,
   Form,
   Input,
-  InputGroup,
   Row,
   Col,
-  UncontrolledTooltip
 } from "reactstrap";
 import NotificationAlert from "react-notification-alert";
 import ReactTooltip from 'react-tooltip';
-import Select from "react-select";
-import Switch from "react-bootstrap-switch";
 import ClipLoader from "react-spinners/ClipLoader";
-import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { connect } from 'react-redux';
-import { compact } from 'lodash';
 import csc from 'country-state-city'
 import zip from 'zippo'
 
+import TextInput from "components/Inputs/TextInput.jsx";
+import Select from "components/Inputs/Select.jsx";
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import { editArtistProfile } from 'redux/authentication/actions.js'
 import { logEvent } from 'amplitude/amplitude';
@@ -100,14 +78,6 @@ class Profile extends React.Component {
     this.selectCountry = this.selectCountry.bind(this)
     this.selectState = this.selectState.bind(this)
     this.selectCity = this.selectCity.bind(this)
-  }
-
-  componentDidMount() {
-    document.body.classList.toggle("profile-page");
-  }
-
-  componentWillUnmount() {
-    document.body.classList.toggle("profile-page");
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -283,7 +253,6 @@ class Profile extends React.Component {
     logEvent("Profile", "Field Edited", {Field: "City"})
   }
 
-
   render() {
     return (
       <>
@@ -301,97 +270,64 @@ class Profile extends React.Component {
                 <CardBody>
                   <Row>
                     <Col className="pr-md-1" md="6">
-                      <FormGroup className={`has-label ${this.state.nameState}`}>
-                        <label>Display Name</label>
-                        <Input
-                          defaultValue={this.props.user.displayName}
-                          name="name"
-                          type="text"
-                          onChange={e => this.change(e, "name", "name")}
-                          onBlur={() => logEvent("Profile", "Field Edited", {Field: "Name"})}
-                        />
-                        {this.state.nameState === "has-danger" ? (
-                          <label className="error">
-                            {this.state.nameError}
-                          </label>
-                        ) : null}
-                      </FormGroup>
+                      <TextInput
+                        label="Display Name"
+                        value={this.state.name===null ? this.props.user.displayName : this.state.name}
+                        onChange={e => this.change(e, "name", "name")}
+                        onBlur={() => logEvent("Profile", "Field Edited", {Field: "Name"})}
+                        errorMessage={this.state.nameState === "has-danger" ? this.state.nameError : ""}
+                      />
                     </Col>
                     <Col className="pl-md-1" md="6">
-                      <FormGroup className={`has-label ${this.state.emailState}`}>
-                        <label>Email Address</label>
-                        <Input
-                          defaultValue={this.props.user.email}
-                          placeholder="ex: user@email.com"
-                          name="email"
-                          type="email"
-                          onChange={e => this.change(e, "email", "email")}
-                        />
-                        {this.state.emailState === "has-danger" ? (
-                          <label className="error">
-                            {this.state.emailError}
-                          </label>
-                        ) : null}
-                      </FormGroup>
+                      <TextInput
+                        label="Email Address"
+                        value={this.state.email===null ? this.props.user.email : this.state.email}
+                        onChange={e => this.change(e, "email", "email")}
+                        onBlur={() => logEvent("Profile", "Field Edited", {Field: "Email"})}
+                        errorMessage={this.state.emailState === "has-danger" ? this.state.emailError : ""}
+                      />
                     </Col>
                   </Row>
                   <Row>
                     <Col xs="6" md="3">
-                      <label>Country</label>
                       <Select
-                        className="react-select"
-                        classNamePrefix="react-select"
+                        label="Country"
                         placeholder="Country"
-                        closeMenuOnSelect={true}
-                        isMulti={false}
-                        onChange={option => this.selectCountry(option)}
                         value={this.state.country}
                         options={this.state.countryOptions}
+                        onChange={option => this.selectCountry(option)}
+                        onBlur={() => logEvent("Profile", "Field Edited", {Field: "Country"})}
                       />
                     </Col>
                     <Col xs="6" md="3">
-                      <label>State</label>
                       <Select
-                        className="react-select primary"
-                        classNamePrefix="react-select"
+                        label="State"
                         placeholder="State"
-                        closeMenuOnSelect={true}
-                        isMulti={false}
-                        onChange={option => this.selectState(option)}
                         value={this.state.state}
                         options={this.state.stateOptions}
+                        onChange={option => this.selectState(option)}
+                        onBlur={() => logEvent("Profile", "Field Edited", {Field: "State"})}
                       />
                     </Col>
                     <Col xs="6" md="3">
-                      <label>City</label>
                       <Select
-                        className="react-select primary"
-                        classNamePrefix="react-select"
+                        label="City"
                         placeholder="City"
-                        closeMenuOnSelect={true}
-                        isMulti={false}
-                        onChange={option => this.selectCity(option)}
                         value={this.state.city}
                         options={this.state.cityOptions}
+                        onChange={option => this.selectCity(option)}
+                        onBlur={() => logEvent("Profile", "Field Edited", {Field: "City"})}
                       />
                     </Col>
                     <Col xs="6" md="3">
-                      <FormGroup className={`has-label ${this.state.zipcodeState}`}>
-                        <label>Postal Code</label>
-                        <Input
-                          defaultValue={this.props.user.zipcode}
-                          placeholder="ex: 12345"
-                          name="zipcode"
-                          type="text"
-                          pattern='[0-9]*'
-                          onChange={e => this.change(e, "zipcode", "zipcode")}
-                        />
-                        {this.state.zipcodeState === "has-danger" ? (
-                          <label className="error">
-                            {this.state.zipcodeError}
-                          </label>
-                        ) : null}
-                      </FormGroup>
+                      <TextInput
+                        label="Postal Code"
+                        placeholder="ex: 12345"
+                        value={this.state.zipcode===null ? this.props.user.zipcode : this.state.zipcode}
+                        onChange={e => this.change(e, "zipcode", "zipcode")}
+                        errorMessage={this.state.zipcodeState === "has-danger" ? this.state.zipcodeError : ""}
+                        onBlur={() => logEvent("Profile", "Field Edited", {Field: "Zipcode"})}
+                      />
                     </Col>
                   </Row>
                   <Row>
@@ -404,6 +340,7 @@ class Profile extends React.Component {
                         rows="4"
                         type="textarea"
                         onChange={e => this.change(e, "aboutMe", "aboutMe")}
+                        onBlur={() => logEvent("Profile", "Field Edited", {Field: "About Me"})}
                       />
                     </Col>
                   </Row>
@@ -441,7 +378,6 @@ class Profile extends React.Component {
           <Col md="4" style={{height: "100%"}}>
             <Card className="card-user">
               <CardBody>
-                <CardText />
                 <div className="author" style={{height: "20%"}}>
                   <div className="block block-one" />
                   <div className="block block-two" />
