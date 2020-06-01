@@ -22,7 +22,9 @@ import { compact } from 'lodash';
 
 import InviteArtist from "components/Modals/InviteArtist.js";
 import RevibeAPI from 'api/revibe.js';
+import Contributor from 'models/Contributor.js'
 
+var hash = require('object-hash');
 const revibe = new RevibeAPI()
 
 
@@ -78,11 +80,11 @@ const theme = {
 
 class ContributorTags extends Component {
 
-  constructor() {
-      super();
+  constructor(props) {
+      super(props);
       this.state = {
         searchResults: [],
-        contributions: [],
+        // contributionTags: this.formatContributorTags(),
 
         // Contribution Modal
         IsOpen: false,
@@ -139,13 +141,13 @@ class ContributorTags extends Component {
 
   contributionHasBeenSelected(type) {
     // check whether contribution has type
-    var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(this.props.artist_id)
-    return this.state.contributions[contributorIndex].type.filter(x=>x===type).length>0
+    var contributorIndex = this.props.contributions.map(function(x) {return x.artist.artistId; }).indexOf(this.props.artist_id)
+    return this.props.contributions[contributorIndex].type.filter(x=>x===type).length>0
   }
 
   modalSaveButtonPressed() {
-    var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(this.state.selectedContribution.contributor.artist_id)
-    var contribution = this.state.contributions[contributorIndex]
+    var contributorIndex = this.props.contributions.map(function(x) {return x.artist.artistId; }).indexOf(this.state.selectedContribution.artist.artistId)
+    var contribution = this.props.contributions[contributorIndex]
     contribution.type = this.state.editedContributionTypes
     this.props.updateContributionTypes(contribution)
     this.toggleModal()
@@ -163,10 +165,16 @@ class ContributorTags extends Component {
   /// CONTRIBUTOR RENDER METHODS ///
   renderTags (props) {
     let {tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other} = props
+    if(tag.type) {
+      var type = typeof tag.type !== "array" ? [tag.type] : tag.type
+    }
+    else {
+      type = []
+    }
     return (
       <span key={key} {...other} >
         <span onClick={() => this.toggleModal(tag)}>
-          {tag.contributor.name} : {tag.type.length > 0 ? tag.type.join(", ").substring(0,15)+'...': "Select Type"}
+          {tag.artist.artistName}: {type.length > 0 ? type.join(", ").substring(0,15)+'...': "Select Type"}
         </span>
 
         {!disabled &&
@@ -195,7 +203,7 @@ class ContributorTags extends Component {
         }
       }
     }
-  };
+  }
 
   renderSearchResults(artist) {
     if(artist.name !== "No Results.") {
@@ -241,17 +249,17 @@ class ContributorTags extends Component {
   };
 
   addContributor(contributor) {
-    var contributorIndex = this.state.contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
+    var contributorIndex = this.props.contributions.map(function(x) {return x.artist.id; }).indexOf(contributor.artist_id)
     if(contributorIndex == -1) {
-        this.setState({contributions: [...this.state.contributions, {contributor: contributor, type: []}]})
-        this.props.onAddContributor(contributor)
-        this.toggleModal({contributor: contributor, type: []})
+      var newContributor = new Contributor({artist:{artistId: contributor.artist_id, artistName: contributor.name}})
+      this.props.onAddContributor(newContributor)
+      this.toggleModal(newContributor)
     }
   }
 
   removeContributor(contributor) {
-    var contributions = [...this.state.contributions]
-    var contributorIndex = contributions.map(function(x) {return x.contributor.artist_id; }).indexOf(contributor.artist_id)
+    var contributions = [...this.props.contributions]
+    var contributorIndex = contributions.map(function(x) {return x.artist.id; }).indexOf(contributor.id)
     contributions.splice(contributorIndex, 1)
     this.setState({contributions: contributions})
     this.props.onRemoveContributor(contributor)
@@ -312,7 +320,8 @@ class ContributorTags extends Component {
       onChange={() => console.log()}
       renderTag={props => this.renderTags(props)}
       tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled, }}
-      value={this.state.contributions}
+      value={this.props.contributions}
+      onlyUnique={true}
       style={{width: "100%"} }
       />
 
@@ -323,7 +332,7 @@ class ContributorTags extends Component {
           modalClassName="modal-grey"
           backdrop={"static"}
         >
-          <ModalHeader toggle={this.toggleModal}>How did {this.state.selectedContribution.contributor.name} contribute to this song?</ModalHeader>
+          <ModalHeader toggle={this.toggleModal}>How did {this.state.selectedContribution.artist.artistName} contribute to this song?</ModalHeader>
           <ModalBody>
             {this.props.contributionTypes.map(type => (
               <FormGroup check style={{marginLeft: "30px"}}>
@@ -362,11 +371,13 @@ ContributorTags.propTypes = {
   onRemoveContributor: PropTypes.func.isRequired,         // function that is called whenever a tag is removed
   updateContributionTypes: PropTypes.func.isRequired,     // function that is called whenever a tag is added
   disabled: PropTypes. bool,                              // determines whether search and edittings is disabled
-  contributionTypes: PropTypes.arrayOf(PropTypes.string)  // a list of possible contribution types
+  contributionTypes: PropTypes.arrayOf(PropTypes.string),  // a list of possible contribution types
+  contributions: PropTypes.array                          // list of contributions to populate
 };
 
 ContributorTags.defaultProps = {
   disabled: false,
+  contributions: [],
   contributionTypes: ["Artist","Feature","Producer","Mixing","Mastering","Song Writer","Vocals","Programmer/Beat Maker","Graphic Designer"]
 };
 

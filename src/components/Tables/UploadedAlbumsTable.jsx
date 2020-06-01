@@ -35,7 +35,7 @@ class UploadedAlbumsTable extends Component {
         type: albums[x].type,
         contributors: contributors,
         uploaded: moment(albums[x].uploaded_date).format("MM-DD-YYYY"),
-        actions: <AlbumOptions id={albums[x].album_id} edit={this.props.selectAlbum}/>,
+        actions: <AlbumOptions id={albums[x].id} edit={this.props.selectAlbum}/>,
         streams: albums[x].total_streams
       }
       rows.push(album)
