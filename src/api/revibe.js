@@ -2,6 +2,7 @@ import axios from "axios"
 import Fingerprint2 from 'fingerprintjs2'
 import Cookies from 'js-cookie'
 import { API_HOST } from './config.js'
+import dist from "react-notification-alert"
 
 const cookieName = "bshdcce3gcw473q839hxkqabxe3q7qhxbaekc"  // should probably try and set somewhere in env
 
@@ -123,6 +124,45 @@ export default class RevibeAPI {
     }
     return response
   }
+
+  /*
+  async test_stats_request(chart_type, data_type, time_period=null, time_interval=null, num_bars=null, include_contributions=null, distinct=null) {
+    const TEMP_ACCESS = ""
+
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + TEMP_ACCESS
+    }
+
+    if(!chart_type || !data_type) return null
+
+    var query = `?type=${data_type}${time_period != null ? `&time_period=${time_period}` : ""}${time_interval != null ? `&time_interval=${time_interval}` : ""}${num_bars != null ? `&num_bars=${num_bars}` : ""}${include_contributions != null ? `&include_contributions=${include_contributions}` : ""}${distinct != null ? `&distinct=${distinct}` : ""}`
+
+    var numRequestsSent = 0
+    var maxRequestAttempts = 2
+    var response = null
+
+    while(numRequestsSent < maxRequestAttempts) {
+      try {
+        response = await axios({
+          url: `https://api.revibe.tech/v1/administration/company/artist-metrics/artist-id/${chart_type}/${query}`,
+          method: "GET",
+          headers: headers,
+          responseType: "json"
+         }
+       )
+        break
+      }
+      catch(error) {
+        response = error.response
+        response.data = this._handleErrors(error.response)
+        numRequestsSent += 1
+      }
+    }
+
+    return response
+  }
+  */
 
 
   ////////////////////////////////////
@@ -526,6 +566,14 @@ export default class RevibeAPI {
 
   async searchArtists(query) {
     return await this._request("content/search/artists/?text="+query, null, "GET", true)
+  }
+
+  ////////////////////////////////////
+  //////////// Analytics  ////////////
+  ////////////////////////////////////
+
+  async getAnalyticsChart(chart_type, query) {
+    return await this._request(`account/artist/analytics/${chart_type}/${query}`, null, "GET", true)
   }
 
 

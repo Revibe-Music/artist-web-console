@@ -19,10 +19,13 @@ import React from "react";
 import classNames from "classnames";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
+import { connect } from 'react-redux';
+
 // react plugin for creating vector maps
 import VectorMap from "components/Map/VectorMap.jsx";
 import BarGraph from "components/Charts/BarGraph.jsx";
 import LineGraph from "components/Charts/LineGraph.jsx";
+import GraphComp from "components/Charts/GraphComp.jsx";
 
 // reactstrap components
 import {
@@ -36,7 +39,6 @@ import {
   Col,
 } from "reactstrap";
 
-
 class Dashboard extends React.Component {
 
   constructor(props) {
@@ -46,142 +48,75 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div className="content">
-      <Container>
+      <Container style={{ maxWidth: "90%" }}>
         <Row>
           <Col xs="12">
-            <Card className="card-chart">
+            <h1 className="m-0" style={{ fontSize: "3rem" }}>Welcome, {this.props.user.displayName}</h1>
+            {/*<Card className="card-chart">
               <CardHeader className="m-auto mr-auto">
                   <CardTitle tag="h4">The following charts/graphs are displaying stock data. User generated data is coming soon. </CardTitle>
               </CardHeader>
-            </Card>
+            </Card>*/}
           </Col>
+          {/* Stream/Listener Cols */}
+          <Col lg="3" md="3">
+            <GraphComp
+              type="card"
+              data_type="num_streams"
+              icon="icon-headphones"
+              pills={[ "1w", "3m", "6m" ]}
+            />
+          </Col>
+          <Col lg="3" md="3">
+            <GraphComp
+              type="card"
+              data_type="listeners"
+              pills={[ "1w", "3m", "6m" ]}
+            />
+          </Col>
+          <Col lg="3" md="3">
+            <GraphComp
+              type="card"
+              data_type="num_streams"
+              period="all-time"
+              icon="icon-headphones"
+            />
+          </Col>
+          <Col lg="3" md="3">
+            <GraphComp
+              type="card"
+              data_type="listeners"
+              period="all-time"
+            />
+          </Col>
+          {/* Line Graph Col */}
           <Col xs="12">
-            <Card className="card-chart">
-              <CardHeader>
-                <Row>
-                  <Col className="text-left" sm="6">
-                    <h5 className="card-category">Total Streams</h5>
-                    <CardTitle tag="h2">Performance</CardTitle>
-                  </Col>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                <LineGraph
-                  data={[100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100]}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg="4" md="4">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col xs="5">
-                    <div className="info-icon text-center icon-primary">
-                      <i className="tim-icons icon-headphones" />
-                    </div>
-                  </Col>
-                  <Col xs="7">
-                    <div className="numbers">
-                      <p className="card-category">Streams</p>
-                      <CardTitle tag="h3">24,000</CardTitle>
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="tim-icons icon-refresh-01" /> Refresh
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-          <Col lg="4" md="4">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col xs="5">
-                    <div className="info-icon text-center icon-primary">
-                      <i className="tim-icons icon-shape-star" />
-                    </div>
-                  </Col>
-                  <Col xs="7">
-                    <div className="numbers">
-                      <p className="card-category">Followers</p>
-                      <CardTitle tag="h3">+25</CardTitle>
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="tim-icons icon-send" /> Send Update
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-          <Col lg="4" md="4">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col xs="5">
-                    <div className="info-icon text-center icon-primary">
-                      <i className="tim-icons icon-single-02" />
-                    </div>
-                  </Col>
-                  <Col xs="7">
-                    <div className="numbers">
-                      <p className="card-category">Listeners</p>
-                      <CardTitle tag="h3">1,400</CardTitle>
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="tim-icons icon-pin" />Demographics
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-
-          <Col lg="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Top Songs</h5>
-                <CardTitle tag="h3">
-                  <i className="tim-icons icon-trophy text-primary" />{" "}
-                </CardTitle>
-              </CardHeader>
-              <CardBody>
-                <BarGraph
-                  data={[53, 20, 10, 80, 100]}
-                />
-              </CardBody>
-            </Card>
+            <GraphComp
+              type="line"
+              data_type="num_streams"
+              pills={[ "1w", "3m", "6m", "All-Time" ]}
+              defaultPill={3}
+            />
           </Col>
           <Col lg="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Avg. Stream Time</h5>
-                <CardTitle tag="h3">
-                  <i className="tim-icons icon-sound-wave text-primary" />{" "}
-                  2:15
-                </CardTitle>
-              </CardHeader>
-              <CardBody>
-              <BarGraph
-                data={[104, 31, 11, 92, 58]}
-              />
-              </CardBody>
-            </Card>
+            <GraphComp
+              type="bar"
+              data_type="num_streams"
+              pills={[ "1w", "3m", "6m", "All-Time" ]}
+              defaultPill={3}
+          />
           </Col>
-          <Col lg="12">
-          <VectorMap />
+          <Col lg="6">
+            <GraphComp
+              type="bar"
+              data_type="listeners"
+              pills={[ "1w", "3m", "6m", "All-Time" ]}
+              defaultPill={3}
+            />
           </Col>
+          {/*<Col lg="12">
+            <VectorMap />
+          </Col>*/}
         </Row>
         </Container>
       </div>
@@ -189,4 +124,8 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => ({
+  user: state.authentication.user
+})
+
+export default connect(mapStateToProps)(Dashboard);
