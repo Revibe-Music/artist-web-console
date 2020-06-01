@@ -227,7 +227,6 @@ class Profile extends React.Component {
      });
   }
 
-
   /// LOCATION DROPDOWN METHODS ///
   selectCountry(country) {
     this.setState({
@@ -332,7 +331,7 @@ class Profile extends React.Component {
                   </Row>
                   <Row>
                     <Col md="12">
-                      <label>About Me</label>
+                      <label style={{color: "white"}}>About Me</label>
                       <Input
                         cols="80"
                         defaultValue={this.props.user.artistAboutMe}

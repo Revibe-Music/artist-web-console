@@ -8,26 +8,19 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardText,
-  Container,
   Form,
-  FormGroup,
-  Input,
-  InputGroup,
   Row,
   Col,
-  UncontrolledTooltip
 } from "reactstrap";
 import NotificationAlert from "react-notification-alert";
 import ReactTooltip from 'react-tooltip';
 import ClipLoader from "react-spinners/ClipLoader";
 import { Link } from 'react-router-dom';
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { connect } from 'react-redux';
-import validator from 'validator';
 
+import TextInput from "components/Inputs/TextInput.jsx";
 import { editTipJarLinks } from 'redux/authentication/actions.js'
+import { logEvent } from 'amplitude/amplitude';
 
 
 class TipJar extends React.Component {
@@ -150,20 +143,14 @@ class TipJar extends React.Component {
                 <CardBody>
                   <Row>
                     <Col className="pr-md-1" md="4">
-                      <FormGroup className={`has-label ${this.state.venmoState}`}>
-                        <label>Venmo</label>
-                        <Input
-                          defaultValue={this.state.venmoHandle}
-                          type="text"
-                          placeholder={`Venmo Handle ex: John-venmo`}
-                          onChange={e => this.change(e, "venmo")}
-                        />
-                        {this.state.venmoState === "has-danger" ? (
-                          <label className="error">
-                            {this.state.VenmoError}
-                          </label>
-                        ) : null}
-                      </FormGroup>
+                      <TextInput
+                        label="Venmo"
+                        placeholder="ex: Jonny-Venmo123"
+                        value={this.state.venmoHandle}
+                        onChange={e => this.change(e, "venmo")}
+                        onBlur={() => logEvent("Tip Jar", "Field Edited", {Field: "Venmo Handle"})}
+                        errorMessage={this.state.venmoState === "has-danger" ? this.state.venmoError : ""}
+                      />
                     </Col>
                     <Col className="pr-md-1" md="2" style={{display: "flex", alignItems: "center"}}>
                     {this.state.venmoHandle ?
@@ -177,31 +164,24 @@ class TipJar extends React.Component {
                   </Row>
                   <Row>
                     <Col className="pr-md-1" md="4">
-                        <FormGroup className={`has-label ${this.state.cashAppState}`}>
-                          <label>Cash App</label>
-                          <Input
-                            defaultValue={this.state.cashAppHandle}
-                            type="text"
-                            placeholder={`Cash App Handle ex: John-cash-app`}
-                            onChange={e => this.change(e, "cashApp")}
-                          />
-                          {this.state.cashAppState === "has-danger" ? (
-                            <label className="error">
-                              {this.state.cashAppError}
-                            </label>
-                          ) : null}
-                        </FormGroup>
-                        </Col>
-
-                        <Col className="pr-md-1" md="2" style={{display: "flex", alignItems: "center"}}>
-                        {this.state.cashAppHandle ?
-                          <a href={`https://cash.me/$${this.state.cashAppHandle}/${0}`} target="_blank" style={{marginTop: 10}}>
-                            Test Account
-                          </a>
-                        :
-                          null
-                        }
-                        </Col>
+                      <TextInput
+                        label="Cash App"
+                        placeholder="ex: Jonny-CashApp123"
+                        value={this.state.cashAppHandle}
+                        onChange={e => this.change(e, "cashApp")}
+                        onBlur={() => logEvent("Tip Jar", "Field Edited", {Field: "Cash App Handle"})}
+                        errorMessage={this.state.cashAppState === "has-danger" ? this.state.cashAppError : ""}
+                      />
+                    </Col>
+                    <Col className="pr-md-1" md="2" style={{display: "flex", alignItems: "center"}}>
+                      {this.state.cashAppHandle ?
+                        <a href={`https://cash.me/$${this.state.cashAppHandle}/${0}`} target="_blank" style={{marginTop: 10}}>
+                          Test Account
+                        </a>
+                      :
+                        null
+                      }
+                    </Col>
                     </Row>
 
                 </CardBody>

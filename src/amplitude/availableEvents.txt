@@ -31,11 +31,11 @@
 (DONE) Profile - Field Edited
 (DONE) Profile - Saved
 
-(NOT DONE) Settings - Toggle
+(DONE) Settings - Toggle
 (DONE) Settings - Save
 
 (DONE) Tip Jar - Save
-(NOT DONE) Tip Jar - Field Edited
+(DONE) Tip Jar - Field Edited
 
 (NOT DONE) Relink - Add Link Clicked
 (NOT DONE) Relink - Add Link Success
