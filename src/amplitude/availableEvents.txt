@@ -45,10 +45,10 @@
 (DONE) Relink - Link Manager Cancel   (clicked the "Cancel" button)
 (DONE) Relink - Link Manager Save
 (DONE) Relink - Link Manager Delete
-(NOT DONE) Relink - Link Manager Preview
-(NOT DONE) Relink - Link Manager Edit Field
-(NOT DONE) Relink - Select Link
-(NOT DONE) Relink - Reorder Link
+(DONE) Relink - Link Manager Preview
+(DONE) Relink - Link Manager Edit Field
+(DONE) Relink - Select Link
+(DONE) Relink - Reorder Link
 (DONE) Relink - Save
 
 (NOT DONE) Uploads - Collapse
@@ -101,7 +101,6 @@
 (NOT DONE) Tool Tip - Hover
 
 (NOT DONE) Ads - Referrer
-
 
 (NOT IMPLEMENTED) Copy Revibe Music URL
 (NOT IMPLEMENTED) Social Share
