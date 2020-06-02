@@ -32,7 +32,6 @@ import { FiPlus, FiEye } from 'react-icons/fi';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Iframe from 'react-iframe'
 
-import { ReactSVG } from 'react-svg'
 import { connect } from 'react-redux';
 import validator from 'validator';
 
