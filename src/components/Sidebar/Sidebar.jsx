@@ -22,9 +22,13 @@ import PropTypes from "prop-types";
 import PerfectScrollbar from "perfect-scrollbar";
 import Footer from "components/Footer/Footer.jsx";
 import ReactTooltip from 'react-tooltip';
+import { Nav, Collapse } from "reactstrap";
 
 // reactstrap components
-import { Nav, Collapse } from "reactstrap";
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+import {logout} from '../../redux/authentication/actions.js';
 
 const privacyPolicyLink = "https://revibe-media.s3.us-east-2.amazonaws.com/Privacy+Policy.pdf"
 const termAndConditionsLink = "https://revibe-media.s3.us-east-2.amazonaws.com/Terms+and+Conditions.pdf"
@@ -36,6 +40,11 @@ class Sidebar extends React.Component {
     super(props);
     this.state = this.getCollapseStates(props.routes);
   }
+
+  async onLogout(history) {
+    this.props.logout(history);
+  }
+
   // this creates the intial state of this component based on the collapse routes
   // that it gets through this.props.routes
   getCollapseStates = routes => {
@@ -174,9 +183,9 @@ class Sidebar extends React.Component {
             target="_blank"
             onClick={this.props.closeSidebar}
           >
-            <div className="logo-img">
-              <img src={logo.imgSrc} alt="react-logo" />
-            </div>
+          <div className="logo-img">
+            <img alt="..." src={this.props.artistImage ? this.props.artistImage : require("assets/portal/img/default-avatar.png")} />
+          </div>
           </a>
         );
         logoText = (
@@ -217,12 +226,23 @@ class Sidebar extends React.Component {
         <div className="sidebar-wrapper" ref="sidebar">
           {logoImg !== null || logoText !== null ? (
             <div className="logo">
-              {logoImg}
-              {logoText}
+              <a className="simple-text logo-mini">
+                <div className="logo-img">
+                  <img alt="..." src={this.props.artistImage ? this.props.artistImage : require("assets/portal/img/default-avatar.png")} />
+                </div>
+              </a>
+              <a className="simple-text logo-normal">
+                {this.props.artistName ? this.props.artistName : ""}
+              </a>
             </div>
           ) : null}
           <Nav>{this.createLinks(this.props.routes)}</Nav>
           <ul className="nav" style={{bottom: 0, position: "absolute"}}>
+            <li className="nav-item">
+                <a className="nav-link" onClick={() => this.onLogout(history)}>
+                  Logout
+                </a>
+            </li>{" "}
             <li className="nav-item">
               <a className="nav-link"
                  target="_blank"
@@ -273,4 +293,16 @@ Sidebar.propTypes = {
   closeSidebar: PropTypes.func
 };
 
-export default Sidebar;
+function mapStateToProps(state) {
+  return {
+    artistImage: state.authentication.user.images.small,
+    artistName: state.authentication.user.displayName,
+  }
+};
+
+
+const mapDispatchToProps = dispatch => ({
+    logout: (history) =>dispatch(logout(history)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
