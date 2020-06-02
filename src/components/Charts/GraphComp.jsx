@@ -338,7 +338,11 @@ export default class Graph extends React.Component {
             break;
           }
           case "card": {
-            this.setState({ ...this.state, data: res.data, loading: false, loaded: true })
+            var newData = res.data ? res.data : {
+              data: 0
+            }
+
+            this.setState({ ...this.state, data: newData, loading: false, loaded: true })
 
             break;
           }
