@@ -173,7 +173,7 @@ function refineData(data, type, period, interval) {
     return maxDuplicates
   }
 
-  console.log({ period, interval })
+  //console.log({ period, interval })
 
   if((period === "month_3" || period === "month_6" || period === "all-time") && interval === "month") {
     var month, year, dataIndex = 0
@@ -189,14 +189,14 @@ function refineData(data, type, period, interval) {
         year = curDate.getFullYear()
       }
     } else {
-      monthLimit = data.length > 0 ? data[0].month : curDate.getMonth() + 1
-      year = curDate.getFullYear() - checkForMonthDuplicates(data)
+      monthLimit = data && data.length > 0 ? data[0].month : curDate.getMonth() + 1
+      year = data && data.length > 0 ? curDate.getFullYear() - checkForMonthDuplicates(data) : curDate.getFullYear()-1
     }
 
     month = monthLimit, dataIndex = 0
 
-    while(dataIndex < data.length || ((month-1 <= curDate.getMonth() && year == curDate.getFullYear()) || (year < curDate.getFullYear() && month <= 12))) {
-      var dataPt = data[dataIndex]
+    while((data && dataIndex < data.length) || ((month-1 <= curDate.getMonth() && year == curDate.getFullYear()) || (year < curDate.getFullYear() && month <= 12))) {
+      var dataPt = data ? data[dataIndex] : data
 
       labels.push(`${MONTHS[month-1]} ${year}`)
 
@@ -222,7 +222,7 @@ function refineData(data, type, period, interval) {
     } else
       day = curDate.getDate() - 7
 
-    console.log({ day, month })
+    //console.log({ day, month })
 
     while(dataIndex < data.length || ((month < curDate.getMonth() && day < new Date(month, curDate.getFullYear(), 0).getDate()) || (day <= curDate.getDate() && month == curDate.getMonth()))) {
       var dataPt = data[dataIndex]
@@ -291,7 +291,7 @@ export default class Graph extends React.Component {
 
         var res = await revibe.getAnalyticsChart(type, query)
 
-        console.log(res)
+        //console.log(res)
 
         switch(type) {
           case "line": {
@@ -368,10 +368,14 @@ export default class Graph extends React.Component {
   render() {
     const { type, data_type, period, icon, footerIcon, footerText, pills } = this.props
 
-    console.log(this.state)
+    //console.log(this.state)
 
-    if(this.state.error)
+    if(this.state.error) {
+      console.log("State output: ")
+      console.log(this.state)
+      console.log("Error output: ")
       console.log(this.state.error)
+    }
 
     return (
       <Card className={`${type == "card" ? "card-stats" : "card-chart"}`}>
@@ -419,13 +423,18 @@ export default class Graph extends React.Component {
                 labels={this.state.data.chart.labels}
                 data_label={this.state.data.y_axis.title}
               /> :
-              <div className="w-auto h-auto m-auto">
-                <ClipLoader
-                  size={15}
-                  color={"white"}
-                  loading={true}
-                />
-              </div>
+              <>
+                {this.state.loading && !this.state.error ?
+                  <div className="w-auto h-auto m-auto">
+                    <ClipLoader
+                      size={15}
+                      color={"white"}
+                      loading={true}
+                      className="ml-auto mr-auto"
+                    />
+                  </div>
+                  : null}
+              </>
               }
             </CardBody>
           </>
@@ -465,13 +474,18 @@ export default class Graph extends React.Component {
                 labels={this.state.data.chart.labels}
                 data_label={this.state.data.y_axis.title}
               /> :
-                <div className="w-auto h-auto m-auto">
-                  <ClipLoader
-                    size={15}
-                    color={"white"}
-                    loading={true}
-                  />
-                </div>
+                <>
+                  {this.state.loading && !this.state.error ?
+                    <div className="w-auto h-auto m-auto">
+                      <ClipLoader
+                        size={15}
+                        color={"white"}
+                        loading={true}
+                        className="ml-auto mr-auto"
+                      />
+                    </div>
+                    : null}
+                </>
               }
             </CardBody>
           </>
@@ -535,8 +549,8 @@ export default class Graph extends React.Component {
         {(type != "line" && type != "bar" && type != "card") || this.state.error ?
             <>
               <div className="w-100 text-center">
-                <h3>An error has occurred!</h3>
-                <h5>{this.state.error && this.state.error.detail ? this.state.error.detail : "Check the console for more information!"}</h5>
+                <h1>An error has occurred!</h1>
+                <h5>{this.state.error && this.state.error.detail ? this.state.error.detail : "Please refresh to try again!"}</h5>
               </div>
             </>
         : null}
