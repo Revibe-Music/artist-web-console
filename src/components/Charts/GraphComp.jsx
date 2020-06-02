@@ -20,6 +20,8 @@ import classnames from "classnames"
 // used for making the prop types of this component
 import PropTypes from "prop-types";
 
+import ClipLoader from "react-spinners/ClipLoader"
+
 import RevibeAPI from 'api/revibe.js'
 
 import {
@@ -187,7 +189,7 @@ function refineData(data, type, period, interval) {
         year = curDate.getFullYear()
       }
     } else {
-      monthLimit = data[0].month
+      monthLimit = data.length > 0 ? data[0].month : curDate.getMonth() + 1
       year = curDate.getFullYear() - checkForMonthDuplicates(data)
     }
 
@@ -282,7 +284,7 @@ export default class Graph extends React.Component {
     }
 
     if(!this.state.loading && !this.state.loaded) {
-      this.setState({ ...this.state, loading: true })
+      this.setState({ ...this.state, loading: true, error: null, data: null })
 
       try {
         var query = `?type=${data_type}${period != null ? `&time_period=${period}` : ""}${interval != null ? `&time_interval=${interval}` : ""}${num_bars != null ? `&num_bars=${num_bars}` : ""}${inc_contributions != null ? `&include_contributions=${inc_contributions}` : ""}${distinct != null ? `&distinct=${distinct}` : ""}`
@@ -368,20 +370,23 @@ export default class Graph extends React.Component {
 
     console.log(this.state)
 
+    if(this.state.error)
+      console.log(this.state.error)
+
     return (
       <Card className={`${type == "card" ? "card-stats" : "card-chart"}`}>
         {type == "line" ? 
           <>
             <CardHeader>
               <Row>
-                <Col className="text-left" sm="6">
+                <Col className="text-left" sm="4" md="4" lg="4">
                   <h5 className="card-category">{this.state.data && this.state.data.title ? this.state.data.title : "Loading..."}</h5>
                   <CardTitle tag="h2">{`${pills ? PERIOD[pills[this.state.curPill]].title : getTitleOfPeriodById(period)} Performance`}</CardTitle>
                 </Col>
-                <Col sm="6" className="d-flex">
+                <Col sm="8" md="8" lg="8" className={window.innerWidth < 1275 ? "d-block" : "d-flex"}>
                   {pills && pills.length > 0 ? 
-                    <Nav className="w-auto ml-auto mr-2 mt-1 nav-pills-primary d-flex" pills role="tablist">
-                      {pills.map((val, i) => <NavItem className={`w-auto h-auto ${i === 0 ? "ml-auto" : "ml-1"} ${i === pills.length-1 ? "mr-auto" : "mr-1"}`}>
+                    <Nav className="w-auto h-auto ml-auto mr-auto ml-md-auto mr-md-0 mt-1 mb-auto nav-pills-primary d-flex" pills role="tablist">
+                      {pills.map((val, i) => <NavItem className={`w-auto h-auto ${i === 0 ? "ml-auto" : "ml-1"} ${i === pills.length-1 ? "mr-0" : "mr-1"}`}>
                         <NavLink
                           className={classnames({
                           active: this.state.curPill === i
@@ -394,14 +399,14 @@ export default class Graph extends React.Component {
                       </NavItem>)}
                     </Nav>
                   : null}
-                  <div className="ml-2 mr-0 w-auto h-auto type-nav">
+                  <div className="type-nav w-auto h-auto ml-auto mr-auto mt-1 mb-auto d-flex">
                     {Object.keys(TYPES).map((obj, i) => (
                       <Button 
                         size="sm" 
                         onClick={e => this.setType(e, obj)} 
-                        className={`ml-auto mr-0 ${this.state.curType == obj ? "" : "btn-simple"} btn-primary btn-hover-off ${i > 0 && i < Object.keys(TYPES).length-1 ? "btn-middle" : (i == 0 ? "btn-left" : "btn-right")}`}
+                        className={`${this.state.curType == obj ? "" : "btn-simple"} btn-primary w-auto h-auto pl-2 pr-2 pt-1 pb-1 btn-hover-off ${i > 0 && i < Object.keys(TYPES).length-1 ? "ml-0 mr-0 btn-middle" : (i == 0 ? "ml-auto mr-0 btn-left" : "ml-0 mr-0 btn-right")}`}
                       >
-                        {TYPES[obj].title}
+                        <p className="text-center w-auto h-auto m-0" style={{ fontSize: "0.7rem", color: "inherit" }}>{TYPES[obj].title}</p>
                       </Button> 
                     ))}
                   </div>
@@ -414,7 +419,13 @@ export default class Graph extends React.Component {
                 labels={this.state.data.chart.labels}
                 data_label={this.state.data.y_axis.title}
               /> :
-                <p className="w-100 text-center text-white mt-2 mb-2">Loading...</p>
+              <div className="w-auto h-auto m-auto">
+                <ClipLoader
+                  size={15}
+                  color={"white"}
+                  loading={true}
+                />
+              </div>
               }
             </CardBody>
           </>
@@ -423,13 +434,13 @@ export default class Graph extends React.Component {
           <>
             <CardHeader>
               <Row>
-                <Col sm="6">
+                <Col sm="4" md="4" lg="4">
                   <h5 className="card-category">{this.state.data && this.state.data.title ? this.state.data.title : "Loading..."}</h5>
                   <CardTitle tag="h3">
-                    {`${pills ? PERIOD[pills[this.state.curPill]].title : getTitleOfPeriodById(period)} `}<i className={`tim-icons ${icon ? icon : "icon-trophy"} text-primary`} />{" "}
+                    {`${pills ? PERIOD[pills[this.state.curPill]].title : getTitleOfPeriodById(period)} `}{icon ? <i className={`tim-icons ${icon} text-primary`} /> : null}{" "}
                   </CardTitle>
                 </Col>
-                <Col sm="6" className="d-flex">
+                <Col sm="8" md="8" lg="8" className="d-flex">
                   {pills && pills.length > 0 ? 
                     <Nav className="w-auto ml-auto mr-2 mt-1 nav-pills-primary d-flex" pills role="tablist">
                       {pills.map((val, i) => <NavItem className={`w-auto h-auto ${i === 0 ? "ml-auto" : "ml-1"} ${i === pills.length-1 ? "mr-auto" : "mr-1"}`}>
@@ -454,7 +465,13 @@ export default class Graph extends React.Component {
                 labels={this.state.data.chart.labels}
                 data_label={this.state.data.y_axis.title}
               /> :
-              <p className="w-100 text-center text-white mt-2 mb-2">Loading...</p>
+                <div className="w-auto h-auto m-auto">
+                  <ClipLoader
+                    size={15}
+                    color={"white"}
+                    loading={true}
+                  />
+                </div>
               }
             </CardBody>
           </>
@@ -463,34 +480,46 @@ export default class Graph extends React.Component {
           <>
             <CardBody>
               <Row>
-                <Col xs="6" md="6" lg="6" className="ml-0 mr-auto">
-                  {pills && pills.length > 0 ?
-                    <Nav className="nav-pills-primary d-flex" pills role="tablist">
-                      {pills.map((val, i) => <NavItem className={`w-auto h-auto ${i === 0 ? "ml-auto" : "ml-1"} ${i === pills.length-1 ? "mr-auto" : "mr-1"}`}>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.curPill === i
-                          }) + " text-center w-auto h-auto m-auto p-1"}
-                          onClick={e => this.setPill(e, i)}
-                          style={{ cursor: "pointer", minWidth: "1px" }}
-                        >
-                          <p className="text-white mb-auto mt-auto ml-2 mr-2 w-auto d-inline-block" style={{ fontSize: "0.7rem" }}>{val}</p>
-                        </NavLink>
-                      </NavItem>)}
-                    </Nav>
-                  :
-                    <h4 className="w-100 text-center mb-2 m-0 p-0">{period ? getTitleOfPeriodById(period) : "All-Time"}</h4>
-                  }
-                  <div className="d-flex mt-3">
-                    <div className="mt-auto mb-auto mr-0 info-icon text-center icon-primary d-inline-block">
-                      <i className={`tim-icons ${icon ? icon : "icon-single-02"}`} />
+                <Row className="w-100 ml-auto mr-auto">
+                {pills && pills.length > 0 ?
+                  <Nav className="nav-pills-primary d-flex ml-auto mr-auto" pills role="tablist">
+                    {pills.map((val, i) => <NavItem className={`w-auto h-auto ${i === 0 ? "ml-auto" : "ml-1"} ${i === pills.length-1 ? "mr-auto" : "mr-1"}`}>
+                      <NavLink
+                        className={classnames({
+                          active: this.state.curPill === i
+                        }) + " text-center w-auto h-auto m-auto p-1"}
+                        onClick={e => this.setPill(e, i)}
+                        style={{ cursor: "pointer", minWidth: "1px" }}
+                      >
+                        <p className="text-white mb-auto mt-auto ml-2 mr-2 w-auto d-inline-block" style={{ fontSize: "0.7rem" }}>{val}</p>
+                      </NavLink>
+                    </NavItem>)}
+                  </Nav>
+                :
+                  <h4 className="w-100 text-center mb-2 m-0 p-0">{period ? getTitleOfPeriodById(period) : "All-Time"}</h4>
+                }
+                </Row>
+                <Col xs="8" sm="8" md="8" lg="8" className="ml-0 mr-auto d-flex pl-0 pr-0">
+                  <Row className="ml-auto mr-auto w-100 mt-auto mb-auto">
+                    <div className="w-auto h-auto mt-auto mb-auto ml-2 mr-1 info-icon text-center icon-primary d-flex align-items-center justify-content-center">
+                      <i style={{ fontSize: "1.15rem", padding: "0.75rem" }} className={`tim-icons ${icon ? icon : "icon-single-02"}`} />
                     </div>
-                    <h3 className="ml-3 mt-auto w-auto mb-auto text-neutral d-inline-block">{`${TYPES[data_type].title}`}</h3>
-                  </div>
+                    <h4 className="ml-1 mr-auto mt-auto w-auto mb-auto text-neutral d-inline-block">{`${TYPES[data_type].title}`}</h4>
+                  </Row>
                 </Col>
-                <Col xs="6" md="6" lg="6">
-                  <div className="numbers text-center">
-                    <CardTitle tag={`${!this.state.loading && this.state.data ? "h1" : "h3"}`} style={!this.state.loading && this.state.data ? { fontSize: "3.25rem" } : {}}>{!this.state.loading && this.state.data ? this.state.data.data[data_type] : "Loading..."}</CardTitle>
+                <Col xs="4" sm="4" md="4" lg="4" className="d-flex align-items-center justify-content-center pl-0 pr-0">
+                  <div className="numbers text-left">
+                    {!this.state.loading && this.state.data ?
+                      <CardTitle tag="h1" style={{ fontSize: "3.25rem" }}>{this.state.data.data[data_type]}</CardTitle>
+                    :
+                      <div className="w-auto h-auto m-auto">
+                        <ClipLoader
+                          size={15}
+                          color={"white"}
+                          loading={true}
+                        />
+                      </div>
+                    }
                   </div>
                 </Col>
               </Row>
