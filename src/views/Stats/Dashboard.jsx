@@ -59,7 +59,7 @@ class Dashboard extends React.Component {
             </Card>*/}
           </Col>
           {/* Stream/Listener Cols */}
-          <Col lg="3" md="3">
+          <Col lg="3" md="6" sm="6" xs="12">
             <GraphComp
               type="card"
               data_type="num_streams"
@@ -67,14 +67,14 @@ class Dashboard extends React.Component {
               pills={[ "1w", "3m", "6m" ]}
             />
           </Col>
-          <Col lg="3" md="3">
+          <Col lg="3" md="6" sm="6" xs="12">
             <GraphComp
               type="card"
               data_type="listeners"
               pills={[ "1w", "3m", "6m" ]}
             />
           </Col>
-          <Col lg="3" md="3">
+          <Col lg="3" md="6" sm="6" xs="12">
             <GraphComp
               type="card"
               data_type="num_streams"
@@ -82,7 +82,7 @@ class Dashboard extends React.Component {
               icon="icon-headphones"
             />
           </Col>
-          <Col lg="3" md="3">
+          <Col lg="3" md="6" sm="6" xs="12">
             <GraphComp
               type="card"
               data_type="listeners"
