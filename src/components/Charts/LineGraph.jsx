@@ -21,63 +21,14 @@ import PropTypes from "prop-types";
 
 import { Line } from "react-chartjs-2";
 
-
-const options = {
-  maintainAspectRatio: false,
-  legend: {
-    display: false
-  },
-  tooltips: {
-    backgroundColor: "#f5f5f5",
-    titleFontColor: "#333",
-    bodyFontColor: "#666",
-    bodySpacing: 4,
-    xPadding: 12,
-    mode: "nearest",
-    intersect: 0,
-    position: "nearest"
-  },
-  responsive: true,
-  scales: {
-    yAxes: [
-      {
-        barPercentage: 1.6,
-        gridLines: {
-          drawBorder: false,
-          color: "rgba(29,140,248,0.0)",
-          zeroLineColor: "transparent"
-        },
-        ticks: {
-          suggestedMin: 60,
-          suggestedMax: 125,
-          padding: 20,
-          fontColor: "#9a9a9a"
-        }
-      }
-    ],
-    xAxes: [
-      {
-        barPercentage: 1.6,
-        gridLines: {
-          drawBorder: false,
-          color: "rgba(29,140,248,0.1)",
-          zeroLineColor: "transparent"
-        },
-        ticks: {
-          padding: 20,
-          fontColor: "#9a9a9a"
-        }
-      }
-    ]
-  }
-};
-
 class LineGraph extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
+    //console.log(this.props)
+
     const data = canvas => {
       let ctx = canvas.getContext("2d");
       let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
@@ -86,23 +37,10 @@ class LineGraph extends React.Component {
       gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
 
       return {
-        labels: [
-          "JAN",
-          "FEB",
-          "MAR",
-          "APR",
-          "MAY",
-          "JUN",
-          "JUL",
-          "AUG",
-          "SEP",
-          "OCT",
-          "NOV",
-          "DEC"
-        ],
+        labels: this.props.labels,
         datasets: [
           {
-            label: "Streams",
+            label: this.props.data_label,
             fill: true,
             backgroundColor: gradientStroke,
             borderColor: "#7248BD",
@@ -121,6 +59,70 @@ class LineGraph extends React.Component {
         ]
       };
     }
+
+    const getMinAndMax = points => {
+      var min = points[0], max = points[0]
+
+      for(let i = 1; i < points.length; i++) {
+        if(min > points[i]) min = points[i]
+
+        if(max < points[i]) max = points[i]
+      }
+
+      return { min, max }
+    }
+
+    const minMax = getMinAndMax(this.props.data)
+
+    const options = {
+      maintainAspectRatio: false,
+      legend: {
+        display: false
+      },
+      tooltips: {
+        backgroundColor: "#f5f5f5",
+        titleFontColor: "#333",
+        bodyFontColor: "#666",
+        bodySpacing: 4,
+        xPadding: 12,
+        mode: "nearest",
+        intersect: 0,
+        position: "nearest"
+      },
+      responsive: true,
+      scales: {
+        yAxes: [
+          {
+            barPercentage: 1.6,
+            gridLines: {
+              drawBorder: false,
+              color: "rgba(29,140,248,0.0)",
+              zeroLineColor: "transparent"
+            },
+            ticks: {
+              suggestedMin: minMax.min,
+              suggestedMax: (minMax.max != 0 ? minMax.max : 10),
+              padding: 20,
+              fontColor: "#9a9a9a"
+            }
+          }
+        ],
+        xAxes: [
+          {
+            barPercentage: 1.6,
+            gridLines: {
+              drawBorder: false,
+              color: "rgba(29,140,248,0.1)",
+              zeroLineColor: "transparent"
+            },
+            ticks: {
+              padding: 20,
+              fontColor: "#9a9a9a"
+            }
+          }
+        ]
+      }
+    };
 
     return (
       <div className="chart-area">
