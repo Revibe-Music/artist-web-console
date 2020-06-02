@@ -5,26 +5,56 @@ import PropTypes from "prop-types";
 import Image from 'react-graceful-image';
 import moment from 'moment'
 import ReactTooltip from 'react-tooltip';
-import { Card, CardBody, Form, FormGroup, Row, Col, UncontrolledTooltip,} from "reactstrap";
+import {
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  Row,
+  Col,
+  UncontrolledTooltip,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { MdErrorOutline } from 'react-icons/md';
+import { Link, NavLink } from 'react-router-dom'
+import { FaEllipsisH } from "react-icons/fa";
 
-import AlbumOptions from 'components/Tables/AlbumOptions.jsx'
+import DeleteAlbum from "components/Modals/DeleteAlbum.js";
 import TextInput from "components/Inputs/TextInput.jsx";
 import Select from "components/Inputs/Select.jsx";
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import ContributorTags from "components/Inputs/ContributorTags.jsx";
+import { logEvent } from 'amplitude/amplitude';
 
 
 class AlbumCard extends Component {
 
   constructor(props) {
       super(props);
+      this.state = {
+        dropdownOpen: false,
+        showDeleteWarning: false
+      }
+      this.toggleDropdown = this.toggleDropdown.bind(this)
+      this.toggleDeleteWarning = this.toggleDeleteWarning.bind(this)
+    }
+
+  toggleDropdown() {
+    this.setState({dropdownOpen: !this.state.dropdownOpen})
+  }
+
+  toggleDeleteWarning() {
+    this.setState({showDeleteWarning: !this.state.showDeleteWarning})
+    logEvent("Uploads", "Click Delete")
   }
 
   render() {
-
     return (
+      <>
       <Card>
         <CardBody>
           <Row style={{alignItems: "center", margin: "auto"}}>
@@ -70,7 +100,10 @@ class AlbumCard extends Component {
               data-parent="#accordion"
               data-toggle="collapse"
               style={{cursor: "pointer",position: "absolute", right: "5%", bottom: "2%", color: "#7248BD", fontSize: "1.5rem"}}
-              onClick={e => this.props.onExpand(e)}
+              onClick={e => {
+                this.props.onExpand(e)
+                logEvent("Uploads", "Toggle Songs")
+              }}
             >
               {this.props.isExpanded ?
                 <i className="tim-icons icon-minimal-up" />
@@ -80,11 +113,47 @@ class AlbumCard extends Component {
             </a>
           </div>
           <div style={{position: "absolute", right: "5%", top: "45%"}}>
-            <AlbumOptions id={this.props.album.id} />
+            {window.screen.width < 400 ?
+              <Dropdown
+                isOpen={this.state.dropdownOpen}
+                toggle={this.toggleDropdown}
+                direction="left"
+              >
+               <DropdownToggle tag="div">
+                <FaEllipsisH />
+              </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem header>Actions</DropdownItem>
+                  {/*<NavLink to={`/dashboard/uploads/edit/${this.props.id}`}>
+                    <DropdownItem>
+                    Edit
+                    </DropdownItem>
+                  </NavLink>*/}
+                  <DropdownItem
+                    onClick={() => this.toggleDeleteWarning()}
+                  >
+                  Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            :
+              <Row>
+                {/*<NavLink to={`/dashboard/uploads/edit/${this.props.id}`}>
+                  <h4 style={{color: "#7248BD"}}>Edit</h4>
+                </NavLink>
+                <h4 style={{color: "white", marginLeft: "5px", marginRight: "5px"}}> | </h4>*/}
+                <a onClick={() => this.toggleDeleteWarning()} style={{cursor: "pointer"}}>
+                  <h4 style={{color: "#7248BD"}}> Delete</h4>
+                </a>
+
+              </Row>
+            }
           </div>
         </Row>
       </CardBody>
     </Card>
+    <DeleteAlbum show={this.state.showDeleteWarning} toggle={this.toggleDeleteWarning} album_id={this.props.album.id} />
+    </>
     );
   }
 }

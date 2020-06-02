@@ -51,10 +51,11 @@
 (DONE) Relink - Reorder Link
 (DONE) Relink - Save
 
-(NOT DONE) Uploads - Collapse
-(NOT DONE) Uploads - Click Edit
-(NOT DONE) Uploads - Click Delete
-(NOT DONE) Uploads - Click Play
+(NOT DONE) Uploads - Toggle Songs
+(NOT IMPLEMENTED) Uploads - Click Edit
+(DONE) Uploads - Click Delete
+(DONE) Uploads - Play Song
+(DONE) Uploads - Pause Song
 
 (NOT DONE) Edit Album - Field Edited
 (NOT DONE) Edit Album - Song Added

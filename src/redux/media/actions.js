@@ -232,7 +232,7 @@ export function deleteAlbum(album_id) {
   return async (dispatch, getState) => {
     var response = await revibe.deleteUploadedAlbum(album_id)
     if(String(response.status).charAt(0)=="2") {
-      var index = getState().media.uploadedAlbums.map(function(x) {return x.album_id; }).indexOf(album_id)
+      var index = getState().media.uploadedAlbums.map(function(x) {return x.id; }).indexOf(album_id)
       dispatch(removeUploadedAlbum(index));
       dispatch(error(null));
     }
