@@ -293,6 +293,11 @@ export default class Graph extends React.Component {
 
         //console.log(res)
 
+        if(res.status && res.status >= 400) {
+          this.setState({ ...this.state, error: res, loading: false, loaded: true })
+          return
+        }
+
         switch(type) {
           case "line": {
             var data = {

@@ -137,7 +137,9 @@ export default class RevibeAPI {
   }
 
   _handleErrors(response) {
-    var errors = {}
+    var errors = {
+      status: response.status
+    }
     if(response.status === 400) {
       // bad request ish
       window.location.href = "/400";
