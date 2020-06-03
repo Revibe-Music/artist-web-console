@@ -347,6 +347,20 @@ export default class RevibeAPI {
     return await this. _request("account/send-email", data, "POST", true)
   }
 
+  async requestPasswordReset(username) {
+    return await this._request("/account/profile/reset-password/", { username: username }, "POST", false)
+  }
+
+  async changePassword(old_password, new_password, conf_new_password) {
+    var data = { 
+        old_password: old_password,
+        new_password: new_password,
+        confirm_new_password: conf_new_password 
+     }
+
+     return await this._request("/account/profile/change-password/", data, "POST", true)
+  }
+
   ////////////////////////////////////
   //////////// USER DATA /////////////
   ////////////////////////////////////

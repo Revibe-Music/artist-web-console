@@ -43,6 +43,7 @@ import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import { login, signInViaGoogle } from 'redux/authentication/actions.js';
 import { BuilderComponent } from "@builder.io/react";
 import SocialButton from "components/Buttons/SocialAuth.jsx";
+import ForgotPassword from "components/Modals/ForgotPassword";
 
 class Login extends Component {
 
@@ -66,13 +67,17 @@ class Login extends Component {
       passwordFocus: false,
 
       SubmitButtonClicked: false,
-      popupIsFailure: Math.random()
+      popupIsFailure: Math.random(),
+
+      forgotPWModal: false
     };
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.socialAuthErr = this.socialAuthErr.bind(this);
     this.googleAuthSuccess = this.googleAuthSuccess.bind(this);
+    this.togglePWModal = this.togglePWModal.bind(this)
+    this.openModal = this.openModal.bind(this)
   }
 
   componentDidMount() {
@@ -152,8 +157,17 @@ class Login extends Component {
     this.props.signInViaGoogle(token, history)
   }
 
-  render() {
+  togglePWModal() {
+    this.setState({ ...this.state, forgotPWModal: !this.state.forgotPWModal })
+  }
 
+  openModal(e) {
+    e.preventDefault()
+
+    this.togglePWModal()
+  }
+
+  render() {
     const SubmitButton = withRouter(({ history }) => (
       <Button
         className="btn-round btn-primary w-100"
@@ -178,6 +192,7 @@ class Login extends Component {
 
     return (
       <>
+      <ForgotPassword isOpen={this.state.forgotPWModal} toggle={this.togglePWModal} />
       <ScrollNavbar hideLogin/>
       <div className="content">
         {/*
@@ -311,7 +326,7 @@ class Login extends Component {
                               ) : null}
                             </FormGroup>
                           </div>
-                          <h6 className="w-100 text-center description" style={{ textTransform: "none" }}><Link to="/account/register">Forgot Password?</Link></h6>
+                          <h6 className="w-100 text-center description" style={{ textTransform: "none" }}><a href="" onClick={e => this.openModal(e)}>Forgot Password?</a></h6>
                           <div className="ml-auto mr-auto mt-4" style={{ width: "80%" }}>
                             <SubmitButton />
                           </div>
