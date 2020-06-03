@@ -191,6 +191,13 @@ function refineData(data, type, period, interval) {
     } else {
       monthLimit = data && data.length > 0 ? data[0].month : curDate.getMonth() + 1
       year = data && data.length > 0 ? curDate.getFullYear() - checkForMonthDuplicates(data) : curDate.getFullYear()-1
+
+      if(data && data.length == 1) {
+        if(data[0].year == curDate.getFullYear() && data[0].month == curDate.getMonth()+1) {
+          monthLimit = data[0].month
+          year = curDate.getFullYear()-1
+        }
+      }
     }
 
     month = monthLimit, dataIndex = 0
@@ -386,6 +393,18 @@ export default class Graph extends React.Component {
       console.log(this.state.error)
     }
 
+    const getFontSizeBasedOnData = num => {
+      var digits = 0
+      if(num >= 1) digits++
+
+      while(num / 10 >= 1) {
+        num /= 10
+        digits++
+      }
+
+      return `${(3.25 - ((digits-1) * (0.1 + (0.04 * (digits-2)))))}rem`
+    }
+
     return (
       <Card className={`${type == "card" ? "card-stats" : "card-chart"}`}>
         {type == "line" ? 
@@ -533,7 +552,7 @@ export default class Graph extends React.Component {
                 <Col xs="4" sm="4" md="4" lg="4" className="d-flex align-items-center justify-content-center pl-0 pr-0">
                   <div className="numbers text-left">
                     {!this.state.loading && this.state.data ?
-                      <CardTitle tag="h1" style={{ fontSize: "3.25rem" }}>{this.state.data.data[data_type]}</CardTitle>
+                      <CardTitle tag="h1" style={{ fontSize: getFontSizeBasedOnData(this.state.data.data[data_type]) }}>{this.state.data.data[data_type]}</CardTitle>
                     :
                       <div className="w-auto h-auto m-auto">
                         <ClipLoader
