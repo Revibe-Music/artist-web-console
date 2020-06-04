@@ -30,7 +30,6 @@ class ForgotPassword extends Component {
       submitButtonClicked: false,
       error: null,
       errorMsg: "",
-      success: false,
       successMsg: ""
     }
 
@@ -70,13 +69,15 @@ class ForgotPassword extends Component {
         try{
           var res = await revibe.requestPasswordReset(this.state.username)
 
+          console.log(res)
+
           if(res.status >= 400) {
-            this.setState({ ...this.state, error: res, errorMsg: "Account not found!" })
-          } else if(res.status == 200) {
-            this.setState({ ...this.state, success: true, successMsg: "Success!" })
+            this.setState({ ...this.state, usernameState: "has-danger", usernameError: res.data.username ? res.data.username : "An error happened! Please check this out!", submitButtonClicked: false })
+          } else if(String(res.status).charAt(0) == "2") {
+            this.setState({ ...this.state, usernameState: "has-success", successMsg: "Success!" })
           }
         } catch (e) {
-          this.setState({ ...this.state, error: e })
+          this.setState({ ...this.state, error: e, submitButtonClicked: false })
         }
       }
     }
@@ -115,7 +116,7 @@ class ForgotPassword extends Component {
                       {this.state.errorMsg ? this.state.errorMsg : "An error has occurred!"}
                     </label>
                   ) : null}
-                  {this.state.success ? (
+                  {this.state.usernameState === "has-success" ? (
                     <label className="success">
                       {this.state.successMsg}
                     </label>

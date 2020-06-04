@@ -105,6 +105,14 @@ class Login extends Component {
         })
       }
     }
+    if(this.props.loginErrors.non_field_errors !== prevProps.loginErrors.non_field_errors) {
+       if(this.props.loginErrors.non_field_errors) 
+        this.setState({
+          usernameState: "has-danger",
+          passwordState: "has-danger",
+          passwordError: this.props.loginErrors.non_field_errors
+        })
+    }
   }
 
   async onSubmit(history) {
@@ -304,7 +312,7 @@ class Login extends Component {
                                 type="text"
                                 onChange={e => this.onChange( "username", e.target.value)}
                               />
-                              {this.state.usernameState === "has-danger" ? (
+                              {this.state.usernameState === "has-danger" && this.state.usernameError ? (
                                 <label className="error">
                                   {this.state.usernameError}
                                 </label>
@@ -321,7 +329,7 @@ class Login extends Component {
                                 autoComplete="off"
                                 onChange={e => this.onChange( "password", e.target.value)}
                               />
-                              {this.state.passwordState === "has-danger" ? (
+                              {this.state.passwordState === "has-danger" && this.state.passwordError ? (
                                 <label className="error">{this.state.passwordError}</label>
                               ) : null}
                             </FormGroup>
