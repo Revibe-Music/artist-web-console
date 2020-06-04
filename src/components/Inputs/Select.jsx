@@ -22,7 +22,7 @@ class Select extends Component {
       <FormGroup>
         <label style={{color: "white"}}>{this.props.label}</label>
           <ReactSelect
-            value={this.props.value}
+            value={this.props.value ? this.props.value : undefined}
             className={this.props.className}
             classNamePrefix="react-select"
             placeholder={this.props.placeholder}
@@ -41,7 +41,6 @@ class Select extends Component {
               </label>
             ) : null}
             </>
-
             :
               null
           }

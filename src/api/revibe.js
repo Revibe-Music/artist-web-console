@@ -394,7 +394,7 @@ export default class RevibeAPI {
     data.append("image", image)
     var response = await this. _request("account/artist/albums/", data, "POST", true, 'multipart/form-data')
     if(String(response.status).charAt(0)=="2") {
-      response.data = response.data.map(album => this._parseAlbum(album))
+      response.data = this._parseAlbum(response.data)
     }
     return response
   }
@@ -492,7 +492,8 @@ export default class RevibeAPI {
     data.append("file", file)
     var response = await this. _request("account/artist/songs/", data, "POST", true, 'multipart/form-data')
     if(String(response.status).charAt(0)=="2") {
-      response.data = response.data.map(song => this._parseSong(song))
+      console.log(response.data);
+      response.data = this._parseSong(response.data)
     }
     return response
   }

@@ -41,6 +41,7 @@ class AlbumCard extends Component {
       }
       this.toggleDropdown = this.toggleDropdown.bind(this)
       this.toggleDeleteWarning = this.toggleDeleteWarning.bind(this)
+      this.getImageSrc = this.getImageSrc.bind(this)
     }
 
   toggleDropdown() {
@@ -52,19 +53,27 @@ class AlbumCard extends Component {
     logEvent("Uploads", "Click Delete")
   }
 
+  getImageSrc() {
+    if(this.props.album.image) {
+      return <Image src={URL.createObjectURL(this.props.album.image)} width='15%' height='15%' alt='Album Cover' retry={{ count: 15, delay: 1}} />
+    }
+    else if(this.props.album.images.length > 1) {
+      return <Image src={this.props.album.images[1]} width='15%' height='15%' alt='Album Cover' retry={{ count: 15, delay: 1}} />
+    }
+    else if(this.props.album.images.length > 0) {
+      return <Image src={this.props.album.images[0]} width='15%' height='15%' alt='Album Cover' retry={{ count: 15, delay: 1}} />
+    }
+    return <Image src={null} width='15%' height='15%' alt='Album Cover' retry={{ count: 15, delay: 1}} />
+  }
+
   render() {
+
     return (
       <>
       <Card>
         <CardBody>
           <Row style={{alignItems: "center", margin: "auto"}}>
-            <Image
-              src={this.props.album.images.length > 0 ? this.props.album.images[1] : null}
-              width='15%'
-              height='15%'
-              alt='My awesome image'
-              retry={{ count: 15, delay: 1}}
-            />
+            {this.getImageSrc()}
           <div style={{marginLeft: "5%", width: "80%"}}>
             <Row style={{width: "100%", alignItems: "center", justifyContent: "space-between"}}>
                 <h3 style={{color: "white", marginBottom: "20px", marginLeft: "2%"}}>{this.props.album.name}</h3>
@@ -75,18 +84,24 @@ class AlbumCard extends Component {
               <Col xs="12" md="6">
                 <Row style={{margin: "auto"}}>
                 <h4 style={{color: "white",marginBottom: "auto", marginRight: 10}}>Contributors: </h4>
-                {this.props.album.contributors.map(x => (
-                  <div style={{backgroundColor: "#7248BD", borderRadius: 15, paddingLeft:10, paddingRight: 10, alignItems: "center", justifyContent: "center", display: "flex", width: "fit-content"}}>
-                    <p style={{color:"white", marginBottom: 0 }}>{x.artist.artistName}</p>
-                  </div>
-                ))}
+                {this.props.album.contributors.length > 0 ?
+                  <>
+                    {this.props.album.contributors.map(x => (
+                      <div style={{backgroundColor: "#7248BD", borderRadius: 15, paddingLeft:10, paddingRight: 10, alignItems: "center", justifyContent: "center", display: "flex", width: "fit-content"}}>
+                        <p style={{color:"white", marginBottom: 0 }}>{x.artist.artistName}</p>
+                      </div>
+                    ))}
+                  </>
+                :
+                  <h4 style={{color: "white",marginBottom: "auto", marginRight: 10}}>None </h4>
+                }
               </Row>
               </Col>
             </Row>
 
             <Row style={{alignItems: "center",marginTop: "20px"}}>
               <Col xs="12" md="6">
-                <h4 style={{color: "white"}}>Released: {moment(this.props.album.uploadDate).format("MM/DD/YYYY HH:mm")}</h4>
+                <h4 style={{color: "white"}}>Release Date: {this.props.album.displayed ? moment(this.props.album.datePublished).format("MM/DD/YYYY HH:mm") : "NA"}</h4>
               </Col>
             </Row>
 
@@ -94,23 +109,26 @@ class AlbumCard extends Component {
               <i style={{color: "#7248BD", fontSize: "1.5rem", marginRight: "10px"}} className="tim-icons icon-headphones" />
               <h4 style={{color: "white", marginBottom: 0}}>{this.props.album.totalStreams}</h4>
             </Row>
-
-            <a
-              aria-expanded={this.props.isExpanded}
-              data-parent="#accordion"
-              data-toggle="collapse"
-              style={{cursor: "pointer",position: "absolute", right: "5%", bottom: "2%", color: "#7248BD", fontSize: "1.5rem"}}
-              onClick={e => {
-                this.props.onExpand(e)
-                logEvent("Uploads", "Toggle Songs")
-              }}
-            >
-              {this.props.isExpanded ?
-                <i className="tim-icons icon-minimal-up" />
-              :
-                <i className="tim-icons icon-minimal-down" />
-              }
-            </a>
+            {this.props.allowExpansion ?
+              <a
+                aria-expanded={this.props.isExpanded}
+                data-parent="#accordion"
+                data-toggle="collapse"
+                style={{cursor: "pointer",position: "absolute", right: "5%", bottom: "2%", color: "#7248BD", fontSize: "1.5rem"}}
+                onClick={e => {
+                  this.props.onExpand(e)
+                  logEvent("Uploads", "Toggle Songs")
+                }}
+              >
+                {this.props.isExpanded ?
+                  <i className="tim-icons icon-minimal-up" />
+                :
+                  <i className="tim-icons icon-minimal-down" />
+                }
+              </a>
+            :
+              null
+            }
           </div>
           <div style={{position: "absolute", right: "5%", top: "45%"}}>
             {window.screen.width < 400 ?
@@ -142,10 +160,10 @@ class AlbumCard extends Component {
                   <h4 style={{color: "#7248BD"}}>Edit</h4>
                 </NavLink>
                 <h4 style={{color: "white", marginLeft: "5px", marginRight: "5px"}}> | </h4>*/}
-                <a onClick={() => this.toggleDeleteWarning()} style={{cursor: "pointer"}}>
-                  <h4 style={{color: "#7248BD"}}> Delete</h4>
-                </a>
-
+                {this.props.allowDelete ?
+                  <a onClick={() => this.toggleDeleteWarning()} style={{cursor: "pointer"}}>
+                    <h4 style={{color: "#7248BD"}}> Delete</h4>
+                  </a> : null}
               </Row>
             }
           </div>
@@ -159,9 +177,19 @@ class AlbumCard extends Component {
 }
 
 AlbumCard.propTypes = {
-  album: PropTypes.object.isRequired,                      // represents current user and is needed in order to exclude form search results
-  onExpand: PropTypes.func,               // function that is called whenever edit button is clicked
+  album: PropTypes.object.isRequired,
+  allowEdit: PropTypes.bool,
+  allowDelete: PropTypes.bool,
+  allowExpansion: PropTypes.bool,
+  onExpand: PropTypes.func,
   isExpanded: PropTypes.bool
+};
+
+AlbumCard.defaultProps = {
+  allowEdit: true,
+  allowDelete: true,
+  allowExpansion: true,
+  isExpanded: false
 };
 
 

@@ -11,12 +11,22 @@ import TextInput from "components/Inputs/TextInput.jsx";
 import Select from "components/Inputs/Select.jsx";
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import ContributorTags from "components/Inputs/ContributorTags.jsx";
+import { logEvent } from 'amplitude/amplitude';
 
 
 class AlbumCard extends Component {
 
   constructor(props) {
       super(props);
+  }
+
+  onBlur(fieldName) {
+    if(window.location.pathname === "/dashboard/uploads/new") {
+      logEvent("New Upload", "Album Field Edited", {Field: fieldName})
+    }
+    else {
+      logEvent("Edit Album", "Album Field Edited", {Field: fieldName})
+    }
   }
 
   render() {
@@ -35,32 +45,26 @@ class AlbumCard extends Component {
       <Card className="card-gray">
         <CardBody>
           <Row>
-            <Col md="4" style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-              <Row>
-                <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                  <a data-tip data-for="albumArtTooltip">
-                    <ImageUpload
-                      defaultImage={require("assets/portal/img/album-img.jpg")}
-                      uploadedImage={this.props.album.images.length > 0 ? this.props.album.images[1] : null}
-                      btnText="Change Album Art"
-                      addBtnColor="primary"
-                      changeBtnColor="default"
-                      disabled={this.props.disableEditing}
-                      onImageSelect={(file) => this.props.onEditAlbum(file, "setImage")}
-                    />
-                  </a>
-                  <ReactTooltip id="albumArtTooltip" effect='solid' delayShow={1500}>
-                    <span>For best results, please use an image that is square and at least 750x750 pixels.</span>
-                  </ReactTooltip>
-                </div>
-              </Row>
-              <Row style={{display: "flex",alignItems: "center", justifyContent: "center",textAlign: "center"}}>
-              {this.props.album.errors.filter(error => error.location === "image").length > 0 ? (
-                <label style={{color: "red"}} className="error">
-                  {this.props.album.errors.filter(error => error.location === "image")[0].message}
-                </label>
-              ) : null}
-              </Row>
+            <Col md="4" lg="4" style={{alignItems: "center", justifyContent: "center", margin: 20}}>
+                <a data-tip data-for="albumArtTooltip">
+                  <ImageUpload
+                    defaultImage={require("assets/portal/img/album-img.jpg")}
+                    uploadedImage={this.props.album.images.length > 0 ? this.props.album.images[1] : null}
+                    btnText="Change Album Art"
+                    addBtnColor="primary"
+                    changeBtnColor="default"
+                    disabled={this.props.disableEditing}
+                    onImageSelect={(file) => this.props.onEditAlbum(file, "setImage")}
+                  />
+                </a>
+                {this.props.album.errors.filter(error => error.location === "image").length > 0 ? (
+                  <label style={{color: "red", display: "block", textAlign: "center"}} className="error">
+                    {this.props.album.errors.filter(error => error.location === "image")[0].message}
+                  </label>
+                ) : null}
+                <ReactTooltip id="albumArtTooltip" effect='solid' delayShow={1500}>
+                  <span>For best results, please use an image that is square and at least 750x750 pixels.</span>
+                </ReactTooltip>
             </Col>
             <Col md="6">
               <Form className="form">
@@ -69,14 +73,17 @@ class AlbumCard extends Component {
                   placeholder="Album Name"
                   disabled={this.props.disableEditing}
                   onChange={e => this.props.onEditAlbum(e.target.value, "setName")}
+                  onBlur={() => this.onBlur("Name")}
                   errorMessage={this.props.album.errors.filter(error => error.location === "name").length > 0 ? this.props.album.errors.filter(error => error.location === "name")[0].message : ""}
                 />
                 <Select
-                  value={albumTypes.filter(option => option.label === this.props.album.type)}
+                  value={this.props.album.type ? albumTypes.filter(x => x.label === this.props.album.type)[0] : null}
                   placeholder="Album Type"
                   disabled={this.props.disableEditing}
                   onChange={option => this.props.onEditAlbum(option.label, "setType")}
+                  onBlur={() => this.onBlur("Type")}
                   options={albumTypes}
+                  errorMessage={this.props.album.errors.filter(error => error.location === "type").length > 0 ? this.props.album.errors.filter(error => error.location === "type")[0].message : ""}
                 />
                 <FormGroup style={{marginTop: "30px", marginBottom: "30px"}}>
                   <Row>

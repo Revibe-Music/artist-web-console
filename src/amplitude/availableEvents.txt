@@ -14,8 +14,8 @@
 (NOT IMPLEMENTED) Onboarding - Skipped
 (DONE) Onboarding - Completed
 
-(NOT DONE) Navigate - Tab
-(NOT DONE) Navigate - Page
+(NOT DONE, later) Navigate - Tab
+(NOT DONE, later) Navigate - Page
 
 (NOT IMPLEMENTED) Tutorial - Welcome Screen
 (NOT IMPLEMENTED) Tutorial - Make Profile
@@ -51,57 +51,56 @@
 (DONE) Relink - Reorder Link
 (DONE) Relink - Save
 
-(NOT DONE) Uploads - Toggle Songs
+(DONE) Uploads - Toggle Songs
 (NOT IMPLEMENTED) Uploads - Click Edit
 (DONE) Uploads - Click Delete
 (DONE) Uploads - Play Song
 (DONE) Uploads - Pause Song
 
-(NOT DONE) Edit Album - Field Edited
-(NOT DONE) Edit Album - Song Added
-(NOT DONE) Edit Album - Song Edited
-(NOT DONE) Edit Album - Song Deleted
-(NOT DONE) Edit Album - Success
-(NOT DONE) Edit Album - Cancelled
-(NOT DONE) Edit Album - Reorder
+(NOT IMPLEMENTED) Edit Album - Field Edited
+(NOT IMPLEMENTED) Edit Album - Song Added
+(NOT IMPLEMENTED) Edit Album - Song Edited
+(NOT IMPLEMENTED) Edit Album - Song Deleted
+(NOT IMPLEMENTED) Edit Album - Success
+(NOT IMPLEMENTED) Edit Album - Cancelled
+(NOT IMPLEMENTED) Edit Album - Reorder
 
 (DONE) Contributions - Approve
 (DONE) Contributions - Reject
 (NOT DONE) Contributions - Edit
 (NOT DONE) Contributions - Delete
 
-(NOT DONE) New Upload - Started
-(NOT DONE) New Upload - Exited
-(NOT DONE) New Upload - Album Field Edited
-(NOT DONE) New Upload - Album Field Error
-(NOT DONE) New Upload - Song Field Edited
-(NOT DONE) New Upload - Song Field Error
-(NOT DONE) New Upload - Contributor Searched
-(NOT DONE) New Upload - Contributor Result Selected
-(NOT DONE) New Upload - Contributor Type Selected
-(NOT DONE) New Upload - Contributor Type Saved
-(NOT DONE) New Upload - Contributor Type Canceled
-(NOT DONE) New Upload - Contributor Deleted
-(NOT DONE) New Upload - Contributor Selected
-(NOT DONE) New Upload - Browse Files
-(NOT DONE) New Upload - File Dropped
-(NOT DONE) New Upload - Next Button Clicked
-(NOT DONE) New Upload - Previous Button Clicked
-(NOT DONE) New Upload - Song Played
+(DONE) New Upload - Started
+(DONE) New Upload - Ended
+(DONE) New Upload - Album Field Edited
+(DONE) New Upload - Album Field Error
+(DONE) New Upload - Song Field Edited
+(DONE) New Upload - Song Field Error
+(DONE) New Upload - Contributor Searched
+(DONE) New Upload - Contributor Result Selected
+(DONE) New Upload - Contributor Type Toggled
+(DONE) New Upload - Contributor Type Saved
+(DONE) New Upload - Contributor Type Canceled
+(DONE) New Upload - Contributor Deleted
+(DONE) New Upload - Contributor Selected
+(DONE) New Upload - File Selected
+(DONE) New Upload - Next Button Clicked
+(DONE) New Upload - Previous Button Clicked
 (NOT IMPLEMENTED) New Upload - Save Draft
-(NOT DONE) New Upload - Submitted
-(NOT DONE) New Upload - Submission Successful
-(NOT DONE) New Upload - Submission Failure
+(DONE) New Upload - Submitted
+(DONE) New Upload - Submission Complete
+(DONE) New Upload - Album Submission Failure
+(DONE) New Upload - Song Submission Failure
+(DONE) New Upload - Play Song
+(DONE) New Upload - Pause Song
+(DONE) New Upload - Resume Song
 
 (NOT DONE) Stats - Period Changed
 (NOT DONE) Stats - Metric Changed
 
-(NOT DONE) Toolbar - Clicked
-(NOT DONE) Toolbar - Sign Out
+(NOT DONE, later) Tool Tip - Hover
 
-(NOT DONE) Tool Tip - Hover
-
-(NOT DONE) Ads - Referrer
+(NOT IMPLEMENTED) Ads - Referrer
 
 (NOT IMPLEMENTED) Copy Revibe Music URL
 (NOT IMPLEMENTED) Social Share

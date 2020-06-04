@@ -23,6 +23,7 @@ import { compact } from 'lodash';
 import InviteArtist from "components/Modals/InviteArtist.js";
 import RevibeAPI from 'api/revibe.js';
 import Contributor from 'models/Contributor.js'
+import { logEvent } from 'amplitude/amplitude';
 
 var hash = require('object-hash');
 const revibe = new RevibeAPI()
@@ -111,6 +112,7 @@ class ContributorTags extends Component {
       this.modalCancelButtonPressed = this.modalCancelButtonPressed.bind(this)
       this.contributionHasBeenSelected = this.contributionHasBeenSelected.bind(this)
 
+      this.inputRef = React.createRef();
   }
 
 
@@ -137,6 +139,7 @@ class ContributorTags extends Component {
       // contribution needs to be added
       this.setState({editedContributionTypes: [...this.state.editedContributionTypes, type]})
     }
+    logEvent("New Upload", "Contributor Type Toggled")
   }
 
   contributionHasBeenSelected(type) {
@@ -151,10 +154,13 @@ class ContributorTags extends Component {
     contribution.type = this.state.editedContributionTypes
     this.props.updateContributionTypes(contribution)
     this.toggleModal()
+    logEvent("New Upload", "Contributor Type Saved")
   }
 
   modalCancelButtonPressed() {
     this.toggleModal()
+    logEvent("New Upload", "Contributor Type Canceled")
+
   }
 
   /// CONTRIBUTION MODAL OPERATIONS ///
@@ -173,7 +179,12 @@ class ContributorTags extends Component {
     }
     return (
       <span key={key} {...other} >
-        <span onClick={() => this.toggleModal(tag)}>
+        <span
+          onClick={() => {
+            this.toggleModal(tag)
+            logEvent("New Upload", "Contributor Deleted")
+          }}
+        >
           {tag.artist.artistName}: {type.length > 0 ? type.join(", ").substring(0,15)+'...': "Select Type"}
         </span>
 
@@ -182,6 +193,7 @@ class ContributorTags extends Component {
             className={classNameRemove}
             onClick={(e) => {
               this.removeContributor(tag.contributor)
+              logEvent("New Upload", "Contributor Result Selected")
             }}
           />
         }
@@ -201,6 +213,7 @@ class ContributorTags extends Component {
         else {
           this.setState({searchResults: [{suggestion: "No Results.", name: "No Results."}]})
         }
+        logEvent("New Upload", "Contributor Searched", {Results: artists.length})
       }
     }
   }
@@ -211,9 +224,10 @@ class ContributorTags extends Component {
         <Row style={{display: "flex", color:"black",cursor: 'pointer'}}>
          <Col xs={4} md={4}>
            <img
-           alt="..."
-           style={{aspectRation: "1:1",borderRadius: "50%"}}
-           src={artist.images.length > 0 ? artist.images[1].url : require("assets/portal/img/default-avatar.png")} />
+             alt="..."
+             style={{aspectRation: "1:1",borderRadius: "50%"}}
+             src={artist.images.length > 0 ? artist.images[1].url : require("assets/portal/img/default-avatar.png")}
+            />
          </Col>
          <Col style={{display: "flex", justifyContent: "flex-start", alignItems: "center"}} xs={8} md={8}>
            {artist.name}
@@ -269,6 +283,7 @@ class ContributorTags extends Component {
     return (
       <>
       <TagsInput
+        ref={this.inputRef}
         renderInput={({addTag,...props}) => {
           if(!props.disabled) {
             return (
@@ -280,8 +295,11 @@ class ContributorTags extends Component {
                 getSuggestionValue={suggestion => suggestion.name}
                 onSuggestionSelected={(e, {suggestion}) => {
                   addTag(suggestion.name)
-                  if(suggestion.name!=="No Results.") {
-                    this.addContributor(suggestion)
+                  if(this.inputRef.current.props.value.filter(x => x.artist.artistId === suggestion.artist_id).length < 1) {
+                    if(suggestion.name!=="No Results.") {
+                      this.addContributor(suggestion)
+                      logEvent("New Upload", "Contributor Result Selected")
+                    }
                   }
                 }}
                 renderSuggestion={(suggestion) => this.renderSearchResults(suggestion)}
@@ -322,7 +340,7 @@ class ContributorTags extends Component {
       tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled, }}
       value={this.props.contributions}
       onlyUnique={true}
-      style={{width: "100%"} }
+      style={{width: "100%"}}
       />
 
       {this.state.isOpen ?
