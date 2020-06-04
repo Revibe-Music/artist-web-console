@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 /*eslint-disable*/
 import React from "react";
 import classnames from "classnames"
@@ -41,6 +25,7 @@ import {
 
 import LineGraph from './LineGraph'
 import BarGraph from './BarGraph'
+import { logEvent } from 'amplitude/amplitude';
 
 const revibe = new RevibeAPI()
 
@@ -133,19 +118,19 @@ function getDefaultIntervalById(id) {
  * Document this function for a reason. This is where the line graph data is
  * filled in and refined based on period and interval. Modifications are done here
  * to control the data that is processed.
- * 
+ *
  * When the period is set to all-time (month interval), it will post all data available, and the limit will be the first recorded data available.
- * 
+ *
  * When the period is set to X months (month interval), it will fill in the available data, and the limit will be the the date X months back from the current date.
- * 
+ *
  * When the period is set to one month (day interval), it will fill in the available data, and the limit will be the date 30 days back from the current date.
- * 
+ *
  * When the period is set to one week (day interval), it will fill in the available data, and the limit will be the date 7 days back from the current date.
- * 
- * @param {*} data 
- * @param {*} type 
- * @param {*} period 
- * @param {*} interval 
+ *
+ * @param {*} data
+ * @param {*} type
+ * @param {*} period
+ * @param {*} interval
  */
 function refineData(data, type, period, interval) {
   var labels = [], points = [], curDate = new Date(), monthLimit = 1, dayLimit = 1, yearLimit = 2020
@@ -177,7 +162,7 @@ function refineData(data, type, period, interval) {
 
   if((period === "month_3" || period === "month_6" || period === "all-time") && interval === "month") {
     var month, year, dataIndex = 0
-    
+
     if(period === "month_3" || period === "month_6") {
       var monthBuffer = period === "month_3" ? 3 : 6;
 
@@ -252,7 +237,7 @@ function refineData(data, type, period, interval) {
   } else {
     for(var i = 0; i < data.length; i++) {
       var dataPt = data[i]
-  
+
       labels.push((dataPt.day ? `${dataPt.month}/${dataPt.day}` : `${MONTHS[dataPt.month-1]}`))
       points.push(dataPt[type])
     }
@@ -373,14 +358,16 @@ export default class Graph extends React.Component {
     e.preventDefault();
 
     this.setState({ ...this.state, curPill: id, loaded: false })
+    logEvent("Stats", "Period Changed")
   }
 
   setType(e, id) {
     e.preventDefault();
-    
+
     this.setState({ ...this.state, curType: id, loaded: false })
+    logEvent("Stats", "Metric Changed")
   }
-  
+
   render() {
     const { type, data_type, period, icon, footerIcon, footerText, pills } = this.props
 
@@ -407,7 +394,7 @@ export default class Graph extends React.Component {
 
     return (
       <Card className={`${type == "card" ? "card-stats" : "card-chart"}`}>
-        {type == "line" ? 
+        {type == "line" ?
           <>
             <CardHeader>
               <Row>
@@ -416,7 +403,7 @@ export default class Graph extends React.Component {
                   <CardTitle tag="h2">{`${pills ? PERIOD[pills[this.state.curPill]].title : getTitleOfPeriodById(period)} Performance`}</CardTitle>
                 </Col>
                 <Col sm="8" md="8" lg="8" className={window.innerWidth < 1275 ? "d-block" : "d-flex"}>
-                  {pills && pills.length > 0 ? 
+                  {pills && pills.length > 0 ?
                     <Nav className="w-auto h-auto ml-auto mr-auto ml-md-auto mr-md-0 mt-1 mb-auto nav-pills-primary d-flex" pills role="tablist">
                       {pills.map((val, i) => <NavItem className={`w-auto h-auto ${i === 0 ? "ml-auto" : "ml-1"} ${i === pills.length-1 ? "mr-0" : "mr-1"}`}>
                         <NavLink
@@ -433,13 +420,13 @@ export default class Graph extends React.Component {
                   : null}
                   <div className="type-nav w-auto h-auto ml-auto mr-auto mt-1 mb-auto d-flex">
                     {Object.keys(TYPES).map((obj, i) => (
-                      <Button 
-                        size="sm" 
-                        onClick={e => this.setType(e, obj)} 
+                      <Button
+                        size="sm"
+                        onClick={e => this.setType(e, obj)}
                         className={`${this.state.curType == obj ? "" : "btn-simple"} btn-primary w-auto h-auto pl-2 pr-2 pt-1 pb-1 btn-hover-off ${i > 0 && i < Object.keys(TYPES).length-1 ? "ml-0 mr-0 btn-middle" : (i == 0 ? "ml-auto mr-0 btn-left" : "ml-0 mr-0 btn-right")}`}
                       >
                         <p className="text-center w-auto h-auto m-0" style={{ fontSize: "0.7rem", color: "inherit" }}>{TYPES[obj].title}</p>
-                      </Button> 
+                      </Button>
                     ))}
                   </div>
                 </Col>
@@ -466,7 +453,7 @@ export default class Graph extends React.Component {
               }
             </CardBody>
           </>
-        : null} 
+        : null}
         {type == "bar" ?
           <>
             <CardHeader>
@@ -478,7 +465,7 @@ export default class Graph extends React.Component {
                   </CardTitle>
                 </Col>
                 <Col sm="8" md="8" lg="8" className="d-flex">
-                  {pills && pills.length > 0 ? 
+                  {pills && pills.length > 0 ?
                     <Nav className="w-auto ml-auto mr-2 mt-1 nav-pills-primary d-flex" pills role="tablist">
                       {pills.map((val, i) => <NavItem className={`w-auto h-auto ${i === 0 ? "ml-auto" : "ml-1"} ${i === pills.length-1 ? "mr-auto" : "mr-1"}`}>
                         <NavLink

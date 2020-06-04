@@ -95,8 +95,8 @@
 (DONE) New Upload - Pause Song
 (DONE) New Upload - Resume Song
 
-(NOT DONE) Stats - Period Changed
-(NOT DONE) Stats - Metric Changed
+(DONE) Stats - Period Changed
+(DONE) Stats - Metric Changed
 
 (NOT DONE, later) Tool Tip - Hover
 
