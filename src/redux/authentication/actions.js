@@ -166,7 +166,6 @@ export function login(username, password, history) {
       dispatch(getProfile());
     }
     else {
-      console.log(response)
       dispatch(error("login", response.data))
     }
 
