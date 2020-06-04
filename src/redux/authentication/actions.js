@@ -153,16 +153,20 @@ export function login(username, password, history) {
     var response = await revibe.login(username, password)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
-      if (response.user.is_artist) {
-        await history.push('/dashboard');
+      if(response.user.force_change_password) {
+        await history.push({
+          pathname: '/account/change-password',
+          state: { password: password, is_artist: response.user.is_artist }
+        })
+      } else {
+        await history.push((response.user.is_artist ? '/dashboard' : '/account/create-profile'))
       }
-      else {
-        await history.push('/account/create-profile');
-      }
+      console.log(response)
       dispatch(loginUser());
       dispatch(getProfile());
     }
     else {
+      console.log(response)
       dispatch(error("login", response.data))
     }
 

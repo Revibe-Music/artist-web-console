@@ -137,9 +137,7 @@ export default class RevibeAPI {
   }
 
   _handleErrors(response) {
-    var errors = {
-      status: response.status
-    }
+    var errors = {}
     if(response.status === 400) {
       // bad request ish
       window.location.href = "/400";
@@ -345,6 +343,20 @@ export default class RevibeAPI {
 
   async sendInvitation(data) {
     return await this. _request("account/send-email", data, "POST", true)
+  }
+
+  async requestPasswordReset(username) {
+    return await this._request("/account/profile/reset-password/", { username: username }, "POST", false)
+  }
+
+  async changePassword(old_password, new_password, conf_new_password) {
+    var data = { 
+        old_password: old_password,
+        new_password: new_password,
+        confirm_new_password: conf_new_password 
+     }
+
+     return await this._request("/account/profile/change-password/", data, "POST", true)
   }
 
   ////////////////////////////////////
