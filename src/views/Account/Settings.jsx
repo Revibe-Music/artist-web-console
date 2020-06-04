@@ -114,6 +114,29 @@ class Settings extends React.Component {
                   <CardTitle tag="h3">Settings</CardTitle>
                 </CardHeader>
                 <CardBody>
+                  <Row style={{ marginTop: "5%" }}>
+                    <Col xs="4" md="2">
+                      <h5 className="w-auto text-left">
+                        <a href="/account/change-password">
+                          Click Here
+                        </a>
+                      </h5>
+                    </Col>
+                    <Col xs="8" md="7">
+                      <p>
+                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting-change-pw"/>
+                        Change Password
+                      </p>
+                      <UncontrolledTooltip
+                        style={{backgroundColor: "#7248BD", color: "white"}}
+                        placement="bottom"
+                        target="setting-change-pw"
+                        hideArrow={true}
+                      >
+                        Click the link to go to the page to change your password.
+                      </UncontrolledTooltip>
+                    </Col>
+                  </Row>
                   <Row style={{marginTop: "5%"}}>
                     <Col xs="4" md="2">
                       <Switch
