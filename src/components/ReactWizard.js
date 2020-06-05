@@ -140,6 +140,9 @@ class ReactWizard extends React.Component {
       });
       this.refreshAnimation(key);
     }
+    if(this.props.afterNextButtonClick) {
+      this.props.afterNextButtonClick()
+    }
   }
   previousButtonClick() {
     var key = this.state.currentStep - 1;
@@ -159,6 +162,9 @@ class ReactWizard extends React.Component {
         finishButton: this.props.steps.length === key + 1 ? true : false
       });
       this.refreshAnimation(key);
+    }
+    if(this.props.afterPrevButtonClick) {
+      this.props.afterPrevButtonClick()
     }
   }
   finishButtonClick() {
@@ -307,7 +313,7 @@ class ReactWizard extends React.Component {
               </div>
             </CardHeader>
           ) : null}
-          <CardBody>
+          <CardBody style={{backgroundColor: "transparent"}}>
             <TabContent activeTab={this.state.currentStep}>
               {this.props.steps.map((prop, key) => {
                 return (
@@ -332,7 +338,7 @@ class ReactWizard extends React.Component {
               })}
             </TabContent>
           </CardBody>
-          <CardFooter className="card-grey">
+          {/*<CardFooter className="card-grey">*/}
             <Row style={{display: "flex", justifyContent: "center", alignItems: "center", paddingRight:0, paddingLeft: 0, minHeight: 20}}>
               {this.props.displayButtons ?
                 <>
@@ -350,7 +356,7 @@ class ReactWizard extends React.Component {
                   </Button>
                 :
                   <>
-                  <Col xs="12" md="6" style={{display: "flex", justifyContent: "center", alignItems: "center", paddingRight: 0, paddingLeft: 0}}>
+                  <Col xs="6" md="6" style={{display: "flex", justifyContent: "flex-start", alignItems: "center", paddingRight: 0, paddingLeft: 0}}>
                     {this.state.previousButton ? (
                       <Button
                         className={classnames("btn-previous", {
@@ -365,7 +371,7 @@ class ReactWizard extends React.Component {
                       </Button>
                     ) : null}
                   </Col>
-                  <Col xs="12" md="6" style={{display: "flex", justifyContent: "center", alignItems: "center", paddingRight:0, paddingLeft: 0}}>
+                  <Col xs="6" md="6" style={{display: "flex", justifyContent: "flex-end", alignItems: "center", paddingRight:0, paddingLeft: 0}}>
                     {this.state.nextButton ? (
                       <Button
                         className={classnames("btn-next", {
@@ -379,7 +385,7 @@ class ReactWizard extends React.Component {
                           : "Next"}
                       </Button>
                     ) : null}
-                    {this.state.finishButton ? (
+                    {this.state.finishButton && this.props.showFinishButton? (
                       <Button
                         className={classnames("btn-finish d-inline-block", {
                           [this.props.finishButtonClasses]:
@@ -401,7 +407,7 @@ class ReactWizard extends React.Component {
               }
             </Row>
             <div className="clearfix" />
-          </CardFooter>
+          {/*</CardFooter>*/}
         </Card>
       </div>
     );
@@ -416,7 +422,8 @@ ReactWizard.defaultProps = {
   color: "primary",
   progressbar: false,
   complete: false,
-  displayButtons: true
+  displayButtons: true,
+  showFinishButton: true
 };
 
 ReactWizard.propTypes = {
@@ -428,7 +435,10 @@ ReactWizard.propTypes = {
   headerTextCenter: PropTypes.bool,
   navSteps: PropTypes.bool,
   validate: PropTypes.bool,
+  showFinishButton: PropTypes.bool,
   finishButtonClick: PropTypes.func,
+  afterNextButtonClick: PropTypes.func,
+  afterPrevButtonClick: PropTypes.func,
   doneButtonClick: PropTypes.func,
   previousButtonText: PropTypes.node,
   finishButtonText: PropTypes.node,

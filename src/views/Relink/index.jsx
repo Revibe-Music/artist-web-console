@@ -33,10 +33,10 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Iframe from 'react-iframe'
 
 import { connect } from 'react-redux';
-import validator from 'validator';
 
 import { editSocialMediaLinks } from 'redux/authentication/actions.js'
 import LinkManager from 'components/Modals/LinkManager.js'
+import { logEvent } from 'amplitude/amplitude';
 
 
 
@@ -83,12 +83,15 @@ class Relinked extends React.Component {
       copyButtonText: "Copy"
     }
 
+    this.addLinkClicked = this.addLinkClicked.bind(this)
     this.addLink = this.addLink.bind(this)
     this.editLink = this.editLink.bind(this)
     this.deleteLink = this.deleteLink.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.getDraggableServices = this.getDraggableServices.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
+    this.copylinkClicked = this.copylinkClicked.bind(this)
+    this.previewLinkClicked = this.previewLinkClicked.bind(this)
   }
 
   componentDidMount() {
@@ -135,6 +138,27 @@ class Relinked extends React.Component {
       });
   }
 
+  addLinkClicked() {
+    this.setState({addingLink: true})
+    logEvent("Relink", "Add Link Clicked")
+  }
+
+  previewLinkClicked() {
+    this.setState({previewing: true})
+    logEvent("Relink", "Preview Page Clicked")
+  }
+
+  copylinkClicked() {
+    var options = {
+      place: "tr",
+      icon: "tim-icons icon-single-copy-04",
+      autoDismiss: 3,
+      type: "primary",
+      message: "Relink URL copied to clipboard."
+    }
+    this.refs.notificationAlert.notificationAlert(options);
+    logEvent("Relink", "Copy Link Clicked")
+  }
 
   addLink(name, handle, description=null) {
     var newLink = {social_media: name, handle: handle, id: Math.floor(Math.random() * 10000000)}
@@ -144,6 +168,7 @@ class Relinked extends React.Component {
     let order = Math.max.apply(Math, this.state.socialMedia.map(function(o) { return o.order; }))
     newLink.order = order === -Infinity ? 1 : order + 1
     this.setState({socialMedia: [...this.state.socialMedia, newLink]})
+    logEvent("Relink", "Link Manager Add")
   }
 
   editLink(name, handle, description=null) {
@@ -154,6 +179,7 @@ class Relinked extends React.Component {
       socialMedia[index].description = description
     }
     this.setState({socialMedia: socialMedia})
+    logEvent("Relink", "Link Manager Save")
   }
 
   deleteLink(name, handle, description=null) {
@@ -165,6 +191,7 @@ class Relinked extends React.Component {
       return item
     })
     this.setState({socialMedia: socialMedia, deletedLinks: true})
+    logEvent("Relink", "Link Manager Delete")
   }
 
   getDraggableServices() {
@@ -198,6 +225,7 @@ class Relinked extends React.Component {
     }
     socialMedia[startIndex].order = result.destination.index+1
     this.setState({socialMedia: socialMedia});
+    logEvent("Relink", "Reorder Link")
   }
 
   renderIcon(service) {
@@ -212,18 +240,6 @@ class Relinked extends React.Component {
     }
 
   }
-
-  onCopyLink() {
-    var options = {
-      place: "tr",
-      icon: "tim-icons icon-single-copy-04",
-      autoDismiss: 3,
-      type: "primary",
-      message: "Relink URL copied to clipboard."
-    }
-    this.refs.notificationAlert.notificationAlert(options);
-  }
-
 
   async onSubmit() {
     this.setState({saving: true})
@@ -275,7 +291,7 @@ class Relinked extends React.Component {
               <Button
                 className="btn-fill"
                 color="success"
-                onClick={() => this.setState({addingLink: true})}
+                onClick={this.addLinkClicked}
               >
                 <Row style={{justifyContent: "center", alignItems: "center"}}>
                   <FiPlus style={{fontSize: 15, color: "white"}}/>
@@ -283,7 +299,7 @@ class Relinked extends React.Component {
                 </Row>
               </Button>
               <CopyToClipboard text={`https://revibe.tech/relink/${this.props.user.artistId}`}
-                onCopy={() => this.onCopyLink()}>
+                onCopy={this.copylinkClicked}>
                 <Button
                   className="btn-fill"
                   color="primary"
@@ -297,7 +313,7 @@ class Relinked extends React.Component {
               <Button
                 className="btn-fill"
                 color="primary"
-                onClick={() => this.setState({previewing: true})}
+                onClick={this.previewLinkClicked}
               >
                 <Row style={{justifyContent: "center", alignItems: "center"}}>
                   <FiEye style={{fontSize: 15, color: "white"}}/>
@@ -322,7 +338,10 @@ class Relinked extends React.Component {
                                 style={{margin: 20}}
                               >
                                 <div
-                                  onClick={() => this.setState({addingLink: true, selectedLink: item})}
+                                  onClick={() => {
+                                    this.setState({addingLink: true, selectedLink: item})
+                                    logEvent("Relink", "Select Link")
+                                  }}
                                   className="btn-simple" color="primary"
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
@@ -416,14 +435,23 @@ class Relinked extends React.Component {
           </Card>
         </Form>
         <ReactTooltip id="saveButtonTooltip" effect='solid' delayShow={1500}>
-          <span>Save changes to profile</span>
+          <span>Save changes to Relink</span>
         </ReactTooltip>
         <LinkManager
           show={this.state.addingLink}
-          onClose={() => this.setState({addingLink: false, selectedLink: null})}
+          onClose={() => {
+            this.setState({addingLink: false, selectedLink: null})
+            logEvent("Relink", "Link Manager Close")
+          }}
+          onCancel={() => {
+            this.setState({addingLink: false, selectedLink: null})
+            logEvent("Relink", "Link Manager Cancel")
+          }}
           onSave={this.editLink}
           onAdd={this.addLink}
           onDelete={this.deleteLink}
+          onPreview={() => logEvent("Relink", "Link Manager Preview")}
+          onFieldEdited={(fieldName) => logEvent("Relink", "Link Manager Field Edited", {field: fieldName})}
           link={this.state.selectedLink}
         />
 
@@ -438,13 +466,13 @@ class Relinked extends React.Component {
           <ModalBody cssModule={{'modal-body': 'w-100 text-center'}}>
             <div style={{marginBottom: "10%", height: "70vh"}}>
               <Iframe
-                  url={`https://revibe.tech/relink/${this.props.user.artistId}`}
-                  width="90%"
-                  height="100%"
-                  id="relink-preview"
-                  display="initial"
-                  position="relative"
-                />
+                url={`https://revibe.tech/relink/${this.props.user.artistId}`}
+                width="90%"
+                height="100%"
+                id="relink-preview"
+                display="initial"
+                position="relative"
+              />
               </div>
               <a className="nav-link"
                  target="_blank"

@@ -2,6 +2,7 @@ var initialState = {
   checkedLogin: true,
   isLoggedIn: true,    // refers to revibe, youtube, and spotify
   user: {
+    id: "",
     username: "",
     email: "",
     artistId: "",

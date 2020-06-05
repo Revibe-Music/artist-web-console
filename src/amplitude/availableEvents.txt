@@ -1,0 +1,107 @@
+(DONE) Signup - Clicked
+(DONE) Signup - Success
+(DONE) Signup - Failure
+
+(DONE) Login - Clicked
+(DONE) Login - Success
+(DONE) Login - Failure
+
+(DONE) Logout - Clicked
+(DONE) Logout - Success
+(DONE) Logout - Failure
+
+(DONE) Onboarding - Started
+(NOT IMPLEMENTED) Onboarding - Skipped
+(DONE) Onboarding - Completed
+
+(NOT DONE, later) Navigate - Tab
+(NOT DONE, later) Navigate - Page
+
+(NOT IMPLEMENTED) Tutorial - Welcome Screen
+(NOT IMPLEMENTED) Tutorial - Make Profile
+(NOT IMPLEMENTED) Tutorial - Upload Song
+(NOT IMPLEMENTED) Tutorial - Contributions
+(NOT IMPLEMENTED) Tutorial - Analytics
+(NOT IMPLEMENTED) Tutorial - Relink
+(NOT IMPLEMENTED) Tutorial - Tip Jar
+(NOT IMPLEMENTED) Tutorial - Settings
+(NOT IMPLEMENTED) Tutorial - Skip Tutorial
+(NOT IMPLEMENTED) Tutorial - Finish Tutorial
+
+(DONE) Profile - Field Edited
+(DONE) Profile - Saved
+
+(DONE) Settings - Toggle
+(DONE) Settings - Save
+
+(DONE) Tip Jar - Save
+(DONE) Tip Jar - Field Edited
+
+(DONE) Relink - Add Link Clicked
+(DONE) Relink - Preview Page Clicked
+(DONE) Relink - Copy Link Clicked
+(DONE) Relink - Link Manager Add
+(DONE) Relink - Link Manager Close        (clicked the "X" button)
+(DONE) Relink - Link Manager Cancel   (clicked the "Cancel" button)
+(DONE) Relink - Link Manager Save
+(DONE) Relink - Link Manager Delete
+(DONE) Relink - Link Manager Preview
+(DONE) Relink - Link Manager Edit Field
+(DONE) Relink - Select Link
+(DONE) Relink - Reorder Link
+(DONE) Relink - Save
+
+(DONE) Uploads - Toggle Songs
+(NOT IMPLEMENTED) Uploads - Click Edit
+(DONE) Uploads - Click Delete
+(DONE) Uploads - Play Song
+(DONE) Uploads - Pause Song
+
+(NOT IMPLEMENTED) Edit Album - Field Edited
+(NOT IMPLEMENTED) Edit Album - Song Added
+(NOT IMPLEMENTED) Edit Album - Song Edited
+(NOT IMPLEMENTED) Edit Album - Song Deleted
+(NOT IMPLEMENTED) Edit Album - Success
+(NOT IMPLEMENTED) Edit Album - Cancelled
+(NOT IMPLEMENTED) Edit Album - Reorder
+
+(DONE) Contributions - Approve
+(DONE) Contributions - Reject
+(NOT DONE) Contributions - Edit
+(NOT DONE) Contributions - Delete
+
+(DONE) New Upload - Started
+(DONE) New Upload - Ended
+(DONE) New Upload - Album Field Edited
+(DONE) New Upload - Album Field Error
+(DONE) New Upload - Song Field Edited
+(DONE) New Upload - Song Field Error
+(DONE) New Upload - Contributor Searched
+(DONE) New Upload - Contributor Result Selected
+(DONE) New Upload - Contributor Type Toggled
+(DONE) New Upload - Contributor Type Saved
+(DONE) New Upload - Contributor Type Canceled
+(DONE) New Upload - Contributor Deleted
+(DONE) New Upload - Contributor Selected
+(DONE) New Upload - File Selected
+(DONE) New Upload - Next Button Clicked
+(DONE) New Upload - Previous Button Clicked
+(NOT IMPLEMENTED) New Upload - Save Draft
+(DONE) New Upload - Submitted
+(DONE) New Upload - Submission Complete
+(DONE) New Upload - Album Submission Failure
+(DONE) New Upload - Song Submission Failure
+(DONE) New Upload - Play Song
+(DONE) New Upload - Pause Song
+(DONE) New Upload - Resume Song
+
+(DONE) Stats - Period Changed
+(DONE) Stats - Metric Changed
+
+(NOT DONE, later) Tool Tip - Hover
+
+(NOT IMPLEMENTED) Ads - Referrer
+
+(NOT IMPLEMENTED) Copy Revibe Music URL
+(NOT IMPLEMENTED) Social Share
+(NOT IMPLEMENTED) Skip Social Share

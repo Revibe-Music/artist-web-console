@@ -10,10 +10,14 @@ import { Button, Card, Collapse, CardHeader, CardBody, CardTitle, Label, Form, F
 import { connect } from 'react-redux';
 
 import SongSelect from "components/SongSelect.js";
+import SongUploadCard from "components/Cards/SongUploadCard.js";
+import SongCard from "components/Cards/SongCard.jsx";
+
 import ContributorTags from "components/Inputs/ContributorTags.jsx";
 import ContributionWarning from "components/Modals/ContributionWarning.js";
 import FileExtensionWarning from "components/Modals/FileExtensionWarning.js";
 import Song from 'models/Song.js'
+import { logEvent } from 'amplitude/amplitude';
 const musicMetadata = require('music-metadata-browser');
 
 
@@ -33,6 +37,9 @@ class SongInfo extends Component {
         showFileExtensionWarning: false,
         ignoreFileExtensionWarning: false,
         fileExtensionWarningOccurances: 0,
+
+        playingSongId: "",
+        playing: false
       };
 
       this.genreOptions = ["Blues","Classical","Country","Electronic","Folk","Hip-hop","Jazz","New age","Reggae","Rock",]
@@ -90,6 +97,7 @@ class SongInfo extends Component {
     })
     this.setState({songs:songs, openedCollapses: songAccordians})
     this.props.onSongsChange(songs)
+    logEvent("New Upload", "Song File Selected")
   }
 
   editSong(songId, values, callback) {
@@ -154,6 +162,9 @@ class SongInfo extends Component {
         }
       }
       isValid = !isValid ? isValid : songs[x].isValid()
+      if(songs[x].errors.length > 0) {
+        logEvent("New Upload", "Song Field Error", {Fields: songs[x].errors.map(x => x.location)})
+      }
     }
     this.setState({songs: songs})
     if(showFileExtensionWarning) {
@@ -164,180 +175,55 @@ class SongInfo extends Component {
       this.setState({showContributionWarning: showContributionWarning, contributionWarningOccurances: contributionWarningOccurances})
       return false
     }
-
     return isValid
   }
 
-  render() {
+  playSong(song) {
+    if(song.id === this.state.playingSongId) {
+      if(this.state.playing) {
+        this.audio.pause()
+        logEvent("New Upload", "Pause Song")
+      }
+      else {
+        this.audio.play()
+        logEvent("New Upload", "Resume Song")
+      }
+      this.setState({playing: !this.state.playing})
+    }
+    else {
+      if(this.audio) {
+        this.audio.pause()
+        this.audio = null
+      }
+      if(song.file) {
+        var url = URL.createObjectURL(song.file);
+        this.audio = new Audio(url)
+        this.audio.play()
+        this.setState({playingSongId: song.id, playing: true})
+      }
+      logEvent("New Upload", "Play Song")
+    }
+  }
 
+  render() {
     return (
       <>
-        <h3 className="info-text">
-          Choose some songs!
-        </h3>
-          <p>*Please note that we only accept MP3, MP4, WAV, FLAC, and OGG files at this time.</p>
-          {this.state.songs.length > 0 ?
-            <>
-            <div
-              aria-multiselectable={true}
-              className="card-collapse"
-              id="accordion"
-              role="tablist"
-            >
-              {this.state.songs.map((song, index) => (
-                <Card className="card-plain">
-                  <CardHeader role="tab">
-                      <CardTitle tag="h4">
-                        <div style={{float: "left", marginRight: "5%"}} >
-                          <div style={{float: "left"}} >
-                            <i style={{fontSize: "20px", cursor: 'pointer', color: "red"}} className="tim-icons icon-simple-remove" onClick={() => this.removeSong(song.id)}/>
-                          </div>
-                          <div style={{float: "right"}} >
-                            {song.errors.length > 0 ?
-                              <>
-                                <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id={`Song-${song.id}-error`}/>
-                                <UncontrolledTooltip
-                                  style={{backgroundColor: "red", color: "white"}}
-                                  placement="top"
-                                  target={`Song-${song.id}-error`}
-                                >
-                                  <ul>
-                                    {song.errors.map(error => {
-                                      return (
-                                        <li>{error.message}</li>
-                                      )
-                                    })}
-                                  </ul>
-                                </UncontrolledTooltip>
-                              </>
-                            :
-                              null
-                            }
-                          </div>
-                        </div>
-                        <a
-                          aria-expanded={this.state.openedCollapses.includes(`collapse${song.id}`)}
-                          data-parent="#accordion"
-                          data-toggle="collapse"
-                          style={{cursor: "pointer"}}
-                          onClick={e => this.toggleSong(e, `collapse${song.id}`)}
-                        >
+        <h1 align="center">Let's add some songs</h1>
+        <SongUploadCard onFileSelect={this.onDrop}/>
+        {this.state.songs.map((song, index) => (
+          <div style={{marginTop: "30px"}}>
+            <SongCard
+              song={song}
+              onPlaySong={() => this.playSong(song)}
+              isPlaying={this.state.playingSongId===song.id && this.state.playing}
+              onDeleteClicked={() => this.removeSong(song.id)}
+              onEditSong={this.editSong}
+              displayStreams={false}
+              defaultCollapseState={false}
+            />
+          </div>
+        ))}
 
-                        {song.title.trim() ? song.displayTitle() : "Song Title"}
-                        <i className="tim-icons icon-minimal-down" />
-                        </a>
-                      </CardTitle>
-                  </CardHeader>
-                  <Collapse
-                    role="tabpanel"
-                    isOpen={this.state.openedCollapses.includes(`collapse${song.id}`)}
-                  >
-                    <CardBody>
-                      <Row>
-                        <Col xs="12" md="6">
-                          <FormGroup id={"SongName:"+song.id}>
-                            <div>Title</div>
-                            <Input
-                              disabled={this.state.uploading}
-                              value={song.title}
-                              onChange={event => this.editSong(song.id, event.target.value, "setTitle")}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col xs="12" md="6">
-                            <div>
-                              Contributors
-                              <AiOutlineQuestionCircle style={{color: "#7248BD", marginLeft: "5px"}} id={`contribution-question${song.id}`}/>
-                            </div>
-                            <ContributorTags
-                              artist_id={this.props.artist_id}
-                              onAddContributor={contributor => this.editSong(song.id, contributor, "addContributor")}
-                              onRemoveContributor={contributor => this.editSong(song.id, contributor, "removeContributor")}
-                              updateContributionTypes={contributor => this.editSong(song.id, contributor, "updateContribution")}
-                              disabled={this.state.uploading}
-                            />
-                            <UncontrolledTooltip
-                              style={{backgroundColor: "#7248BD", color: "white"}}
-                              placement="top"
-                              target={`contribution-question${song.id}`}
-                              hideArrow={true}
-                            >
-                              Tag others (by their display name) that had a roll in creating this song.
-                            </UncontrolledTooltip>
-                        </Col>
-                      </Row>
-
-                      <Row style={{marginTop: "10px"}}>
-                        <Col xs="12" md="5">
-                          <FormGroup>
-                            <div>Genres (optional)</div>
-                            <Select
-                              className="react-select primary"
-                              classNamePrefix="react-select"
-                              placeholder="None"
-                              name="multipleSelect"
-                              closeMenuOnSelect={true}
-                              isMulti={true}
-                              isDisabled={this.state.uploading}
-                              onChange={options => this.editSong(song.id, options.map(x => x.label), "setGenres")}
-                              options={this.genreOptions.map((genre, index) => ({ value: index, label: genre }))}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col xs="8" md="5">
-                          <div>Tags (optional)</div>
-                          <TagsInput
-                            onlyUnique={true}
-                            inputProps={{
-                                placeholder: 'Add Tag',
-                                disabled: this.props.disabled,
-                                onFocus: () => this.setState({[song.id+"tagInputColor"]: "#7248BD"}),
-                                onBlur: () => this.setState({[song.id+"tagInputColor"]: "#2b3553"})
-                            }}
-                            renderLayout={(tagComponents, inputComponent) => (
-                              <div style={{border: `1px solid ${this.state[song.id+"tagInputColor"] ?this.state[song.id+"tagInputColor"] : "#2b3553"}`, fontSize: "0.75rem",  borderRadius: "0.4285rem", marginBottom: "5px",paddingTop: "7px",paddingBottom: "7px", transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out"}}>
-                                <Row>
-                                  <Col xs="6" md="4">
-                                    {inputComponent}
-                                  </Col>
-                                  <Col xs="6" md="8">
-                                    {tagComponents}
-                                </Col>
-                                </Row>
-                              </div>
-                            )}
-                            onChange={tags => this.editSong(song.id, tags, "setTags")}
-                            tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled }}
-                            value={song.tags}
-                          />
-                        </Col>
-                        <Col xs="4" md="2" style={{flex: 1, alignItems: "center", justifyContent: "center", textAlign: "center",padding: 0,margin:0}}>
-                          <div>Explicit</div>
-                          <FormGroup check style={{marginTop: 0}}>
-                          <Label check>
-                            <Input
-                              disabled={this.state.uploading}
-                              type="checkbox"
-                              value={song.explicit}
-                              onChange={event => this.editSong(song.id, event.target.checked, "setExplicit")}
-                            />
-                            <span className="form-check-sign" />
-                          </Label>
-                        </FormGroup>
-                        </Col>
-                      </Row>
-
-
-                    </CardBody>
-                  </Collapse>
-                </Card>
-              ))}
-            </div>
-            <SongSelect onFileSelect={this.onDrop} disabled={this.state.uploading} displayDropzone={false}/>
-            </>
-          :
-          <SongSelect onFileSelect={this.onDrop} />
-        }
       <ContributionWarning
         show={this.state.showContributionWarning}
         objectType="song"
@@ -361,6 +247,181 @@ class SongInfo extends Component {
     );
   }
 }
+
+// <p>*Please note that we only accept MP3, MP4, WAV, FLAC, and OGG files at this time.</p>
+// {this.state.songs.length > 0 ?
+//   <>
+//   <div
+//     aria-multiselectable={true}
+//     className="card-collapse"
+//     id="accordion"
+//     role="tablist"
+//   >
+//     {this.state.songs.map((song, index) => (
+//       <Card className="card-plain">
+//         <CardHeader role="tab">
+//             <CardTitle tag="h4">
+//               <div style={{float: "left", marginRight: "5%"}} >
+//                 <div style={{float: "left"}} >
+//                   <i style={{fontSize: "20px", cursor: 'pointer', color: "red"}} className="tim-icons icon-simple-remove" onClick={() => this.removeSong(song.id)}/>
+//                 </div>
+//                 <div style={{float: "right"}} >
+//                   {song.errors.length > 0 ?
+//                     <>
+//                       <MdErrorOutline style={{color: "red", marginLeft: "35px"}} id={`Song-${song.id}-error`}/>
+//                       <UncontrolledTooltip
+//                         style={{backgroundColor: "red", color: "white"}}
+//                         placement="top"
+//                         target={`Song-${song.id}-error`}
+//                       >
+//                         <ul>
+//                           {song.errors.map(error => {
+//                             return (
+//                               <li>{error.message}</li>
+//                             )
+//                           })}
+//                         </ul>
+//                       </UncontrolledTooltip>
+//                     </>
+//                   :
+//                     null
+//                   }
+//                 </div>
+//               </div>
+//               <a
+//                 aria-expanded={this.state.openedCollapses.includes(`collapse${song.id}`)}
+//                 data-parent="#accordion"
+//                 data-toggle="collapse"
+//                 style={{cursor: "pointer"}}
+//                 onClick={e => this.toggleSong(e, `collapse${song.id}`)}
+//               >
+//
+//               {song.title.trim() ? song.displayTitle() : "Song Title"}
+//               <i className="tim-icons icon-minimal-down" />
+//               </a>
+//             </CardTitle>
+//         </CardHeader>
+//         <Collapse
+//           role="tabpanel"
+//           isOpen={this.state.openedCollapses.includes(`collapse${song.id}`)}
+//         >
+//           <CardBody>
+//             <Row>
+//               <Col xs="12" md="6">
+//                 <FormGroup id={"SongName:"+song.id}>
+//                   <div>Title</div>
+//                   <Input
+//                     disabled={this.state.uploading}
+//                     value={song.title}
+//                     onChange={event => this.editSong(song.id, event.target.value, "setTitle")}
+//                   />
+//                 </FormGroup>
+//               </Col>
+//               <Col xs="12" md="6">
+//                   <div>
+//                     Contributors
+//                     <AiOutlineQuestionCircle style={{color: "#7248BD", marginLeft: "5px"}} id={`contribution-question${song.id}`}/>
+//                   </div>
+//                   <ContributorTags
+//                     artist_id={this.props.artist_id}
+//                     onAddContributor={contributor => this.editSong(song.id, contributor, "addContributor")}
+//                     onRemoveContributor={contributor => this.editSong(song.id, contributor, "removeContributor")}
+//                     updateContributionTypes={contributor => this.editSong(song.id, contributor, "updateContribution")}
+//                     disabled={this.state.uploading}
+//                   />
+//                   <UncontrolledTooltip
+//                     style={{backgroundColor: "#7248BD", color: "white"}}
+//                     placement="top"
+//                     target={`contribution-question${song.id}`}
+//                     hideArrow={true}
+//                   >
+//                     Tag others (by their display name) that had a roll in creating this song.
+//                   </UncontrolledTooltip>
+//               </Col>
+//             </Row>
+//
+//             <Row style={{marginTop: "10px"}}>
+//               <Col xs="12" md="5">
+//                 <FormGroup>
+//                   <div>Genres (optional)</div>
+//                   <Select
+//                     className="react-select primary"
+//                     classNamePrefix="react-select"
+//                     placeholder="None"
+//                     name="multipleSelect"
+//                     closeMenuOnSelect={true}
+//                     isMulti={true}
+//                     isDisabled={this.state.uploading}
+//                     onChange={options => this.editSong(song.id, options.map(x => x.label), "setGenres")}
+//                     options={this.genreOptions.map((genre, index) => ({ value: index, label: genre }))}
+//                   />
+//                 </FormGroup>
+//               </Col>
+//               <Col xs="8" md="5">
+//                 <div>Tags (optional)</div>
+//                 <TagsInput
+//                   onlyUnique={true}
+//                   inputProps={{
+//                       placeholder: 'Add Tag',
+//                       disabled: this.props.disabled,
+//                       onFocus: () => this.setState({[song.id+"tagInputColor"]: "#7248BD"}),
+//                       onBlur: () => this.setState({[song.id+"tagInputColor"]: "#2b3553"})
+//                   }}
+//                   renderLayout={(tagComponents, inputComponent) => (
+//                     <div style={{border: `1px solid ${this.state[song.id+"tagInputColor"] ?this.state[song.id+"tagInputColor"] : "#2b3553"}`, fontSize: "0.75rem",  borderRadius: "0.4285rem", marginBottom: "5px",paddingTop: "7px",paddingBottom: "7px", transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out"}}>
+//                       <Row>
+//                         <Col xs="6" md="4">
+//                           {inputComponent}
+//                         </Col>
+//                         <Col xs="6" md="8">
+//                           {tagComponents}
+//                       </Col>
+//                       </Row>
+//                     </div>
+//                   )}
+//                   onChange={tags => this.editSong(song.id, tags, "setTags")}
+//                   tagProps={{ className: "react-tagsinput-tag primary", disabled: this.props.disabled }}
+//                   value={song.tags}
+//                 />
+//               </Col>
+//               <Col xs="4" md="2" style={{flex: 1, alignItems: "center", justifyContent: "center", textAlign: "center",padding: 0,margin:0}}>
+//                 <div>Explicit</div>
+//                 <FormGroup check style={{marginTop: 0}}>
+//                 <Label check>
+//                   <Input
+//                     disabled={this.state.uploading}
+//                     type="checkbox"
+//                     value={song.explicit}
+//                     onChange={event => this.editSong(song.id, event.target.checked, "setExplicit")}
+//                   />
+//                   <span className="form-check-sign" />
+//                 </Label>
+//               </FormGroup>
+//               </Col>
+//             </Row>
+//
+//
+//           </CardBody>
+//         </Collapse>
+//       </Card>
+//     ))}
+//   </div>
+//   <SongSelect
+//     onFileSelect={(files) => {
+//       this.onDrop(files)
+//       logEvent("New Upload", "File Selected", {Method: "Finder"})
+//     }}
+//     disabled={this.state.uploading}
+//     displayDropzone={false}/>
+//   </>
+// :
+// <SongSelect
+//   onFileSelect={(files) => {
+//     this.onDrop(files)
+//     logEvent("New Upload", "File Selected", {Method: "Dropped"})
+//   }}
+// />
+// }
 
 function mapStateToProps(state) {
   return {

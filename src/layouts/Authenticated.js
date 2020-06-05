@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
 import React, {Component} from "react";
 import { Route, Switch } from "react-router-dom";
 // javascript plugin used to create scrollbars on windows
@@ -56,7 +39,7 @@ class Authenticated extends Component {
 
     // default to stats page if user just goes to dashboard
     if(window.location.pathname==="/dashboard" || window.location.pathname==="/dashboard/") {
-       this.props.history.push('/dashboard/uploads')
+       this.props.history.push('/dashboard/stats')
     }
 
   }
@@ -184,12 +167,12 @@ class Authenticated extends Component {
           ref="mainPanel"
           data={this.state.activeColor}
         >
-          <Navbar
+          {/*}<Navbar
             {...this.props}
             // brandText={this.getActiveRoute(routes)}
             sidebarOpened={this.state.sidebarOpened}
             toggleSidebar={this.toggleSidebar}
-          />
+          />*/}
           {this.getRoutes(routes)}
           {// we don't want the Footer to be rendered on full screen maps page
           this.props.location.pathname.indexOf("full-screen-map") !==

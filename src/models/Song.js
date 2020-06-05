@@ -17,7 +17,7 @@ export default class Song extends Model {
 
   constructor(obj) {
     super()
-    this.attributes = ["id", "title", "duration", "file", "album", "uploadedBy", "explicit", "contributors", "genres", "tags","displayed", "order", "tracks"]
+    this.attributes = ["id", "title", "duration", "file", "album", "uploadedBy", "explicit", "contributors", "genres", "tags","displayed", "order", "tracks", "totalStreams"]
     this.requiredAttributes = ["id", "title", "duration", "file", "explicit", "contributors", "displayed"]
     if(obj) this._parse(obj)
     this._setDefaults()
@@ -33,6 +33,7 @@ export default class Song extends Model {
     if(!this.displayed) this.displayed = true
     if(!this.order) this.order = 0
     if(!this.tracks) this.tracks = []
+    if(!this.totalStreams) this.totalStreams = 0
   }
 
   validate = () => {
@@ -62,7 +63,6 @@ export default class Song extends Model {
   }
 
   setTitle = (title) => {
-    console.log("YEE",title);
     this.title = title
     this.clearErrors("title")
   }

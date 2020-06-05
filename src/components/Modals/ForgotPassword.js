@@ -14,6 +14,7 @@ import {
   Input,
   Col
 } from "reactstrap";
+import { logEvent } from 'amplitude/amplitude';
 
 import RevibeAPI from 'api/revibe.js'
 
@@ -40,6 +41,7 @@ class ForgotPassword extends Component {
 
   closeModal() {
     this.props.toggle()
+    logEvent("Forgot Password", "Close Modal")
   }
 
   onChange(field, value) {
@@ -51,6 +53,7 @@ class ForgotPassword extends Component {
   }
 
   async submitForm() {
+    logEvent("Forgot Password", "Username Form Submitted")
     var validField = true
 
     if(this.state.username === "") {
@@ -60,24 +63,26 @@ class ForgotPassword extends Component {
         usernameState: "has-danger",
         usernameError: "Username is a required field."
       });
+      logEvent("Forgot Password", "Username Form Field Error")
     }
 
     if(validField) {
       if(this.state.usernameError === "") {
         this.setState({ ...this.state, submitButtonClicked: true })
-        
-        try{
+        try {
           var res = await revibe.requestPasswordReset(this.state.username)
-
-          console.log(res)
-
           if(res.status >= 400) {
             this.setState({ ...this.state, usernameState: "has-danger", usernameError: res.data.username ? res.data.username : "An error happened! Please check this out!", submitButtonClicked: false })
-          } else if(String(res.status).charAt(0) == "2") {
-            this.setState({ ...this.state, usernameState: "has-success", successMsg: "Success!" })
+            logEvent("Forgot Password", "Username Form Submission Failure")
           }
-        } catch (e) {
+          else if(String(res.status).charAt(0) == "2") {
+            this.setState({ ...this.state, usernameState: "has-success", successMsg: "Success!" })
+            logEvent("Forgot Password", "Username Form Submission Success")
+          }
+        }
+        catch (e) {
           this.setState({ ...this.state, error: e, submitButtonClicked: false })
+          logEvent("Forgot Password", "Username Form Submission Failure")
         }
       }
     }

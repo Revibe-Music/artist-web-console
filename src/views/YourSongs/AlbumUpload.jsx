@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, {Component} from "react";
 // react plugin used to create a form with multiple steps
 // import ReactWizard from "react-bootstrap-wizard";
@@ -33,6 +17,7 @@ import SongInfo from "./AlbumForm/SongInfo.js";
 import Confirmation from "./AlbumForm/Confirmation.js";
 import Album from 'models/Album.js'
 import { Beforeunload } from 'react-beforeunload';
+import { logEvent } from 'amplitude/amplitude';
 
 
 class AlbumUpload extends Component {
@@ -56,6 +41,13 @@ class AlbumUpload extends Component {
     this.onSubmit = this.onSubmit.bind(this)
   }
 
+  componentDidMount() {
+    logEvent("New Upload", "Started")
+  }
+
+  componentWillUnmount() {
+    logEvent("New Upload", "Ended")
+  }
 
   setAlbum(album) {
     this.setState({album: album})
@@ -73,6 +65,7 @@ class AlbumUpload extends Component {
     var uploadedSongs = await Promise.all(songPromises)
     this.setState({uploadSongComplete: true, finalizing: true})
     setTimeout(() => this.setState({finalizingComplete: true}), 2000)
+    logEvent("New Upload", "Submission Complete")
   }
 
   onDone() {
@@ -107,8 +100,10 @@ class AlbumUpload extends Component {
         stepProps: {
           album: this.state.album,
           songs: this.state.songs,
+
           onSongsChange: this.setSongs,
           onAlbumChange: this.setAlbum,
+          onUploadSubmit: this.onSubmit,
           beganUploading: this.state.beganUploading,
           uploadingAlbum: this.state.uploadingAlbum,
           uploadAlbumComplete: this.state.uploadAlbumComplete,
@@ -123,7 +118,6 @@ class AlbumUpload extends Component {
     return (
       <>
       <div className="content">
-
       <Container>
         <NavLink to={'/dashboard/uploads'} activeClassName="">
           <div style={{cursor: 'pointer', backgroundColor: "#7248BD", width: "3.5rem", height: "3.5rem", borderRadius: "1.75rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -138,19 +132,19 @@ class AlbumUpload extends Component {
 
         <Col className="mr-auto ml-auto" md="12">
           <ReactWizard
-            steps={steps}
-            displayButtons={!this.state.beganUploading || (this.state.finalizingComplete)}
-            complete={this.state.finalizingComplete}
             navSteps
             validate
-            title="Upload Your Album"
             headerTextCenter
-            finishButtonClasses="btn-wd btn-primary"
+            steps={steps}
+            showFinishButton={false}
+            afterPrevButtonClick={() => logEvent("New Upload", "Previous Button Clicked")}
+            afterNextButtonClick={() => logEvent("New Upload", "Next Button Clicked")}
+            displayButtons={!this.state.beganUploading || (this.state.finalizingComplete)}
+            complete={this.state.finalizingComplete}
+            title=""
             doneButtonClasses="btn-wd btn-success"
-            nextButtonClasses="btn-wd btn-primary"
-            previousButtonClasses="btn-wd"
-            finishButtonText={"Upload"}
-            finishButtonClick={this.onSubmit}
+            nextButtonClasses="btn-wd btn-primary btn-round"
+            previousButtonClasses="btn-wd btn-round"
             doneButtonClick={this.onDone}
             progressbar
             color="primary"
