@@ -50,7 +50,9 @@ class AlbumCard extends Component {
 
   toggleDeleteWarning() {
     this.setState({showDeleteWarning: !this.state.showDeleteWarning})
-    logEvent("Uploads", "Click Delete")
+    if(!this.state.showDeleteWarning) {
+      logEvent("Uploads", "Click Delete")
+    }
   }
 
   getImageSrc() {

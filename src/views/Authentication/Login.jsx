@@ -41,6 +41,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import { login, signInViaGoogle } from 'redux/authentication/actions.js';
+import { logEvent } from 'amplitude/amplitude';
 import { BuilderComponent } from "@builder.io/react";
 import SocialButton from "components/Buttons/SocialAuth.jsx";
 import ForgotPassword from "components/Modals/ForgotPassword";
@@ -106,7 +107,7 @@ class Login extends Component {
       }
     }
     if(this.props.loginErrors.non_field_errors !== prevProps.loginErrors.non_field_errors) {
-       if(this.props.loginErrors.non_field_errors) 
+       if(this.props.loginErrors.non_field_errors)
         this.setState({
           usernameState: "has-danger",
           passwordState: "has-danger",
@@ -155,7 +156,7 @@ class Login extends Component {
   }
 
   socialAuthErr(err) {
-    console.log(err)
+    // console.log(err)
     this.setState({ popupIsFailure: Math.random() })
   }
 
@@ -167,6 +168,7 @@ class Login extends Component {
 
   togglePWModal() {
     this.setState({ ...this.state, forgotPWModal: !this.state.forgotPWModal })
+    logEvent("Forgot Password", "Button Clicked")
   }
 
   openModal(e) {

@@ -350,10 +350,10 @@ export default class RevibeAPI {
   }
 
   async changePassword(old_password, new_password, conf_new_password) {
-    var data = { 
+    var data = {
         old_password: old_password,
         new_password: new_password,
-        confirm_new_password: conf_new_password 
+        confirm_new_password: conf_new_password
      }
 
      return await this._request("/account/profile/change-password/", data, "POST", true)
@@ -546,7 +546,6 @@ export default class RevibeAPI {
     data.append("file", file)
     var response = await this. _request("account/artist/songs/", data, "POST", true, 'multipart/form-data')
     if(String(response.status).charAt(0)=="2") {
-      console.log(response.data);
       response.data = this._parseSong(response.data)
     }
     return response

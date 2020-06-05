@@ -11,8 +11,8 @@ export function logEvent(categoryName, eventName, eventData={}) {
 
   categoryName = categoryName.replace(/\b\w/g, l => l.toUpperCase())
   eventName = eventName.replace(/\b\w/g, l => l.toUpperCase())
-  console.log(`Firing Event: ${categoryName} - ${eventName} with properties ${JSON.stringify(eventData)}`);
-  // amplitude.getInstance().logEventWithTimestamp(`${categoryName} - ${eventName}`, eventData);
+  // console.log(`Firing Event: ${categoryName} - ${eventName} with properties ${JSON.stringify(eventData)}`);
+  amplitude.getInstance().logEventWithTimestamp(`${categoryName} - ${eventName}`, eventData);
 }
 
 export async function setUserData(userId=null) {
@@ -20,13 +20,13 @@ export async function setUserData(userId=null) {
     const state = store.getState();
     userId = state.authentication.user.id
   }
-  console.log("Setting User Data", userId);
-  // amplitude.getInstance().setUserId(userId)
+  // console.log("Setting User Data", userId);
+  amplitude.getInstance().setUserId(userId)
 }
 
 export async function setRegistration(userId) {
   setUserData(userId)
-  console.log("Setting Registration", new Date());
-  // var identify = new amplitude.Identify().setOnce('Register Date', new Date())
-  // amplitude.identify(identify); // Send the Identify call
+  // console.log("Setting Registration", new Date());
+  var identify = new amplitude.Identify().setOnce('Register Date', new Date())
+  amplitude.identify(identify); // Send the Identify call
 }

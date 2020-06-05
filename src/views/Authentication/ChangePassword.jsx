@@ -12,8 +12,9 @@ import {
   Label,
   Button
 } from 'reactstrap'
-import { withRouter } from 'react-router-dom';
 import ClipLoader from "react-spinners/ClipLoader";
+import { withRouter, NavLink } from 'react-router-dom';
+import { logEvent } from 'amplitude/amplitude';
 
 import RevibeAPI from 'api/revibe.js';
 
@@ -48,6 +49,10 @@ class ChangePassword extends React.Component {
     this.onChange = this.onChange.bind(this)
   }
 
+  componentWillUnmount() {
+    logEvent("Change Password", "Exit")
+  }
+
   onChange(field, value) {
     var newState = { ...this.state }
 
@@ -57,6 +62,8 @@ class ChangePassword extends React.Component {
   }
 
   async onSubmit(history) {
+    logEvent("Change Password", "New Password Form Submitted")
+
     var validFields = true
 
     if(this.state.requireOldPass && this.state.oldPassword === "") {
@@ -66,6 +73,7 @@ class ChangePassword extends React.Component {
         oldPassState: "has-danger",
         oldPassError: "The old password is required!"
        });
+       logEvent("Change Password", "New Password Form Field Error")
     }
 
     if(this.state.newPassword === "") {
@@ -75,6 +83,7 @@ class ChangePassword extends React.Component {
         newPassState: "has-danger",
         newPassError: "The new password is required!"
        });
+       logEvent("Change Password", "New Password Form Field Error")
     }
 
     if(this.state.confirmNewPassword === "") {
@@ -84,6 +93,7 @@ class ChangePassword extends React.Component {
         confNewPassState: "has-danger",
         confNewPassError: "Confirm the new password!"
        });
+       logEvent("Change Password", "New Password Form Field Error")
     }
 
     if(this.state.newPassword !== this.state.confirmNewPassword) {
@@ -94,6 +104,7 @@ class ChangePassword extends React.Component {
         confNewPassState: "has-danger",
         confNewPassError: "The new password fields do not match."
        });
+       logEvent("Change Password", "New Password Form Field Error")
     }
 
     if(validFields) {
@@ -103,24 +114,27 @@ class ChangePassword extends React.Component {
 
       if(String(res.status).charAt(0) == "2") {
         history.push((this.state.requireOldPass || !this.state.mustCreateProfile ? '/dashboard' : '/account/create-profile'))
-      } else if(String(res.status).charAt(0) == "4") {
+        logEvent("Change Password", "New Password Form Submission Success")
+      }
+      else if(String(res.status).charAt(0) == "4") {
         this.setState({
           ...this.state,
           oldPassState: "has-danger",
           oldPassError: "The old password entered is incorrect!",
           submitButtonClicked: false
         })
-      } else {
-        this.setState({ 
-          ...this.state, 
+        logEvent("Change Password", "New Password Form Submission Failure")
+      }
+      else {
+        this.setState({
+          ...this.state,
           oldPassState: "has-danger",
           newPassState: "has-danger",
           confNewPassState: "has-danger",
           confNewPassError: "An external error occurred!",
           submitButtonClicked: false
         })
-
-        console.log(res)
+        logEvent("Change Password", "New Password Form Submission Failure")
       }
     }
   }
@@ -138,9 +152,21 @@ class ChangePassword extends React.Component {
       </Button>
     ));
 
+    const BackButton = withRouter(({ history }) => (
+        <div
+          onClick={() => {
+            history.goBack()
+            logEvent("Change Password", "Back Button Clicked")
+          }}
+          style={{cursor: 'pointer', backgroundColor: "#7248BD", width: "3.5rem", height: "3.5rem", borderRadius: "1.75rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+          <i style={{color: "white", fontSize: "1.5rem", marginRight: ".25rem"}} className="tim-icons icon-minimal-left" />
+        </div>
+    ));
+
     return (
       <div className="content">
         <Container className="mt-lg">
+          <BackButton />
           <Row>
             <Col md="8" sm="12" className="ml-auto mr-auto">
               <Form className="form">
@@ -153,10 +179,9 @@ class ChangePassword extends React.Component {
                           <p className="w-100">
                             {this.state.requireOldPass ?
                               <>
-                                Feel free to change your password any any time! Enter in your old password and the new password you would like to use.
-                                Click <a href="/dashboard">here</a> to return back to the dashboard if you are not ready to change it yet.
+                                Enter in your old password and the new password you would like to use.
                               </>
-                            : 
+                            :
                               "Looks like you requested a password change! Enter in the new password you would like to use."
                             }
                           </p>
@@ -231,7 +256,7 @@ class ChangePassword extends React.Component {
               </Form>
             </Col>
           </Row>
-        </Container> 
+        </Container>
       </div>
     )
   }

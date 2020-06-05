@@ -117,7 +117,7 @@ class Settings extends React.Component {
                   <Row style={{ marginTop: "5%" }}>
                     <Col xs="4" md="2">
                       <h5 className="w-auto text-left">
-                        <a href="/account/change-password">
+                        <a href="/account/change-password" onClick={() => logEvent("Settings", "Change Password Clicked")}>
                           Click Here
                         </a>
                       </h5>

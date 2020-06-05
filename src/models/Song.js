@@ -63,7 +63,6 @@ export default class Song extends Model {
   }
 
   setTitle = (title) => {
-    console.log("YEE",title);
     this.title = title
     this.clearErrors("title")
   }

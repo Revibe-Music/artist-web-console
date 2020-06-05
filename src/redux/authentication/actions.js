@@ -1,5 +1,5 @@
 import RevibeAPI from 'api/revibe.js';
-import { logEvent } from 'amplitude/amplitude';
+import { logEvent, setUserData, setRegistration } from 'amplitude/amplitude';
 
 const revibe = new RevibeAPI()
 
@@ -57,6 +57,7 @@ export function register(username, email, password, history) {
     if(String(response.status).charAt(0)=="2") {
       response = response.data
       var user = {
+        id: response.user.user_id,
         username: response.user.username,
         email: response.user.profile.email,
         artistId: "",
@@ -83,6 +84,8 @@ export function register(username, email, password, history) {
       dispatch(updateUser(user));
       history.push("create-profile/")
       logEvent("Signup", "Success")
+      setUserData(response.user.user_id)
+      setRegistration()
     }
     else {
       logEvent("Signup", "Failure")
@@ -105,6 +108,7 @@ export function signInViaGoogle(access_token, history) {
       }
       dispatch(loginUser());
       dispatch(getProfile());
+      setUserData(response.user.user_id)
     }
     else {
       dispatch(error("register", response.data))
@@ -170,9 +174,9 @@ export function login(username, password, history) {
       } else {
         await history.push((response.user.is_artist ? '/dashboard' : '/account/create-profile'))
       }
-      console.log(response)
       dispatch(loginUser());
       dispatch(getProfile());
+      setUserData(response.user.user_id)
     }
     else {
       logEvent("Login", "Failure")

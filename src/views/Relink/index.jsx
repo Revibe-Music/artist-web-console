@@ -90,6 +90,8 @@ class Relinked extends React.Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.getDraggableServices = this.getDraggableServices.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
+    this.copylinkClicked = this.copylinkClicked.bind(this)
+    this.previewLinkClicked = this.previewLinkClicked.bind(this)
   }
 
   componentDidMount() {
@@ -267,7 +269,6 @@ class Relinked extends React.Component {
     }
     this.refs.notificationAlert.notificationAlert(options);
     this.setState({saving: false})
-    logEvent("Relink", "Save")
   }
 
   render() {

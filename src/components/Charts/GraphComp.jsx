@@ -374,10 +374,10 @@ export default class Graph extends React.Component {
     //console.log(this.state)
 
     if(this.state.error) {
-      console.log("State output: ")
-      console.log(this.state)
-      console.log("Error output: ")
-      console.log(this.state.error)
+      // console.log("State output: ")
+      // console.log(this.state)
+      // console.log("Error output: ")
+      // console.log(this.state.error)
     }
 
     const getFontSizeBasedOnData = num => {
