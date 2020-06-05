@@ -9,18 +9,15 @@ import {
   ModalBody,
   ModalFooter,
   Form,
-  FormGroup,
-  Input,
-  InputGroup,
   Row,
   Col,
 } from "reactstrap";
-import Select from "react-select";
 import { FaTimes } from "react-icons/fa";
-
 import validator from 'validator';
-
 import { connect } from 'react-redux';
+
+import TextInput from "components/Inputs/TextInput.jsx";
+import Select from "components/Inputs/Select.jsx";
 
 
 class LinkManager extends Component {
@@ -35,7 +32,6 @@ class LinkManager extends Component {
       description: "",
       descriptionState: "",
       descriptionError: "",
-
     }
 
     this.availableStreamingServices = ["spotify", "applemusic", "amazonmusic", "tidal", "soundcloud", "googleplaymusic"]
@@ -45,6 +41,8 @@ class LinkManager extends Component {
     this.onAdd = this.onAdd.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onDelete = this.onDelete.bind(this)
+    this.onPreview = this.onPreview.bind(this)
+    this.onFieldEdited = this.onFieldEdited.bind(this)
   }
 
   componentDidMount() {
@@ -132,9 +130,13 @@ class LinkManager extends Component {
     this.props.onClose()
   }
 
+  onCancel() {
+    this.setState({selectedService: "", handle: "", description: "", fieldState: "", fieldError: ""})
+    this.props.onCancel()
+  }
+
   onSave() {
     var handle = this.state.handle.slice()
-
     if(!handle.includes("https://") && !handle.includes("http://")) {
       var handle = "https://"+handle
     }
@@ -154,6 +156,18 @@ class LinkManager extends Component {
   onDelete() {
     this.props.onDelete(this.state.selectedService, this.state.handle, this.state.description)
     this.onClose()
+  }
+
+  onPreview() {
+    if(this.props.onPreview) {
+      this.props.onPreview()
+    }
+  }
+
+  onFieldEdited(fieldName) {
+    if(this.props.onFieldEdited) {
+      this.props.onFieldEdited(fieldName)
+    }
   }
 
   render() {
@@ -184,57 +198,44 @@ class LinkManager extends Component {
         <Row style={{justifyContent: "center", alignItems: "center"}}>
           <Col xs="10" md="10">
             <Select
-              className="react-select"
-              classNamePrefix="react-select"
               placeholder="Select Service"
-              closeMenuOnSelect={true}
-              isMulti={false}
-              isDisabled={this.props.link}
-              defaultValue={this.props.link ? serviceOptions.filter(option => option.value === this.props.link.social_media)[0] : null}
-              onChange={option => this.setState({selectedService: option.value})}
+              value={this.props.link ? serviceOptions.filter(option => option.value === this.props.link.social_media)[0] : null}
               options={serviceOptions}
+              disabled={this.props.link}
+              onChange={option => this.setState({selectedService: option.value})}
+              onBlur={() => this.onFieldEdited("Service")}
             />
           </Col>
           {this.state.selectedService === "other" ?
             <Col xs="10" md="10" style={{marginTop: "5%"}}>
-              <FormGroup className={`has-label ${this.state.descriptionState}`}>
-                <Input
-                  type="text"
-                  defaultValue={this.state.description}
-                  placeholder={"Link Description ex: 'Merchandise'"}
-                  onChange={e => this.updateDesciption(e)}
-                />
-                {this.state.descriptionState === "has-danger" ? (
-                  <label className="error">
-                    {this.state.descriptionError}
-                  </label>
-                ) : null}
-              </FormGroup>
+              <TextInput
+                placeholder={"ex: 'Merchandise'"}
+                value={this.state.description}
+                onChange={e => this.updateDesciption(e)}
+                onBlur={() => this.onFieldEdited("Description")}
+                errorMessage={this.state.descriptionState === "has-danger" ? this.state.descriptionError : ""}
+              />
             </Col>
           :
             null
           }
           <Col xs="10" md="10" style={{marginTop: "5%", paddingRight: 10}}>
-            <FormGroup className={`has-label ${this.state.fieldState}`}>
-              <Input
-                disabled={!this.state.selectedService}
-                defaultValue={this.state.handle}
-                type="text"
-                placeholder={`${this.getTitle(this.state.selectedService)} Share Link`}
-                onChange={e => this.change(e)}
-              />
-              {this.state.fieldState === "has-danger" ? (
-                <label className="error">
-                  {this.state.fieldError}
-                </label>
-              ) : null}
-            </FormGroup>
+            <TextInput
+              placeholder={`${this.getTitle(this.state.selectedService)} Share Link`}
+              disabled={!this.state.selectedService}
+              value={this.state.handle}
+              onChange={e => this.change(e)}
+              onBlur={() => this.onFieldEdited("URL")}
+              errorMessage={this.state.fieldState === "has-danger" ? this.state.fieldError : ""}
+            />
             </Col>
             {this.state.handle ?
               <a className="nav-link"
-                 target="_blank"
-                 style={{padding: 0, margin:0}}
-                 href={(!this.state.handle.includes("https://") && !this.state.handle.includes("http://")) ? `https://${this.state.handle}` : this.state.handle}>
+               target="_blank"
+               style={{padding: 0, margin:0}}
+               href={(!this.state.handle.includes("https://") && !this.state.handle.includes("http://")) ? `https://${this.state.handle}` : this.state.handle}
+               onClick={this.onPreview}
+              >
                 <i style={{color: "#7482BD", padding: 0, margin:0}} className="tim-icons icon-link-72" />
               </a>
             :
@@ -251,7 +252,7 @@ class LinkManager extends Component {
             color="danger"
             onClick={() => {
               if(this.props.link == null) {
-                this.onClose()
+                this.onCancel()
               }
               else {
                 this.onDelete()
@@ -282,10 +283,12 @@ class LinkManager extends Component {
 LinkManager.propTypes = {
   show: PropTypes.bool,
   link: PropTypes.object,
+  onCancel: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onAdd: PropTypes.func,
   onDelete: PropTypes.func,
+  onFieldEdited: PropTypes.func,
 };
 
 LinkManager.defaultProps = {

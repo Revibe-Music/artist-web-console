@@ -41,8 +41,10 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import { login, signInViaGoogle } from 'redux/authentication/actions.js';
+import { logEvent } from 'amplitude/amplitude';
 import { BuilderComponent } from "@builder.io/react";
 import SocialButton from "components/Buttons/SocialAuth.jsx";
+import ForgotPassword from "components/Modals/ForgotPassword";
 
 class Login extends Component {
 
@@ -66,13 +68,17 @@ class Login extends Component {
       passwordFocus: false,
 
       SubmitButtonClicked: false,
-      popupIsFailure: Math.random()
+      popupIsFailure: Math.random(),
+
+      forgotPWModal: false
     };
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.socialAuthErr = this.socialAuthErr.bind(this);
     this.googleAuthSuccess = this.googleAuthSuccess.bind(this);
+    this.togglePWModal = this.togglePWModal.bind(this)
+    this.openModal = this.openModal.bind(this)
   }
 
   componentDidMount() {
@@ -99,6 +105,14 @@ class Login extends Component {
           passwordState: "has-danger"
         })
       }
+    }
+    if(this.props.loginErrors.non_field_errors !== prevProps.loginErrors.non_field_errors) {
+       if(this.props.loginErrors.non_field_errors)
+        this.setState({
+          usernameState: "has-danger",
+          passwordState: "has-danger",
+          passwordError: this.props.loginErrors.non_field_errors
+        })
     }
   }
 
@@ -142,7 +156,7 @@ class Login extends Component {
   }
 
   socialAuthErr(err) {
-    console.log(err)
+    // console.log(err)
     this.setState({ popupIsFailure: Math.random() })
   }
 
@@ -152,8 +166,18 @@ class Login extends Component {
     this.props.signInViaGoogle(token, history)
   }
 
-  render() {
+  togglePWModal() {
+    this.setState({ ...this.state, forgotPWModal: !this.state.forgotPWModal })
+    logEvent("Forgot Password", "Button Clicked")
+  }
 
+  openModal(e) {
+    e.preventDefault()
+
+    this.togglePWModal()
+  }
+
+  render() {
     const SubmitButton = withRouter(({ history }) => (
       <Button
         className="btn-round btn-primary w-100"
@@ -178,6 +202,7 @@ class Login extends Component {
 
     return (
       <>
+      <ForgotPassword isOpen={this.state.forgotPWModal} toggle={this.togglePWModal} />
       <ScrollNavbar hideLogin/>
       <div className="content">
         {/*
@@ -289,7 +314,7 @@ class Login extends Component {
                                 type="text"
                                 onChange={e => this.onChange( "username", e.target.value)}
                               />
-                              {this.state.usernameState === "has-danger" ? (
+                              {this.state.usernameState === "has-danger" && this.state.usernameError ? (
                                 <label className="error">
                                   {this.state.usernameError}
                                 </label>
@@ -306,12 +331,12 @@ class Login extends Component {
                                 autoComplete="off"
                                 onChange={e => this.onChange( "password", e.target.value)}
                               />
-                              {this.state.passwordState === "has-danger" ? (
+                              {this.state.passwordState === "has-danger" && this.state.passwordError ? (
                                 <label className="error">{this.state.passwordError}</label>
                               ) : null}
                             </FormGroup>
                           </div>
-                          <h6 className="w-100 text-center description" style={{ textTransform: "none" }}><Link to="/account/register">Forgot Password?</Link></h6>
+                          <h6 className="w-100 text-center description" style={{ textTransform: "none" }}><a href="" onClick={e => this.openModal(e)}>Forgot Password?</a></h6>
                           <div className="ml-auto mr-auto mt-4" style={{ width: "80%" }}>
                             <SubmitButton />
                           </div>

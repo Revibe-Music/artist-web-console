@@ -110,14 +110,12 @@ class EditAlbum extends Component {
     if(album.length > 0) {
       // album = this._parseAlbum(album[0])
       album = new Album(album[0])
-      console.log(album);
       return album
     }
     return new Album()
   }
 
   getAlbumSongs = () => {
-    console.log(this.props.uploadedSongs);
     var songs = this.props.uploadedSongs.filter(x => x.album.id === this.props.match.params.album_id)
     var songs = songs.map(x => new Song(x))
     songs.sort(function(a, b) {
@@ -125,7 +123,6 @@ class EditAlbum extends Component {
       if(a.order > b.order) { return 1; }
       return 0;
     })
-    console.log(songs);
     return songs
   }
 

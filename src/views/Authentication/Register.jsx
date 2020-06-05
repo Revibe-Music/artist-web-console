@@ -263,7 +263,7 @@ class Register extends React.Component {
   }
 
   socialAuthErr(err) {
-    console.log(err)
+    // console.log(err)
     this.setState({ popupIsFailure: Math.random() })
   }
 

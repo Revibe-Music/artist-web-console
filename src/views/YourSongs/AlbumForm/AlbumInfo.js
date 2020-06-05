@@ -1,38 +1,32 @@
 import React, {Component} from 'react';
 import classNames from "classnames";
-
-// reactstrap components
-import Select from "react-select";
 import ReactTooltip from 'react-tooltip';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { MdErrorOutline } from 'react-icons/md';
 import { Form, FormGroup, Input, Row, Col, UncontrolledTooltip} from "reactstrap";
 import { connect } from 'react-redux';
 
+import EditAlbumCard from "components/Cards/EditAlbumCard.jsx";
+
 import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import ContributorTags from "components/Inputs/ContributorTags.jsx";
 import Album from 'models/Album.js'
+import TextInput from "components/Inputs/TextInput.jsx";
+import Select from "components/Inputs/Select.jsx";
+import { logEvent } from 'amplitude/amplitude';
 
 
 class AlbumInfo extends Component {
 
   constructor(props) {
       super(props);
-      this.state = {
-        album: new Album(),
-      };
       this.editAlbum = this.editAlbum.bind(this)
-  }
-
-  componentDidMount() {
-    // this.props.onAlbumChange(this.props.album)
   }
 
   editAlbum(values, callback) {
     values = values !== "array" ? [values] : values
     var album = this.props.album
     album[callback](...values)
-    this.setState({album: album, attemptedUpload: false})
     this.props.onAlbumChange(album)
   }
 
@@ -40,7 +34,10 @@ class AlbumInfo extends Component {
     var album = this.props.album
     album.clearErrors()
     album.validate()
-    this.setState({album: album})
+    if(album.errors.length > 0) {
+      logEvent("New Upload", "Album Field Error", {Fields: album.errors.map(x => x.location)})
+    }
+    this.props.onAlbumChange(album)
     return album.isValid()
   };
 
@@ -49,10 +46,12 @@ class AlbumInfo extends Component {
 
     return (
       <>
-        <h3 className="info-text">
-          Tell us a little about this album.
-        </h3>
-        <Row>
+        <h1 align="center">Create an album</h1>
+        <EditAlbumCard
+          album={this.props.album}
+          onEditAlbum={this.editAlbum}
+        />
+      {/*<Row>
           <Col className="m-auto m-auto" md="4">
             <Row>
               <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
@@ -63,7 +62,6 @@ class AlbumInfo extends Component {
                     btnText="Album Art"
                     addBtnColor="primary"
                     changeBtnColor="default"
-                    disabled={this.state.uploading}
                     onImageSelect={(file) => this.editAlbum(file, "setImage")}
                   />
                 </a>
@@ -82,48 +80,26 @@ class AlbumInfo extends Component {
           </Col>
           <Col className="m-auto mr-auto" md="6">
             <Form className="form">
-              <FormGroup>
-                <label></label>
-                <Input
-                  className="primary"
-                  placeholder="Album Name"
-                  type="text"
-                  disabled={this.state.uploading}
-                  onChange={e => this.editAlbum(e.target.value, "setName")}
-                />
-                {this.props.album.errors.filter(error => error.location === "name").length > 0 ? (
-                  <label style={{color: "red"}} className="error">
-                    {this.props.album.errors.filter(error => error.location === "name")[0].message}
-                  </label>
-                ) : null}
-              </FormGroup>
-              <FormGroup style={{marginTop: "30px"}}>
-                <label></label>
+              <TextInput
+                placeholder="Album Name"
+                value={this.props.album.name}
+                onChange={e => this.editAlbum(e.target.value, "setName")}
+                onBlur={() => logEvent("New Upload", "Album Field Edited", {Field: "Name"})}
+                errorMessage={this.props.album.errors.filter(error => error.location === "name").length > 0 ? this.props.album.errors.filter(error => error.location === "name")[0].message : ""}
+              />
+              <div style={{marginTop: "30px"}}>
                 <Select
                   className="react-select primary"
                   classNamePrefix="react-select"
                   placeholder="Album Type"
-                  name="multipleSelect"
-                  closeMenuOnSelect={true}
-                  isMulti={false}
-                  isDisabled={this.state.uploading}
+                  value={this.props.album.type ? albumTypes.filter(x => x.label === this.props.album.type)[0] : null}
                   onChange={option => this.editAlbum(option.label, "setType")}
-                  options={[
-                    {
-                      value: "",
-                      isDisabled: true
-                    },
-                    { value: "2", label: "Album " },
-                    { value: "3", label: "Single" },
-                    { value: "4", label: "EP" },
-                  ]}
+                  onBlur={() => logEvent("New Upload", "Album Field Edited", {Field: "Type"})}
+                  options={albumTypes}
+                  errorMessage={this.props.album.errors.filter(error => error.location === "type").length > 0 ? this.props.album.errors.filter(error => error.location === "type")[0].message : ""}
                 />
-                {this.props.album.errors.filter(error => error.location === "type").length > 0 ? (
-                  <label style={{color: "red"}} className="error">
-                    {this.props.album.errors.filter(error => error.location === "type")[0].message}
-                  </label>
-                ) : null}
-              </FormGroup>
+              </div>
+
               <FormGroup style={{marginTop: "30px", marginBottom: "30px"}}>
                 <Row>
                   {this.props.album.errors.filter(error => error.location === "contributors").length > 0 ? (
@@ -155,12 +131,11 @@ class AlbumInfo extends Component {
                   onAddContributor={contributor => this.editAlbum(contributor, "addContributor")}
                   onRemoveContributor={contributor => this.editAlbum(contributor, "removeContributor")}
                   updateContributionTypes={contributor => this.editAlbum(contributor, "updateContribution")}
-                  disabled={this.state.uploading}
                 />
               </FormGroup>
             </Form>
           </Col>
-        </Row>
+        </Row>*/}
       </>
     );
   }

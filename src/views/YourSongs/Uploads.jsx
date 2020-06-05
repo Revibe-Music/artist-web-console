@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import SongCard from "components/Cards/SongCard.jsx";
 import AlbumCard from "components/Cards/AlbumCard.jsx";
+import { logEvent } from 'amplitude/amplitude';
 
 
 class Uploads extends React.Component {
@@ -35,9 +36,11 @@ class Uploads extends React.Component {
     if(song.id === this.state.playingSongId) {
       if(this.state.playing) {
         this.audio.pause()
+        logEvent("Uploads", "Pause Song")
       }
       else {
         this.audio.play()
+        logEvent("Uploads", "Play Song")
       }
       this.setState({playing: !this.state.playing})
     }
@@ -55,6 +58,7 @@ class Uploads extends React.Component {
         }
         this.audio.play()
         this.setState({playingSongId: song.id, playing: true})
+        logEvent("Uploads", "Play Song")
       }
     }
   }

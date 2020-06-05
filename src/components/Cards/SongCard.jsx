@@ -15,6 +15,8 @@ import {
   UncontrolledTooltip,
   Input
 } from "reactstrap";
+import Switch from "react-bootstrap-switch";
+
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { uniq } from 'lodash';
 import { connect } from 'react-redux';
@@ -23,6 +25,7 @@ import TextInput from "components/Inputs/TextInput.jsx";
 import Select from "components/Inputs/Select.jsx";
 import Tags from "components/Inputs/Tags.jsx";
 import ContributorTags from "components/Inputs/ContributorTags.jsx";
+import { logEvent } from 'amplitude/amplitude';
 
 
 class SongCard extends React.Component {
@@ -30,15 +33,27 @@ class SongCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: true,
+      collapsed: this.props.defaultCollapseState,
     }
-    this.genreOptions = ["Blues","Classical","Country","Electronic","Folk","Hip-hop","Jazz","New age","Reggae","Rock",]
+    this.genreOptions = ["Hip-hop","Electronic","Rock","Jazz","Blues","Classical","Country","Metal","Folk","New age","Reggae"].map((genre, index) => ({ value: index, label: genre }))
     this.onEditClicked = this.onEditClicked.bind(this)
+  }
+
+  onBlur(fieldName) {
+    if(window.location.pathname === "/dashboard/uploads/new") {
+      logEvent("New Upload", "Song Field Edited", {Field: fieldName})
+    }
+    else {
+      logEvent("Edit Album", "Song Field Edited", {Field: fieldName})
+    }
   }
 
 
   getSongContributionTypes(song) {
-    var contributionTypes = this.props.song.contributors.map(x => x.type)
+    var contributionTypes = []
+    for(var x=0; x<this.props.song.contributors.length; x++) {
+      contributionTypes = contributionTypes.concat(this.props.song.contributors[x].type)
+    }
     contributionTypes = uniq(contributionTypes)
     return contributionTypes
   }
@@ -62,7 +77,8 @@ class SongCard extends React.Component {
 
   render() {
     return (
-      <Card className="card-plain" style={{backgroundColor: "#373737", margin: "auto",width: "auto"}}>
+      <div>
+      <Card style={{backgroundColor: "#373737", margin: "auto",width: "auto"}}>
         <CardBody>
           <Row style={{alignItems: "center", margin: "auto", justifyContent: "space-between"}}>
             {this.state.collapsed ?
@@ -78,16 +94,26 @@ class SongCard extends React.Component {
                   </Row>
                 </Col>
                 <Col xs="12" md="4" style={{marginLeft: window.screen.width < 400 ? "25%" : 0}}>
-                  {this.getSongContributionTypes(this.props.song).map(type => (
+                  {this.props.song.contributors.length > 0 ?
+                    <>
+                    {this.getSongContributionTypes(this.props.song).map(type => {
+                      return (
+                      <Row style={{marginTop: "5px", marginBottom: "5px" }}>
+                        <h4 style={{color: "white",marginBottom: "auto", marginRight: 10}}>{type.slice(-1) !== "s"  ? type+"s" : type}: </h4>
+                        {this.props.song.contributors.filter(x => x.type.includes(type)).map(x => (
+                          <div style={{backgroundColor: "#7248BD", borderRadius: 15, paddingLeft:10, paddingRight: 10, alignItems: "center", justifyContent: "center", display: "flex", width: "fit-content"}}>
+                            <p style={{color:"white", marginBottom: 0 }}>{x.artist.artistName}</p>
+                          </div>
+                        ))}
+                      </Row>
+                    )})}
+                    </>
+                  :
                     <Row style={{marginTop: "5px", marginBottom: "5px" }}>
-                      <h4 style={{color: "white",marginBottom: "auto", marginRight: 10}}>{type}s: </h4>
-                      {this.props.song.contributors.filter(x => x.type === type).map(x => (
-                        <div style={{backgroundColor: "#7248BD", borderRadius: 15, paddingLeft:10, paddingRight: 10, alignItems: "center", justifyContent: "center", display: "flex", width: "fit-content"}}>
-                          <p style={{color:"white", marginBottom: 0 }}>{x.artist.artistName}</p>
-                        </div>
-                      ))}
+                      <h4 style={{color: "white",marginBottom: "auto", marginRight: 10}}>Contributors: None</h4>
                     </Row>
-                  ))}
+                  }
+
                 </Col>
                 <Col xs="12" md="2" style={{alignItems: "center", marginLeft: window.screen.width < 400 ? "25%" : 0}}>
                   <Row style={{alignItems: "center",}}>
@@ -105,7 +131,6 @@ class SongCard extends React.Component {
                 :
                   null
                 }
-
               </>
             :
               <Col xs="12" md="4" className="card-stats">
@@ -145,7 +170,6 @@ class SongCard extends React.Component {
                 </a>
               </Row>
             </Col>
-
             :
               null
             }
@@ -178,13 +202,14 @@ class SongCard extends React.Component {
               <Col xs="12" md="6">
                 <Select
                   label="Genres (optional)"
-                  value={this.genreOptions.filter(option => this.props.song.genres.includes(option.label))}
+                  value={this.props.song.genres.length > 0 ? this.genreOptions.filter(option => this.props.song.genres.includes(option.label)): null}
                   isMulti={true}
                   closeMenuOnSelect={false}
                   placeholder="Select Genres"
                   disabled={this.state.uploading}
                   onChange={options => this.props.onEditSong(this.props.song.id, options.map(x => x.label), "setGenres")}
-                  options={this.genreOptions.map((genre, index) => ({ value: index, label: genre }))}
+                  onBlur={() => this.onBlur("Genres")}
+                  options={this.genreOptions}
                 />
               </Col>
             </Row>
@@ -196,27 +221,30 @@ class SongCard extends React.Component {
                   placeholder="Add here..."
                   disabled={this.props.disableEditing}
                   onChange={tags => this.props.onEditSong(this.props.song.id, tags, "setTags")}
+                  onBlur={() => this.onBlur("Tags")}
                   errorMessage={this.props.song.errors.filter(error => error.location === "tags").length > 0 ? this.props.song.errors.filter(error => error.location === "tags")[0].message : ""}
                 />
               </Col>
               <Col xs="12" md="6">
-                <FormGroup check style={{marginTop: 0}}>
-                  <div style={{color: "white"}}>Explicit</div>
-                  <Label check>
-                    <Input
-                      disabled={this.state.uploading}
-                      type="checkbox"
-                      value={this.props.song.explicit}
-                      onChange={event => this.props.onEditSong(this.props.song.id, event.target.checked, "setExplicit")}
-                    />
-                    <span className="form-check-sign" />
-                  </Label>
-                </FormGroup>
+                <div style={{color: "white", marginBottom: ".5rem"}}>Explicit</div>
+                <Switch
+                  value={this.props.song.explicit}
+                  onText={<i className="tim-icons icon-check-2" />}
+                  offText={<i className="tim-icons icon-simple-remove" />}
+                  offColor=""
+                  onColor="primary"
+                  onChange={(el, state) => {
+                    this.props.onEditSong(this.props.song.id, state, "setExplicit")
+                    this.onBlur("Explicit")
+                  }}
+                />
               </Col>
             </Row>
           </Collapse>
         </CardBody>
       </Card>
+    </div>
+
     );
   }
 }
@@ -231,13 +259,16 @@ SongCard.propTypes = {
   onEditClicked: PropTypes.func,                          // function that is called whenever edit button is clicked
   onDeleteClicked: PropTypes.func,               // function that is called whenever edit button is clicked
   onEditSong: PropTypes.func,               // function that is called whenever edit button is clicked
+  defaultCollapseState: PropTypes.bool
 };
 
 SongCard.defaultProps = {
   isPlaying: false,
   disableEditing: false,
   displayOptions: true,
-  displayStreams: true
+  displayStreams: true,
+  defaultCollapseState: true
+
 };
 
 

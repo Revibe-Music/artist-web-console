@@ -2,10 +2,9 @@ import React from 'react';
 import ReactGA from 'react-ga';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
-import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { authenticationReducer } from './redux/authentication/reducers.js'
-import { mediaReducer } from './redux/media/reducers.js'
+import amplitude from 'amplitude-js'
+
+import store from 'redux/rootReducer';
 import App from 'App.js';
 
 import "assets/site/scss/blk-design-system-pro-react.scss?v1.0.0";
@@ -17,17 +16,15 @@ import "react-notification-alert/dist/animate.css";
 //import "assets/portal/scss/black-dashboard-pro-react.scss?v=1.0.1";
 //import "assets/portal/css/nucleo-icons.css";
 
+var testAmplitudeKey = "5b43a41b914231cea0c15b0ff018959e"
+// var prodAmplitudeKey = "ac5bc02f3725f6d6a531b2751e78e1a8"
+
+amplitude.getInstance().init(testAmplitudeKey);
+
 
 // initialize Google Analytics
 const trackingId = "UA-101183111-3";
 ReactGA.initialize(trackingId);
-
-// initialize reducers
-const reducer = combineReducers({
-  media: mediaReducer,
-  authentication: authenticationReducer
-});
-const store = createStore(reducer, undefined, compose(applyMiddleware(thunkMiddleware)));
 
 render(
   <Provider store={store}>

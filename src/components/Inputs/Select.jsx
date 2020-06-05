@@ -11,12 +11,18 @@ class Select extends Component {
       super(props);
   }
 
+  onBlur = () => {
+    if(this.props.onBlur) {
+      this.props.onBlur()
+    }
+  }
+
   render() {
     return (
       <FormGroup>
         <label style={{color: "white"}}>{this.props.label}</label>
           <ReactSelect
-            value={this.props.value}
+            value={this.props.value ? this.props.value : undefined}
             className={this.props.className}
             classNamePrefix="react-select"
             placeholder={this.props.placeholder}
@@ -24,6 +30,7 @@ class Select extends Component {
             isMulti={this.props.isMulti}
             isDisabled={this.props.disabled}
             onChange={option => this.props.onChange(option)}
+            onBlur={this.onBlur}
             options={this.props.options}
           />
           {this.props.displayError ?
@@ -34,7 +41,6 @@ class Select extends Component {
               </label>
             ) : null}
             </>
-
             :
               null
           }
@@ -50,11 +56,13 @@ Select.propTypes = {
   value: PropTypes.string,
   defaultValue: PropTypes.string,
   classname: PropTypes.string,
+  classNamePrefix: PropTypes.string,
   isMulti: PropTypes.bool,
   options: PropTypes.array,
   closeMenuOnSelect: PropTypes.bool,
   onChange: PropTypes.func,
   onValidate: PropTypes.func,
+  onBlur: PropTypes.func,
   disabled: PropTypes.bool,
   displayError: PropTypes.bool,
   errorMessage: PropTypes.string,
@@ -66,6 +74,7 @@ Select.defaultProps = {
   defaultValue: "",
   placeholder: "Type text here",
   className: "react-select primary",
+  classNamePrefix: "react-select",
   isMulti: false,
   closeMenuOnSelect: true,
   disabled: false,

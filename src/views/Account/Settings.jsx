@@ -8,8 +8,6 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardText,
-  Container,
   Form,
   Row,
   Col,
@@ -23,6 +21,7 @@ import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { connect } from 'react-redux';
 
 import { editSettings } from 'redux/authentication/actions.js'
+import { logEvent } from 'amplitude/amplitude';
 
 
 class Settings extends React.Component {
@@ -44,14 +43,6 @@ class Settings extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this)
     this.toggleSetting = this.toggleSetting.bind(this)
-  }
-
-  componentDidMount() {
-    document.body.classList.toggle("profile-page");
-  }
-
-  componentWillUnmount() {
-    document.body.classList.toggle("profile-page");
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -102,12 +93,12 @@ class Settings extends React.Component {
     this.setState({saving: false})
   }
 
-  toggleSetting(name, value) {
+  toggleSetting(name, formattedName, value) {
     this.setState({[name]: value})
+    logEvent("Settings", "Toggle", {Name: formattedName})
   }
 
   render() {
-
 
     return (
       <>
@@ -123,13 +114,36 @@ class Settings extends React.Component {
                   <CardTitle tag="h3">Settings</CardTitle>
                 </CardHeader>
                 <CardBody>
+                  <Row style={{ marginTop: "5%" }}>
+                    <Col xs="4" md="2">
+                      <h5 className="w-auto text-left">
+                        <a href="/account/change-password" onClick={() => logEvent("Settings", "Change Password Clicked")}>
+                          Click Here
+                        </a>
+                      </h5>
+                    </Col>
+                    <Col xs="8" md="7">
+                      <p>
+                        <AiOutlineQuestionCircle style={{color: "#7248BD", marginRight: "5%"}} id="setting-change-pw"/>
+                        Change Password
+                      </p>
+                      <UncontrolledTooltip
+                        style={{backgroundColor: "#7248BD", color: "white"}}
+                        placement="bottom"
+                        target="setting-change-pw"
+                        hideArrow={true}
+                      >
+                        Click the link to go to the page to change your password.
+                      </UncontrolledTooltip>
+                    </Col>
+                  </Row>
                   <Row style={{marginTop: "5%"}}>
                     <Col xs="4" md="2">
                       <Switch
                         value={this.state.requireContributionApproval}
                         offColor=""
                         onColor=""
-                        onChange={(el, state) => this.toggleSetting("requireContributionApproval", state)}
+                        onChange={(el, state) => this.toggleSetting("requireContributionApproval", "Require Contribution Approval", state)}
                       />
                     </Col>
                     <Col xs="8" md="7">
@@ -153,7 +167,7 @@ class Settings extends React.Component {
                         value={this.state.requireContributionApprovalOnEdit}
                         offColor=""
                         onColor=""
-                        onChange={(el, state) => this.toggleSetting("requireContributionApprovalOnEdit", state)}
+                        onChange={(el, state) => this.toggleSetting("requireContributionApprovalOnEdit", "Require Contribution Approval On Edit", state)}
                       />
                     </Col>
                     <Col xs="8" md="7">
@@ -177,7 +191,7 @@ class Settings extends React.Component {
                         value={this.state.shareDataWithContributors}
                         offColor=""
                         onColor=""
-                        onChange={(el, state) => this.toggleSetting("shareDataWithContributors", state)}
+                        onChange={(el, state) => this.toggleSetting("shareDataWithContributors", "Share Data With Contributors", state)}
                       />
                     </Col>
                     <Col xs="8" md="7">
@@ -201,7 +215,7 @@ class Settings extends React.Component {
                         value={this.state.shareAdvancedDataWithContributors}
                         offColor=""
                         onColor=""
-                        onChange={(el, state) => this.toggleSetting("shareAdvancedDataWithContributors", state)}
+                        onChange={(el, state) => this.toggleSetting("shareAdvancedDataWithContributors", "Share Advanced Data With Contributors", state)}
                       />
                     </Col>
                     <Col xs="8" md="7">
@@ -225,7 +239,7 @@ class Settings extends React.Component {
                         value={this.state.allowContributorsToEditContributions}
                         offColor=""
                         onColor=""
-                        onChange={(el, state) => this.toggleSetting("allowContributorsToEditContributions", state)}
+                        onChange={(el, state) => this.toggleSetting("allowContributorsToEditContributions", "Allow Contributors To Edit Contributions", state)}
                       />
                     </Col>
                     <Col xs="8" md="7">
@@ -249,7 +263,7 @@ class Settings extends React.Component {
                         value={this.state.allowContributorsToEditTags}
                         offColor=""
                         onColor=""
-                        onChange={(el, state) => this.toggleSetting("allowContributorsToEditTags", state)}
+                        onChange={(el, state) => this.toggleSetting("allowContributorsToEditTags", "Allow Contributors To Edit Tags", state)}
                       />
                     </Col>
                     <Col xs="8" md="7">
@@ -273,7 +287,7 @@ class Settings extends React.Component {
                         value={this.state.displayOtherPlatformContentOnRevibePage}
                         offColor=""
                         onColor=""
-                        onChange={(el, state) => this.toggleSetting("displayOtherPlatformContentOnRevibePage", state)}
+                        onChange={(el, state) => this.toggleSetting("displayOtherPlatformContentOnRevibePage", "Display Other Platform Content On Revibe Page", state)}
                       />
                     </Col>
                     <Col xs="8" md="7">

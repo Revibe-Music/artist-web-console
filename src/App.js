@@ -13,6 +13,7 @@ import PrivateRoute from './routes/PrivateRoute.js';
 import Login from 'views/Authentication/Login.jsx';
 import Register from 'views/Authentication/Register.jsx';
 import RegisterArtist from 'views/Authentication/RegisterArtist.jsx';
+import ChangePassword from 'views/Authentication/ChangePassword.jsx';
 
 import Home from 'views/Site/Home.jsx'
 import ContactUs from 'views/Site/ContactUs.jsx';
@@ -47,6 +48,7 @@ const App = ({ authenticated, checked, uploadInProgress }) => (
       <Route path="/account/register" component={Register}/>
       <Route path="/account/create-profile" component={RegisterArtist}/>
       <Route path="/account/login" component={Login}/>
+      <Route path="/account/change-password" component={ChangePassword} />
       <Route path="/contact-us" component={ContactUs}/>
       <Route path="/400" component={Error400}/>
       <Route path="/404" component={Error404}/>

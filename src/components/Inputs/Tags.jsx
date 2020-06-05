@@ -23,7 +23,12 @@ class Tags extends Component {
               placeholder: this.props.placeholder,
               disabled: this.props.disabled,
               onFocus: () => this.setState({inputColor: "#7248BD"}),
-              onBlur: () => this.setState({inputColor: "#2b3553"})
+              onBlur: () => {
+                this.setState({inputColor: "#2b3553"})
+                if(this.props.onBlur) {
+                  this.props.onBlur()
+                }
+              }
           }}
           renderLayout={(tagComponents, inputComponent) => (
             <div style={{border: `1px solid ${this.state.inputColor}`, fontSize: "0.75rem",  borderRadius: "0.4285rem", marginBottom: "5px",paddingTop: "7px",paddingBottom: "7px", transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out"}}>
@@ -49,9 +54,8 @@ class Tags extends Component {
             </label>
           ) : null}
           </>
-
           :
-            null
+          null
         }
       </FormGroup>
     );
@@ -65,6 +69,7 @@ Tags.propTypes = {
   value: PropTypes.string,
   onlyUnique: PropTypes.bool,
   onChange: PropTypes.func,
+  onBlur: PropTypes.func,
   disabled: PropTypes.bool,
   displayError: PropTypes.bool,
   errorMessage: PropTypes.string,

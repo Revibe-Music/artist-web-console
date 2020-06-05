@@ -28,10 +28,10 @@ class YourSongs extends React.Component {
   }
 
   // with this function we change the active tab for all the tabs in this page
-  changeActiveTab = (e, tabState, tadName) => {
+  changeActiveTab = (e, tabState, tabName) => {
     e.preventDefault();
     this.setState({
-      [tabState]: tadName
+      [tabState]: tabName
     });
   };
 

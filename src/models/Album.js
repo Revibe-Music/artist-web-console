@@ -26,6 +26,7 @@ export default class Album extends Model{
     if(!this.id) this.id = this.generateID()
     if(!this.name) this.name = ""
     if(!this.type) this.type = ""
+    if(!this.image) this.image = null
     if(!this.images) this.images = []
     if(!this.uploadedBy) this.uploadedBy = null
     if(!this.contributors) this.contributors = []

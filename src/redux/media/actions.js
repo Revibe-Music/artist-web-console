@@ -1,4 +1,5 @@
 import RevibeAPI from '../../api/revibe.js';
+import { logEvent } from 'amplitude/amplitude';
 
 const revibe = new RevibeAPI()
 
@@ -150,13 +151,14 @@ export function getSongContributions() {
 
 export function uploadAlbum(album, callback) {
   return async (dispatch) => {
-    var response = await revibe.createUploadedAlbum(album.name, album.image, album.type, album.displayed, album.releaseDate)
+    logEvent("New Upload", "Submitted")
+    var response = await revibe.createUploadedAlbum(album.name, album.image, album.type, album.displayed, album.datePublished)
     if(String(response.status).charAt(0)=="2") {
       const newAlbum = response.data
       var albumContributionPromises = []
       for(var i=0; i<album.contributors.length; i++) {
         for(var j=0; j<album.contributors[i].type.length; j++) {
-          var albumContributor = revibe.addUploadedAlbumContributor(newAlbum.album_id, album.contributors[i].contributor.artist_id, album.contributors[i].type[j])
+          var albumContributor = revibe.addUploadedAlbumContributor(newAlbum.id, album.contributors[i].contributor.artist_id, album.contributors[i].type[j])
           albumContributionPromises.push(albumContributor)
         }
       }
@@ -173,6 +175,7 @@ export function uploadAlbum(album, callback) {
     }
     else {
       // need to dispatch appropriate error here
+      logEvent("New Upload", "Album Submission Failure")
       dispatch(error("An error occured while uploading an album."));
     }
   }
@@ -181,18 +184,18 @@ export function uploadAlbum(album, callback) {
 export function uploadAlbumSong(album, song) {
   return async (dispatch) => {
     const contributors = song.contributors
-    var savedSong = await revibe.createUploadedSong(album.album_id, song.title, song.file, song.duration, song.explicit, song.order,song.displayed)
+    var savedSong = await revibe.createUploadedSong(album.id, song.title, song.file, song.duration, song.explicit, song.order,song.displayed)
     if(String(savedSong.status).charAt(0)=="2") {
       const savedSongData = savedSong.data
       var contributionPromises = []
       for(var i=0; i<contributors.length; i++) {
         for(var j=0; j<contributors[i].type.length; j++){
-          var contribution = revibe.addUploadedSongContributor(savedSongData.song_id, contributors[i].contributor.artist_id, contributors[i].type[j])
+          var contribution = revibe.addUploadedSongContributor(savedSongData.id, contributors[i].contributor.artist_id, contributors[i].type[j])
           contributionPromises.push(contribution)
         }
       }
-      if(song.genres.length > 0) await revibe.addUploadedSongGenres(savedSongData.song_id, song.genres)
-      if(song.tags.length > 0) await revibe.addUploadedSongTags(savedSongData.song_id, song.tags)
+      if(song.genres.length > 0) await revibe.addUploadedSongGenres(savedSongData.id, song.genres)
+      if(song.tags.length > 0) await revibe.addUploadedSongTags(savedSongData.id, song.tags)
 
       var contributionResult = await Promise.all(contributionPromises)
       // need to check for response errors here
@@ -204,6 +207,7 @@ export function uploadAlbumSong(album, song) {
       dispatch(error(null));
     }
     else {
+      logEvent("New Upload", "Song Submission Failure")
       // need to dispatch appropriate error here
       dispatch(error("An error occured while uploading a song."));
     }
@@ -228,7 +232,7 @@ export function deleteAlbum(album_id) {
   return async (dispatch, getState) => {
     var response = await revibe.deleteUploadedAlbum(album_id)
     if(String(response.status).charAt(0)=="2") {
-      var index = getState().media.uploadedAlbums.map(function(x) {return x.album_id; }).indexOf(album_id)
+      var index = getState().media.uploadedAlbums.map(function(x) {return x.id; }).indexOf(album_id)
       dispatch(removeUploadedAlbum(index));
       dispatch(error(null));
     }
@@ -270,6 +274,7 @@ export function approveAlbumContribution(album, contribution_id) {
   return async (dispatch, getState) => {
     var response = await revibe.approveAlbumContribution(contribution_id)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Contributions", "Approve", {type: "Album"})
       var index = album.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
       album.contributors[index].approved = true
       album.contributors[index].pending = false
@@ -286,6 +291,7 @@ export function rejectAlbumContribution(album, contribution_id) {
   return async (dispatch, getState) => {
     var response = await revibe.rejectAlbumContribution(contribution_id)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Contributions", "Reject", {type: "Album"})
       var index = album.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
       album.contributors[index].approved = false
       album.contributors[index].pending = false
@@ -302,6 +308,7 @@ export function approveSongContribution(song, contribution_id) {
   return async (dispatch, getState) => {
     var response = await revibe.approveSongContribution(contribution_id)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Contributions", "Approve", {type: "Song"})
       var index = song.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
       song.contributors[index].approved = true
       song.contributors[index].pending = false
@@ -318,6 +325,7 @@ export function rejectSongContribution(song, contribution_id) {
   return async (dispatch, getState) => {
     var response = await revibe.rejectSongContribution(contribution_id)
     if(String(response.status).charAt(0)=="2") {
+      logEvent("Contributions", "Reject", {type: "Song"})
       var index = song.contributors.map(function(x) {return x.contribution_id; }).indexOf(contribution_id)
       song.contributors[index].approved = false
       song.contributors[index].pending = false

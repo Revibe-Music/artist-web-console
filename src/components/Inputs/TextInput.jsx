@@ -18,6 +18,12 @@ class TextInput extends Component {
     this.props.onChange(event)
   }
 
+  onBlur = () => {
+    if(this.props.onBlur) {
+      this.props.onBlur()
+    }
+  }
+
 
   render() {
     return (
@@ -31,6 +37,7 @@ class TextInput extends Component {
           type={this.props.text}
           disabled={this.props.disabled}
           onChange={event => this.onChange(event)}
+          onBlur={this.onBlur}
         />
         {this.props.displayError ?
           <>
@@ -50,7 +57,6 @@ class TextInput extends Component {
 }
 
 
-
 TextInput.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
@@ -59,6 +65,7 @@ TextInput.propTypes = {
   type: PropTypes.string,
   onChange: PropTypes.func,
   onValidate: PropTypes.func,
+  onBlur: PropTypes.func,
   disabled: PropTypes.bool,
   displayError: PropTypes.bool,
   errorMessage: PropTypes.string,
@@ -68,7 +75,7 @@ TextInput.defaultProps = {
   label: "",
   value: "",
   defaultValue: "",
-  placeholder: "Type text here",
+  placeholder: "",
   className: "primary",
   type: "text",
   disabled: false,
