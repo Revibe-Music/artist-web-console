@@ -72,13 +72,12 @@
     "zippo": "^1.0.1"
   },
   "optionalDependencies": {
-    "@types/googlemaps": "3.30.16",
     "@types/markerclustererplus": "2.1.33",
     "@types/react": "16.7.18"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts --max_old_space_size=4096  build",
     "deploy": "aws s3 sync build/ s3://artist-website",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
