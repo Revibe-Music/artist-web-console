@@ -10,6 +10,7 @@ import Account from "views/Account/index";
 import Relink from "views/Relink/index";
 
 import Feedback from "views/Feedback";
+import FAQPage from "views/FAQ";
 
 const routes = [
   {
@@ -80,6 +81,15 @@ const routes = [
     component: Feedback,
     layout: "",
     toolTipMessage: "Tell us what you think!",
+    showInSidebar: true
+  },
+  {
+    path: "/dashboard/faq",
+    name: "FAQ",
+    icon: "tim-icons icon-paper",
+    component: FAQPage,
+    layout: "",
+    toolTipMessage: "Frequently Asked Questions",
     showInSidebar: true
   },
 ];
