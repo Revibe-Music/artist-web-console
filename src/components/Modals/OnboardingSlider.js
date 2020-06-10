@@ -43,7 +43,7 @@ export default class OnboardingSlider extends React.Component {
   }
 
   skipEvent(e) {
-    e.preventDefault()
+    e.preventDefaults()
 
     //Add one to the slide for a 1-4 range
     logEvent("Onboarding", "Skipped", { lastSlideSeen: this.state.currentTab + 1 })
@@ -102,7 +102,7 @@ export default class OnboardingSlider extends React.Component {
               <a 
                 className=""
                 href=""
-                onClick={e => this.props.skipEvent(e)}
+                onClick={e => this.skipEvent(e)}
               >
                 <h3 className="m-auto text-primary">Skip</h3>
               </a>
@@ -134,7 +134,7 @@ export default class OnboardingSlider extends React.Component {
                 <a 
                   className=""
                   href=""
-                  onClick={e => this.props.finishEvent(e)}
+                  onClick={e => this.finishEvent(e)}
                 >
                   <h3 className="m-auto text-primary">Finish</h3>
                 </a>
