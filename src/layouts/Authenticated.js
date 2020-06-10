@@ -17,6 +17,7 @@ import routes from "./../routes/authenticatedRoutes.js";
 import logo from "assets/portal/img/revibe-logo.jpg";
 
 import "assets/portal/scss/black-dashboard-pro-react.scss?v=1.0.1";
+import OnboardingSlider from "components/Modals/OnboardingSlider.js";
 
 
 var ps;
@@ -29,7 +30,8 @@ class Authenticated extends Component {
       activeColor: "primary",
       sidebarMini: true,
       opacity: 0,
-      sidebarOpened: false
+      sidebarOpened: false,
+      onboardingSliderOpen: this.props.location && this.props.location.state ? this.props.location.state.onboardingSliderOpen : false
     };
     this.props.getUploadedAlbums()
     this.props.getUploadedSongs()
@@ -141,46 +143,56 @@ class Authenticated extends Component {
     document.documentElement.classList.toggle("nav-open");
   };
 
+  toggleOnboardingSlider = () => {
+    this.setState({
+      ...this.state,
+      onboardingSliderOpen: !this.state.onboardingSliderOpen
+    })
+  }
 
   render() {
+    console.log(this.state)
 
     return (
-      <div className="wrapper">
+      <>
+        <div className="wrapper">
 
-        <div className="rna-container">
-          <NotificationAlert ref="notificationAlert" />
-        </div>
+          <div className="rna-container">
+            <NotificationAlert ref="notificationAlert" />
+          </div>
 
-        <Sidebar
-          {...this.props}
-          closeSidebar={this.toggleSidebar}
-          routes={routes}
-          activeColor={this.state.activeColor}
-          logo={{
-            outterLink: "https://revibe.tech",
-            text: "Revibe",
-            imgSrc: logo
-          }}
-        />
-        <div
-          className="main-panel"
-          ref="mainPanel"
-          data={this.state.activeColor}
-        >
-          {/*}<Navbar
+          <Sidebar
             {...this.props}
-            // brandText={this.getActiveRoute(routes)}
-            sidebarOpened={this.state.sidebarOpened}
-            toggleSidebar={this.toggleSidebar}
-          />*/}
-          {this.getRoutes(routes)}
-          {// we don't want the Footer to be rendered on full screen maps page
-          this.props.location.pathname.indexOf("full-screen-map") !==
-          -1 ? null : (
-            <Footer />
-          )}
+            closeSidebar={this.toggleSidebar}
+            routes={routes}
+            activeColor={this.state.activeColor}
+            logo={{
+              outterLink: "https://revibe.tech",
+              text: "Revibe",
+              imgSrc: logo
+            }}
+          />
+          <div
+            className="main-panel"
+            ref="mainPanel"
+            data={this.state.activeColor}
+          >
+            {/*}<Navbar
+              {...this.props}
+              // brandText={this.getActiveRoute(routes)}
+              sidebarOpened={this.state.sidebarOpened}
+              toggleSidebar={this.toggleSidebar}
+            />*/}
+            {this.getRoutes(routes)}
+            {// we don't want the Footer to be rendered on full screen maps page
+            this.props.location.pathname.indexOf("full-screen-map") !==
+            -1 ? null : (
+              <Footer />
+            )}
+          </div>
         </div>
-      </div>
+        <OnboardingSlider isOpen={this.state.onboardingSliderOpen} toggle={this.toggleOnboardingSlider} />
+      </>
     );
   }
 }

@@ -217,3 +217,11 @@ body.login-page div#root .content, body.register-page div#root .content {
   -webkit-transform: translateY(0px);
   -moz-transform: translateY(0px);
 }
+
+body.modal-open #root {
+  -webkit-filter: blur(2.5px);
+  -moz-filter: blur(2.5px);
+  -o-filter: blur(2.5px);
+  -ms-filter: blur(2.5px);
+  filter: blur(2.5px);
+}

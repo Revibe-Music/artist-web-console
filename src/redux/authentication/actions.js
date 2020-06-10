@@ -150,7 +150,7 @@ export function registerArtist(name, image, history) {
         socialMedia: []
       }
       dispatch(updateUser(user));
-      history.push('/dashboard');
+      history.push({ pathname: '/dashboard', state: { onboardingSliderOpen: true } });
     }
     else {
       dispatch(error("registerArtist", response.data))
