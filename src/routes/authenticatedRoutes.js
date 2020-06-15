@@ -11,6 +11,7 @@ import Relink from "views/Relink/index";
 
 import Feedback from "views/Feedback";
 import FAQPage from "views/FAQ";
+import ReferralsPage from "views/Referrals/index";
 
 const routes = [
   {
@@ -81,7 +82,7 @@ const routes = [
     component: Feedback,
     layout: "",
     toolTipMessage: "Tell us what you think!",
-    showInSidebar: true
+    showInSidebar: false
   },
   {
     path: "/dashboard/faq",
@@ -90,6 +91,15 @@ const routes = [
     component: FAQPage,
     layout: "",
     toolTipMessage: "Frequently Asked Questions",
+    showInSidebar: false
+  },
+  {
+    path: "/dashboard/invite",
+    name: "Invite",
+    icon: "far fa-paper-plane",
+    component: ReferralsPage,
+    layout: "",
+    toolTipMessage: "Invite",
     showInSidebar: true
   },
 ];
