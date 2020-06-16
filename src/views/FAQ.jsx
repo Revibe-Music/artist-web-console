@@ -11,6 +11,8 @@ import { builder, BuilderComponent } from '@builder.io/react'
 import { logEvent } from 'amplitude/amplitude';
 import OnboardingSlider from 'components/Modals/OnboardingSlider';
 
+import "@builder.io/widgets"
+
 builder.init('c4efecdddef14d36a98d2756c1d5f56b')
 
 const hostname = window && window.location && window.location.hostname;
