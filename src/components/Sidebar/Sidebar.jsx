@@ -240,15 +240,6 @@ class Sidebar extends React.Component {
           <ul className="nav" style={{bottom: 0, position: "absolute"}}>
             <li className="nav-item">
               <a className="nav-link"
-                href=""
-                onClick={() => history.push('/dashboard/faq')}
-                style={{ paddingTop: "0px", paddingBottom: "0px" }}
-              >
-                FAQ
-              </a>
-            </li>{" "}
-            <li className="nav-item">
-              <a className="nav-link"
                 onClick={() => this.onLogout(history)}
                 style={{ paddingTop: "0px", paddingBottom: "0px" }}
               >

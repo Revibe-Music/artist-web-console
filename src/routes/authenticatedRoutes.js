@@ -85,21 +85,21 @@ const routes = [
     showInSidebar: false
   },
   {
-    path: "/dashboard/faq",
-    name: "FAQ",
-    icon: "tim-icons icon-paper",
-    component: FAQPage,
-    layout: "",
-    toolTipMessage: "Frequently Asked Questions",
-    showInSidebar: false
-  },
-  {
     path: "/dashboard/invite",
     name: "Invite",
     icon: "far fa-paper-plane",
     component: ReferralsPage,
     layout: "",
-    toolTipMessage: "Invite",
+    toolTipMessage: "Invite artists and users!",
+    showInSidebar: true
+  },
+  {
+    path: "/dashboard/help",
+    name: "Help",
+    icon: "fa fa-question",
+    component: FAQPage,
+    layout: "",
+    toolTipMessage: "Need help?",
     showInSidebar: true
   },
 ];
