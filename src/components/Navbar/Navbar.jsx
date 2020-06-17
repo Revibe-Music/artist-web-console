@@ -143,7 +143,8 @@ class AdminNavbar extends React.Component {
             <span className="navbar-toggler-bar navbar-kebab" />
             <span className="navbar-toggler-bar navbar-kebab" />
           </button>*/}
-            <Nav className="ml-auto" navbar>
+
+          {/*<Nav className="ml-auto" navbar>
               <UncontrolledDropdown nav>
                 <DropdownToggle
                   caret
@@ -166,7 +167,7 @@ class AdminNavbar extends React.Component {
                 </DropdownMenu>
               </UncontrolledDropdown>
               <li className="separator d-lg-none" />
-            </Nav>
+            </Nav>*/}
         </Container>
       </Navbar>
     );
