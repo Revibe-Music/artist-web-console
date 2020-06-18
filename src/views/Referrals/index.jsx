@@ -24,6 +24,8 @@ import {
   TabPane
 } from "reactstrap";
 
+import NotificationAlert from "react-notification-alert";
+
 import Icon from "components/Icons/icons.js"
 import ArtistsReferrals from './Artists';
 import FansReferrals from './Fans';
@@ -35,6 +37,9 @@ export default class ReferralsPage extends React.Component {
     this.state = {
       currentTab: 0
     }
+
+    this.setActiveTab = this.setActiveTab.bind(this)
+    this.showNotification = this.showNotification.bind(this)
   }
 
   componentDidMount() {
@@ -51,45 +56,54 @@ export default class ReferralsPage extends React.Component {
     this.setState({ ...this.state, currentTab: tab })
   }
 
+  showNotification(options) {
+    this.refs.notificationAlert.notificationAlert(options);
+  }
+
   render() {
     return (
-      <div className="content">
-        <Container className="mt-sm">
-          <Nav className="nav-pills-primary" pills>
-            <NavItem>
-              <NavLink
-                data-toggle="tab"
-                className={this.state.currentTab === 0 ? "active" : "" }
-                onClick={e => this.setActiveTab(e, 0) }
+      <>
+        <div className="rna-container">
+          <NotificationAlert ref="notificationAlert" />
+        </div>
+        <div className="content">
+          <Container className="mt-sm">
+            <Nav className="nav-pills-primary" pills>
+              <NavItem>
+                <NavLink
+                  data-toggle="tab"
+                  className={this.state.currentTab === 0 ? "active" : "" }
+                  onClick={e => this.setActiveTab(e, 0) }
+                >
+                  Artists
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  data-toggle="tab"
+                  className={this.state.currentTab === 1 ? "active" : "" }
+                  onClick={e => this.setActiveTab(e, 1) }
+                >
+                  Fans
+                </NavLink>
+              </NavItem>
+            </Nav>
+            <Card>
+              <TabContent
+                className="tab-space"
+                activeTab={this.state.currentTab}
               >
-                Artists
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                data-toggle="tab"
-                className={this.state.currentTab === 1 ? "active" : "" }
-                onClick={e => this.setActiveTab(e, 1) }
-              >
-                Fans
-              </NavLink>
-            </NavItem>
-          </Nav>
-          <Card>
-            <TabContent
-              className="tab-space"
-              activeTab={this.state.currentTab}
-            >
-              <TabPane tabId={0}>
-                <ArtistsReferrals />
-              </TabPane>
-              <TabPane tabId={1}>
-                <FansReferrals />
-              </TabPane>
-            </TabContent>
-          </Card>
-        </Container>
-      </div>
+                <TabPane tabId={0}>
+                  <ArtistsReferrals showNotification={this.showNotification} />
+                </TabPane>
+                <TabPane tabId={1}>
+                  <FansReferrals showNotification={this.showNotification} />
+                </TabPane>
+              </TabContent>
+            </Card>
+          </Container>
+        </div>
+      </>
     )
   }
 }

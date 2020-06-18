@@ -76,7 +76,7 @@ const routes = [
     showInSidebar: true
   },
   {
-    path: "/dashboard/feedback",
+    path: "/dashboard/contact",
     name: "Feedback",
     icon: "tim-icons icon-notes",
     component: Feedback,

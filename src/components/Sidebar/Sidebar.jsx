@@ -249,7 +249,7 @@ class Sidebar extends React.Component {
             <li className="nav-item">
               <a className="nav-link"
                 href=""
-                onClick={() => history.push('/dashboard/feedback')}
+                onClick={() => history.push('/dashboard/contact')}
                 style={{ paddingTop: "0px", paddingBottom: "0px" }}
               >
                 Contact Us

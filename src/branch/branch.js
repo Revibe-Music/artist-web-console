@@ -8,12 +8,20 @@ if(isLiveSite)
 else
   API_KEY = "key_test_chVy1aR5nhohrMhizivwKgmaDAjPzKC5"
 
+const getLinkBySiteState = () => {
+  return isLiveSite ? "https://artist.revibe.tech/" : `http://${hostname === "localhost" ? "localhost:3000" : hostname}/`
+}
+
 // Initialize Branch
 branch.init(API_KEY)
 
 export const setIdentity = (userId) => {
   // This should be the users actual id that will never change
-  branch.setIdentity(userId)
+  var userIdStr = `${userId}`
+
+  branch.setIdentity(userIdStr, (err, data) => {
+    console.log(err)
+  })
 }
 
 export const logout = () => {
@@ -29,38 +37,63 @@ export const logout = () => {
  * @returns {String} link
  * @throws error
  */
-const createLink = async (campaign, channel, feature, stage, tags, alias, data={}) => {
-  var linkData = {
-    campaign: campaign,
-    channel: channel,
-    feature: feature,
-    stage: stage,
-    tags: tags,
-    alias: alias,
-    data: data
-  };
+const createLink = (linkData={}) => {
+  return new Promise((resolve, reject) => {
+    branch.link(linkData, (err, link) => {
+      if(err) reject(err)
+      else resolve(link)
+    })
+  })
+}
 
+export const createArtistReferralLink = async (channel, userId) => {
+  var canonicalId = `referral:artist:${userId}`
+
+  var linkData = {
+    channel: channel,
+    feature: "artist-referral",
+    stage: "None",
+    tags: [ "Revibe Artists" ],
+    data: {
+      "$canonical_identifier": canonicalId,
+      "$og_title": `Join Revibe`,
+      "$og_description": `Revibe lets you run your entire music career in one place!`,
+      "$og_image_url": ``,
+      "$web_only": true,
+      "$desktop_url": `${getLinkBySiteState()}account/login?uid=${userId}`
+    }
+  };
+  
   try {
-    var link = await branch.link(linkData)
+    var link = await createLink(linkData)
+
+    return link
+  } catch(err) {
+    throw err
+  }
+} 
+
+export const createFanReferralLink = async (channel, userId, displayName) => {
+  var canonicalId = `referral:artist:${userId}`
+
+  var linkData = {
+    channel: channel,
+    feature: "user-referral",
+    stage: "None",
+    tags: [ "Revibe Music" ],
+    data: {
+      "$canonical_identifier": canonicalId,
+      "$og_title": `Join Revibe Music`,
+      "$og_description": `Stream ${displayName}'s music on Revibe Music!`,
+      "$og_image_url": ``
+    }
+  };
+  
+  try {
+    var link = await createLink(linkData)
 
     return link
   } catch(err) {
     throw err
   }
 }
-
-export const createArtistReferralLink = async (channel, userId, username) => {
-  var canonicalId = `revibe:artist:${userId}`
-  var data = {
-    "$canonical_identifier": canonicalId,
-    "$og_title": `ksfkdjfk`,
-    "$og_desc": `dfsfdfwe`,
-    "$og_image_url": ``,
-  }
-  
-  try {
-    var link = createLink(undefined, channel, "artist-referral", "None", [ "Revibe Artists" ])
-  } catch(err) {
-    throw err
-  }
-} 
