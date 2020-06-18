@@ -60,7 +60,7 @@ export const createArtistReferralLink = async (channel, userId) => {
       "$og_description": `Revibe lets you run your entire music career in one place!`,
       "$og_image_url": ``,
       "$web_only": true,
-      "$desktop_url": `${getLinkBySiteState()}account/login?uid=${userId}`
+      "$desktop_url": `${getLinkBySiteState()}account/register?uid=${userId}`
     }
   };
   
