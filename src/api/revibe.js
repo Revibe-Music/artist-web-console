@@ -279,10 +279,14 @@ export default class RevibeAPI {
       // device_name: this.device_name,
       device_type: "browser"
     }
-    var response = await this. _request(referrerId ? `account/register/?uid=${referrerId}` : "account/register/", data, "POST", false)
+
+    console.log(referrerId)
+
+    var address = referrerId ? `account/register/?uid=${referrerId}` : "account/register/"
+
+    var response = await this. _request(address, data, "POST", false)
     this._setCookie(response.data.access_token)
     return response
-
   }
 
   async signInGoogle(access_token) {
@@ -331,6 +335,12 @@ export default class RevibeAPI {
   async logoutAll() {
     this._deleteCookie()
     return await this. _request("account/logout-all/", null, "POST", true)
+  }
+
+  async registerReferral(referrerId) {
+    var data = { user_id: referrerId }
+
+    return await this._request("account/referrals/my-referrals/", data, "POST", true)
   }
 
   async contactUs(data) {
