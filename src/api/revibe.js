@@ -268,7 +268,7 @@ export default class RevibeAPI {
   ////////// AUTHENTICATION //////////
   ////////////////////////////////////
 
-  async register(username, email, password) {
+  async register(username, email, password, referrerId=null) {
     var data = {
       username: username,
       password: password,
@@ -279,7 +279,7 @@ export default class RevibeAPI {
       // device_name: this.device_name,
       device_type: "browser"
     }
-    var response = await this. _request("account/register/", data, "POST", false)
+    var response = await this. _request(referrerId ? `account/register/?uid=${referrerId}` : "account/register/", data, "POST", false)
     this._setCookie(response.data.access_token)
     return response
 

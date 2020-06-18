@@ -40,7 +40,8 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ClipLoader from "react-spinners/ClipLoader";
-import ReactTooltip from 'react-tooltip';
+
+import queryString from 'query-string'
 
 import ScrollNavbar from "components/Navbars/ScrollNavbar.jsx";
 import { register, signInViaGoogle } from 'redux/authentication/actions.js';
@@ -77,8 +78,9 @@ class Register extends React.Component {
       agreedToTermsError: "",
 
       SubmitButtonClicked:false,
-      popupIsFailure: Math.random()
+      popupIsFailure: Math.random(),
 
+      referralId: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -89,6 +91,11 @@ class Register extends React.Component {
 
   componentDidMount() {
     document.body.classList.toggle("register-page");
+
+    var values = queryString.parse(this.props.location.search)
+
+    if(values.uid)
+      this.setState({ ...this.state, referralId: values.uid })
   }
 
   componentWillUnmount() {
@@ -251,7 +258,7 @@ class Register extends React.Component {
     if(validFields) {
       if(this.state.usernameError==="" && this.state.emailError==="" && this.state.passwordError==="" && this.state.confirmPasswordError==="") {
         this.setState({SubmitButtonClicked: true})
-        this.props.register(this.state.username, this.state.email, this.state.password, history);
+        this.props.register(this.state.username, this.state.email, this.state.password, history, this.state.referralId ? this.state.referralId : null);
       }
     }
   }
@@ -274,6 +281,8 @@ class Register extends React.Component {
   }
 
   render() {
+    console.log(this.state)
+
     const SubmitButton = withRouter(({ history }) => (
       <Button
         className="btn-round btn-primary w-100"

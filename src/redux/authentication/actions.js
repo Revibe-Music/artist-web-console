@@ -50,11 +50,11 @@ const clearErrors = (errorName) => ({
 
 // Only functions below should ever be called by a component!
 
-export function register(username, email, password, history) {
+export function register(username, email, password, history, referralId=null) {
   return async (dispatch) => {
     dispatch(clearErrors("register"))
     logEvent("Signup", "Clicked")
-    var response = await revibe.register(username, email, password)
+    var response = await revibe.register(username, email, password, referralId ? referralId : null)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
       var user = {
