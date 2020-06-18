@@ -1,5 +1,6 @@
 import RevibeAPI from 'api/revibe.js';
 import { logEvent, setUserData, setRegistration } from 'amplitude/amplitude';
+import { setIdentity, logout as branchLogout } from 'branch/branch'
 
 const revibe = new RevibeAPI()
 
@@ -86,6 +87,7 @@ export function register(username, email, password, history) {
       logEvent("Signup", "Success")
       setUserData(response.user.user_id)
       setRegistration()
+      setIdentity(response.user.user_id)
     }
     else {
       logEvent("Signup", "Failure")
@@ -109,6 +111,7 @@ export function signInViaGoogle(access_token, history) {
       dispatch(loginUser());
       dispatch(getProfile());
       setUserData(response.user.user_id)
+      setIdentity(response.user.user_id)
     }
     else {
       dispatch(error("register", response.data))
@@ -177,6 +180,7 @@ export function login(username, password, history) {
       dispatch(loginUser());
       dispatch(getProfile());
       setUserData(response.user.user_id)
+      setIdentity(response.user.user_id)
     }
     else {
       logEvent("Login", "Failure")
@@ -196,6 +200,7 @@ export function logout(history) {
       await history.push('/account/login');
       dispatch(logoutUser());
       dispatch(removeUser());
+      branchLogout()
     }
     else {
       logEvent("Logout", "Failure")
