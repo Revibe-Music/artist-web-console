@@ -177,12 +177,12 @@ class Authenticated extends Component {
             ref="mainPanel"
             data={this.state.activeColor}
           >
-            {/*}<Navbar
+            <Navbar
               {...this.props}
               // brandText={this.getActiveRoute(routes)}
               sidebarOpened={this.state.sidebarOpened}
               toggleSidebar={this.toggleSidebar}
-            />*/}
+            />
             {this.getRoutes(routes)}
             {// we don't want the Footer to be rendered on full screen maps page
             this.props.location.pathname.indexOf("full-screen-map") !==
