@@ -20,7 +20,7 @@ export const setIdentity = (userId) => {
   var userIdStr = `${userId}`
 
   branch.setIdentity(userIdStr, (err, data) => {
-    console.log(err)
+    if(err) console.log(err)
   })
 }
 
@@ -51,9 +51,9 @@ export const createArtistReferralLink = async (channel, userId) => {
 
   var linkData = {
     channel: channel,
-    feature: "artist-referral",
-    stage: "None",
-    tags: [ "Revibe Artists" ],
+    campaign: "artist-invite",
+    feature: "referral",
+    tags: [ "revibe-artists", "auto" ],
     data: {
       "$canonical_identifier": canonicalId,
       "$og_title": `Join Revibe`,
@@ -78,9 +78,9 @@ export const createFanReferralLink = async (channel, userId, displayName) => {
 
   var linkData = {
     channel: channel,
-    feature: "user-referral",
-    stage: "None",
-    tags: [ "Revibe Music" ],
+    campaign: "artist-invite",
+    feature: "referral",
+    tags: [ "revibe-music", "auto" ],
     data: {
       "$canonical_identifier": canonicalId,
       "$og_title": `Join Revibe Music`,

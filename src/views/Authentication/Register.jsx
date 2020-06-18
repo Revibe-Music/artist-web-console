@@ -258,7 +258,13 @@ class Register extends React.Component {
     if(validFields) {
       if(this.state.usernameError==="" && this.state.emailError==="" && this.state.passwordError==="" && this.state.confirmPasswordError==="") {
         this.setState({SubmitButtonClicked: true})
-        this.props.register(this.state.username, this.state.email, this.state.password, history, this.state.referralId ? this.state.referralId : null);
+
+        var referralId = this.state.referralId ? this.state.referralId : null
+
+        if(referralId)
+          this.props.register(this.state.username, this.state.email, this.state.password, history, referralId);
+        else
+          this.props.register(this.state.username, this.state.email, this.state.password, history);
       }
     }
   }
@@ -275,9 +281,12 @@ class Register extends React.Component {
   }
 
   googleAuthSuccess(user, history) {
-    var token = user._token.accessToken
+    var token = user._token.accessToken, referralId = this.state.referralId ? parseInt(this.state.referralId) : null
 
-    this.props.signInViaGoogle(token, history)
+    if(referralId)
+      this.props.signInViaGoogle(token, history, referralId)
+    else
+      this.props.signInViaGoogle(token, history)
   }
 
   render() {
@@ -609,8 +618,8 @@ function mapStateToProps(state) {
 };
 
 const mapDispatchToProps = dispatch => ({
-    register: (username, email, password, history) =>dispatch(register(username, email, password, history)),
-    signInViaGoogle: (access_token, history) => dispatch(signInViaGoogle(access_token, history)),
+    register: (username, email, password, history, referralId) =>dispatch(register(username, email, password, history, referralId)),
+    signInViaGoogle: (access_token, history, referralId) => dispatch(signInViaGoogle(access_token, history, referralId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

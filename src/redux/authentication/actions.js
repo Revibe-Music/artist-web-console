@@ -54,7 +54,11 @@ export function register(username, email, password, history, referralId=null) {
   return async (dispatch) => {
     dispatch(clearErrors("register"))
     logEvent("Signup", "Clicked")
-    var response = await revibe.register(username, email, password, referralId ? referralId : null)
+    var response
+    if(referralId)
+      response = await revibe.register(username, email, password, referralId)
+    else
+      response = await revibe.register(username, email, password)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
       var user = {
@@ -96,7 +100,7 @@ export function register(username, email, password, history, referralId=null) {
   }
 }
 
-export function signInViaGoogle(access_token, history) {
+export function signInViaGoogle(access_token, history, referrerId=null) {
   return async (dispatch) => {
     dispatch(clearErrors("register"))
     var response = await revibe.signInGoogle(access_token)
@@ -112,6 +116,8 @@ export function signInViaGoogle(access_token, history) {
       dispatch(getProfile());
       setUserData(response.user.user_id)
       setIdentity(response.user.user_id)
+
+      if(referrerId) await revibe.registerRefferal(referrerId)
     }
     else {
       dispatch(error("register", response.data))
