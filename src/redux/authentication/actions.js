@@ -117,8 +117,6 @@ export function signInViaGoogle(access_token, history, referrerId=null) {
       setUserData(response.user.user_id)
       setIdentity(response.user.user_id)
 
-      console.log(referrerId)
-
       if(referrerId) { 
         var res = await revibe.registerReferral(referrerId)
 
