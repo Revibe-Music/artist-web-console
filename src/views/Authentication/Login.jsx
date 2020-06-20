@@ -276,13 +276,13 @@ class Login extends Component {
                 <Card className="card-login card-gray">
                   <CardBody>
                     <Container>
-                      <Row>
-                        {!isMobile ? <Col md="6" className="d-flex align-items-center">
+                      <Row className="d-flex">
+                        {/*!isMobile ? <Col md="6" className="d-flex align-items-center">
                           <div className="mt-auto mb-auto">
                             <BuilderComponent modelName="Sign in" model="component" />
                           </div>
-                        </Col> : null}
-                        <Col md="6">
+                        </Col> : null*/}
+                        <Col md="6" className="ml-auto mr-auto">
                           {!isMobile ?
                             <>
                               {/*<h4 className="text-white w-50 text-right ml-auto mr-0"><Link to="/account/create-profile" disabled>Skip</Link></h4>*/}
