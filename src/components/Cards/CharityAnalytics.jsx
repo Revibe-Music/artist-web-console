@@ -119,7 +119,7 @@ export default class CharityAnalyticsCard extends React.Component {
             <Col xs="6" sm="6" md="6" lg="6" className="ml-0 mr-auto d-flex pl-0 pr-0">
               <Row className="ml-2 mr-2 w-100 mt-auto mb-auto">
                 <h5 className="ml-1 mr-auto mt-auto w-auto mb-auto text-neutral d-inline-block" style={{ fontSize: "0.675rem" }}>
-                  Every stream this week generates $0.25 that will be donated to Black Education for NOLA! Learn more.
+                  Every stream this week generates $0.25 that will be donated to Black Education for NOLA!
                 </h5>
               </Row>
             </Col>
