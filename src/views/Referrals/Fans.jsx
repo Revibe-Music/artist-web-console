@@ -115,7 +115,6 @@ class FansReferrals extends React.Component {
             <h3 className="text-white w-100 text-center m-0 mb-3">Invite your fans to stream your music!</h3>
             {this.state.deepLinks.setup && !this.state.loadingDeepLinks ? 
               <>
-                <h5 className="text-light w-100 text-center mt-sm mb-sm">or</h5>
                 <h3 className="text-white w-100 text-center m-0 mb-3">Share your link:</h3>
                 {this.state.deepLinks.copy !== "" ? <div className="w-100 d-flex">
                   <h4 className="text-primary ml-auto mr-3 mt-auto mb-auto">{this.state.deepLinks.copy}</h4>

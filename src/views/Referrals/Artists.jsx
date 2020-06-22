@@ -223,7 +223,7 @@ class ArtistsReferrals extends React.Component {
           <Row className="d-flex mt-sm">
             <Col md="6" className="ml-auto mr-auto">
               <h3 className="text-white w-100 text-center m-0 mb-2">Invite fellow musicians and earn rewards!</h3>
-              <div className="w-100 d-flex">
+              {/*<div className="w-100 d-flex">}
                 <div style={isMobile ? { width: "80%" } : { width: "50%" }} className="d-flex ml-auto mr-2 mt-auto mb-auto">
                   <InputGroup
                     className={classnames({
@@ -270,9 +270,9 @@ class ArtistsReferrals extends React.Component {
                   </div>
                 </div>  
               : null}
+              <h5 className="text-light w-100 text-center mt-sm mb-sm">or</h5>*/}
               {this.state.deepLinks.setup && !this.state.loadingDeepLinks ? 
                 <>
-                  <h5 className="text-light w-100 text-center mt-sm mb-sm">or</h5>
                   <h3 className="text-white w-100 text-center m-0 mb-3">Share your link:</h3>
                   {this.state.deepLinks.copy !== "" ? <div className="w-100 d-flex">
                     <h4 className="text-primary ml-auto mr-3 mt-auto mb-auto">{this.state.deepLinks.copy}</h4>

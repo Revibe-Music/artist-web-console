@@ -438,13 +438,13 @@ class Register extends React.Component {
                 <Card className="card-login card-gray">
                   <CardBody>
                     <Container>
-                      <Row className="d-flex">
-                        {/*!isMobile ? <Col md="6" className="d-flex align-items-center">
+                      <Row>
+                        {!isMobile ? <Col md="6" className="d-flex align-items-center">
                           <div className="mt-auto mb-auto">
                             <BuilderComponent modelName="Sign up" model="component" />
                           </div>
-                        </Col> : null*/}
-                        <Col md="6" className="ml-auto mr-auto">
+                        </Col> : null}
+                        <Col md="6">
                           {!isMobile ?
                             <>
                               {/*<h4 className="text-white w-50 text-right ml-auto mr-0"><Link to="/account/register">Skip</Link></h4>*/}
