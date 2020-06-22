@@ -51,17 +51,19 @@ class Dashboard extends React.Component {
       <div className="content">
         <Container style={{ maxWidth: "90%" }}>
           <Row>
-            <Col xs="12" sm="9" md="9" className="d-flex">
-              <h1 className="m-0 mb-0 mt-auto" style={{ fontSize: "3.25rem" }}>Welcome, {this.props.user.displayName}</h1>
+            <Col xs="12" sm="12" md="6" className="d-flex">
+              <h1 className="m-0 mb-auto mt-0" style={{ fontSize: "3.25rem" }}>Welcome, {this.props.user.displayName}</h1>
               {/*<Card className="card-chart">
                 <CardHeader className="m-auto mr-auto">
                     <CardTitle tag="h4">The following charts/graphs are displaying stock data. User generated data is coming soon. </CardTitle>
                 </CardHeader>
               </Card>*/}
             </Col>
-            <Col xs="12" sm="3" md="3">
+            <Col xs="12" sm="12" md="6">
               <CharityCard />
             </Col>
+          </Row>
+          <Row>
             {/* Stream/Listener Cols */}
             <Col lg="3" md="6" sm="6" xs="12">
               <GraphComp
