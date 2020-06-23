@@ -4,7 +4,13 @@ import {
   Container,
   Row,
   Col,
-  Button
+  Button,
+  NavItem,
+  NavLink,
+  Nav,
+  TabContent,
+  TabPane,
+  Card
 } from "reactstrap";
 
 import { builder, BuilderComponent } from '@builder.io/react'
@@ -22,36 +28,67 @@ export default class FAQPage extends React.Component {
     super(props)
 
     this.state = {
-      isOpen: false
+      tutorialMode: this.props.location && this.props.location.state ? this.props.location.state.onboardingSliderOpen : false,
+      isOpen: false,
+      currentTab: this.props.location && this.props.location.state ? this.props.location.state.onboardingSliderOpen ? 1 : 0 : 0
     }
 
     this.toggle = this.toggle.bind(this)
+    this.setActiveTab = this.setActiveTab.bind(this)
   }
 
   toggle() {
     this.setState({ ...this.state, isOpen: !this.state.isOpen })
   }
 
+  setActiveTab(e, tab) {
+    e.preventDefault()
+
+    this.setState({ ...this.state, currentTab: tab })
+  }
+
   render() {
-    console.log(hostname)
+    console.log(this.state)
 
     return (
       <div className="content">
-        {hostname === "localhost" || hostname === "artist-website-test.s3-website.us-east-2.amazonaws.com" ?
-          <>
-            <OnboardingSlider isOpen={this.state.isOpen} toggle={this.toggle} />
-            <Row className="d-flex">
-              <Col md="2" className="ml-auto mr-0 d-flex">
-                <Button className="btn-primary btn-simple ml-auto mr-auto" onClick={e => this.toggle()}>Information</Button>
-              </Col>
-            </Row>
-          </>
-        : null}
-        <Container>
-          <BuilderComponent
-            name="component"
-            entry="a163bda773e346ff96fbbf3bb45a9349" 
-          />
+        <Container className="mt-sm">
+          {!this.state.tutorialMode ? <Nav className="nav-pills-primary" pills>
+            <NavItem>
+              <NavLink
+                data-toggle="tab"
+                className={this.state.currentTab === 0 ? "active" : "" }
+                onClick={e => this.setActiveTab(e, 0) }
+              >
+                FAQ
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                data-toggle="tab"
+                className={this.state.currentTab === 1 ? "active" : "" }
+                onClick={e => this.setActiveTab(e, 1) }
+              >
+                What is Revibe?
+              </NavLink>
+            </NavItem>
+          </Nav> : null}
+          <TabContent
+            className="tab-space"
+            activeTab={this.state.currentTab}
+          >
+            <TabPane tabId={0}>
+              <BuilderComponent
+                name="component"
+                entry="a163bda773e346ff96fbbf3bb45a9349" 
+              />
+            </TabPane>
+            <TabPane tabId={1}>
+              <OnboardingSlider 
+                tutorialMode={this.state.tutorialMode}
+              />
+            </TabPane>
+          </TabContent>
         </Container>
       </div>
     )

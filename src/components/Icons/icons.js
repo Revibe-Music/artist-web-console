@@ -46,6 +46,18 @@ export default function Icon(props) {
           </svg>
         : null
       }
+      {icon.toLowerCase() == "revibe" ?
+        <svg viewBox="0 0 400 400" {...props} version="1.1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink">
+          <title>Artboard</title>
+          <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Impossible_Triangle" transform="translate(200.500000, 200.000000) rotate(90.000000) translate(-200.500000, -200.000000) translate(19.000000, 42.000000)">
+                  <polygon id="path2996" fill="#7248BD" points="26.13643 315.89011 0.125 263.36218 154.93087 0.97506 278.9271 210.32917 227.40932 210.32917 154.93087 91.38371"></polygon>
+                  <polygon id="path2998" fill="#5B3997" points="362.18804 262.73361 336.64804 314.42833 26.30433 314.53993 154.91772 90.53002 177.89869 128.01153 103.52908 262.9963"></polygon>
+                  <polygon id="path3002" fill="#8D6BC9" points="154.125 0.36218 206.125 0.36218 361.125 263.36218 102.5 263.91575 132.125 210.36218 278.125 210.36218"></polygon>
+              </g>
+          </g>
+        </svg>
+      : null}
     </>
   )
 }
