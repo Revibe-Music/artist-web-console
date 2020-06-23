@@ -5,6 +5,7 @@ import classnames from "classnames"
 import PropTypes from "prop-types";
 
 import ClipLoader from "react-spinners/ClipLoader"
+import Image from 'react-graceful-image';
 
 import RevibeAPI from 'api/revibe.js'
 
@@ -113,29 +114,35 @@ export default class CharityAnalyticsCard extends React.Component {
       <Card className={`card-stats`} color="primary">
         <CardBody>
           <Row>
-            <Row className="w-100 ml-auto mr-auto">
+          <Col xs="12" sm="3" md="3" lg="3" className="ml-0 mr-auto d-flex pl-2 pr-2 align-items-center justify-content-center">
+            <img src={require("assets/portal/img/listen-for-change.jpg")} style={{width: "auto", height: "auto", maxHeight: 200}}/>
+          </Col>
+          <Col xs="12" sm="6" md="6" lg="6" className="ml-0 mr-auto d-flex pl-10 pr-0">
+            <Row className="ml-2 mr-2 w-100 mt-auto mb-auto">
               <h2 className="w-100 text-center text-white mb-2 m-0 p-0">Listen For Change</h2>
+              <h5 className="ml-auto mr-auto mt-auto w-auto mb-auto text-center d-inline-block" style={{ fontSize: "0.725rem" }}>
+                This week 1 stream = $0.25 to Black Education for NOLA!
+              </h5>
             </Row>
-            <Col xs="6" sm="6" md="6" lg="6" className="ml-0 mr-auto d-flex pl-0 pr-0">
-              <Row className="ml-2 mr-2 w-100 mt-auto mb-auto">
-                <h5 className="ml-1 mr-auto mt-auto w-auto mb-auto text-neutral d-inline-block" style={{ fontSize: "0.725rem" }}>
-                  Every stream this week generates $0.25 that will be donated to Black Education for NOLA!
-                </h5>
-              </Row>
             </Col>
-            <Col xs="6" sm="6" md="6" lg="6" className="d-flex align-items-center justify-content-center pl-0 pr-0">
-              <div className="numbers text-left">
-                {!this.state.loading && this.state.data ?
-                  <CardTitle tag="h1" style={{ fontSize: getFontSizeBasedOnData(numericDollarAmnt) }}>{numericDollarAmnt}</CardTitle>
-                :
-                  <div className="w-auto h-auto m-auto">
-                    <ClipLoader
-                      size={15}
-                      color={"white"}
-                      loading={true}
-                    />
-                  </div>
-                }
+            <Col xs="12" sm="3" md="3" lg="3" className="d-flex align-items-center justify-content-center">
+              <div className="d-block align-items-center justify-content-center pl-0 pr-10">
+                <div className="text-center">
+                  <CardTitle tag="h4">You raised</CardTitle>
+                </div>
+                <div className="numbers text-left">
+                  {!this.state.loading && this.state.data ?
+                    <CardTitle tag="h1" style={{ marginTop: 0, fontSize: getFontSizeBasedOnData(numericDollarAmnt) }}>{numericDollarAmnt}</CardTitle>
+                  :
+                    <div className="w-auto h-auto m-auto">
+                      <ClipLoader
+                        size={15}
+                        color={"white"}
+                        loading={true}
+                      />
+                    </div>
+                  }
+                </div>
               </div>
             </Col>
           </Row>
