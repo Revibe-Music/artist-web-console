@@ -11,7 +11,7 @@
 (DONE) Logout - Failure
 
 (DONE) Onboarding - Started
-(NOT IMPLEMENTED) Onboarding - Skipped
+(DONE) Onboarding - Skipped
 (DONE) Onboarding - Completed
 
 (NOT DONE, later) Navigate - Tab

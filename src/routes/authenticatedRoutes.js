@@ -10,6 +10,8 @@ import Account from "views/Account/index";
 import Relink from "views/Relink/index";
 
 import Feedback from "views/Feedback";
+import FAQPage from "views/FAQ";
+import ReferralsPage from "views/Referrals/index";
 
 const routes = [
   {
@@ -74,12 +76,30 @@ const routes = [
     showInSidebar: true
   },
   {
-    path: "/dashboard/feedback",
+    path: "/dashboard/contact",
     name: "Feedback",
     icon: "tim-icons icon-notes",
     component: Feedback,
     layout: "",
     toolTipMessage: "Tell us what you think!",
+    showInSidebar: false
+  },
+  {
+    path: "/dashboard/invite",
+    name: "Invite",
+    icon: "far fa-paper-plane",
+    component: ReferralsPage,
+    layout: "",
+    toolTipMessage: "Invite artists and users!",
+    showInSidebar: true
+  },
+  {
+    path: "/dashboard/help",
+    name: "Help",
+    icon: "fa fa-question",
+    component: FAQPage,
+    layout: "",
+    toolTipMessage: "Need help?",
     showInSidebar: true
   },
 ];

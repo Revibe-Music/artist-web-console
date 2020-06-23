@@ -1,5 +1,6 @@
 import RevibeAPI from 'api/revibe.js';
 import { logEvent, setUserData, setRegistration } from 'amplitude/amplitude';
+import { setIdentity, logout as branchLogout } from 'branch/branch'
 
 const revibe = new RevibeAPI()
 
@@ -49,11 +50,15 @@ const clearErrors = (errorName) => ({
 
 // Only functions below should ever be called by a component!
 
-export function register(username, email, password, history) {
+export function register(username, email, password, history, referralId=null) {
   return async (dispatch) => {
     dispatch(clearErrors("register"))
     logEvent("Signup", "Clicked")
-    var response = await revibe.register(username, email, password)
+    var response
+    if(referralId)
+      response = await revibe.register(username, email, password, referralId)
+    else
+      response = await revibe.register(username, email, password)
     if(String(response.status).charAt(0)=="2") {
       response = response.data
       var user = {
@@ -86,6 +91,7 @@ export function register(username, email, password, history) {
       logEvent("Signup", "Success")
       setUserData(response.user.user_id)
       setRegistration()
+      setIdentity(response.user.user_id)
     }
     else {
       logEvent("Signup", "Failure")
@@ -94,7 +100,7 @@ export function register(username, email, password, history) {
   }
 }
 
-export function signInViaGoogle(access_token, history) {
+export function signInViaGoogle(access_token, history, referrerId=null) {
   return async (dispatch) => {
     dispatch(clearErrors("register"))
     var response = await revibe.signInGoogle(access_token)
@@ -109,6 +115,14 @@ export function signInViaGoogle(access_token, history) {
       dispatch(loginUser());
       dispatch(getProfile());
       setUserData(response.user.user_id)
+      setIdentity(response.user.user_id)
+
+      if(referrerId) { 
+        var res = await revibe.registerReferral(referrerId)
+
+        if(String(res.status).charAt(0) == "2") console.log("Added referral!")
+        else console.log(res)
+      }
     }
     else {
       dispatch(error("register", response.data))
@@ -150,7 +164,7 @@ export function registerArtist(name, image, history) {
         socialMedia: []
       }
       dispatch(updateUser(user));
-      history.push('/dashboard');
+      history.push({ pathname: '/dashboard', state: { onboardingSliderOpen: true } });
     }
     else {
       dispatch(error("registerArtist", response.data))
@@ -177,6 +191,7 @@ export function login(username, password, history) {
       dispatch(loginUser());
       dispatch(getProfile());
       setUserData(response.user.user_id)
+      setIdentity(response.user.user_id)
     }
     else {
       logEvent("Login", "Failure")
@@ -196,6 +211,7 @@ export function logout(history) {
       await history.push('/account/login');
       dispatch(logoutUser());
       dispatch(removeUser());
+      branchLogout()
     }
     else {
       logEvent("Logout", "Failure")

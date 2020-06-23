@@ -239,14 +239,18 @@ class Sidebar extends React.Component {
           <Nav>{this.createLinks(this.props.routes)}</Nav>
           <ul className="nav" style={{bottom: 0, position: "absolute"}}>
             <li className="nav-item">
-                <a className="nav-link" onClick={() => this.onLogout(history)}>
-                  Logout
-                </a>
+              <a className="nav-link"
+                onClick={() => this.onLogout(history)}
+                style={{ paddingTop: "0px", paddingBottom: "0px" }}
+              >
+                Logout
+              </a>
             </li>{" "}
             <li className="nav-item">
               <a className="nav-link"
-                 target="_blank"
-                 href="/contact-us">
+                href="/dashboard/contact"
+                style={{ paddingTop: "0px", paddingBottom: "0px" }}
+              >
                 Contact Us
               </a>
             </li>{" "}
@@ -255,14 +259,17 @@ class Sidebar extends React.Component {
                 className="nav-link"
                 target="_blank"
                 href={termAndConditionsLink}
+                style={{ paddingTop: "0px", paddingBottom: "0px" }}
               >
                 Terms & Conditions
               </a>
             </li>{" "}
             <li className="nav-item">
               <a className="nav-link"
-                 target="_blank"
-                 href={privacyPolicyLink}>
+                target="_blank"
+                href={privacyPolicyLink}
+                style={{ paddingTop: "0px", paddingBottom: "10px" }}
+              >
                 Privacy Policy
               </a>
             </li>
