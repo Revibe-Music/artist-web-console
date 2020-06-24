@@ -67,7 +67,7 @@ export default class ReferralsPage extends React.Component {
           <NotificationAlert ref="notificationAlert" />
         </div>
         <div className="content">
-          <Container className="mt-sm">
+          <Container>
             <Nav className="nav-pills-primary" pills>
               <NavItem>
                 <NavLink

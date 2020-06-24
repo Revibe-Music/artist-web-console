@@ -82,6 +82,8 @@ export default class OnboardingSlider extends React.Component {
       </Button>
     ));
 
+    const isSmall = window.innerWidth < 768, pixelSize = isSmall ? 50 : 100
+
     return (
       <Container>
         {this.props.tutorialMode ? <Row className="d-flex">
@@ -90,12 +92,12 @@ export default class OnboardingSlider extends React.Component {
           </Col>
         </Row> : null}
         <Row className="d-flex">
-          <Col xs="10" md="8" className="ml-auto mr-auto d-flex">
-            <div className="w-100 ml-auto mr-auto d-flex" style={{ height: "100px" }}>
+          <Col xs="12" sm="12" md="10" className="ml-auto mr-auto d-flex">
+            <div className="w-100 ml-auto mr-auto d-flex" style={{ height: `${isSmall ? 50 : 100}px` }}>
               <div
                 id="progress-bar"
                 style={{ backgroundColor: "rgba(59,56,53,1)", 
-                  width: "80%", 
+                  width: window.innerWidth < 992 ? "100%" : "80%", 
                   height: "15px", 
                   borderRadius: "10px" 
                 }}
@@ -113,38 +115,39 @@ export default class OnboardingSlider extends React.Component {
               </div>
               <div 
                 id="icons"
-                className="position-absolute d-flex w-100"
+                className="position-absolute d-flex"
+                style={{ width: `${isSmall ? "92%" : "100%"}` }}
               >
-                <div className="ml-auto mr-auto d-flex" style={{ width: "65%" }}>
+                <div className="ml-auto mr-auto d-flex" style={{ width: `${window.innerWidth < 992 ? 80 : 65}%` }}>
                   <div
                     className="ml-auto mr-auto"
                     style={{
                       backgroundColor: "black",
-                      width: "100px",
-                      height: "100px",
+                      width: `${pixelSize}px`,
+                      height: `${pixelSize}px`,
                       borderRadius: "100%",
-                      border: "5px solid rgba(59,56,53,1)",
+                      border: `${pixelSize/20}px solid rgba(59,56,53,1)`,
                       cursor: "pointer"
                     }}
                     onClick={() => this.setTab(0)}
                   >
                     <Icon
                       icon="revibe"
-                      width="90px"
-                      height="90px"
+                      width={`${pixelSize*0.9}px`}
+                      height={`${pixelSize*0.9}px`}
                       style={{
-                        padding: "15px",
+                        padding: `${isSmall ? 7.5 : 15}px`,
                       }}
                     />
                   </div>
                   <div
                     className="ml-auto mr-auto"
                     style={{
-                      backgroundColor: `${this.state.tabsVisited.includes(1) ? "black" : "white"}`,
-                      width: "100px",
-                      height: "100px",
+                      backgroundColor: `${this.state.tabsVisited.includes(1) ? "black" : "rgba(59,56,53,1)"}`,
+                      width: `${pixelSize}px`,
+                      height: `${pixelSize}px`,
                       borderRadius: "100%",
-                      border: "5px solid rgba(59,56,53,1)",
+                      border: `${pixelSize/20}px solid rgba(59,56,53,1)`,
                       cursor: "pointer"
                     }}
                     onClick={() => this.setTab(1)}
@@ -153,20 +156,20 @@ export default class OnboardingSlider extends React.Component {
                       className="ml-auto mr-auto"
                       style={{
                         color: `${this.state.tabsVisited.includes(1) ? "#7248BD" : "black"}`,
-                        width: "90px",
-                        height: "90px",
-                        padding: "15px",
+                        width: `${pixelSize*0.9}px`,
+                        height: `${pixelSize*0.9}px`,
+                        padding: `${isSmall ? 7.5 : 15}px`,
                       }}
                     />
                   </div>
                   <div
                     className="ml-auto mr-auto"
                     style={{
-                      backgroundColor: `${this.state.tabsVisited.includes(2) ? "black" : "white"}`,
-                      width: "100px",
-                      height: "100px",
+                      backgroundColor: `${this.state.tabsVisited.includes(2) ? "black" : "rgba(59,56,53,1)"}`,
+                      width: `${pixelSize}px`,
+                      height: `${pixelSize}px`,
                       borderRadius: "100%",
-                      border: "5px solid rgba(59,56,53,1)",
+                      border: `${pixelSize/20}px solid rgba(59,56,53,1)`,
                       cursor: "pointer"
                     }}
                     onClick={() => this.setTab(2)}
@@ -175,20 +178,20 @@ export default class OnboardingSlider extends React.Component {
                       className="ml-auto mr-auto"
                       style={{
                         color: `${this.state.tabsVisited.includes(2) ? "#7248BD" : "black"}`,
-                        width: "90px",
-                        height: "90px",
-                        padding: "15px"
+                        width: `${pixelSize*0.9}px`,
+                        height: `${pixelSize*0.9}px`,
+                        padding: `${isSmall ? 7.5 : 15}px`,
                       }}
                     />
                   </div>
                   <div
                     className="ml-auto mr-auto"
                     style={{
-                      backgroundColor: `${this.state.tabsVisited.includes(3) ? "black" : "white"}`,
-                      width: "100px",
-                      height: "100px",
+                      backgroundColor: `${this.state.tabsVisited.includes(3) ? "black" : "rgba(59,56,53,1)"}`,
+                      width: `${pixelSize}px`,
+                      height: `${pixelSize}px`,
                       borderRadius: "100%",
-                      border: "5px solid rgba(59,56,53,1)",
+                      border: `${pixelSize/20}px solid rgba(59,56,53,1)`,
                       cursor: "pointer"
                     }}
                     onClick={() => this.setTab(3)}
@@ -197,9 +200,9 @@ export default class OnboardingSlider extends React.Component {
                       className="ml-auto mr-auto"
                       style={{
                         color: `${this.state.tabsVisited.includes(3) ? "#7248BD" : "black"}`,
-                        width: "90px",
-                        height: "90px",
-                        padding: "15px",
+                        width: `${pixelSize*0.9}px`,
+                        height: `${pixelSize*0.9}px`,
+                        padding: `${isSmall ? 7.5 : 15}px`,
                       }}
                     />
                   </div>
