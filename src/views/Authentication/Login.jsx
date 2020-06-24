@@ -279,7 +279,10 @@ class Login extends Component {
                       <Row>
                         {!isMobile ? <Col md="6" className="d-flex align-items-center">
                           <div className="mt-auto mb-auto">
-                            <BuilderComponent modelName="Sign in" model="component" />
+                            <BuilderComponent
+                              name="component"
+                              entry="481fa42b58824e3faa10bc6b2e0da733"
+                            />
                           </div>
                         </Col> : null}
                         <Col md="6">

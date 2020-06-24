@@ -17,8 +17,6 @@ import routes from "./../routes/authenticatedRoutes.js";
 import logo from "assets/portal/img/revibe-logo.jpg";
 
 import "assets/portal/scss/black-dashboard-pro-react.scss?v=1.0.1";
-import OnboardingSlider from "components/Modals/OnboardingSlider.js";
-
 
 var ps;
 
@@ -30,8 +28,7 @@ class Authenticated extends Component {
       activeColor: "primary",
       sidebarMini: true,
       opacity: 0,
-      sidebarOpened: false,
-      onboardingSliderOpen: this.props.location && this.props.location.state ? this.props.location.state.onboardingSliderOpen : false
+      sidebarOpened: false
     };
     this.props.getUploadedAlbums()
     this.props.getUploadedSongs()
@@ -143,13 +140,6 @@ class Authenticated extends Component {
     document.documentElement.classList.toggle("nav-open");
   };
 
-  toggleOnboardingSlider = () => {
-    this.setState({
-      ...this.state,
-      onboardingSliderOpen: !this.state.onboardingSliderOpen
-    })
-  }
-
   render() {
     //console.log(this.state)
 
@@ -191,7 +181,6 @@ class Authenticated extends Component {
             )}
           </div>
         </div>
-        <OnboardingSlider isOpen={this.state.onboardingSliderOpen} toggle={this.toggleOnboardingSlider} />
       </>
     );
   }
