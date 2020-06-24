@@ -35,6 +35,7 @@ export default class OnboardingSlider extends React.Component {
 
     this.toggleTab = this.toggleTab.bind(this)
     this.finishEvent = this.finishEvent.bind(this)
+    this.setTab = this.setTab.bind(this)
   }
 
   toggleTab(e, increase) {
@@ -46,15 +47,24 @@ export default class OnboardingSlider extends React.Component {
       if(!tabsVisited.includes(this.state.currentTab+1))
         tabsVisited.push(this.state.currentTab+1)
 
-      this.setState({ ...this.state, currentTab: this.state.currentTab + 1, hasReachedLastTab: (this.state.hasReachedLastTab || this.state.currentTab + 1 == 3), tabsVisited: tabsVisited })
+      this.setState({ ...this.state, currentTab: this.state.currentTab + 1, hasReachedLastTab: (this.state.hasReachedLastTab || (tabsVisited.length === 4 || this.state.currentTab + 1 == 3)), tabsVisited: tabsVisited })
     } else
       this.setState({ ...this.state, currentTab: this.state.currentTab - 1 })
+  }
+
+  setTab(tabId) {
+    var tabsVisited = this.state.tabsVisited
+
+    if(!tabsVisited.includes(tabId))
+      tabsVisited.push(tabId)
+
+    this.setState({ ...this.state, currentTab: tabId, tabsVisited: tabsVisited, hasReachedLastTab: (this.state.hasReachedLastTab || (tabsVisited.length === 4 && tabId == 3)) })
   }
 
   finishEvent(e, history) {
     e.preventDefault()
 
-    if(!this.state.hasReachedLastTab)
+    if(!this.state.hasReachedLastTab || this.state.tabsVisited.length != 4)
       logEvent("Onboarding", "Skipped", { lastSlideSeen: this.state.currentTab + 1 })
 
     history.push("/dashboard/uploads")
@@ -74,7 +84,7 @@ export default class OnboardingSlider extends React.Component {
 
     return (
       <Container>
-        {!this.props.tutorialMode ? <Row className="d-flex">
+        {this.props.tutorialMode ? <Row className="d-flex">
           <Col xs="6" md="3" className="ml-auto mr-0 d-flex">
             <FinishButton />
           </Col>
@@ -113,8 +123,10 @@ export default class OnboardingSlider extends React.Component {
                       width: "100px",
                       height: "100px",
                       borderRadius: "100%",
-                      border: "5px solid rgba(59,56,53,1)"
+                      border: "5px solid rgba(59,56,53,1)",
+                      cursor: "pointer"
                     }}
+                    onClick={() => this.setTab(0)}
                   >
                     <Icon
                       icon="revibe"
@@ -132,8 +144,10 @@ export default class OnboardingSlider extends React.Component {
                       width: "100px",
                       height: "100px",
                       borderRadius: "100%",
-                      border: "5px solid rgba(59,56,53,1)"
+                      border: "5px solid rgba(59,56,53,1)",
+                      cursor: "pointer"
                     }}
+                    onClick={() => this.setTab(1)}
                   >
                     <FaHeadphones 
                       className="ml-auto mr-auto"
@@ -152,8 +166,10 @@ export default class OnboardingSlider extends React.Component {
                       width: "100px",
                       height: "100px",
                       borderRadius: "100%",
-                      border: "5px solid rgba(59,56,53,1)"
+                      border: "5px solid rgba(59,56,53,1)",
+                      cursor: "pointer"
                     }}
+                    onClick={() => this.setTab(2)}
                   >
                     <FaLink 
                       className="ml-auto mr-auto"
@@ -161,7 +177,7 @@ export default class OnboardingSlider extends React.Component {
                         color: `${this.state.tabsVisited.includes(2) ? "#7248BD" : "black"}`,
                         width: "90px",
                         height: "90px",
-                        padding: "15px",
+                        padding: "15px"
                       }}
                     />
                   </div>
@@ -172,8 +188,10 @@ export default class OnboardingSlider extends React.Component {
                       width: "100px",
                       height: "100px",
                       borderRadius: "100%",
-                      border: "5px solid rgba(59,56,53,1)"
+                      border: "5px solid rgba(59,56,53,1)",
+                      cursor: "pointer"
                     }}
+                    onClick={() => this.setTab(3)}
                   >
                     <FaChartLine 
                       className="ml-auto mr-auto"
