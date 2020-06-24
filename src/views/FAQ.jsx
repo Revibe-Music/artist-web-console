@@ -52,7 +52,7 @@ export default class FAQPage extends React.Component {
 
     return (
       <div className="content">
-        <Container className="mt-sm">
+        <Container>
           {!this.state.tutorialMode ? <Nav className="nav-pills-primary" pills>
             <NavItem>
               <NavLink
