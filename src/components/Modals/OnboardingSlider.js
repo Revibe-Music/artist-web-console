@@ -12,10 +12,14 @@ import {
   ModalFooter,
   TabContent,
   TabPane,
-  Button
+  Button,
+  Progress
 } from "reactstrap";
 import { builder, BuilderComponent } from '@builder.io/react'
 import { logEvent } from 'amplitude/amplitude';
+import { withRouter } from 'react-router-dom';
+import Icon from 'components/Icons/icons';
+import { FaHeadphones, FaLink, FaChartLine } from 'react-icons/fa';
 
 builder.init('c4efecdddef14d36a98d2756c1d5f56b')
 
@@ -25,124 +29,259 @@ export default class OnboardingSlider extends React.Component {
 
     this.state = {
       currentTab: 0,
-      hasReachedLastTab: false
+      hasReachedLastTab: false,
+      tabsVisited: [0]
     }
 
     this.toggleTab = this.toggleTab.bind(this)
-    this.skipEvent = this.skipEvent.bind(this)
     this.finishEvent = this.finishEvent.bind(this)
+    this.setTab = this.setTab.bind(this)
   }
 
   toggleTab(e, increase) {
     e.preventDefault()
 
-    if(increase)
-      this.setState({ ...this.state, currentTab: this.state.currentTab + 1, hasReachedLastTab: (this.state.hasReachedLastTab || this.state.currentTab + 1 == 3) })
-    else
+    if(increase) {
+      var tabsVisited = this.state.tabsVisited
+
+      if(!tabsVisited.includes(this.state.currentTab+1))
+        tabsVisited.push(this.state.currentTab+1)
+
+      this.setState({ ...this.state, currentTab: this.state.currentTab + 1, hasReachedLastTab: (this.state.hasReachedLastTab || (tabsVisited.length === 4 || this.state.currentTab + 1 == 3)), tabsVisited: tabsVisited })
+    } else
       this.setState({ ...this.state, currentTab: this.state.currentTab - 1 })
   }
 
-  skipEvent(e) {
-    e.preventDefaults()
+  setTab(tabId) {
+    var tabsVisited = this.state.tabsVisited
 
-    //Add one to the slide for a 1-4 range
-    logEvent("Onboarding", "Skipped", { lastSlideSeen: this.state.currentTab + 1 })
+    if(!tabsVisited.includes(tabId))
+      tabsVisited.push(tabId)
 
-    this.props.toggle()
+    this.setState({ ...this.state, currentTab: tabId, tabsVisited: tabsVisited, hasReachedLastTab: (this.state.hasReachedLastTab || (tabsVisited.length === 4 && tabId == 3)) })
   }
 
-  finishEvent(e) {
+  finishEvent(e, history) {
     e.preventDefault()
 
-    this.props.toggle()
+    if(!this.state.hasReachedLastTab || this.state.tabsVisited.length != 4)
+      logEvent("Onboarding", "Skipped", { lastSlideSeen: this.state.currentTab + 1 })
+
+    history.push("/dashboard/uploads")
   }
 
   render() {
-    return (
-      <Modal
-        isOpen={this.props.isOpen}
-        toggle={this.props.toggle}
-        modalClassName="modal-grey"
-        size="xl"
-        backdrop="static"
+    const FinishButton = withRouter(({ history }) => (
+      <Button
+        color="primary"
+        className={`ml-auto mr-0`}
+        size="md"
+        onClick={e => this.finishEvent(e, history)}
       >
-        <Container>
-          <Row>
-            <Col xs="12" sm="12" md="12" xs="12" className="mt-sm">
-              <TabContent activeTab={`tab-${this.state.currentTab}`}>
-                <TabPane tabId="tab-0">
-                  <BuilderComponent
-                    name="component"
-                    entry="e09041fbc6c146dabed3a955054c0dc4"
-                  />
-                </TabPane>
-                <TabPane tabId="tab-1">
-                  <BuilderComponent
-                    name="component"
-                    entry="7fe29bffeb134d3886a91389db6d8dc0"
-                  />
-                </TabPane>
-                <TabPane tabId="tab-2">
-                  <BuilderComponent
-                    name="component"
-                    entry="8d3ef71939c545ad83d537d1d600753f"
-                  />
-                </TabPane>
-                <TabPane tabId="tab-3">
-                  <BuilderComponent
-                    name="component"
-                    entry="c920f90ffb044b2db774ea2fac952ecc"
-                  />
-                </TabPane>
-              </TabContent>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="4" md="4" className="text-center d-flex align-items-center justify-content-center">
+        Let's Go!
+      </Button>
+    ));
+
+    const isSmall = window.innerWidth < 768, pixelSize = isSmall ? 50 : 100
+
+    return (
+      <Container>
+        {this.props.tutorialMode ? <Row className="d-flex">
+          <Col xs="6" md="3" className="ml-auto mr-0 d-flex">
+            <FinishButton />
+          </Col>
+        </Row> : null}
+        <Row className="d-flex">
+          <Col xs="12" sm="12" md="10" className="ml-auto mr-auto d-flex">
+            <div className="w-100 ml-auto mr-auto d-flex" style={{ height: `${isSmall ? 50 : 100}px` }}>
+              <div
+                id="progress-bar"
+                style={{ backgroundColor: "rgba(59,56,53,1)", 
+                  width: window.innerWidth < 992 ? "100%" : "80%", 
+                  height: "15px", 
+                  borderRadius: "10px" 
+                }}
+                className="m-auto d-flex"
+              >
+                <div
+                  id="progress-bar"
+                  style={{ backgroundColor: "#7248BD", 
+                    width: `calc(${(this.state.currentTab+1) * 20}% - 6px)`, 
+                    height: "9px", 
+                    margin: "3px", 
+                    borderRadius: "5px" 
+                  }}
+                />
+              </div>
+              <div 
+                id="icons"
+                className="position-absolute d-flex"
+                style={{ width: `${isSmall ? "92%" : "100%"}` }}
+              >
+                <div className="ml-auto mr-auto d-flex" style={{ width: `${window.innerWidth < 992 ? 80 : 65}%` }}>
+                  <div
+                    className="ml-auto mr-auto"
+                    style={{
+                      backgroundColor: "black",
+                      width: `${pixelSize}px`,
+                      height: `${pixelSize}px`,
+                      borderRadius: "100%",
+                      border: `${pixelSize/20}px solid rgba(59,56,53,1)`,
+                      cursor: "pointer"
+                    }}
+                    onClick={() => this.setTab(0)}
+                  >
+                    <Icon
+                      icon="revibe"
+                      width={`${pixelSize*0.9}px`}
+                      height={`${pixelSize*0.9}px`}
+                      style={{
+                        padding: `${isSmall ? 7.5 : 15}px`,
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="ml-auto mr-auto"
+                    style={{
+                      backgroundColor: `${this.state.tabsVisited.includes(1) ? "black" : "rgba(59,56,53,1)"}`,
+                      width: `${pixelSize}px`,
+                      height: `${pixelSize}px`,
+                      borderRadius: "100%",
+                      border: `${pixelSize/20}px solid rgba(59,56,53,1)`,
+                      cursor: "pointer"
+                    }}
+                    onClick={() => this.setTab(1)}
+                  >
+                    <FaHeadphones 
+                      className="ml-auto mr-auto"
+                      style={{
+                        color: `${this.state.tabsVisited.includes(1) ? "#7248BD" : "black"}`,
+                        width: `${pixelSize*0.9}px`,
+                        height: `${pixelSize*0.9}px`,
+                        padding: `${isSmall ? 7.5 : 15}px`,
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="ml-auto mr-auto"
+                    style={{
+                      backgroundColor: `${this.state.tabsVisited.includes(2) ? "black" : "rgba(59,56,53,1)"}`,
+                      width: `${pixelSize}px`,
+                      height: `${pixelSize}px`,
+                      borderRadius: "100%",
+                      border: `${pixelSize/20}px solid rgba(59,56,53,1)`,
+                      cursor: "pointer"
+                    }}
+                    onClick={() => this.setTab(2)}
+                  >
+                    <FaLink 
+                      className="ml-auto mr-auto"
+                      style={{
+                        color: `${this.state.tabsVisited.includes(2) ? "#7248BD" : "black"}`,
+                        width: `${pixelSize*0.9}px`,
+                        height: `${pixelSize*0.9}px`,
+                        padding: `${isSmall ? 7.5 : 15}px`,
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="ml-auto mr-auto"
+                    style={{
+                      backgroundColor: `${this.state.tabsVisited.includes(3) ? "black" : "rgba(59,56,53,1)"}`,
+                      width: `${pixelSize}px`,
+                      height: `${pixelSize}px`,
+                      borderRadius: "100%",
+                      border: `${pixelSize/20}px solid rgba(59,56,53,1)`,
+                      cursor: "pointer"
+                    }}
+                    onClick={() => this.setTab(3)}
+                  >
+                    <FaChartLine 
+                      className="ml-auto mr-auto"
+                      style={{
+                        color: `${this.state.tabsVisited.includes(3) ? "#7248BD" : "black"}`,
+                        width: `${pixelSize*0.9}px`,
+                        height: `${pixelSize*0.9}px`,
+                        padding: `${isSmall ? 7.5 : 15}px`,
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" sm="12" md="12" xs="12" className="mt-sm">
+            <TabContent activeTab={`tab-${this.state.currentTab}`}>
+              <TabPane tabId="tab-0">
+              <BuilderComponent
+                name="artist-onboarding-sliders"
+                entry="22e1e398acf945cd81c1d8c53c6c8621" 
+              />
+              </TabPane>
+              <TabPane tabId="tab-1">
+                <BuilderComponent
+                  name="artist-onboarding-sliders"
+                  entry="544cd145971e4545b6a833142e0f6296"
+                />
+              </TabPane>
+              <TabPane tabId="tab-2">
+                <BuilderComponent
+                  name="artist-onboarding-sliders"
+                  entry="5ec9af8e1ee74ad7b3ebfdadc60c8138"
+                />
+              </TabPane>
+              <TabPane tabId="tab-3">
+                <BuilderComponent
+                  name="artist-onboarding-sliders"
+                  entry="7d81405c1c5a4ca981d795e48a27a159"
+                />
+              </TabPane>
+            </TabContent>
+          </Col>
+        </Row>
+        <Row>
+          {/*<Col xs="4" md="4" className="text-center d-flex align-items-center justify-content-center">
+            <a 
+              className=""
+              href=""
+              onClick={e => this.skipEvent(e)}
+            >
+              <h3 className="m-auto text-primary">Skip</h3>
+            </a>
+          </Col>*/}
+          <Col xs="12" sm="12" className="d-flex">
+            {this.state.currentTab !== 0 ?
+              <Button
+                color="primary"
+                className={`btn-round ${this.state.currentTab === 3 ? "ml-auto mr-auto" : "ml-sm mr-auto"}`}
+                onClick={e => this.toggleTab(e, false)}
+              >
+                Previous
+              </Button>
+            : null}
+            {this.state.currentTab !== 3 ? <Button
+              color="primary"
+              className={`btn-round ${this.state.currentTab === 0 ? "ml-auto mr-auto" : "ml-auto mr-sm"}`}
+              onClick={e => this.toggleTab(e, true)}
+            >
+              Next
+            </Button> : null}
+          </Col>
+          {/*<Col xs="4" md="4" className="text-center d-flex align-items-center justify-content-center">
+            {this.state.hasReachedLastTab ?
               <a 
                 className=""
                 href=""
-                onClick={e => this.skipEvent(e)}
+                onClick={e => this.finishEvent(e)}
               >
-                <h3 className="m-auto text-primary">Skip</h3>
+                <h3 className="m-auto text-primary">Finish</h3>
               </a>
-            </Col>
-            <Col xs="4" md="4" className="d-flex">
-              <Button
-                className="btn-round btn-icon btn-simple slick-prev slick-arrow ml-auto mr-1 mt-2 mb-2"
-                color="primary"
-                aria-label="Previous"
-                type="button"
-                onClick={e => this.toggleTab(e, false)}
-                disabled={this.state.currentTab === 0}
-              >
-                <i className="tim-icons icon-minimal-left" />
-              </Button>
-              <Button
-                className="btn-round btn-icon btn-simple slick-next slick-arrow ml-1 mr-auto mt-2 mb-2"
-                color="primary"
-                aria-label="Next"
-                type="button"
-                disabled={this.state.currentTab === 3}
-                onClick={e => this.toggleTab(e, true)}
-              >
-                <i className="tim-icons icon-minimal-right" />
-              </Button>
-            </Col>
-            <Col xs="4" md="4" className="text-center d-flex align-items-center justify-content-center">
-              {this.state.hasReachedLastTab ?
-                <a 
-                  className=""
-                  href=""
-                  onClick={e => this.finishEvent(e)}
-                >
-                  <h3 className="m-auto text-primary">Finish</h3>
-                </a>
-              : null}
-            </Col>
-          </Row>
-        </Container>
-      </Modal>
+            : null}
+            </Col>*/}
+        </Row>
+      </Container>
     )
   }
 }
