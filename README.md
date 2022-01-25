@@ -155,32 +155,32 @@ Kayne Lynn - kaynelynn@escalatorllc.com
 <!-- MARKDOWN LINKS & IMAGES -->
 
 <!-- Project URLS-->
-[github-url]: https://github.com/Revibe-Music/streaming-app-website-website
-[repo-path]: Revibe-Music/streaming-app-website-website
-[logo-path]: https://github.com/Revibe-Music/streaming-app-website/blob/main/assets/RevibeLogo.png
+[github-url]: https://github.com/Revibe-Music/artist-web-console
+[repo-path]: Revibe-Music/artist-web-console
+[logo-path]: https://github.com/Revibe-Music/artist-web-console/blob/main/assets/RevibeLogo.png
 
 <!-- Contributors-->
-[contributors-shield]: https://img.shields.io/github/contributors/Revibe-Music/streaming-app-website.svg?style=for-the-badge
-[contributors-url]: https://github.com/Revibe-Music/streaming-app-website/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/Revibe-Music/artist-web-console.svg?style=for-the-badge
+[contributors-url]: https://github.com/Revibe-Music/artist-web-console/graphs/contributors
 
 <!-- License-->
-[license-shield]: https://img.shields.io/github/license/Revibe-Music/streaming-app-website.svg?style=for-the-badge
-[license-url]: https://github.com/Revibe-Music/streaming-app-website/blob/main/LICENSE.txt
+[license-shield]: https://img.shields.io/github/license/Revibe-Music/artist-web-console.svg?style=for-the-badge
+[license-url]: https://github.com/Revibe-Music/artist-web-console/blob/main/LICENSE.txt
 
 <!-- Build Status-->
 [archive-shield]: https://img.shields.io/static/v1?label=status&message=archived&color=red&style=for-the-badge
 
 <!-- Languages-->
-[top-languages-shield]: https://img.shields.io/github/languages/top/Revibe-Music/streaming-app-website.svg?style=for-the-badge
-[languages-count-shield]: https://img.shields.io/github/languages/count/Revibe-Music/streaming-app-website?style=for-the-badge
+[top-languages-shield]: https://img.shields.io/github/languages/top/Revibe-Music/artist-web-console.svg?style=for-the-badge
+[languages-count-shield]: https://img.shields.io/github/languages/count/Revibe-Music/artist-web-console?style=for-the-badge
 
 <!-- Stars-->
-[stars-shield]: https://img.shields.io/github/stars/Revibe-Music/streaming-app-website.svg?style=for-the-badge
-[stars-url]: https://github.com/Revibe-Music/streaming-app-website/stargazers
+[stars-shield]: https://img.shields.io/github/stars/Revibe-Music/artist-web-console.svg?style=for-the-badge
+[stars-url]: https://github.com/Revibe-Music/artist-web-console/stargazers
 
 <!-- Forks-->
-[forks-shield]: https://img.shields.io/github/forks/Revibe-Music/streaming-app-website.svg?style=for-the-badge
-[forks-url]: https://github.com/Revibe-Music/streaming-app-website/network/members
+[forks-shield]: https://img.shields.io/github/forks/Revibe-Music/artist-web-console.svg?style=for-the-badge
+[forks-url]: https://github.com/Revibe-Music/artist-web-console/network/members
 
 
 <!-- Social-->
