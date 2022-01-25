@@ -12,7 +12,7 @@
 <!-- PROJECT SHIELDS -->
 <div align="center">
   
-[![Contributors][contributors-shield]][contributors-url] [![MIT License][license-shield]][license-url] ![archive-shield] ![top-languages-shield] ![languages-count-shield]  [![Stars][stars-shield]][stars-url] [![Forks][forks-shield]][forks-url]
+[![Contributors][contributors-shield]][contributors-url] [![MIT License][license-shield]][license-url] ![archive-shield] ![top-languages-shield] ![languages-count-shield]
 
 </div>
 
